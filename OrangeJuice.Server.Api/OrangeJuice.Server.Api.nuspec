@@ -2,10 +2,10 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>OrangeJuice.Server.Api</id>
-    <version>%build.number%</version>
+    <version>0.0</version>
     <title>OrangeJuice.Server.Api</title>
-    <authors>OrangeJuice</authors>
-    <owners>OrangeJuice</owners>
+    <authors>Orange Juice</authors>
+    <owners>Orange Juice</owners>
     <description>OrangeJuice.Server.Api</description>
     <summary></summary>
     <language>en-US</language>
@@ -19,6 +19,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="OrangeJuice.Server.Api.dll" target="net45" />
+    <file src="OrangeJuice.Server.Api.dll" target="bin" />
   </files>
 </package>
