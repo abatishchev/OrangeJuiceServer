@@ -137,6 +137,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Properties\PublishProfiles\Dev.pubxml.user" />
+    <Content Include="Properties\PublishProfiles\Stg.pubxml.user" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -160,6 +161,7 @@
   <ItemGroup>
     <Content Include="OrangeJuice.Server.Api.nuspec" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
+    <None Include="Properties\PublishProfiles\Stg.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
