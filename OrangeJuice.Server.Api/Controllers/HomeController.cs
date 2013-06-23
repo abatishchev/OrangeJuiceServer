@@ -4,7 +4,7 @@ namespace OrangeJuice.Server.Api.Controllers
 {
 	public class HomeController : Controller
 	{
-		public ActionResult Index()
+		public HttpStatusCodeResult Index()
 		{
 			return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
 		}
