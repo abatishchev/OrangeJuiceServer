@@ -159,7 +159,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OrangeJuice.Server.Api.nuspec" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Stg.pubxml" />
   </ItemGroup>
