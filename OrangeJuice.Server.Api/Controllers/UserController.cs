@@ -20,11 +20,10 @@ namespace OrangeJuice.Server.Api.Controllers
         /// <summary>
         /// Registers a user
         /// </summary>
-        /// <param name="appKey">Application version key</param>
         /// <param name="userRegistration">User registartion information</param>
         /// <returns>Guid representing the user</returns>
         /// <url>POST api/user</url>
-        public HttpResponseMessage Post([FromBody]Guid appKey, UserRegistration userRegistration)
+        public HttpResponseMessage Post([FromBody]UserRegistration userRegistration)
         {
             if (!_modelValidator.IsValid(this.ModelState))
                 return Request.CreateResponse(HttpStatusCode.BadRequest);

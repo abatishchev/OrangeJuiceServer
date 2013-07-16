@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using System.Web.Http.ModelBinding;
 
 using FluentAssertions;
@@ -28,13 +26,30 @@ namespace OrangeJuice.Server.Api.Test.Controllers
             IModelValidator modelValidator = CreateModelValidator(s => false);
             UserController controller = CreateController(modelValidator);
 
-            Guid appKey = AppKey.Version0;
             UserRegistration userRegistration = new UserRegistration();
 
             const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
             // Act
-            HttpStatusCode actual = controller.Post(appKey, userRegistration).StatusCode;
+            HttpStatusCode actual = controller.Post(userRegistration).StatusCode;
+
+            // Assert
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void Put_Should_Return_Ok_When_Model_IsValid()
+        {
+            // Arrange
+            IModelValidator modelValidator = CreateModelValidator(s => true);
+            UserController controller = CreateController(modelValidator);
+
+            UserRegistration userRegistration = new UserRegistration();
+
+            const HttpStatusCode expected = HttpStatusCode.OK;
+
+            // Act
+            HttpStatusCode actual = controller.Post(userRegistration).StatusCode;
 
             // Assert
             actual.Should().Be(expected);
