@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OrangeJuice.Server.Api")]
+[assembly: AssemblyTitle("OrangeJuice.Server.Contracts")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Orange Juice")]
-[assembly: AssemblyProduct("OrangeJuice.Server.Api")]
+[assembly: AssemblyProduct("OrangeJuice.Server.Contracts")]
 [assembly: AssemblyCopyright("Copyright © Orange Juice 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("98a7790e-80c4-4a93-9ff3-f7970ff03a9c")]
+[assembly: Guid("cda83f85-40c8-49db-ba14-dcc19722d9cd")]
 
 // Version information for an assembly consists of the following four values:
 //

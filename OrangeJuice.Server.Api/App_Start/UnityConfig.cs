@@ -2,6 +2,8 @@ using System.Web.Http;
 
 using Microsoft.Practices.Unity;
 
+using OrangeJuice.Server.Api.Validation;
+
 namespace OrangeJuice.Server.Api
 {
     public static class UnityConfig
@@ -17,8 +19,7 @@ namespace OrangeJuice.Server.Api
         {
             var container = new UnityContainer();
 
-            // register all your components with the container here
-            // e.g. container.RegisterType<ITestService, TestService>();            
+            container.RegisterInstance<IModelValidator>(new ModelValidator());
 
             return container;
         }
