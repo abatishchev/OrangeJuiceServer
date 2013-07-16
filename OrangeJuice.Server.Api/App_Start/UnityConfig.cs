@@ -8,7 +8,7 @@ namespace OrangeJuice.Server.Api
 {
     public static class UnityConfig
     {
-        public static void Initialise()
+        public static void Initialize()
         {
             var container = BuildUnityContainer();
 
