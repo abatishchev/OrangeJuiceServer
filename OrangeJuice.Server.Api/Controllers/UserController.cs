@@ -9,7 +9,7 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
-    public class UserController : ApiController
+    public sealed class UserController : ApiController
     {
         private readonly IUserRepository _userRepository;
 

@@ -4,6 +4,8 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using OrangeJuice.Server.Api.Validation;
+
 namespace OrangeJuice.Server.Api.Test.Validation
 {
     [TestClass]
@@ -34,6 +36,28 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
             // Arrange
             isValid.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Current_Should_Not_Be_Null()
+        {
+            // Arrange
+            // Act
+            IModelValidator modelValidator = ModelValidator.Current;
+
+            // Arrange
+            modelValidator.Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void Current_Should_Be_Of_Type_ModelValidator()
+        {
+            // Arrange
+            // Act
+            IModelValidator modelValidator = ModelValidator.Current;
+
+            // Arrange
+            modelValidator.Should().BeOfType<ModelValidator>();
         }
     }
 }

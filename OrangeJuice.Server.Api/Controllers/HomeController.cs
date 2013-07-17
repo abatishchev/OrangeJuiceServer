@@ -2,7 +2,7 @@
 
 namespace OrangeJuice.Server.Api.Controllers
 {
-	public class HomeController : Controller
+	public sealed class HomeController : Controller
 	{
 		public HttpStatusCodeResult Index()
 		{
