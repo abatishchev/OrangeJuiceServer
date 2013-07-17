@@ -23,8 +23,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
         public void Put_Should_Return_BadRequest_When_Model_Not_IsValid()
         {
             // Arrange
-            IModelValidator modelValidator = CreateModelValidator(s => false);
-            UserController controller = CreateController(modelValidator);
+            ModelValidator.Current = CreateModelValidator(s => false);
+            UserController controller = ControllerFactory.Create<UserController>();
 
             UserRegistration userRegistration = new UserRegistration();
 
@@ -41,8 +41,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
         public void Put_Should_Return_Ok_When_Model_IsValid()
         {
             // Arrange
-            IModelValidator modelValidator = CreateModelValidator(s => true);
-            UserController controller = CreateController(modelValidator);
+            ModelValidator.Current = CreateModelValidator(s => true);
+            UserController controller = ControllerFactory.Create<UserController>();
 
             UserRegistration userRegistration = new UserRegistration();
 
@@ -53,14 +53,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
             // Assert
             actual.Should().Be(expected);
-        }
-
-        private static UserController CreateController(IModelValidator modelValidator)
-        {
-            UserController controller = new UserController(modelValidator);
-            controller.Request = new HttpRequestMessage();
-            controller.Request.Properties["MS_HttpConfiguration"] = new HttpConfiguration();
-            return controller;
         }
 
         private static IModelValidator CreateModelValidator(Func<ModelStateDictionary, bool> isValidFunc)

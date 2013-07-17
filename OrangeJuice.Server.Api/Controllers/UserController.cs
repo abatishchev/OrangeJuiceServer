@@ -10,11 +10,8 @@ namespace OrangeJuice.Server.Api.Controllers
 {
     public class UserController : ApiController
     {
-        private readonly IModelValidator _modelValidator;
-
-        public UserController(IModelValidator modelValidator)
+        public UserController()
         {
-            _modelValidator = modelValidator;
         }
 
         /// <summary>
@@ -25,7 +22,7 @@ namespace OrangeJuice.Server.Api.Controllers
         /// <url>POST api/user</url>
         public HttpResponseMessage Post([FromBody]UserRegistration userRegistration)
         {
-            if (!_modelValidator.IsValid(this.ModelState))
+            if (!ModelValidator.Current.IsValid(this.ModelState))
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
 
             Guid newGuid = Guid.NewGuid();
