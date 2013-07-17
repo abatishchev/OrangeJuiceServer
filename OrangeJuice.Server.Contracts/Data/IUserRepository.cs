@@ -11,7 +11,7 @@ namespace OrangeJuice.Server.Data
     {
         public Guid Register(string email)
         {
-            throw new NotImplementedException();
+            return Guid.NewGuid();
         }
     }
 }
