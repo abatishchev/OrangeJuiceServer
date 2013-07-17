@@ -5,13 +5,20 @@ using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Validation;
+using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
     public class UserController : ApiController
     {
-        public UserController()
+        private readonly IUserRepository _userRepository;
+
+        public UserController(IUserRepository userRepository)
         {
+            if (userRepository == null)
+                throw new ArgumentNullException("userRepository");
+
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -25,8 +32,8 @@ namespace OrangeJuice.Server.Api.Controllers
             if (!ModelValidator.Current.IsValid(this.ModelState))
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
 
-            Guid newGuid = Guid.NewGuid();
-            return Request.CreateResponse(newGuid);
+            Guid newGuid = _userRepository.Register(userRegistration.Email);
+            return Request.CreateResponse(HttpStatusCode.OK, newGuid);
         }
     }
 }

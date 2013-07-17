@@ -2,6 +2,8 @@ using System.Web.Http;
 
 using Microsoft.Practices.Unity;
 
+using OrangeJuice.Server.Data;
+
 namespace OrangeJuice.Server.Api
 {
     public static class UnityConfig
@@ -16,6 +18,8 @@ namespace OrangeJuice.Server.Api
         private static IUnityContainer BuildUnityContainer()
         {
             var container = new UnityContainer();
+
+            container.RegisterType<IUserRepository, UserRepositoryStub>(new ContainerControlledLifetimeManager());
 
             return container;
         }
