@@ -141,7 +141,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
         private static IDisposable NewContext(IModelValidator modelValidator)
         {
-            return new ModelValidatorContext(modelValidator);
+            IModelValidator current = ModelValidator.Current;;
+            return new TestContext(() =>
+                {
+                    ModelValidator.Current = modelValidator;
+                }, () =>
+                {
+                    ModelValidator.Current = current;
+                });
         }
     }
 }
