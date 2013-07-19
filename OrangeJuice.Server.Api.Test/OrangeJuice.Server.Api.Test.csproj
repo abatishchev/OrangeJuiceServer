@@ -45,9 +45,15 @@
       <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation">
-      <HintPath>..\packages\FluentValidation.4.0.0.0\lib\Net40\FluentValidation.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.4.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.Contrib.0.3\lib\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq.Contrib">
+      <HintPath>..\packages\Moq.Contrib.0.3\lib\Moq.Contrib.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=5.0.6.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -63,12 +69,6 @@
     <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0-beta2\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.Contrib.0.3\lib\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq.Contrib">
-      <HintPath>..\packages\Moq.Contrib.0.3\lib\Moq.Contrib.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

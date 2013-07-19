@@ -52,6 +52,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0-beta1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidation.4.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
@@ -117,8 +120,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0-beta2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.WebApi">
-      <HintPath>..\packages\Unity.WebAPI.0.10\lib\net40\Unity.WebApi.dll</HintPath>
+    <Reference Include="Unity.WebApi, Version=0.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.WebAPI.0.10.1\lib\net40\Unity.WebApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -138,12 +142,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\IModelValidator.cs" />
     <Compile Include="Validation\ModelValidator.cs" />
+    <Compile Include="Validation\ModelValidatorContext.cs" />
     <Compile Include="Validation\ValidationError.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Properties\PublishProfiles\Dev.pubxml.user" />
+    <Content Include="Properties\PublishProfiles\Prod.pubxml.user" />
     <Content Include="Properties\PublishProfiles\Stg.pubxml.user" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -165,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
+    <None Include="Properties\PublishProfiles\Prod.pubxml" />
     <None Include="Properties\PublishProfiles\Stg.pubxml" />
   </ItemGroup>
   <ItemGroup>
