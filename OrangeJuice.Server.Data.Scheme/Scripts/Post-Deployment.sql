@@ -9,19 +9,3 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
-
-if not exists (select 1 from dbo.[AccountType])
-begin
-	insert into dbo.[AccountType] ([AccountTypeId], [Name])
-	values
-	(1, 'Checking'),
-	(2, 'Saving')
-end
-go
-
-if not exists (select 1 from dbo.[Category])
-begin
-	insert into dbo.[Category] ([Name])
-	values ('(None)')
-end
-go

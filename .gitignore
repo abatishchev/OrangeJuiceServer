@@ -76,9 +76,6 @@ DocProject/Help/html
 # Click-Once directory
 publish
 
-# Publish Web Output
-*.Publish.xml
-
 # NuGet Packages Directory
 packages
 
