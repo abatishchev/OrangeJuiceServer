@@ -25,5 +25,6 @@ namespace OrangeJuice.Server.Data.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<User> Users { get; set; }
     }
 }
