@@ -148,6 +148,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="ping.html" />
     <Content Include="Properties\PublishProfiles\Dev.pubxml.user" />
     <Content Include="Properties\PublishProfiles\Prod.pubxml.user" />
     <Content Include="Properties\PublishProfiles\Stg.pubxml.user" />
