@@ -27,7 +27,7 @@
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" cg:GetterAccess="Internal" cg:SetterAccess="Internal" />
+          <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" cg:GetterAccess="Private" cg:SetterAccess="Private" />
           <Property Type="Guid" Name="UserGuid" Nullable="false" cg:SetterAccess="Private" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" cg:SetterAccess="Internal" />
         </EntityType>

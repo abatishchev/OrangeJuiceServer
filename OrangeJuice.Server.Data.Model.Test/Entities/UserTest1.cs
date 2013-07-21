@@ -19,5 +19,17 @@ namespace OrangeJuice.Server.Data.Model.Test.Entities
 			// Assert
 			user.UserGuid.Should().NotBeEmpty();
 		}
+
+		[TestMethod]
+		public void UserGuid_Should_Be_Unique()
+		{
+			// Arrange
+			// Act
+			Guid guid1 = User.CreateNew().UserGuid;
+			Guid guid2 = User.CreateNew().UserGuid;
+
+			// Assert
+			guid1.Should().NotBe(guid2);
+		}
 	}
 }

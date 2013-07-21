@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Data.Model
     
     public partial class User
     {
-        internal int UserId { get; set; }
+        private int UserId { get; set; }
         public System.Guid UserGuid { get; private set; }
         public string Email { get; internal set; }
     }
