@@ -183,6 +183,10 @@
       <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Name>OrangeJuice.Server.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrangeJuice.Server.Data.Model\OrangeJuice.Server.Data.Model.csproj">
+      <Project>{209ccef8-9d7a-4ab4-b7e5-9f5c8efe603a}</Project>
+      <Name>OrangeJuice.Server.Data.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
