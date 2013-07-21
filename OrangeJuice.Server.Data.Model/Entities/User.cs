@@ -4,12 +4,18 @@
 namespace OrangeJuice.Server.Data.Model
 // ReSharper restore CheckNamespace
 {
-	public partial class User
+	public partial class User : IUser
 	{
+		#region Constructors
 		private User()
 		{
 		}
+		#endregion
 
+		#region Properties
+		#endregion
+
+		#region Methods
 		internal static User CreateNew()
 		{
 			return new User
@@ -17,5 +23,6 @@ namespace OrangeJuice.Server.Data.Model
 				UserGuid = Guid.NewGuid()
 			};
 		}
+		#endregion
 	}
 }

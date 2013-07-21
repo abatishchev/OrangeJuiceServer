@@ -2,16 +2,10 @@
 
 namespace OrangeJuice.Server.Data
 {
-    public interface IUserRepository
-    {
-        Guid Register(string email);
-    }
+	public interface IUserRepository
+	{
+		IUser Get(Guid userGuid);
 
-    public class UserRepositoryStub : IUserRepository
-    {
-        public Guid Register(string email)
-        {
-            return Guid.NewGuid();
-        }
-    }
+		Guid Register(string email);
+	}
 }

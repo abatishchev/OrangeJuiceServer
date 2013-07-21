@@ -43,6 +43,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppKey.cs" />
+    <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -3,6 +3,7 @@ using System.Web.Http;
 using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Model.Repository;
 
 namespace OrangeJuice.Server.Api
 {
@@ -19,7 +20,7 @@ namespace OrangeJuice.Server.Api
         {
             var container = new UnityContainer();
 
-            container.RegisterType<IUserRepository, UserRepositoryStub>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());
 
             return container;
         }
