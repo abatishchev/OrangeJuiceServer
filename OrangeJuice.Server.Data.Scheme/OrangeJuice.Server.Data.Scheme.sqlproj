@@ -90,4 +90,9 @@
     <None Include="Properties\PublishProfiles\Prod.publish.xml" />
     <None Include="Properties\PublishProfiles\Stg.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schemas\dbo\Tables\User.sql" />
+    <Build Include="Schemas\dbo\Tables\Indexes\IX_User_UserGuid.sql" />
+    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_User.sql" />
+  </ItemGroup>
 </Project>
