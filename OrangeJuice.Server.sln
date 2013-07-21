@@ -1,4 +1,5 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{297041D9-4186-49F5-BB79-37653390A91F}"
 EndProject
@@ -8,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B06AAC9D-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1CBFC1FA-2DAA-4690-8C34-4574B0A02D6D}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		key.snk = key.snk
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
@@ -31,6 +33,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Contracts", "OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj", "{EC948993-1645-4749-B2E5-1D3732B0A2C3}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OrangeJuice.Server.Data.Scheme", "OrangeJuice.Server.Data.Scheme\OrangeJuice.Server.Data.Scheme.sqlproj", "{411163BB-6EDC-4F9F-9618-F39D5DF46527}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Data.Model", "OrangeJuice.Server.Data.Model\OrangeJuice.Server.Data.Model.csproj", "{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,14 +60,19 @@ Global
 		{411163BB-6EDC-4F9F-9618-F39D5DF46527}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{411163BB-6EDC-4F9F-9618-F39D5DF46527}.Release|Any CPU.Build.0 = Release|Any CPU
 		{411163BB-6EDC-4F9F-9618-F39D5DF46527}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EC948993-1645-4749-B2E5-1D3732B0A2C3} = {C0DFCAA5-A540-43BC-A417-9504CEFEADA9}
 		{CAA123B5-A379-493E-A964-8286C3C90EC7} = {297041D9-4186-49F5-BB79-37653390A91F}
 		{04AE4C35-7C05-4676-9EF7-8C360D8B5768} = {297041D9-4186-49F5-BB79-37653390A91F}
+		{EC948993-1645-4749-B2E5-1D3732B0A2C3} = {C0DFCAA5-A540-43BC-A417-9504CEFEADA9}
 		{411163BB-6EDC-4F9F-9618-F39D5DF46527} = {B06AAC9D-66F7-4462-AEBB-7871A683C823}
+		{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A} = {B06AAC9D-66F7-4462-AEBB-7871A683C823}
 	EndGlobalSection
 EndGlobal
