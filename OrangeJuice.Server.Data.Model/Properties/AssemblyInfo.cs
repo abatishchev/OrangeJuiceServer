@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("OrangeJuice.Server.Data.Model")]
-[assembly: AssemblyCompany("Godfather Software Foundation")]
 [assembly: AssemblyProduct("OrangeJuice.Server.Data.Model")]
 
 [assembly: Guid("2cc86c7b-46b7-421c-843c-0f4f2a491d2e")]
