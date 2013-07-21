@@ -4,8 +4,8 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IUserRepository
 	{
-		IUser Get(Guid userGuid);
+		IUser Find(Guid userGuid);
 
-		Guid Register(string email);
+		IUser Register(string email);
 	}
 }

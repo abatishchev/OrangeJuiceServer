@@ -6,7 +6,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 {
 	public sealed class EntityModelUserRepository : IUserRepository
 	{
-		public IUser Get(Guid userGuid)
+		public IUser Find(Guid userGuid)
 		{
 			using (var db = new ModelContainer())
 			{
@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 			}
 		}
 
-		public Guid Register(string email)
+		public IUser Register(string email)
 		{
 			using (var db = new ModelContainer())
 			{
@@ -25,7 +25,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 				if (user.UserGuid == Guid.Empty)
 					throw new DataException("User guid can't be empty");
 
-				return user.UserGuid;
+				return user;
 			}
 		}
 	}

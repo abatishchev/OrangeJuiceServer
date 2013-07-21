@@ -26,12 +26,13 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <param name="userGuid">Guid representing a user</param>
 		/// <returns>User entity</returns>
+		/// <url>GET /api/user/</url>
 		public IUser Get(Guid userGuid)
 		{
 			if (userGuid == Guid.Empty)
 				throw new ArgumentNullException("userGuid");
 
-			IUser user = _userRepository.Get(userGuid);
+			IUser user = _userRepository.Find(userGuid);
 			if (user == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 
@@ -43,7 +44,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <param name="userRegistration">User registartion information</param>
 		/// <returns>Guid representing the user</returns>
-		/// <url>POST api/user</url>
+		/// <url>POST /api/user/</url>
 		public HttpResponseMessage Put([FromBody]UserRegistration userRegistration)
 		{
 			if (userRegistration == null)
@@ -52,8 +53,11 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			Guid newGuid = _userRepository.Register(userRegistration.Email);
-			return Request.CreateResponse(HttpStatusCode.OK, newGuid);
+			IUser user = _userRepository.Register(userRegistration.Email);
+			if (user == null)
+				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User is null");
+
+			return Request.CreateResponse(HttpStatusCode.OK, user.UserGuid);
 		}
 	}
 }
