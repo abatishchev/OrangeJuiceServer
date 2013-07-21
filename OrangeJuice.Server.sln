@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{297041D9-418
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B06AAC9D-66F7-4462-AEBB-7871A683C823}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OrangeJuice.Server.Data.Scheme", "OrangeJuice.Server.Data.Scheme\OrangeJuice.Server.Data.Scheme.sqlproj", "{411163BB-6EDC-4F9F-9618-F39D5DF46527}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
