@@ -52,6 +52,21 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Schemas" />
+    <Folder Include="Schemas\dbo" />
+    <Folder Include="Schemas\dbo\Programmability" />
+    <Folder Include="Schemas\dbo\Programmability\Functions" />
+    <Folder Include="Schemas\dbo\Programmability\Stored Procedures" />
+    <Folder Include="Schemas\dbo\Tables" />
+    <Folder Include="Schemas\dbo\Tables\Constraints" />
+    <Folder Include="Schemas\dbo\Tables\Indexes" />
+    <Folder Include="Schemas\dbo\Tables\Keys" />
+    <Folder Include="Schemas\dbo\Tables\Keys\Foregin" />
+    <Folder Include="Schemas\dbo\Tables\Keys\Primary" />
+    <Folder Include="Schemas\dbo\Views" />
+    <Folder Include="Schemas\dbo\Views\Indexes" />
+    <Folder Include="Scripts" />
+    <Folder Include="Security" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -61,5 +76,12 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Post-Deployment.sql" />
+    <PreDeploy Include="Scripts\Pre-Deployment.sql" />
+    <Build Include="Security\Permissions.sql" />
+    <Build Include="Security\Roles.sql" />
+    <Build Include="Security\Users.sql" />
   </ItemGroup>
 </Project>
