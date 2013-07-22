@@ -91,8 +91,8 @@
     <None Include="Properties\PublishProfiles\Stg.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Schemas\dbo\Tables\User.sql" />
-    <Build Include="Schemas\dbo\Tables\Indexes\IX_User_UserGuid.sql" />
-    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_User.sql" />
+    <Build Include="Schemas\dbo\Tables\Users.sql" />
+    <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_UserGuid.sql" />
+    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_Users.sql" />
   </ItemGroup>
 </Project>

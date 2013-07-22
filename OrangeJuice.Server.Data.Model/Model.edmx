@@ -6,9 +6,9 @@
     <edmx:StorageModels>
     <Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="ModelStoreContainer">
-          <EntitySet Name="User" EntityType="Model.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="Model.Store.Users" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
-        <EntityType Name="User">
+        <EntityType Name="Users">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
@@ -39,9 +39,9 @@
         <Alias Key="Model" Value="Model" />
         <Alias Key="Target" Value="Model.Store" />
         <EntityContainerMapping CdmEntityContainer="ModelContainer" StorageEntityContainer="ModelStoreContainer">
-          <EntitySetMapping Name="Users">
+        <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Model.User">
-              <MappingFragment StoreEntitySet="User">
+              <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="UserGuid" ColumnName="UserGuid" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
