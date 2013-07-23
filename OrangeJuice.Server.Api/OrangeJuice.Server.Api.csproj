@@ -136,8 +136,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApiKey.cs" />
-    <Compile Include="Models\JsonGuid.cs" />
     <Compile Include="Models\UserRegistration.cs">
       <SubType>Code</SubType>
     </Compile>

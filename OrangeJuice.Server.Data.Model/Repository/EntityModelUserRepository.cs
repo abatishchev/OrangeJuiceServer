@@ -23,7 +23,9 @@ namespace OrangeJuice.Server.Data.Model.Repository
 					throw new DataException("User guid can't be empty");
 
 				user = db.Users.Add(user);
-				db.SaveChanges();
+				int i = db.SaveChanges();
+                if (i != 1)
+                    throw new DataException("Error saving user");
 
 				return user;
 			}
