@@ -31,5 +31,29 @@ namespace OrangeJuice.Server.Data.Model.Test.Entities
 			// Assert
 			guid1.Should().NotBe(guid2);
 		}
+
+		[TestMethod]
+		public void CreateNew_Accepting_Null_Email_Should_Not_Assign_Email()
+		{
+			// Arrange
+			// Act
+			User user = User.CreateNew(email: null);
+
+			// Assert
+			user.Email.Should().BeNull();
+		}
+
+		[TestMethod]
+		public void CreateNew_Accepting_Not_Null_Email_Should_Assign_Email()
+		{
+			// Arrange
+			const string email = "test@example.com";
+
+			// Act
+			User user = User.CreateNew(email: email);
+
+			// Assert
+			user.Email.Should().Be(email);
+		}
 	}
 }

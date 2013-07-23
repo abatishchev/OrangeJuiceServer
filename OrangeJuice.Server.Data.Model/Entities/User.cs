@@ -16,11 +16,12 @@ namespace OrangeJuice.Server.Data.Model
 		#endregion
 
 		#region Methods
-		internal static User CreateNew()
+		internal static User CreateNew(string email = null)
 		{
 			return new User
 			{
-				UserGuid = Guid.NewGuid()
+				UserGuid = Guid.NewGuid(),
+				Email = email
 			};
 		}
 		#endregion

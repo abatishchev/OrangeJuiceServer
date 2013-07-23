@@ -94,5 +94,6 @@
     <Build Include="Schemas\dbo\Tables\Users.sql" />
     <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_UserGuid.sql" />
     <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_Users.sql" />
+    <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_Email.sql" />
   </ItemGroup>
 </Project>
