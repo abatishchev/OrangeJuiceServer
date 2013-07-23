@@ -19,11 +19,11 @@ namespace OrangeJuice.Server.Data.Model.Repository
 			using (var db = new ModelContainer())
 			{
 				User user = User.CreateNew();
-
-				user = db.Users.Add(user);
-
 				if (user.UserGuid == Guid.Empty)
 					throw new DataException("User guid can't be empty");
+
+				user = db.Users.Add(user);
+				db.SaveChanges();
 
 				return user;
 			}
