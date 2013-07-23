@@ -11,6 +11,8 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 
+#if DEBUG
 // 0.0.0.0 means a local build. Real version will be calculated and assigned by the server build
 [assembly: AssemblyVersion("0.0.0.0")]
 [assembly: AssemblyFileVersion("0.0.0.0")]
+#endif
