@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 		{
 			using (var db = new ModelContainer())
 			{
-				User user = User.CreateNew();
+				User user = User.CreateNew(email);
 				if (user.UserGuid == Guid.Empty)
 					throw new DataException("User guid can't be empty");
 
