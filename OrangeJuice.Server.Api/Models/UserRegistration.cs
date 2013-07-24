@@ -6,8 +6,7 @@ namespace OrangeJuice.Server.Api.Models
 	public class UserRegistration
 	{
 		[Required]
-        [StringLength(36)]
-		public string AppKey { get; set; }
+		public ApiKey ApiKey { get; set; }
 
 		[Required]
 		[EmailAddress]
