@@ -6,9 +6,6 @@ namespace OrangeJuice.Server.Api.Models
 	public class UserInformation
 	{
 		[Required]
-		public Guid? AppKey { get; set; }
-
-		[Required]
 		public Guid? UserKey { get; set; }
 	}
 }

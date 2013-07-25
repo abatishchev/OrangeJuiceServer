@@ -36,24 +36,42 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 		#endregion
 
-		#region Get
+		#region GetUser
 		[TestMethod]
-		public void Get_Should_Throw_Exception_When_UserGuid_Is_Empty()
+		public void GetUser_Should_Return_BadRequest_When_UserInformation_Is_Null()
 		{
-			//Arrange
+			// Arrange
+			const UserInformation userInformation = null;
 			UserController controller = CreateController();
-			Guid userGuid = Guid.Empty;
+			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			Action action = () => controller.Get(userGuid);
+			HttpStatusCode actual = controller.GetUser(userInformation).StatusCode;
 
 			// Assert
-			action.ShouldThrow<ArgumentException>()
-				  .And.ParamName.Should().Be("userGuid");
+			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public void Get_Should_Throw_Exception_When_User_By_Specified_UserGuid_Does_Not_Exist()
+		public void GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
+		{
+			// Arrange
+			UserController controller = CreateController();
+			UserInformation userInformation = new UserInformation();
+			const HttpStatusCode expected = HttpStatusCode.BadRequest;
+
+			// Act
+			using (NewContext(CreateModelValidator(s => false)))
+			{
+				HttpStatusCode actual = controller.GetUser(userInformation).StatusCode;
+
+				// Assert
+				actual.Should().Be(expected);
+			}
+		}
+
+		[TestMethod]
+		public void GetUser_Should_Throw_Exception_When_User_By_Specified_UserGuid_Does_Not_Exist()
 		{
 			//Arrange
 			Guid userGuid = Guid.NewGuid();
@@ -62,9 +80,13 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 							  .Returns<IUser>(null);
 
 			UserController controller = CreateController(userRepositoryMock);
+			UserInformation userInformation = new UserInformation
+			{
+				UserKey = userGuid
+			};
 
 			// Act
-			Action action = () => controller.Get(userGuid);
+			Action action = () => controller.GetUser(userInformation);
 
 			// Assert
 			action.ShouldThrow<HttpResponseException>()
@@ -72,7 +94,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void Get_Should_Call_UserRepository_Find()
+		public void GetUser_Should_Call_UserRepository_Find()
 		{
 			//Arrange
 			bool called = false;
@@ -86,16 +108,20 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 							  });
 
 			UserController controller = CreateController(userRepositoryMock);
+			UserInformation userInformation = new UserInformation
+			{
+				//UserKey = Guid.NewGuid()
+			};
 
 			// Act
-			controller.Get(Guid.NewGuid());
+			controller.GetUser(userInformation);
 
 			// Assert
 			called.Should().BeTrue();
 		}
 
 		[TestMethod]
-		public void Get_Should_ByPass_UserGuid_To_UserRepository_Find()
+		public void GetUser_Should_ByPass_UserGuid_To_UserRepository_Find()
 		{
 			// Arrange
 			Guid userGuid = Guid.NewGuid();
@@ -106,16 +132,20 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 							  .Returns(user);
 
 			UserController controller = CreateController(userRepositoryMock);
+			UserInformation userInformation = new UserInformation
+			{
+				UserKey = userGuid
+			};
 
 			// Act
-			controller.Get(userGuid);
+			controller.GetUser(userInformation);
 
 			// Assert
 			userRepositoryMock.Verify(r => r.Find(userGuid), Times.Once());
 		}
 
 		[TestMethod]
-		public void Get_Should_Return_User_By_Specified_UserGuid()
+		public void GetUser_Should_Return_User_By_Specified_UserGuid()
 		{
 			// Arrange
 			Guid userGuid = Guid.NewGuid();
@@ -126,18 +156,23 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 							  .Returns(expected);
 
 			UserController controller = CreateController(userRepositoryMock);
+			UserInformation userInformation = new UserInformation
+			{
+				UserKey = userGuid
+			};
 
 			// Act
-			IUser actual = controller.Get(userGuid);
+			HttpResponseMessage message = controller.GetUser(userInformation);
 
 			// Assert
+			IUser actual = ((ObjectContent<IUser>)message.Content).GetValue();
 			actual.Should().Be(expected);
 		}
 		#endregion
 
-		#region Put
+		#region PutUser
 		[TestMethod]
-		public void Put_Should_Return_BadRequest_When_UserRegistration_Is_Null()
+		public void PutUser_Should_Return_BadRequest_When_UserRegistration_Is_Null()
 		{
 			// Arrange
 			UserController controller = CreateController();
@@ -145,14 +180,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpStatusCode actual = controller.Put(userRegistration).StatusCode;
+			HttpStatusCode actual = controller.PutUser(userRegistration).StatusCode;
 
 			// Assert
 			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public void Put_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public void PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController();
@@ -162,7 +197,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator(s => false)))
 			{
-				HttpStatusCode actual = controller.Put(userRegistration).StatusCode;
+				HttpStatusCode actual = controller.PutUser(userRegistration).StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -170,7 +205,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void Put_Should_Return_Ok_When_Model_IsValid()
+		public void PutUser_Should_Return_Ok_When_Model_IsValid()
 		{
 			// Arrange
 			IUser user = CreateUser();
@@ -185,7 +220,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				HttpStatusCode actual = controller.Put(userRegistration).StatusCode;
+				HttpStatusCode actual = controller.PutUser(userRegistration).StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -193,7 +228,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void Put_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
+		public void PutUser_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
 		{
 			// Arrange
 			var userRepositoryMock = CreateUserRepository();
@@ -207,7 +242,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				HttpStatusCode actual = controller.Put(userRegistration).StatusCode;
+				HttpStatusCode actual = controller.PutUser(userRegistration).StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -215,7 +250,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void Put_Should_Call_UserRepository_Register()
+		public void PutUser_Should_Call_UserRepository_Register()
 		{
 			// Arrange
 			const string email = "test@example.com";
@@ -234,7 +269,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				controller.Put(userRegistration);
+				controller.PutUser(userRegistration);
 
 				// Assert
 				called.Should().BeTrue();
@@ -242,7 +277,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void Put_Should_ByPass_Email_To_UserRepository_Register()
+		public void PutUser_Should_ByPass_Email_To_UserRepository_Register()
 		{
 			// Arrange
 			const string email = "test@example.com";
@@ -255,7 +290,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				controller.Put(userRegistration);
+				controller.PutUser(userRegistration);
 
 				// Assert
 				userRepositoryMock.Verify(r => r.Register(email), Times.Once());
@@ -263,7 +298,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void Put_Should_Return_Guid_Of_Created_User()
+		public void PutUser_Should_Return_Guid_Of_Created_User()
 		{
 			// Arrange
 			Guid expected = Guid.NewGuid();
@@ -279,7 +314,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator(s => true)))
 			{
-				HttpResponseMessage message = controller.Put(userRegistration);
+				HttpResponseMessage message = controller.PutUser(userRegistration);
 				Guid actual = ((ObjectContent<Guid>)message.Content).GetValue();
 
 				// Assert
@@ -304,7 +339,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		private static IUser CreateUser(Guid? userGuid = null)
 		{
 			var userMock = new Mock<IUser>();
-			userMock.SetupGet(u => u.UserGuid)
+			userMock.Setup(u => u.UserGuid)
 					.Returns(userGuid ?? Guid.NewGuid());
 			return userMock.Object;
 		}

@@ -24,36 +24,39 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Retrieves a user
 		/// </summary>
-		/// <param name="userGuid">Guid representing a user</param>
+		/// <param name="information">??</param>
 		/// <returns>User entity</returns>
 		/// <url>GET /api/user/</url>
-		public IUser Get(Guid userGuid)
+		public HttpResponseMessage GetUser([FromUri]UserInformation information)
 		{
-			if (userGuid == Guid.Empty)
-				throw new ArgumentNullException("userGuid");
+			if (information == null)
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("information"));
 
-			IUser user = _userRepository.Find(userGuid);
+			if (!ModelValidator.Current.IsValid(this.ModelState))
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
+
+			IUser user = _userRepository.Find(information.UserKey.GetValueOrDefault());
 			if (user == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 
-			return user;
+			return Request.CreateResponse(HttpStatusCode.OK, user);
 		}
 
 		/// <summary>
 		/// Registers a user
 		/// </summary>
-		/// <param name="userRegistration">User registartion information</param>
+		/// <param name="registration">User registration information</param>
 		/// <returns>Guid representing the user</returns>
-		/// <url>POST /api/user/</url>
-		public HttpResponseMessage Put([FromBody]UserRegistration userRegistration)
+		/// <url>PUT /api/user/</url>
+		public HttpResponseMessage PutUser([FromBody]UserRegistration registration)
 		{
-			if (userRegistration == null)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("userRegistration"));
+			if (registration == null)
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("registration"));
 
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			IUser user = _userRepository.Register(userRegistration.Email);
+			IUser user = _userRepository.Register(registration.Email);
 			if (user == null)
 				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User is null");
 
