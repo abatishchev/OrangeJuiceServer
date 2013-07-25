@@ -34,7 +34,6 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> messageHandlers)
 		{
-			messageHandlers.Add(new Handlers.AppKeyHandler(AppKey.Version0.ToString()));
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)

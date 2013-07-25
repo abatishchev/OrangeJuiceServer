@@ -1,6 +1,6 @@
 ﻿namespace OrangeJuice.Server.Api.Filters
 {
-	internal sealed class UserKeyFilterBase : QueryFilterBase
+	internal sealed class UserKeyFilter : QueryFilterBase
 	{
 		protected override string QuerySegmentName
 		{

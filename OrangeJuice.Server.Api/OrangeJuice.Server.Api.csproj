@@ -133,13 +133,12 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Filters\AppKeyFilterBase.cs" />
+    <Compile Include="Filters\AppKeyFilter.cs" />
     <Compile Include="Filters\QueryFilterBase.cs" />
-    <Compile Include="Filters\UserKeyFilterBase.cs" />
+    <Compile Include="Filters\UserKeyFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\AppKeyHandler.cs" />
     <Compile Include="Models\UserInformation.cs" />
     <Compile Include="Models\UserRegistration.cs">
       <SubType>Code</SubType>
