@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 
+// ReSharper disable once CheckNamespace
 namespace OrangeJuice.Server.Api
 {
 	public class FilterConfig

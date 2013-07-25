@@ -1,8 +1,11 @@
-﻿using System.Net.Http.Formatting;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
 using Newtonsoft.Json;
 
+// ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
 	public static class WebApiConfig
@@ -15,9 +18,9 @@ namespace OrangeJuice.Server.Api
 				defaults: new { id = RouteParameter.Optional }
 			);
 
-			ConfigureFormatting(config.Formatters);
+			ConfigureHandlers(config.MessageHandlers);
 
-			ConfigureDate(config.Formatters.JsonFormatter);
+			ConfigureFormatters(config.Formatters);
 
 			// Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
 			// To avoid processing unexpected or malicious queries, use the validation settings on QueryableAttribute to validate incoming queries.
@@ -29,18 +32,20 @@ namespace OrangeJuice.Server.Api
 			//config.EnableSystemDiagnosticsTracing();
 		}
 
-		private static void ConfigureFormatting(MediaTypeFormatterCollection formatters)
+		private static void ConfigureHandlers(ICollection<DelegatingHandler> messageHandlers)
+		{
+			messageHandlers.Add(new Handlers.AppKeyHandler(AppKey.Version0.ToString()));
+		}
+
+		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
 		{
 			formatters.Remove(formatters.XmlFormatter);
 
 			var jsonSerializerSettings = formatters.JsonFormatter.SerializerSettings;
 			jsonSerializerSettings.Formatting = Formatting.Indented;
 			jsonSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-		}
 
-		private static void ConfigureDate(JsonMediaTypeFormatter json)
-		{
-			json.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+			formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 		}
 	}
 }
