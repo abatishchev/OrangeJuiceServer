@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyQueryHandler : DelegatingHandler
+	public sealed class AppKeyHeaderHandler : DelegatingHandler
 	{
-		internal const string AppKeySegmentName = "appKey";
+		internal const string AppKeyHeaderName = "X-ApiKey";
 
 		private readonly Guid _appKey;
 
-		public AppKeyQueryHandler(Guid appKey)
+		public AppKeyHeaderHandler(Guid appKey)
 		{
 			_appKey = appKey;
 		}
 
-		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
+		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
 			if (IsValid(request))
 				return base.SendAsync(request, cancellationToken);
@@ -28,12 +31,10 @@ namespace OrangeJuice.Server.Api.Handlers
 
 		internal bool IsValid(HttpRequestMessage request)
 		{
-			var query = request.RequestUri.ParseQueryString();
-			string appKey = query[AppKeySegmentName];
-
+			IEnumerable<string> values;
 			Guid guid;
-			return Guid.TryParse(appKey, out guid) &&
-				guid == _appKey;
+			return request.Headers.TryGetValues(AppKeyHeaderName, out values) &&
+				Guid.TryParse(values.FirstOrDefault(), out guid) && guid == _appKey;
 		}
 	}
 }
