@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
@@ -22,7 +21,7 @@ namespace OrangeJuice.Server.Api.Handlers
 			get { return HttpStatusCode.Forbidden; }
 		}
 
-		internal override bool IsValid(HttpRequestMessage request)
+		internal override bool IsValid(System.Net.Http.HttpRequestMessage request)
 		{
 			IEnumerable<string> values;
 			Guid guid;
