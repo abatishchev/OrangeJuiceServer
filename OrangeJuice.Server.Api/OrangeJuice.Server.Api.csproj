@@ -176,9 +176,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Deploy.ps1">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="Deploy.ps1" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Prod.pubxml" />
     <None Include="Properties\PublishProfiles\Stg.pubxml" />
