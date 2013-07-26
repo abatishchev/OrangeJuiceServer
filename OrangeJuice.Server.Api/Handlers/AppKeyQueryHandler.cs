@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyQueryHandler : DelegatingHandler
+	public sealed class AppKeyQueryHandler : ValidatingDelegatingHandler
 	{
 		internal const string AppKeySegmentName = "appKey";
 
@@ -15,18 +16,12 @@ namespace OrangeJuice.Server.Api.Handlers
 			_appKey = appKey;
 		}
 
-		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
+		internal override HttpStatusCode ErrorCode
 		{
-			if (IsValid(request))
-				return base.SendAsync(request, cancellationToken);
-
-			HttpResponseMessage response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
-			var tsc = new TaskCompletionSource<HttpResponseMessage>();
-			tsc.SetResult(response);
-			return tsc.Task;
+			get { return HttpStatusCode.Forbidden; }
 		}
 
-		internal bool IsValid(HttpRequestMessage request)
+		internal override bool IsValid(HttpRequestMessage request)
 		{
 			var query = request.RequestUri.ParseQueryString();
 			string appKey = query[AppKeySegmentName];

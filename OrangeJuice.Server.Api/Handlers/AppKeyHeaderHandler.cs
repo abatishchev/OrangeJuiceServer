@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyHeaderHandler : DelegatingHandler
+	public sealed class AppKeyHeaderHandler : ValidatingDelegatingHandler
 	{
 		internal const string AppKeyHeaderName = "X-ApiKey";
 
@@ -18,18 +17,12 @@ namespace OrangeJuice.Server.Api.Handlers
 			_appKey = appKey;
 		}
 
-		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+		internal override HttpStatusCode ErrorCode
 		{
-			if (IsValid(request))
-				return base.SendAsync(request, cancellationToken);
-
-			HttpResponseMessage response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
-			var tsc = new TaskCompletionSource<HttpResponseMessage>();
-			tsc.SetResult(response);
-			return tsc.Task;
+			get { return HttpStatusCode.Forbidden; }
 		}
 
-		internal bool IsValid(HttpRequestMessage request)
+		internal override bool IsValid(HttpRequestMessage request)
 		{
 			IEnumerable<string> values;
 			Guid guid;

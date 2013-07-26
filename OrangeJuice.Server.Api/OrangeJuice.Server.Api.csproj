@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="Handlers\AppKeyHeaderHandler.cs" />
     <Compile Include="Handlers\AppKeyQueryHandler.cs" />
+    <Compile Include="Handlers\ValidatingDelegatingHandler.cs" />
     <Compile Include="Models\UserInformation.cs" />
     <Compile Include="Models\UserRegistration.cs">
       <SubType>Code</SubType>

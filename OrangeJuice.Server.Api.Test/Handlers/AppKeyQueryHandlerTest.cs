@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 
 using FluentAssertions;
@@ -13,7 +14,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 	public class AppKeyQueryHandlerTest
 	{
 		[TestMethod]
-		public void AppKeySegmentName_Should_Be_XApiKey()
+		public void AppKeySegmentName_Should_Return_XApiKey()
 		{
 			// Arrange
 			const string expected = "appKey";
@@ -26,11 +27,25 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		}
 
 		[TestMethod]
+		public void ErrorCode_Should_Return_Forbidden()
+		{
+			// Arrange
+			AppKeyQueryHandler handler = CreateHandler();
+			const HttpStatusCode expected = HttpStatusCode.Forbidden;
+
+			// Act
+			HttpStatusCode actual = handler.ErrorCode;
+
+			// Assert
+			actual.Should().Be(expected);
+		}
+
+		[TestMethod]
 		public void ValidateKey_Should_Return_True_When_Query_Contains_AppKey()
 		{
 			// Arrange
 			Guid appKey = Guid.NewGuid();
-			AppKeyQueryHandler handler = new AppKeyQueryHandler(appKey);
+			AppKeyQueryHandler handler = CreateHandler(appKey);
 			HttpRequestMessage request = CreateRequest(AppKeyQueryHandler.AppKeySegmentName, appKey);
 
 			// Act
@@ -44,8 +59,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		public void ValidateKey_Should_Return_False_When_Query_Contains_AppKey_But_It_Is_Not_Guid()
 		{
 			// Arrange
-			Guid appKey = Guid.NewGuid();
-			AppKeyQueryHandler handler = new AppKeyQueryHandler(appKey);
+			AppKeyQueryHandler handler = CreateHandler();
 			HttpRequestMessage request = CreateRequest(AppKeyQueryHandler.AppKeySegmentName, "not-a-guid");
 
 			// Act
@@ -59,8 +73,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		public void ValidateKey_Should_Return_False_When_Query_Does_Not_Contain_AppKey()
 		{
 			// Arrange
-			Guid appKey = Guid.NewGuid();
-			AppKeyQueryHandler handler = new AppKeyQueryHandler(appKey);
+			AppKeyQueryHandler handler = CreateHandler();
 			HttpRequestMessage request = CreateRequest("any-name", "any-value");
 
 			// Act
@@ -68,6 +81,11 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 
 			// Assert
 			valid.Should().BeFalse();
+		}
+
+		private static AppKeyQueryHandler CreateHandler(Guid? appKey = null)
+		{
+			return new AppKeyQueryHandler(appKey ?? Guid.NewGuid());
 		}
 
 		private static HttpRequestMessage CreateRequest(string name, object value)
