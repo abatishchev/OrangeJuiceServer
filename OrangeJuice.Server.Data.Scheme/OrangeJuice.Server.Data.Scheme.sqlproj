@@ -68,6 +68,7 @@
     <Folder Include="Scripts" />
     <Folder Include="Security" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Schemas\dbo\Tables\Constraints\Unique" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -95,5 +96,7 @@
     <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_UserGuid.sql" />
     <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_Users.sql" />
     <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_Email.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
   </ItemGroup>
 </Project>
