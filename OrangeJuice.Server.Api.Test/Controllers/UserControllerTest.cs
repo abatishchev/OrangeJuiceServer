@@ -165,7 +165,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			HttpResponseMessage message = controller.GetUserInformation(userInformation);
 
 			// Assert
-			IUser actual = ((ObjectContent<IUser>)message.Content).GetValue();
+			IUser actual = message.Content.GetValue<IUser>();
 			actual.Should().Be(expected);
 		}
 		#endregion
@@ -315,7 +315,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			using (NewContext(CreateModelValidator(s => true)))
 			{
 				HttpResponseMessage message = controller.PutUserRegistration(userRegistration);
-				Guid actual = ((ObjectContent<Guid>)message.Content).GetValue();
+				Guid actual = message.Content.GetValue<Guid>();
 
 				// Assert
 				actual.Should().Be(expected);

@@ -44,13 +44,11 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
+			IUser user;
+
 			try
 			{
-				IUser user = _userRepository.Find(information.UserKey.GetValueOrDefault());
-				if (user == null)
-					throw new HttpResponseException(HttpStatusCode.NotFound);
-
-				return Request.CreateResponse(HttpStatusCode.OK, user);
+				user = _userRepository.Find(information.UserKey.GetValueOrDefault());
 			}
 			catch (Exception ex)
 			{
@@ -58,6 +56,11 @@ namespace OrangeJuice.Server.Api.Controllers
 
 				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
 			}
+
+			if (user == null)
+				throw new HttpResponseException(HttpStatusCode.NotFound);
+
+			return Request.CreateResponse(HttpStatusCode.OK, user);
 		}
 
 		/// <summary>
