@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <param name="information">??</param>
 		/// <returns>User entity</returns>
 		/// <url>GET /api/user/</url>
-		public HttpResponseMessage GetUser([FromUri]UserInformation information)
+		public HttpResponseMessage GetUserInformation([FromUri]UserInformation information)
 		{
 			if (information == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("information"));
@@ -48,7 +48,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <param name="registration">User registration information</param>
 		/// <returns>Guid representing the user</returns>
 		/// <url>PUT /api/user/</url>
-		public HttpResponseMessage PutUser([FromBody]UserRegistration registration)
+		public HttpResponseMessage PutUserRegistration([FromBody]UserRegistration registration)
 		{
 			if (registration == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("registration"));

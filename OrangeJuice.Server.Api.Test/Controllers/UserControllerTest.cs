@@ -36,7 +36,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 		#endregion
 
-		#region GetUser
+		#region GetUserInformation
 		[TestMethod]
 		public void GetUser_Should_Return_BadRequest_When_UserInformation_Is_Null()
 		{
@@ -46,7 +46,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpStatusCode actual = controller.GetUser(userInformation).StatusCode;
+			HttpStatusCode actual = controller.GetUserInformation(userInformation).StatusCode;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -63,7 +63,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator(s => false)))
 			{
-				HttpStatusCode actual = controller.GetUser(userInformation).StatusCode;
+				HttpStatusCode actual = controller.GetUserInformation(userInformation).StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -86,7 +86,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			};
 
 			// Act
-			Action action = () => controller.GetUser(userInformation);
+			Action action = () => controller.GetUserInformation(userInformation);
 
 			// Assert
 			action.ShouldThrow<HttpResponseException>()
@@ -114,7 +114,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			};
 
 			// Act
-			controller.GetUser(userInformation);
+			controller.GetUserInformation(userInformation);
 
 			// Assert
 			called.Should().BeTrue();
@@ -138,7 +138,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			};
 
 			// Act
-			controller.GetUser(userInformation);
+			controller.GetUserInformation(userInformation);
 
 			// Assert
 			userRepositoryMock.Verify(r => r.Find(userGuid), Times.Once());
@@ -162,7 +162,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			};
 
 			// Act
-			HttpResponseMessage message = controller.GetUser(userInformation);
+			HttpResponseMessage message = controller.GetUserInformation(userInformation);
 
 			// Assert
 			IUser actual = ((ObjectContent<IUser>)message.Content).GetValue();
@@ -170,7 +170,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 		#endregion
 
-		#region PutUser
+		#region PutUserRegistration
 		[TestMethod]
 		public void PutUser_Should_Return_BadRequest_When_UserRegistration_Is_Null()
 		{
@@ -180,7 +180,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpStatusCode actual = controller.PutUser(userRegistration).StatusCode;
+			HttpStatusCode actual = controller.PutUserRegistration(userRegistration).StatusCode;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -197,7 +197,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator(s => false)))
 			{
-				HttpStatusCode actual = controller.PutUser(userRegistration).StatusCode;
+				HttpStatusCode actual = controller.PutUserRegistration(userRegistration).StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -220,7 +220,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				HttpStatusCode actual = controller.PutUser(userRegistration).StatusCode;
+				HttpStatusCode actual = controller.PutUserRegistration(userRegistration).StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -242,7 +242,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				HttpStatusCode actual = controller.PutUser(userRegistration).StatusCode;
+				HttpStatusCode actual = controller.PutUserRegistration(userRegistration).StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -269,7 +269,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				controller.PutUser(userRegistration);
+				controller.PutUserRegistration(userRegistration);
 
 				// Assert
 				called.Should().BeTrue();
@@ -290,7 +290,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				controller.PutUser(userRegistration);
+				controller.PutUserRegistration(userRegistration);
 
 				// Assert
 				userRepositoryMock.Verify(r => r.Register(email), Times.Once());
@@ -314,7 +314,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator(s => true)))
 			{
-				HttpResponseMessage message = controller.PutUser(userRegistration);
+				HttpResponseMessage message = controller.PutUserRegistration(userRegistration);
 				Guid actual = ((ObjectContent<Guid>)message.Content).GetValue();
 
 				// Assert
