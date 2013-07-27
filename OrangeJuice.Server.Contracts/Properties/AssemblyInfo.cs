@@ -13,4 +13,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("0.0.0.0")]
 #endif
 
-[assembly: InternalsVisibleTo("OrangeJuice.Server.Contracts.Test")]
