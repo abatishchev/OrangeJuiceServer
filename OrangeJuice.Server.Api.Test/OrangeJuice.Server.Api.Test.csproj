@@ -96,6 +96,7 @@
     <Compile Include="Controllers\ControllerFactory.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
+    <Compile Include="Filters\UnhandledExceptionFilterTest.cs" />
     <Compile Include="Handlers\AppKeyQueryHandlerTest.cs" />
     <Compile Include="Handlers\AppKeyHeaderHandlerTest.cs" />
     <Compile Include="Handlers\ValidatingDelegatingHandlerBaseTest.cs" />
