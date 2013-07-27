@@ -42,8 +42,16 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\ConfigurationProvider.cs" />
+    <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Diagnostics\TraceSourceExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
+      <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
+      <Name>OrangeJuice.Server.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

@@ -145,6 +145,7 @@
     <Compile Include="Models\UserRegistration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Policies\ErrorDetailPolicyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\IModelValidator.cs" />
     <Compile Include="Validation\ModelValidator.cs" />

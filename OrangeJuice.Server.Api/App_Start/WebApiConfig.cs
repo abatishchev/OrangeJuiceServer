@@ -2,12 +2,8 @@
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
-using System.Web.Http.Filters;
-using System.Web.Mvc;
 
 using Newtonsoft.Json;
-
-using OrangeJuice.Server.Api.Filters;
 
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
@@ -37,7 +33,7 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config)
 		{
-			config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
+			config.IncludeErrorDetailPolicy = new Policies.ErrorDetailPolicyResolver(null).Resolve();
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)

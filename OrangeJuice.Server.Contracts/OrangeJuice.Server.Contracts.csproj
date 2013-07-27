@@ -43,6 +43,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppKey.cs" />
+    <Compile Include="Configuration\IConfigurationProvider.cs" />
+    <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
