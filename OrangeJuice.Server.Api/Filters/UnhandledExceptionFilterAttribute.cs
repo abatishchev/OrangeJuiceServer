@@ -9,12 +9,14 @@ namespace OrangeJuice.Server.Api.Filters
 	public class UnhandledExceptionFilterAttribute : ExceptionFilterAttribute
 	{
 		private readonly Type _exceptionType;
+		private readonly bool _includeErrorDetail;
 
-		public UnhandledExceptionFilterAttribute(Type exceptionType)
+		public UnhandledExceptionFilterAttribute(Type exceptionType, bool includeErrorDetail = false)
 		{
 			if (exceptionType == null)
 				throw new ArgumentNullException("exceptionType");
 			_exceptionType = exceptionType;
+			_includeErrorDetail = includeErrorDetail;
 		}
 
 		public override void OnException(HttpActionExecutedContext context)
@@ -26,7 +28,7 @@ namespace OrangeJuice.Server.Api.Filters
 			{
 				context.Response = context.Request.CreateErrorResponse(
 					HttpStatusCode.InternalServerError,
-					new HttpError(context.Exception, includeErrorDetail: true));
+					new HttpError(context.Exception, _includeErrorDetail));
 			}
 		}
 	}

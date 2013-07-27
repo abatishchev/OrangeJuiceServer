@@ -16,7 +16,7 @@ using OrangeJuice.Server.Api.Filters;
 namespace OrangeJuice.Server.Api.Test.Filters
 {
 	[TestClass]
-	public class UnhandledExceptionFilterTest
+	public class UnhandledExceptionFilterAttributeTest
 	{
 		#region Test methods
 		[TestMethod]
@@ -36,11 +36,11 @@ namespace OrangeJuice.Server.Api.Test.Filters
 		}
 
 		[TestMethod]
-		public void OnException_Should_Include_Include_Error_Detail_When_Assigns_Exception_To_Response()
+		public void OnException_Should_Include_Error_Detail_When_IncludeErrorDetail_Is_True()
 		{
 			// Arrange
 			Exception exception = new InvalidOperationException();
-			var filter = new UnhandledExceptionFilterAttribute(typeof(InvalidOperationException));
+			var filter = new UnhandledExceptionFilterAttribute(typeof(InvalidOperationException), includeErrorDetail: true);
 			HttpActionExecutedContext context = CreateContext(exception);
 
 			// Act
@@ -49,6 +49,22 @@ namespace OrangeJuice.Server.Api.Test.Filters
 
 			// Assert
 			httpError.ExceptionType.Should().NotBeNull();
+		}
+
+		[TestMethod]
+		public void OnException_Should_Not_Include_Error_Detail_When_IncludeErrorDetail_Is_False()
+		{
+			// Arrange
+			Exception exception = new InvalidOperationException();
+			var filter = new UnhandledExceptionFilterAttribute(typeof(InvalidOperationException), includeErrorDetail: false);
+			HttpActionExecutedContext context = CreateContext(exception);
+
+			// Act
+			filter.OnException(context);
+			HttpError httpError = context.Response.Content.GetValue<HttpError>();
+
+			// Assert
+			httpError.ExceptionType.Should().BeNull();
 		}
 
 		[TestMethod]
