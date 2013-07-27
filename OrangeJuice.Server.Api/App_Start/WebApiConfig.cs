@@ -58,13 +58,7 @@ namespace OrangeJuice.Server.Api
 
 		public static void RegisterFilters(HttpFilterCollection filters)
 		{
-			// ReSharper disable once RedundantAssignment
-			bool includeErrorDetail = false;
-#if DEBUG
-			includeErrorDetail = true;
-#endif
-			// ReSharper disable once ConditionIsAlwaysTrueOrFalse
-			filters.Add(new UnhandledExceptionFilterAttribute(typeof(System.Data.DataException), includeErrorDetail));
+			filters.Add(new UnhandledExceptionFilterAttribute(typeof(System.Data.DataException)));
 		}
 	}
 }
