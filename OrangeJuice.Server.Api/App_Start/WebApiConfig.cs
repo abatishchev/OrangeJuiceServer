@@ -2,24 +2,22 @@
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Filters;
+using System.Web.Mvc;
 
 using Newtonsoft.Json;
+
+using OrangeJuice.Server.Api.Filters;
 
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
 	public static class WebApiConfig
 	{
-		public static void Register(HttpConfiguration config)
+		public static void Configure(HttpConfiguration config)
 		{
-			config.Routes.MapHttpRoute(
-				name: "DefaultApi",
-				routeTemplate: "api/{controller}/{id}",
-				defaults: new { id = RouteParameter.Optional }
-			);
-
-			ConfigureHandlers(config.MessageHandlers);
-
+			ConfigurHandlers(config.MessageHandlers);
+			ConfigureErrorDetailPolicy(config);
 			ConfigureFormatters(config.Formatters);
 
 			// Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
@@ -32,9 +30,14 @@ namespace OrangeJuice.Server.Api
 			//config.EnableSystemDiagnosticsTracing();
 		}
 
-		private static void ConfigureHandlers(ICollection<DelegatingHandler> messageHandlers)
+		private static void ConfigurHandlers(ICollection<DelegatingHandler> handlers)
 		{
-			messageHandlers.Add(new Handlers.AppKeyQueryHandler(AppKey.Version0));
+			handlers.Add(new Handlers.AppKeyQueryHandler(AppKey.Version0));
+		}
+
+		private static void ConfigureErrorDetailPolicy(HttpConfiguration config)
+		{
+			config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
@@ -46,6 +49,22 @@ namespace OrangeJuice.Server.Api
 			jsonSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
 
 			formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+		}
+
+		public static void RegisterFilters(GlobalFilterCollection filters)
+		{
+			filters.Add(new HandleErrorAttribute());
+		}
+
+		public static void RegisterFilters(HttpFilterCollection filters)
+		{
+			// ReSharper disable once RedundantAssignment
+			bool includeErrorDetail = false;
+#if DEBUG
+			includeErrorDetail = true;
+#endif
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalse
+			filters.Add(new UnhandledExceptionFilterAttribute(typeof(System.Data.DataException), includeErrorDetail));
 		}
 	}
 }
