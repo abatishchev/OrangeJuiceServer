@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using System;
 using System.Diagnostics;
 
 namespace OrangeJuice.Server.Diagnostics
