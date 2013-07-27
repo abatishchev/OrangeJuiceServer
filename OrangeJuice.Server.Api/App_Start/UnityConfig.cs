@@ -5,7 +5,7 @@ using Microsoft.Practices.Unity;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Model.Repository;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
     public static class UnityConfig
