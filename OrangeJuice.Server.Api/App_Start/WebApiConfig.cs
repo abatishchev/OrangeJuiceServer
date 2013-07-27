@@ -12,7 +12,7 @@ using OrangeJuice.Server.Api.Filters;
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
-	public static class WebApiConfig
+	static class WebApiConfig
 	{
 		public static void Configure(HttpConfiguration config)
 		{
@@ -49,16 +49,6 @@ namespace OrangeJuice.Server.Api
 			jsonSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
 
 			formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-		}
-
-		public static void RegisterFilters(GlobalFilterCollection filters)
-		{
-			filters.Add(new HandleErrorAttribute());
-		}
-
-		public static void RegisterFilters(HttpFilterCollection filters)
-		{
-			filters.Add(new UnhandledExceptionFilterAttribute(typeof(System.Data.DataException)));
 		}
 	}
 }

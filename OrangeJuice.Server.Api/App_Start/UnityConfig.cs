@@ -8,22 +8,22 @@ using OrangeJuice.Server.Data.Model.Repository;
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
-    public static class UnityConfig
-    {
+	static class UnityConfig
+	{
 		public static void InitializeContainer()
-        {
-            var container = BuildUnityContainer();
+		{
+			var container = BuildUnityContainer();
 
-            GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
-        }
+			GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
+		}
 
-        private static IUnityContainer BuildUnityContainer()
-        {
-            var container = new UnityContainer();
+		private static IUnityContainer BuildUnityContainer()
+		{
+			var container = new UnityContainer();
 
-            container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());
 
-            return container;
-        }
-    }
+			return container;
+		}
+	}
 }

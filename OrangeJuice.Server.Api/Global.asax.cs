@@ -13,9 +13,10 @@ namespace OrangeJuice.Server.Api
 			RouteConfig.RegisterRoutes(GlobalConfiguration.Configuration.Routes);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 
+			FilterConfig.RegisterFilters(GlobalFilters.Filters);
+			FilterConfig.RegisterFilters(GlobalConfiguration.Configuration.Filters);
+
 			WebApiConfig.Configure(GlobalConfiguration.Configuration);
-			WebApiConfig.RegisterFilters(GlobalFilters.Filters);
-			WebApiConfig.RegisterFilters(GlobalConfiguration.Configuration.Filters);
 
 			UnityConfig.InitializeContainer();
 		}
