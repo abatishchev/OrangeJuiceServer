@@ -44,19 +44,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			IUser user;
-
-			try
-			{
-				user = _userRepository.Find(information.UserKey.GetValueOrDefault());
-			}
-			catch (Exception ex)
-			{
-				_traceSource.TraceException(ex, 0, "Error finding user");
-
-				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
-			}
-
+			IUser user = _userRepository.Find(information.UserKey.GetValueOrDefault());
 			if (user == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 

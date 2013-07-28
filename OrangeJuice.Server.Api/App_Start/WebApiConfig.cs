@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Formatting;
+﻿using System.Net.Http.Formatting;
 using System.Web.Http;
 
 using Newtonsoft.Json;
@@ -12,7 +10,6 @@ namespace OrangeJuice.Server.Api
 	{
 		public static void Configure(HttpConfiguration config)
 		{
-			ConfigurHandlers(config.MessageHandlers);
 			ConfigureErrorDetailPolicy(config);
 			ConfigureFormatters(config.Formatters);
 
@@ -24,11 +21,6 @@ namespace OrangeJuice.Server.Api
 			// To disable tracing in your application, please comment out or remove the following line of code
 			// For more information, refer to: http://www.asp.net/web-api
 			//config.EnableSystemDiagnosticsTracing();
-		}
-
-		private static void ConfigurHandlers(ICollection<DelegatingHandler> handlers)
-		{
-			handlers.Add(new Handlers.AppKeyQueryHandler(AppKey.Version0));
 		}
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config)
