@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -7,15 +6,12 @@ using System.Web.Http;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Diagnostics;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class UserController : ApiController
 	{
 		#region Fields
-		private static readonly TraceSource _traceSource = new TraceSource("UserController");
-
 		private readonly IUserRepository _userRepository;
 		#endregion
 
@@ -65,20 +61,11 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			try
-			{
-				IUser user = _userRepository.Register(registration.Email);
-				if (user == null)
-					return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User is null");
+			IUser user = _userRepository.Register(registration.Email);
+			if (user == null)
+				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User is null");
 
-				return Request.CreateResponse(HttpStatusCode.OK, user.UserGuid);
-			}
-			catch (Exception ex)
-			{
-				_traceSource.TraceException(ex, 0, "Error registering user");
-
-				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
-			}
+			return Request.CreateResponse(HttpStatusCode.OK, user.UserGuid);
 		}
 		#endregion
 	}
