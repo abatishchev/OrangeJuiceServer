@@ -62,7 +62,7 @@ namespace OrangeJuice.Server.Api.Test.Filters
 			Action action = () => filter.OnException(context);
 
 			// Assert
-			action.ShouldThrow<ArgumentException>()
+			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("context");
 		}
 
@@ -76,7 +76,7 @@ namespace OrangeJuice.Server.Api.Test.Filters
 			Action action = () => new UnhandledExceptionFilterAttribute(exceptionType);
 
 			// Assert
-			action.ShouldThrow<ArgumentException>()
+			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("exceptionType");
 		}
 		#endregion
@@ -85,15 +85,16 @@ namespace OrangeJuice.Server.Api.Test.Filters
 		private static HttpActionExecutedContext CreateContext(Exception ex = null)
 		{
 			return new HttpActionExecutedContext(
-					new HttpActionContext(
-							new HttpControllerContext(
-									new HttpConfiguration(),
-									new Mock<IHttpRouteData>().Object,
-									new HttpRequestMessage()),
-							new Mock<HttpActionDescriptor>().Object),
-					ex)
+				new HttpActionContext(
+					new HttpControllerContext(
+						new HttpConfiguration(),
+						new Mock<IHttpRouteData>(MockBehavior.Strict).Object,
+						new HttpRequestMessage()),
+					new Mock<HttpActionDescriptor>(MockBehavior.Strict).Object),
+				null)
 			{
-				Response = new HttpResponseMessage()
+				Response = new HttpResponseMessage(),
+				Exception = ex
 			};
 		}
 		#endregion

@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Api.Test
             Action action = () => new TestContext(testAction);
 
             // Assert
-            action.ShouldThrow<ArgumentException>()
+			action.ShouldThrow<ArgumentNullException>()
                   .And.ParamName.Should().Be("testAction");
         }
 

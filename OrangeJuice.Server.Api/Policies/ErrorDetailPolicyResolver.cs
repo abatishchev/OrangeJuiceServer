@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 
 using OrangeJuice.Server.Configuration;
+
+using Environment = OrangeJuice.Server.Configuration.Environment;
 
 namespace OrangeJuice.Server.Api.Policies
 {
@@ -37,12 +40,15 @@ namespace OrangeJuice.Server.Api.Policies
 
 		public IncludeErrorDetailPolicy Resolve()
 		{
-			string environment = _environmentProvider.GetCurrentEnvironment();
-			IncludeErrorDetailPolicy policy;
-
-			if (!_policies.TryGetValue(environment, out policy))
-				throw new System.InvalidOperationException("Current environment is not supported");
-			return policy;
+			try
+			{
+				string environment = _environmentProvider.GetCurrentEnvironment();
+				return _policies[environment];
+			}
+			catch (KeyNotFoundException ex)
+			{
+				throw new InvalidOperationException("Current environment is not supported", ex);
+			}
 		}
 	}
 }

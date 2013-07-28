@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			Action action = () => new UserController(userRepository);
 
 			// Assert
-			action.ShouldThrow<ArgumentException>()
+			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("userRepository");
 		}
 		#endregion
@@ -75,7 +75,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			//Arrange
 			Guid userGuid = Guid.NewGuid();
-			var userRepositoryMock = CreateUserRepository();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Find(userGuid))
 							  .Returns<IUser>(null);
 
@@ -99,7 +99,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			//Arrange
 			bool called = false;
 			IUser user = CreateUser();
-			var userRepositoryMock = CreateUserRepository();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Find(It.IsAny<Guid>()))
 						  .Returns(user)
 						  .Callback(() =>
@@ -127,7 +127,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			Guid userGuid = Guid.NewGuid();
 			IUser user = CreateUser(userGuid);
 
-			var userRepositoryMock = CreateUserRepository();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Find(userGuid))
 							  .Returns(user);
 
@@ -151,7 +151,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			Guid userGuid = Guid.NewGuid();
 			IUser expected = CreateUser(userGuid);
 
-			var userRepositoryMock = CreateUserRepository();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Find(userGuid))
 							  .Returns(expected);
 
@@ -209,7 +209,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			IUser user = CreateUser();
-			var userRepositoryMock = CreateUserRepository();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
 							  .Returns(user);
 
@@ -231,7 +231,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public void PutUser_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
 		{
 			// Arrange
-			var userRepositoryMock = CreateUserRepository();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
 							  .Returns<IUser>(null);
 
@@ -255,7 +255,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			const string email = "test@example.com";
 			bool called = false;
-			var userRepositoryMock = CreateUserRepository();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
 							  .Callback<string>(e =>
 								  {
@@ -281,7 +281,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			const string email = "test@example.com";
-			var userRepositoryMock = CreateUserRepository();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()));
 
 			UserController controller = CreateController(userRepositoryMock);
@@ -304,7 +304,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			Guid expected = Guid.NewGuid();
 			IUser user = CreateUser(expected);
 
-			var userRepositoryMock = new Mock<IUserRepository>();
+			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
 							  .Returns(user);
 
@@ -326,28 +326,22 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#region Helper methods
 		private static UserController CreateController(Mock<IUserRepository> userRepositoryMock = null)
 		{
-			return ControllerFactory.Create<UserController>((userRepositoryMock ?? CreateUserRepository()).Object);
+			return ControllerFactory.Create<UserController>((userRepositoryMock ?? new Mock<IUserRepository>(MockBehavior.Strict)).Object);
 		}
 
 		private static IModelValidator CreateModelValidator(Func<ModelStateDictionary, bool> isValidFunc = null)
 		{
-			var modelValidatorMock = new Mock<IModelValidator>();
+			var modelValidatorMock = new Mock<IModelValidator>(MockBehavior.Strict);
 			modelValidatorMock.Setup(v => v.IsValid(It.IsAny<ModelStateDictionary>())).Returns(isValidFunc ?? (s => true));
 			return modelValidatorMock.Object;
 		}
 
 		private static IUser CreateUser(Guid? userGuid = null)
 		{
-			var userMock = new Mock<IUser>();
+			var userMock = new Mock<IUser>(MockBehavior.Strict);
 			userMock.Setup(u => u.UserGuid)
 					.Returns(userGuid ?? Guid.NewGuid());
 			return userMock.Object;
-		}
-
-		// TODO: simplify moq setup
-		private static Mock<IUserRepository> CreateUserRepository()
-		{
-			return new Mock<IUserRepository>();
 		}
 
 		private static IDisposable NewContext(IModelValidator modelValidator)
