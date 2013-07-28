@@ -33,7 +33,7 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config)
 		{
-			config.IncludeErrorDetailPolicy = new Policies.ErrorDetailPolicyResolver(null).Resolve();
+			//config.IncludeErrorDetailPolicy = new Policies.ErrorDetailPolicyResolver(null).Resolve();
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
