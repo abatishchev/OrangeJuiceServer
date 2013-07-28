@@ -65,20 +65,6 @@ namespace OrangeJuice.Server.Api.Test.Filters
 			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("context");
 		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_Type_Is_Null()
-		{
-			// Arrange
-			const Type exceptionType = null;
-
-			// Act
-			Action action = () => new UnhandledExceptionFilterAttribute(exceptionType);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("exceptionType");
-		}
 		#endregion
 
 		#region Helper methods

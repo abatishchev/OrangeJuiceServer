@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 using System.Web.Http.Filters;
 
 namespace OrangeJuice.Server.Api.Filters
@@ -10,10 +9,8 @@ namespace OrangeJuice.Server.Api.Filters
 	{
 		private readonly Type _exceptionType;
 
-		public UnhandledExceptionFilterAttribute(Type exceptionType)
+		public UnhandledExceptionFilterAttribute(Type exceptionType = null)
 		{
-			if (exceptionType == null)
-				throw new ArgumentNullException("exceptionType");
 			_exceptionType = exceptionType;
 		}
 
@@ -22,7 +19,8 @@ namespace OrangeJuice.Server.Api.Filters
 			if (context == null)
 				throw new ArgumentNullException("context");
 
-			if (_exceptionType.IsInstanceOfType(context.Exception))
+			if (_exceptionType == null || // allow them all
+				_exceptionType.IsInstanceOfType(context.Exception))
 			{
 				context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception);
 			}
