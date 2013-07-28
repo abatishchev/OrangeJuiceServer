@@ -1,25 +1,31 @@
-﻿using System.Data.Entity.Core.EntityClient;
+﻿using System;
+using System.Configuration;
+using System.Data.Entity.Core.EntityClient;
 
 namespace OrangeJuice.Server.Api.Diagnostics
 {
-	public class EntityErrorLog : Elmah.SqlErrorLog
+	internal sealed class EntityErrorLog : Elmah.SqlErrorLog
 	{
+		internal const string ConnectionStringNameKey = "connectionStringName";
+
 		private readonly string _connectionStringName;
 
 		public EntityErrorLog(System.Collections.IDictionary config)
 			: base(config)
 		{
-			_connectionStringName = (string)config["connectionStringName"];
+			_connectionStringName = (string)config[ConnectionStringNameKey];
 		}
 
 		public override string ConnectionString
 		{
-			get
-			{
-				string entityConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[_connectionStringName].ConnectionString;
-				EntityConnectionStringBuilder builder = new EntityConnectionStringBuilder(entityConnectionString);
-				return builder.ProviderConnectionString;
-			}
+			get { return GetProviderPart(_connectionStringName); }
+		}
+
+		private static string GetProviderPart(string connectionStringName)
+		{
+			string entityConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+			EntityConnectionStringBuilder builder = new EntityConnectionStringBuilder(entityConnectionString);
+			return builder.ProviderConnectionString;
 		}
 	}
 }
