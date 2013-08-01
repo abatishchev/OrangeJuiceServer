@@ -13,6 +13,8 @@ namespace OrangeJuice.Server.Api.Test.Configuration
 		{
 			_name = name;
 
+			SetWritable(ConfigurationManager.ConnectionStrings);
+
 			ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings[name];
 			if (connectionString != null)
 			{
@@ -21,29 +23,34 @@ namespace OrangeJuice.Server.Api.Test.Configuration
 			}
 			else
 			{
-				UpdateValue(name, value);
+				SetValue(name, value);
 			}
 		}
 
-		private static void UpdateValue(string name, string value)
+		private static void SetWritable(ConnectionStringSettingsCollection connectionStrings)
 		{
-			var connectionString = new ConnectionStringSettings(name, value, "System.Data.SqlClient");
+			FieldInfo readonlyField = typeof(ConfigurationElementCollection).GetField("bReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
+			readonlyField.SetValue(connectionStrings, false);
+		}
 
-			var readonlyField = typeof(ConfigurationElementCollection).GetField("bReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
-			readonlyField.SetValue(ConfigurationManager.ConnectionStrings, false);
+		private static void SetValue(string name, string value)
+		{
+			MethodInfo baseAddMethod = typeof(ConfigurationElementCollection).GetMethod("BaseAdd", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(ConfigurationElement) }, null);
+			ConnectionStringSettings connectionString = new ConnectionStringSettings(name, value);
+			baseAddMethod.Invoke(ConfigurationManager.ConnectionStrings, new object[] { connectionString });
+		}
 
-			var baseAddMethod = typeof(ConfigurationElementCollection).GetMethod("BaseAdd", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(ConfigurationElement) }, null);
-			baseAddMethod.Invoke(ConfigurationManager.ConnectionStrings, new[] { connectionString });
-
-			readonlyField.SetValue(ConfigurationManager.ConnectionStrings, true);
+		private static void RemoveValue(string name)
+		{
+			ConfigurationManager.ConnectionStrings.Remove(name);
 		}
 
 		public void Dispose()
 		{
 			if (_oldValue != null)
-				UpdateValue(_name, _oldValue);
-			//else
-			//UpdateValue(_name, "");
+				SetValue(_name, _oldValue);
+			else
+				RemoveValue(_name);
 		}
 	}
 }
