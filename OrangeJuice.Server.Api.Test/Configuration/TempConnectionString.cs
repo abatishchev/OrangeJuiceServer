@@ -12,6 +12,7 @@ namespace OrangeJuice.Server.Api.Test.Configuration
 		public TempConnectionString(string name, string value)
 		{
 			_name = name;
+
 			ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings[name];
 			if (connectionString != null)
 			{
@@ -42,7 +43,7 @@ namespace OrangeJuice.Server.Api.Test.Configuration
 			if (_oldValue != null)
 				UpdateValue(_name, _oldValue);
 			//else
-				//UpdateValue(_name, "");
+			//UpdateValue(_name, "");
 		}
 	}
 }

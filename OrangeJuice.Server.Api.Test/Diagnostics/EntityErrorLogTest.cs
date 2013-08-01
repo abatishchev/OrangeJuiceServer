@@ -18,8 +18,8 @@ namespace OrangeJuice.Server.Api.Test.Diagnostics
 		{
 			// Arrange
 			const string name = "Test";
-			const string expected = "Data Source=localhost;Initial Catalog=Test;Integrated Security=True;";
-			string entityConnectionString = String.Format("metadata=res://*/;provider=System.Data.SqlClient;provider connection string=&quot;{0}&quot;", expected);
+			const string expected = "Data Source=localhost;Initial Catalog=Test;Integrated Security=True";
+			string entityConnectionString = String.Format("metadata=res://*/;provider=System.Data.SqlClient;provider connection string=\"{0}\"", expected);
 
 			using (new Configuration.TempConnectionString(name, entityConnectionString))
 			{

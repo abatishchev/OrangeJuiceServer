@@ -257,6 +257,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			bool called = false;
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
+							  .Returns(It.IsAny<IUser>())
 							  .Callback<string>(e =>
 								  {
 									  called = true;
@@ -282,7 +283,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			const string email = "test@example.com";
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()));
+			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
+			                  .Returns(It.IsAny<IUser>());
 
 			UserController controller = CreateController(userRepositoryMock);
 			UserRegistration userRegistration = new UserRegistration { Email = email };
