@@ -4,7 +4,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace OrangeJuice.Server.Api.Test.Configuration
+namespace OrangeJuice.Server.Test.Configuration.Temp
 {
 	[TestClass]
 	public class TempConnectionStringTest

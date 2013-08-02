@@ -7,6 +7,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using OrangeJuice.Server.Api.Diagnostics;
+using OrangeJuice.Server.Test.Configuration.Temp;
 
 namespace OrangeJuice.Server.Api.Test.Diagnostics
 {
@@ -21,7 +22,7 @@ namespace OrangeJuice.Server.Api.Test.Diagnostics
 			const string expected = "Data Source=localhost;Initial Catalog=Test;Integrated Security=True";
 			string entityConnectionString = String.Format("metadata=res://*/;provider=System.Data.SqlClient;provider connection string=\"{0}\"", expected);
 
-			using (new Configuration.TempConnectionString(name, entityConnectionString))
+			using (new TempConnectionString(name, entityConnectionString))
 			{
 				IDictionary config = new Dictionary<string, string> { { EntityErrorLog.ConnectionStringNameKey, name } };
 				EntityErrorLog errorLog = new EntityErrorLog(config);

@@ -56,6 +56,7 @@
       <HintPath>..\packages\Moq.Contrib.0.3\lib\Moq.Contrib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -78,6 +79,9 @@
     </Compile>
     <Compile Include="Configuration\AppSettingsConfigurationProviderTest.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProviderTest.cs" />
+    <Compile Include="Configuration\Temp\TempAppSettings.cs" />
+    <Compile Include="Configuration\Temp\TempConnectionString.cs" />
+    <Compile Include="Configuration\Temp\TempConnectionStringTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
