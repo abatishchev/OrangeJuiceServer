@@ -10,7 +10,7 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 	public class TempConnectionStringTest
 	{
 		[TestMethod]
-		public void Ctor_Should_Add_Connection_String_When_It_Does_Not_Exist()
+		public void Ctor_Should_Add_ConnectionString_And_Dipose_Should_Remove()
 		{
 			// Arrange
 			const string name = "TestName";
@@ -24,21 +24,6 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 				string actual = ConfigurationManager.ConnectionStrings[name].ConnectionString;
 				actual.Should().Be(expected);
 			}
-		}
-
-		[TestMethod]
-		public void Dispose_Should_Remove_Connection_String_When_It_Does_Not_Exist()
-		{
-			// Arrange
-			const string name = "TestName";
-			const string expected = "TestValue";
-			TempConnectionString tempConnectionString = new TempConnectionString(name, expected);
-
-			// Act
-			ConfigurationManager.ConnectionStrings[name].Should().NotBeNull();
-			tempConnectionString.Dispose();
-
-			// Assert
 			ConfigurationManager.ConnectionStrings[name].Should().BeNull();
 		}
 	}

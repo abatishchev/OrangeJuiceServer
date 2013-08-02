@@ -15,14 +15,14 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 		#region Constructors
 		public TempConnectionString(string name, string value)
 		{
-			this._name = name;
+			_name = name;
 
 			SetWritable(ConfigurationManager.ConnectionStrings);
 
 			ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings[name];
 			if (connectionString != null)
 			{
-				this._oldValue = connectionString.ConnectionString;
+				_oldValue = connectionString.ConnectionString;
 				connectionString.ConnectionString = value;
 			}
 			else
@@ -33,6 +33,7 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 		#endregion
 
 		#region Methods
+		// ReSharper disable once SuggestBaseTypeForParameter
 		private static void SetWritable(ConnectionStringSettingsCollection connectionStrings)
 		{
 			FieldInfo fieldInfo = typeof(ConfigurationElementCollection).GetField("bReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -55,10 +56,10 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 
 		public void Dispose()
 		{
-			if (this._oldValue != null)
-				SetValue(this._name, this._oldValue);
+			if (_oldValue != null)
+				SetValue(_name, _oldValue);
 			else
-				RemoveValue(this._name);
+				RemoveValue(_name);
 		}
 		#endregion
 	}
