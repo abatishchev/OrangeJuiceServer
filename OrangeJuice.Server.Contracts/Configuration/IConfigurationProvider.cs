@@ -4,6 +4,6 @@ namespace OrangeJuice.Server.Configuration
 {
 	public interface IConfigurationProvider
 	{
-		string ReadValue(string key);
+		string GetValue(string key);
 	}
 }

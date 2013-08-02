@@ -7,7 +7,7 @@
     <ProjectGuid>{1979B465-E5E3-4BB9-847E-CB96FC3372E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OrangeJuice.Server.Core.Test</RootNamespace>
+    <RootNamespace>OrangeJuice.Server.Test</RootNamespace>
     <AssemblyName>OrangeJuice.Server.Core.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -76,6 +76,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\AppSettingsConfigurationProviderTest.cs" />
+    <Compile Include="Configuration\ConfigurationEnvironmentProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +85,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
+      <Project>{EC948993-1645-4749-B2E5-1D3732B0A2C3}</Project>
+      <Name>OrangeJuice.Server.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Core\OrangeJuice.Server.Core.csproj">
       <Project>{1a416347-6b6c-4551-bfdb-fbe19b121d74}</Project>
       <Name>OrangeJuice.Server.Core</Name>

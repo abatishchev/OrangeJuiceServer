@@ -42,6 +42,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\AppSettingsConfigurationProvider.cs" />
+    <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Diagnostics\TraceSourceExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
