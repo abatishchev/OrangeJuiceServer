@@ -8,6 +8,8 @@ namespace OrangeJuice.Server.Api
 	{
 		protected void Application_Start()
 		{
+			var container = UnityConfig.InitializeContainer();
+
 			AreaRegistration.RegisterAllAreas();
 
 			RouteConfig.RegisterRoutes(GlobalConfiguration.Configuration.Routes);
@@ -18,9 +20,7 @@ namespace OrangeJuice.Server.Api
 			FilterConfig.RegisterFilters(GlobalFilters.Filters);
 			FilterConfig.RegisterFilters(GlobalConfiguration.Configuration.Filters);
 
-			WebApiConfig.Configure(GlobalConfiguration.Configuration);
-
-			UnityConfig.InitializeContainer();
+			WebApiConfig.Configure(GlobalConfiguration.Configuration, container);
 		}
 	}
 }

@@ -1,16 +1,23 @@
-﻿using System.Net.Http.Formatting;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
+using Microsoft.Practices.Unity;
+
 using Newtonsoft.Json;
+
+using OrangeJuice.Server.Configuration;
 
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
 	static class WebApiConfig
 	{
-		public static void Configure(HttpConfiguration config)
+		public static void Configure(HttpConfiguration config, IUnityContainer container)
 		{
-			ConfigureErrorDetailPolicy(config);
+			ConfigurHandlers(config.MessageHandlers);
+			ConfigureErrorDetailPolicy(config, container);
 			ConfigureFormatters(config.Formatters);
 
 			// Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
@@ -23,9 +30,15 @@ namespace OrangeJuice.Server.Api
 			//config.EnableSystemDiagnosticsTracing();
 		}
 
-		private static void ConfigureErrorDetailPolicy(HttpConfiguration config)
+		private static void ConfigurHandlers(ICollection<DelegatingHandler> handlers)
 		{
-			//config.IncludeErrorDetailPolicy = new Policies.ErrorDetailPolicyResolver(null).Resolve();
+			handlers.Add(new Handlers.AppKeyQueryHandler(AppKey.Version0));
+		}
+
+		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)
+		{
+			IEnvironmentProvider environmentProvider = container.Resolve<IEnvironmentProvider>();
+			config.IncludeErrorDetailPolicy = new Policies.ErrorDetailPolicyResolver(environmentProvider).Resolve();
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
