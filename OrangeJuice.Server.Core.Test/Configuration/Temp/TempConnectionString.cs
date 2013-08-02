@@ -1,65 +1,61 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace OrangeJuice.Server.Test.Configuration.Temp
 {
 	public class TempConnectionString : IDisposable
 	{
 		#region Fields
-		private readonly string _name;
-		private readonly string _oldValue;
+		private readonly IDictionary<string, string> _originalValues = new Dictionary<string, string>();
 		#endregion
 
 		#region Constructors
-		public TempConnectionString(string name, string value)
+		public TempConnectionString(string key, string value)
+			: this(new KeyValuePair<string, string>(key, value))
 		{
-			_name = name;
+		}
 
-			SetWritable(ConfigurationManager.ConnectionStrings);
+		public TempConnectionString(params KeyValuePair<string, string>[] pairs)
+		{
+			if (pairs == null)
+				throw new ArgumentNullException("pairs");
 
-			ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings[name];
-			if (connectionString != null)
+			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+			foreach (var pair in pairs)
 			{
-				_oldValue = connectionString.ConnectionString;
-				connectionString.ConnectionString = value;
+				var originalSetting = config.AppSettings.Settings[pair.Key];
+				if (originalSetting == null)
+				{
+					_originalValues.Add(pair.Key, null);
+					config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings(pair.Key, pair.Value));
+				}
+				else
+				{
+					_originalValues.Add(pair.Key, originalSetting.Value);
+					config.ConnectionStrings.ConnectionStrings[pair.Key].ConnectionString = pair.Value;
+				}
 			}
-			else
-			{
-				SetValue(name, value);
-			}
+			config.Save();
+			ConfigurationManager.RefreshSection("connectionStrings");
 		}
 		#endregion
 
 		#region Methods
-		// ReSharper disable once SuggestBaseTypeForParameter
-		private static void SetWritable(ConnectionStringSettingsCollection connectionStrings)
-		{
-			FieldInfo fieldInfo = typeof(ConfigurationElementCollection).GetField("bReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
-			Debug.Assert(fieldInfo != null, "fieldInfo is null");
-			fieldInfo.SetValue(connectionStrings, false);
-		}
-
-		private static void SetValue(string name, string value)
-		{
-			MethodInfo methodInfo = typeof(ConfigurationElementCollection).GetMethod("BaseAdd", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(ConfigurationElement) }, null);
-			Debug.Assert(methodInfo != null, "methodInfo is null");
-			ConnectionStringSettings connectionString = new ConnectionStringSettings(name, value);
-			methodInfo.Invoke(ConfigurationManager.ConnectionStrings, new object[] { connectionString });
-		}
-
-		private static void RemoveValue(string name)
-		{
-			ConfigurationManager.ConnectionStrings.Remove(name);
-		}
-
 		public void Dispose()
 		{
-			if (_oldValue != null)
-				SetValue(_name, _oldValue);
-			else
-				RemoveValue(_name);
+			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+			foreach (string key in _originalValues.Keys)
+			{
+				var originalValue = _originalValues[key];
+				if (originalValue != null)
+					config.ConnectionStrings.ConnectionStrings[key].ConnectionString = _originalValues[key];
+				else
+					config.ConnectionStrings.ConnectionStrings.Remove(key);
+
+			}
+			config.Save();
+			ConfigurationManager.RefreshSection("connectionStrings");
 		}
 		#endregion
 	}

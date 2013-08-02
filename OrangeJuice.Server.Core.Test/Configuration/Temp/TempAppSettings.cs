@@ -8,7 +8,7 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 	public class TempAppSettings : IDisposable
 	{
 		#region Fields
-		private readonly IDictionary<string, string> _originalValues;
+		private readonly IDictionary<string, string> _originalValues = new Dictionary<string, string>();
 		#endregion
 
 		#region Constructors
@@ -17,22 +17,24 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 		{
 		}
 
-		public TempAppSettings(params KeyValuePair<string, string>[] values)
+		public TempAppSettings(params KeyValuePair<string, string>[] pairs)
 		{
+			if (pairs == null)
+				throw new ArgumentNullException("pairs");
+			
 			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-			_originalValues = new Dictionary<string, string>();
-			foreach (var value in values ?? Enumerable.Empty<KeyValuePair<string, string>>())
+			foreach (var pair in pairs)
 			{
-				var originalSetting = config.AppSettings.Settings[value.Key];
+				var originalSetting = config.AppSettings.Settings[pair.Key];
 				if (originalSetting == null)
 				{
-					_originalValues.Add(value.Key, null);
-					config.AppSettings.Settings.Add(value.Key, value.Value);
+					_originalValues.Add(pair.Key, null);
+					config.AppSettings.Settings.Add(pair.Key, pair.Value);
 				}
 				else
 				{
-					_originalValues.Add(value.Key, originalSetting.Value);
-					config.AppSettings.Settings[value.Key].Value = value.Value;
+					_originalValues.Add(pair.Key, originalSetting.Value);
+					config.AppSettings.Settings[pair.Key].Value = pair.Value;
 				}
 			}
 			config.Save();
