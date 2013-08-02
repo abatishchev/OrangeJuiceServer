@@ -10,18 +10,20 @@ namespace OrangeJuice.Server.Api.Policies
 {
 	internal sealed class ErrorDetailPolicyResolver
 	{
+		private static readonly Lazy<IDictionary<string, IncludeErrorDetailPolicy>> _defaultPolicies = new Lazy<IDictionary<string, IncludeErrorDetailPolicy>>(GetDefaultPolicies);
+
 		private readonly IEnvironmentProvider _environmentProvider;
 		private readonly IDictionary<string, IncludeErrorDetailPolicy> _policies;
 
 		public ErrorDetailPolicyResolver(IEnvironmentProvider environmentProvider)
-			: this(environmentProvider, GetDefaultPolicies())
+			: this(environmentProvider, _defaultPolicies.Value)
 		{
 		}
 
 		internal ErrorDetailPolicyResolver(IEnvironmentProvider environmentProvider, IDictionary<string, IncludeErrorDetailPolicy> policies)
 		{
 			if (environmentProvider == null)
-				throw new System.ArgumentNullException("environmentProvider");
+				throw new ArgumentNullException("environmentProvider");
 
 			_environmentProvider = environmentProvider;
 			_policies = policies;
@@ -40,9 +42,9 @@ namespace OrangeJuice.Server.Api.Policies
 
 		public IncludeErrorDetailPolicy Resolve()
 		{
+			string environment = _environmentProvider.GetCurrentEnvironment();
 			try
 			{
-				string environment = _environmentProvider.GetCurrentEnvironment();
 				return _policies[environment];
 			}
 			catch (KeyNotFoundException ex)
