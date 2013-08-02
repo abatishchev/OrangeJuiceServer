@@ -6,7 +6,7 @@ namespace OrangeJuice.Server.Configuration
 	{
 		public string GetValue(string key)
 		{
-			throw new NotImplementedException();
+			return System.Configuration.ConfigurationManager.AppSettings[key];
 		}
 	}
 }
