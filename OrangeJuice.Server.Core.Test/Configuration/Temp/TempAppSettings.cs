@@ -48,7 +48,7 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 			foreach (string key in _originalValues.Keys)
 			{
-				var originalValue = _originalValues[key];
+				string originalValue = _originalValues[key];
 				if (originalValue != null)
 					config.AppSettings.Settings[key].Value = _originalValues[key];
 				else
