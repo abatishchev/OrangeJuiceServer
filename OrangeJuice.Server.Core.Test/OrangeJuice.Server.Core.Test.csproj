@@ -50,10 +50,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
-      <HintPath>..\packages\Moq.Contrib.0.3\lib\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq.Contrib">
-      <HintPath>..\packages\Moq.Contrib.0.3\lib\Moq.Contrib.dll</HintPath>
+      <HintPath>..\packages\Moq.4.0.10827\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -83,6 +80,7 @@
     <Compile Include="Configuration\Temp\TempConnectionString.cs" />
     <Compile Include="Configuration\Temp\TempConnectionStringTest.cs" />
     <Compile Include="Configuration\Temp\TempAppSettingsTest.cs" />
+    <Compile Include="MoqExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
-      <Project>{EC948993-1645-4749-B2E5-1D3732B0A2C3}</Project>
+      <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Name>OrangeJuice.Server.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Core\OrangeJuice.Server.Core.csproj">

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
@@ -32,7 +33,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <param name="information">??</param>
 		/// <returns>User entity</returns>
 		/// <url>GET /api/user/</url>
-		public HttpResponseMessage GetUserInformation([FromUri]UserInformation information)
+		public async Task<HttpResponseMessage> GetUserInformation([FromUri]UserInformation information)
 		{
 			if (information == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("information"));
@@ -40,7 +41,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			IUser user = _userRepository.Find(information.UserKey.GetValueOrDefault());
+			IUser user = await _userRepository.Find(information.UserKey.GetValueOrDefault());
 			if (user == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 
@@ -53,7 +54,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <param name="registration">User registration information</param>
 		/// <returns>Guid representing the user</returns>
 		/// <url>PUT /api/user/</url>
-		public HttpResponseMessage PutUserRegistration([FromBody]UserRegistration registration)
+		public async Task<HttpResponseMessage> PutUserRegistration([FromBody]UserRegistration registration)
 		{
 			if (registration == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("registration"));
@@ -61,7 +62,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			IUser user = _userRepository.Register(registration.Email);
+			IUser user = await _userRepository.Register(registration.Email);
 			if (user == null)
 				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User is null");
 

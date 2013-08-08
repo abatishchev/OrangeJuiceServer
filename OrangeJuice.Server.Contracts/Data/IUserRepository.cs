@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data
 {
 	public interface IUserRepository
 	{
-		IUser Find(Guid userGuid);
+		Task<IUser> Find(Guid userGuid);
 
-		IUser Register(string email);
+		Task<IUser> Register(string email);
 	}
 }

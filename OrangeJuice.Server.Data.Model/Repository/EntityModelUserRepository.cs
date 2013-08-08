@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Model.Repository
 {
 	public sealed class EntityModelUserRepository : IUserRepository
 	{
-		public IUser Find(Guid userGuid)
+		public Task<IUser> Find(Guid userGuid)
 		{
 			using (var db = new ModelContainer())
 			{
-				return db.Users.SingleOrDefault(u => u.UserGuid == userGuid);
+				return Task.FromResult<IUser>(db.Users.SingleOrDefault(u => u.UserGuid == userGuid));
 			}
 		}
 
-		public IUser Register(string email)
+		public Task<IUser> Register(string email)
 		{
 			using (var db = new ModelContainer())
 			{
@@ -24,10 +25,10 @@ namespace OrangeJuice.Server.Data.Model.Repository
 
 				user = db.Users.Add(user);
 				int i = db.SaveChanges();
-                if (i != 1)
-                    throw new DataException("Error saving user");
+				if (i != 1)
+					throw new DataException("Error saving user");
 
-				return user;
+				return Task.FromResult<IUser>(user);
 			}
 		}
 	}

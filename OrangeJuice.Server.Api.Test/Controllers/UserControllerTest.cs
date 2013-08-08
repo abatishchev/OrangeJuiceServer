@@ -14,6 +14,7 @@ using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Test;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
@@ -38,7 +39,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetUserInformation
 		[TestMethod]
-		public void GetUser_Should_Return_BadRequest_When_UserInformation_Is_Null()
+		public async void GetUser_Should_Return_BadRequest_When_UserInformation_Is_Null()
 		{
 			// Arrange
 			const UserInformation userInformation = null;
@@ -46,14 +47,15 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpStatusCode actual = controller.GetUserInformation(userInformation).StatusCode;
+			HttpResponseMessage message = await controller.GetUserInformation(userInformation);
+			HttpStatusCode actual = message.StatusCode;
 
 			// Assert
 			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public void GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public async void GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController();
@@ -63,7 +65,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator(s => false)))
 			{
-				HttpStatusCode actual = controller.GetUserInformation(userInformation).StatusCode;
+				HttpResponseMessage message = await controller.GetUserInformation(userInformation);
+				HttpStatusCode actual = message.StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -77,7 +80,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			Guid userGuid = Guid.NewGuid();
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Find(userGuid))
-							  .Returns<IUser>(null);
+							  .Returns<IUser>(x => null);
 
 			UserController controller = CreateController(userRepositoryMock);
 			UserInformation userInformation = new UserInformation
@@ -86,7 +89,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			};
 
 			// Act
-			Action action = () => controller.GetUserInformation(userInformation);
+			Action action = async () => await controller.GetUserInformation(userInformation);
 
 			// Assert
 			action.ShouldThrow<HttpResponseException>()
@@ -94,34 +97,31 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void GetUser_Should_Call_UserRepository_Find()
+		public async void GetUser_Should_Call_UserRepository_Find()
 		{
 			//Arrange
 			bool called = false;
 			IUser user = CreateUser();
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Find(It.IsAny<Guid>()))
-						  .Returns(user)
+						  .ReturnsAsync(user)
 						  .Callback(() =>
 							  {
 								  called = true;
 							  });
 
 			UserController controller = CreateController(userRepositoryMock);
-			UserInformation userInformation = new UserInformation
-			{
-				//UserKey = Guid.NewGuid()
-			};
+			UserInformation userInformation = new UserInformation();
 
 			// Act
-			controller.GetUserInformation(userInformation);
+			await controller.GetUserInformation(userInformation);
 
 			// Assert
 			called.Should().BeTrue();
 		}
 
 		[TestMethod]
-		public void GetUser_Should_ByPass_UserGuid_To_UserRepository_Find()
+		public async void GetUser_Should_ByPass_UserGuid_To_UserRepository_Find()
 		{
 			// Arrange
 			Guid userGuid = Guid.NewGuid();
@@ -129,7 +129,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Find(userGuid))
-							  .Returns(user);
+							  .ReturnsAsync(user);
 
 			UserController controller = CreateController(userRepositoryMock);
 			UserInformation userInformation = new UserInformation
@@ -138,14 +138,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			};
 
 			// Act
-			controller.GetUserInformation(userInformation);
+			await controller.GetUserInformation(userInformation);
 
 			// Assert
 			userRepositoryMock.Verify(r => r.Find(userGuid), Times.Once());
 		}
 
 		[TestMethod]
-		public void GetUser_Should_Return_User_By_Specified_UserGuid()
+		public async void GetUser_Should_Return_User_By_Specified_UserGuid()
 		{
 			// Arrange
 			Guid userGuid = Guid.NewGuid();
@@ -153,7 +153,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Find(userGuid))
-							  .Returns(expected);
+							  .ReturnsAsync(expected);
 
 			UserController controller = CreateController(userRepositoryMock);
 			UserInformation userInformation = new UserInformation
@@ -162,17 +162,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			};
 
 			// Act
-			HttpResponseMessage message = controller.GetUserInformation(userInformation);
+			HttpResponseMessage message = await controller.GetUserInformation(userInformation);
+			IUser actual = message.Content.GetValue<IUser>();
 
 			// Assert
-			IUser actual = message.Content.GetValue<IUser>();
 			actual.Should().Be(expected);
 		}
 		#endregion
 
 		#region PutUserRegistration
 		[TestMethod]
-		public void PutUser_Should_Return_BadRequest_When_UserRegistration_Is_Null()
+		public async void PutUser_Should_Return_BadRequest_When_UserRegistration_Is_Null()
 		{
 			// Arrange
 			UserController controller = CreateController();
@@ -180,14 +180,15 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpStatusCode actual = controller.PutUserRegistration(userRegistration).StatusCode;
+			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
+			HttpStatusCode actual = message.StatusCode;
 
 			// Assert
 			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public void PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public async void PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController();
@@ -197,7 +198,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator(s => false)))
 			{
-				HttpStatusCode actual = controller.PutUserRegistration(userRegistration).StatusCode;
+				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
+				HttpStatusCode actual = message.StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -205,13 +207,13 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void PutUser_Should_Return_Ok_When_Model_IsValid()
+		public async void PutUser_Should_Return_Ok_When_Model_IsValid()
 		{
 			// Arrange
 			IUser user = CreateUser();
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
-							  .Returns(user);
+							  .ReturnsAsync(user);
 
 			UserController controller = CreateController(userRepositoryMock);
 			UserRegistration userRegistration = new UserRegistration();
@@ -220,7 +222,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				HttpStatusCode actual = controller.PutUserRegistration(userRegistration).StatusCode;
+				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
+				HttpStatusCode actual = message.StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -228,7 +231,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void PutUser_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
+		public async void PutUser_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
 		{
 			// Arrange
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
@@ -242,7 +245,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				HttpStatusCode actual = controller.PutUserRegistration(userRegistration).StatusCode;
+				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
+				HttpStatusCode actual = message.StatusCode;
 
 				// Assert
 				actual.Should().Be(expected);
@@ -250,14 +254,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void PutUser_Should_Call_UserRepository_Register()
+		public async void PutUser_Should_Call_UserRepository_Register()
 		{
 			// Arrange
 			const string email = "test@example.com";
 			bool called = false;
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
-							  .Returns(It.IsAny<IUser>())
+							  .ReturnsAsync(It.IsAny<IUser>())
 							  .Callback<string>(e =>
 								  {
 									  called = true;
@@ -270,7 +274,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				controller.PutUserRegistration(userRegistration);
+				await controller.PutUserRegistration(userRegistration);
 
 				// Assert
 				called.Should().BeTrue();
@@ -278,13 +282,13 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void PutUser_Should_ByPass_Email_To_UserRepository_Register()
+		public async void PutUser_Should_ByPass_Email_To_UserRepository_Register()
 		{
 			// Arrange
 			const string email = "test@example.com";
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
-			                  .Returns(It.IsAny<IUser>());
+							  .ReturnsAsync(It.IsAny<IUser>());
 
 			UserController controller = CreateController(userRepositoryMock);
 			UserRegistration userRegistration = new UserRegistration { Email = email };
@@ -292,7 +296,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator()))
 			{
-				controller.PutUserRegistration(userRegistration);
+				await controller.PutUserRegistration(userRegistration);
 
 				// Assert
 				userRepositoryMock.Verify(r => r.Register(email), Times.Once());
@@ -300,7 +304,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void PutUser_Should_Return_Guid_Of_Created_User()
+		public async void PutUser_Should_Return_Guid_Of_Created_User()
 		{
 			// Arrange
 			Guid expected = Guid.NewGuid();
@@ -308,7 +312,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
-							  .Returns(user);
+							  .ReturnsAsync(user);
 
 			UserController controller = CreateController(userRepositoryMock);
 			UserRegistration userRegistration = new UserRegistration();
@@ -316,7 +320,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Act
 			using (NewContext(CreateModelValidator(s => true)))
 			{
-				HttpResponseMessage message = controller.PutUserRegistration(userRegistration);
+				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
 				Guid actual = message.Content.GetValue<Guid>();
 
 				// Assert
