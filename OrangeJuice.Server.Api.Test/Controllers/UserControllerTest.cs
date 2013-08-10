@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -77,22 +78,21 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public void GetUser_Should_Throw_Exception_When_User_By_Specified_UserGuid_Does_Not_Exist()
 		{
 			//Arrange
-			Guid userGuid = Guid.NewGuid();
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Find(userGuid))
-							  .Returns<IUser>(x => null);
+			userRepositoryMock.Setup(r => r.Find(It.IsAny<Guid>()))
+							  .Returns<Guid>(id => Task.FromResult<IUser>(null));
 
 			UserController controller = CreateController(userRepositoryMock);
 			UserInformation userInformation = new UserInformation
 			{
-				UserKey = userGuid
+				UserKey = Guid.NewGuid()
 			};
 
 			// Act
-			Action action = async () => await controller.GetUserInformation(userInformation);
+			Func<Task<HttpResponseMessage>> func = () => controller.GetUserInformation(userInformation);
 
 			// Assert
-			action.ShouldThrow<HttpResponseException>()
+			func.ShouldThrow<HttpResponseException>()
 				  .And.Response.StatusCode.Should().Be(HttpStatusCode.NotFound);
 		}
 
