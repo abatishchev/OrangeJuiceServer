@@ -16,7 +16,6 @@ namespace OrangeJuice.Server.Api
 	{
 		public static void Configure(HttpConfiguration config, IUnityContainer container)
 		{
-			ConfigurHandlers(config.MessageHandlers);
 			ConfigureErrorDetailPolicy(config, container);
 			ConfigureFormatters(config.Formatters);
 
@@ -29,11 +28,6 @@ namespace OrangeJuice.Server.Api
 			//config.EnableSystemDiagnosticsTracing();
 		}
 
-		private static void ConfigurHandlers(ICollection<DelegatingHandler> handlers)
-		{
-			handlers.Add(new Handlers.AppKeyQueryHandler(AppKey.Version0));
-		}
-
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)
 		{
 			IEnvironmentProvider environmentProvider = container.Resolve<IEnvironmentProvider>();
@@ -42,7 +36,7 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
 		{
-			formatters.Remove(formatters.XmlFormatter);
+			//formatters.Remove(formatters.XmlFormatter);
 
 			var jsonSerializerSettings = formatters.JsonFormatter.SerializerSettings;
 			jsonSerializerSettings.Formatting = Formatting.Indented;
