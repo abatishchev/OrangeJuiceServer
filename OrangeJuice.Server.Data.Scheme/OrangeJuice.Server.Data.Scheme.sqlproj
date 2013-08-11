@@ -69,6 +69,7 @@
     <Folder Include="Security" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Schemas\dbo\Tables\Constraints\Unique" />
+    <Folder Include="Schemas\dbo\Tables\Constraints\Default" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -98,5 +99,12 @@
     <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_Email.sql" />
     <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
     <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
+    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_ELMAH_Error.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_ELMAH_Error_ErrorId.sql" />
+    <Build Include="Schemas\dbo\Tables\Indexes\IX_ELMAH_Error_App_Time_Seq.sql" />
+    <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_GetErrorXml.sql" />
+    <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_GetErrorsXml.sql" />
+    <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_LogError.sql" />
+    <Build Include="Schemas\dbo\Tables\ELMAH_Error.sql" />
   </ItemGroup>
 </Project>
