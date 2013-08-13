@@ -2,7 +2,9 @@ using System.Web.Http;
 
 using Microsoft.Practices.Unity;
 
+using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Services;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Model.Repository;
@@ -36,7 +38,17 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<AppKeyHandlerBase>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
+
+			// UserController
 			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());
+
+			// FoodController
+			container.RegisterType<AwsOptions>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionFactory(c => new AswOptionsFactory(c.Resolve<IConfigurationProvider>())));
+			container.RegisterInstance(
+				new GroceryDescriptionFactory(), // TODO: review registration strategy
+				new ContainerControlledLifetimeManager());
 		}
 	}
 }
