@@ -1,4 +1,8 @@
-﻿using System;
+﻿using OrangeJuice.Server.Api.Builders;
+using OrangeJuice.Server.Api.Controllers;
+using OrangeJuice.Server.Web;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,18 +11,26 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using OrangeJuice.Server.Api.Controllers;
-using OrangeJuice.Server.Web;
-
 namespace OrangeJuice.Server.Api.Services
 {
 	public sealed class AwsClient
 	{
+		private readonly QueryBuilder _queryBuilder;
+		private readonly SignatureBuilder _signatureBuilder;
 		private readonly AwsOptions _options;
 
 		public AwsClient(AwsOptions options)
+			: this(new QueryBuilder(options.AccessKey, new PercentUrlEncoder(), new UtcDateTimeProvider()),
+				   new SignatureBuilder(options.SecretKey, new PercentUrlEncoder()))
 		{
 			_options = options;
+		}
+
+		// TODO: refactor dependency injection
+		private AwsClient(QueryBuilder queryBuilder, SignatureBuilder signatureBuilder)
+		{
+			_queryBuilder = queryBuilder;
+			_signatureBuilder = signatureBuilder;
 		}
 
 		public async Task<XElement> ItemLookup(string asin)
@@ -62,17 +74,19 @@ namespace OrangeJuice.Server.Api.Services
 
 		private string BuildUrl(IDictionary<string, string> args, [CallerMemberName]string operation = null)
 		{
-			args = new Dictionary<string, string>(args)
+			args = AppenArgs(args, operation);
+
+			string query = _queryBuilder.BuildQuery(args);
+			return _signatureBuilder.SignQuery(query);
+		}
+
+		private IDictionary<string, string> AppenArgs(IDictionary<string, string> args, string operation)
+		{
+			return new Dictionary<string, string>(args)
 			{
 				{ "AssociateTag", _options.AssociateTag },
 				{ "Operation", operation }
 			};
-
-			QueryBuilder queryBuilder = new QueryBuilder(_options.AccessKey, new PercentUrlEncoder(), new UtcDateTimeProvider());
-			string query = queryBuilder.BuildQuery(args);
-
-			SignatureBuilder signatureBuilder = new SignatureBuilder(_options.SecretKey, new PercentUrlEncoder());
-			return signatureBuilder.SignQuery(query);
 		}
 
 		private static XElement GetItems(XDocument doc, XNamespace ns)
