@@ -12,7 +12,7 @@ using OrangeJuice.Server.Configuration;
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
-	static class WebApiConfig
+	internal static class WebApiConfig
 	{
 		public static void Configure(HttpConfiguration config, IUnityContainer container)
 		{
