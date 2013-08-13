@@ -2,8 +2,8 @@ using System.Web.Http;
 
 using Microsoft.Practices.Unity;
 
-using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Services;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;

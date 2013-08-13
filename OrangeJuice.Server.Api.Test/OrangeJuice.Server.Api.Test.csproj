@@ -94,8 +94,11 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Builders\QueryBuilderTest.cs" />
+    <Compile Include="Builders\SignatureBuilderTest.cs" />
     <Compile Include="Controllers\ControllerFactory.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="Controllers\FoodControllerTest.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
     <Compile Include="Diagnostics\EntityErrorLogTest.cs" />
     <Compile Include="Filters\UnhandledExceptionFilterTest.cs" />
@@ -103,6 +106,7 @@
     <Compile Include="Handlers\AppKeyHeaderHandlerTest.cs" />
     <Compile Include="Handlers\AppKeyHandlerFactoryTest.cs" />
     <Compile Include="Handlers\AppKeyHandlerBaseTest.cs" />
+    <Compile Include="Models\GroceryDescriptionFactoryTest.cs" />
     <Compile Include="ObjectContextExtensions.cs" />
     <Compile Include="Policies\ErrorDetailPolicyResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

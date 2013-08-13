@@ -121,7 +121,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void GetUser_Should_ByPass_UserGuid_To_UserRepository_Find()
+		public async void GetUser_Should_Pass_UserGuid_To_UserRepository_Find()
 		{
 			// Arrange
 			Guid userGuid = Guid.NewGuid();
@@ -282,7 +282,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void PutUser_Should_ByPass_Email_To_UserRepository_Register()
+		public async void PutUser_Should_Pass_Email_To_UserRepository_Register()
 		{
 			// Arrange
 			const string email = "test@example.com";

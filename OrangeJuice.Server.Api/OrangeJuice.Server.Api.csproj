@@ -116,6 +116,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0-beta2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Unity.WebApi, Version=0.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.WebAPI.0.10\lib\net40\Unity.WebApi.dll</HintPath>
@@ -127,10 +128,20 @@
     </Compile>
     <Compile Include="App_Start\HandlerConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="Handlers\AppKeyHandlerFactory.cs" />
+    <Compile Include="Handlers\AppKeyHandlerBase.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Models\GroceryDescriptionFactory.cs" />
+    <Compile Include="Models\GroceryDescription.cs" />
+    <Compile Include="Services\AswOptionsFactory.cs" />
+    <Compile Include="Services\AwsClient.cs" />
+    <Compile Include="Services\AwsOptions.cs" />
+    <Compile Include="Controllers\FoodController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Builders\QueryBuilder.cs" />
+    <Compile Include="Builders\SignatureBuilder.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Diagnostics\EntityErrorLog.cs" />
     <Compile Include="Filters\UnhandledExceptionFilterAttribute.cs" />
@@ -139,7 +150,6 @@
     </Compile>
     <Compile Include="Handlers\AppKeyHeaderHandler.cs" />
     <Compile Include="Handlers\AppKeyQueryHandler.cs" />
-    <Compile Include="Handlers\ValidatingDelegatingHandler.cs" />
     <Compile Include="Models\UserInformation.cs" />
     <Compile Include="Models\UserRegistration.cs">
       <SubType>Code</SubType>
