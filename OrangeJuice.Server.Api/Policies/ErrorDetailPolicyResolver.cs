@@ -36,7 +36,7 @@ namespace OrangeJuice.Server.Api.Policies
 				{ Environment.Local, IncludeErrorDetailPolicy.Always },
 				{ Environment.Development, IncludeErrorDetailPolicy.Always },
 				{ Environment.Staging, IncludeErrorDetailPolicy.Always },
-				{ Environment.Production, IncludeErrorDetailPolicy.LocalOnly },
+				{ Environment.AzureProduction, IncludeErrorDetailPolicy.LocalOnly },
 			};
 		}
 
