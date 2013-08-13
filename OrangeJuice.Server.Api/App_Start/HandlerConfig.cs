@@ -1,14 +1,20 @@
 using System.Collections.Generic;
 using System.Net.Http;
 
+using Microsoft.Practices.Unity;
+
+using OrangeJuice.Server.Api.Handlers;
+
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
-	static class HandlerConfig
+	internal static class HandlerConfig
 	{
-		public static void ConfigurHandlers(ICollection<DelegatingHandler> handlers)
+		public static void ConfigurHandlers(IUnityContainer container, ICollection<DelegatingHandler> handlers)
 		{
-			handlers.Add(new Handlers.AppKeyQueryHandler(AppKey.Version0));
+			DelegatingHandler handler = container.Resolve<AppKeyHandlerBase>();
+			if (handler != null)
+				handlers.Add(handler);
 		}
 	}
 }

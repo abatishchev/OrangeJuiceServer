@@ -12,7 +12,7 @@ using OrangeJuice.Server.Api.Handlers;
 namespace OrangeJuice.Server.Api.Test.Handlers
 {
 	[TestClass]
-	public class ValidatingDelegatingHandlerBaseTest
+	public class AppKeyHandlerBaseTest
 	{
 		#region Test methods
 		[TestMethod]
@@ -33,7 +33,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		#endregion
 
 		#region Helper classes
-		private class HandlerStub : ValidatingDelegatingHandler
+		private class HandlerStub : AppKeyHandlerBase
 		{
 			private readonly bool _isValid;
 			private readonly HttpStatusCode _errorCode;

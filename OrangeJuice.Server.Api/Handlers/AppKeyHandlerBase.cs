@@ -1,11 +1,10 @@
-﻿using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public abstract class ValidatingDelegatingHandler : DelegatingHandler
+	public abstract class AppKeyHandlerBase : DelegatingHandler
 	{
 		internal abstract System.Net.HttpStatusCode ErrorCode { get; }
 

@@ -101,7 +101,8 @@
     <Compile Include="Filters\UnhandledExceptionFilterTest.cs" />
     <Compile Include="Handlers\AppKeyQueryHandlerTest.cs" />
     <Compile Include="Handlers\AppKeyHeaderHandlerTest.cs" />
-    <Compile Include="Handlers\ValidatingDelegatingHandlerBaseTest.cs" />
+    <Compile Include="Handlers\AppKeyHandlerFactoryTest.cs" />
+    <Compile Include="Handlers\AppKeyHandlerBaseTest.cs" />
     <Compile Include="ObjectContextExtensions.cs" />
     <Compile Include="Policies\ErrorDetailPolicyResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -121,6 +122,10 @@
     <ProjectReference Include="..\OrangeJuice.Server.Core.Test\OrangeJuice.Server.Core.Test.csproj">
       <Project>{1979b465-e5e3-4bb9-847e-cb96fc3372e3}</Project>
       <Name>OrangeJuice.Server.Core.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrangeJuice.Server.Core\OrangeJuice.Server.Core.csproj">
+      <Project>{1a416347-6b6c-4551-bfdb-fbe19b121d74}</Project>
+      <Name>OrangeJuice.Server.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
