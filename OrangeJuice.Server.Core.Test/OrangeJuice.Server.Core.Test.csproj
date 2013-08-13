@@ -82,6 +82,7 @@
     <Compile Include="Configuration\Temp\TempAppSettingsTest.cs" />
     <Compile Include="MoqExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtcDateTimeProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
