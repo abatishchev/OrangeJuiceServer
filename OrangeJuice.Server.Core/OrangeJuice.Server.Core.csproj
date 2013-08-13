@@ -38,6 +38,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -48,6 +49,8 @@
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Diagnostics\TraceSourceExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtcDateTimeProvider.cs" />
+    <Compile Include="Web\PercentUrlEncoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">

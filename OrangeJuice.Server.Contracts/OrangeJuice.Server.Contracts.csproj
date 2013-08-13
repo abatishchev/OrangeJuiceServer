@@ -47,6 +47,8 @@
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\IUserRepository.cs" />
+    <Compile Include="IDateTimeProvider.cs" />
+    <Compile Include="Web\IUrlEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>
