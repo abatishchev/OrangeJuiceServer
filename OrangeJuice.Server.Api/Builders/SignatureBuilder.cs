@@ -8,8 +8,8 @@ namespace OrangeJuice.Server.Api.Builders
 {
 	internal sealed class SignatureBuilder
 	{
-		private const string RequestEndpoint = "webservices.amazon.com";
-		private const string RequestUri = "/onca/xml";
+		internal const string RequestEndpoint = "webservices.amazon.com";
+		internal const string RequestPath = "/onca/xml";
 		private const string RequestMethod = "GET";
 
 		private readonly HashAlgorithm _hashAlgorithm;
@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Api.Builders
 			_urlEncoder = urlEncoder;
 		}
 
-		private static HashAlgorithm CreateHashAlgorithm(string secretKey)
+		internal static HashAlgorithm CreateHashAlgorithm(string secretKey)
 		{
 			byte[] secret = Encoding.UTF8.GetBytes(secretKey);
 			return new HMACSHA256(secret);
@@ -36,35 +36,35 @@ namespace OrangeJuice.Server.Api.Builders
 		/// Signs a request in the form of a dictionary
 		/// </summary>
 		/// <returns>Returns a complete URL to use</returns>
-		/// <remarks>Modifying the returned URL in any way invalidates the signature and Amazon will reject the requests</remarks>
+		/// <remarks>Modifying the returned URL invalidates the signature and Amazon will reject a request</remarks>
 		public string SignQuery(string query)
 		{
 			string signature = CreateSignature(query);
 
 			StringBuilder sb = new StringBuilder();
 			sb.Append(Uri.UriSchemeHttp)
-						.Append("://")
-						.Append(RequestEndpoint)
-						.Append(RequestUri)
-						.Append('?')
-						.Append(query)
-						.Append("&Signature=")
-						.Append(_urlEncoder.Encode(signature));
+			  .Append("://")
+			  .Append(RequestEndpoint)
+			  .Append(RequestPath)
+			  .Append('?')
+			  .Append(query)
+			  .Append("&Signature=")
+			  .Append(_urlEncoder.Encode(signature));
 			return sb.ToString();
 		}
 
-		private string CreateSignature(string queryString)
+		internal string CreateSignature(string queryString)
 		{
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.Append(RequestMethod)
-						 .Append('\n')
-						 .Append(RequestEndpoint)
-						 .Append('\n')
-						 .Append(RequestUri)
-						 .Append('\n')
-						 .Append(queryString);
+			StringBuilder sb = new StringBuilder();
+			sb.Append(RequestMethod)
+			  .Append('\n')
+			  .Append(RequestEndpoint)
+			  .Append('\n')
+			  .Append(RequestPath)
+			  .Append('\n')
+			  .Append(queryString);
 
-			byte[] bytes = Encoding.UTF8.GetBytes(stringBuilder.ToString());
+			byte[] bytes = Encoding.UTF8.GetBytes(sb.ToString());
 			byte[] hash = _hashAlgorithm.ComputeHash(bytes);
 			return Convert.ToBase64String(hash);
 		}
