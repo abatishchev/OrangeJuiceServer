@@ -144,7 +144,6 @@
     <Compile Include="Builders\SignatureBuilder.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Diagnostics\EntityErrorLog.cs" />
-    <Compile Include="Filters\UnhandledExceptionFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

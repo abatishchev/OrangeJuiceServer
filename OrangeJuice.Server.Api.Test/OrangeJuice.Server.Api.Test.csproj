@@ -101,7 +101,6 @@
     <Compile Include="Controllers\FoodControllerTest.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
     <Compile Include="Diagnostics\EntityErrorLogTest.cs" />
-    <Compile Include="Filters\UnhandledExceptionFilterTest.cs" />
     <Compile Include="Handlers\AppKeyQueryHandlerTest.cs" />
     <Compile Include="Handlers\AppKeyHeaderHandlerTest.cs" />
     <Compile Include="Handlers\AppKeyHandlerFactoryTest.cs" />
