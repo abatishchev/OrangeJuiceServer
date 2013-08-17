@@ -96,6 +96,7 @@
     </Compile>
     <Compile Include="Builders\QueryBuilderTest.cs" />
     <Compile Include="Builders\SignatureBuilderTest.cs" />
+    <Compile Include="Builders\ArgumentBuilderTest.cs" />
     <Compile Include="Controllers\ControllerFactory.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\FoodControllerTest.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AswOptionsFactoryTest.cs" />
     <Compile Include="Services\AwsClientTest.cs" />
+    <Compile Include="Services\AwsClientFactoryTest.cs" />
     <Compile Include="TestContext.cs" />
     <Compile Include="TestContextTest.cs" />
     <Compile Include="Validation\ModelValidatorTest.cs" />

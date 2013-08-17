@@ -128,6 +128,7 @@
     </Compile>
     <Compile Include="App_Start\HandlerConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="Builders\ArgumentBuilder.cs" />
     <Compile Include="Handlers\AppKeyHandlerFactory.cs" />
     <Compile Include="Handlers\AppKeyHandlerBase.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Models\GroceryDescription.cs" />
     <Compile Include="Services\AswOptionsFactory.cs" />
     <Compile Include="Services\AwsClient.cs" />
+    <Compile Include="Services\AwsClientFactory.cs" />
     <Compile Include="Services\AwsOptions.cs" />
     <Compile Include="Controllers\FoodController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

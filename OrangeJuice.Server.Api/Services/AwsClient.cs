@@ -1,8 +1,4 @@
-﻿using OrangeJuice.Server.Api.Builders;
-using OrangeJuice.Server.Api.Controllers;
-using OrangeJuice.Server.Web;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,25 +6,26 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using OrangeJuice.Server.Api.Builders;
 
 namespace OrangeJuice.Server.Api.Services
 {
 	public sealed class AwsClient
 	{
+		private readonly ArgumentBuilder _argumentBuilder;
 		private readonly QueryBuilder _queryBuilder;
 		private readonly SignatureBuilder _signatureBuilder;
-		private readonly AwsOptions _options;
 
-		public AwsClient(AwsOptions options)
-			: this(new QueryBuilder(options.AccessKey, new PercentUrlEncoder(), new UtcDateTimeProvider()),
-				   new SignatureBuilder(options.SecretKey, new PercentUrlEncoder()))
+		public AwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder)
 		{
-			_options = options;
-		}
+			if (argumentBuilder == null)
+				throw new ArgumentNullException("argumentBuilder");
+			if (queryBuilder == null)
+				throw new ArgumentNullException("queryBuilder");
+			if (signatureBuilder == null)
+				throw new ArgumentNullException("signatureBuilder");
 
-		// TODO: refactor dependency injection
-		private AwsClient(QueryBuilder queryBuilder, SignatureBuilder signatureBuilder)
-		{
+			_argumentBuilder = argumentBuilder;
 			_queryBuilder = queryBuilder;
 			_signatureBuilder = signatureBuilder;
 		}
@@ -74,19 +71,10 @@ namespace OrangeJuice.Server.Api.Services
 
 		private string BuildUrl(IDictionary<string, string> args, [CallerMemberName]string operation = null)
 		{
-			args = AppenArgs(args, operation);
+			args = _argumentBuilder.BuildArgs(args, operation);
 
 			string query = _queryBuilder.BuildQuery(args);
 			return _signatureBuilder.SignQuery(query);
-		}
-
-		private IDictionary<string, string> AppenArgs(IDictionary<string, string> args, string operation)
-		{
-			return new Dictionary<string, string>(args)
-			{
-				{ "AssociateTag", _options.AssociateTag },
-				{ "Operation", operation }
-			};
 		}
 
 		private static XElement GetItems(XDocument doc, XNamespace ns)

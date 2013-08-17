@@ -94,8 +94,7 @@ namespace OrangeJuice.Server.Api.Test.Builders
 
 			// Assert
 			var queryParams = BuildQeeryParamsDictionary(query);
-			queryParams.Should().ContainKey(QueryBuilder.AwsAccessKeyId);
-			queryParams.Should().ContainValue(accessKey);
+			queryParams.Should().Contain(QueryBuilder.AwsAccessKeyId, accessKey);
 		}
 
 		[TestMethod]
@@ -114,8 +113,7 @@ namespace OrangeJuice.Server.Api.Test.Builders
 
 			// Assert
 			var queryParams = BuildQeeryParamsDictionary(query);
-			queryParams.Should().ContainKey(QueryBuilder.Timestamp);
-			queryParams.Should().ContainValue(timeStamp);
+			queryParams.Should().Contain(QueryBuilder.Timestamp, timeStamp);
 		}
 
 		[TestMethod]

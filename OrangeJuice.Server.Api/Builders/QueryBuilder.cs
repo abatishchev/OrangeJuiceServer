@@ -6,7 +6,7 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Api.Builders
 {
-	internal class QueryBuilder
+	public sealed class QueryBuilder
 	{
 		internal const string AwsAccessKeyId = "AWSAccessKeyId";
 		internal const string Timestamp = "Timestamp";
