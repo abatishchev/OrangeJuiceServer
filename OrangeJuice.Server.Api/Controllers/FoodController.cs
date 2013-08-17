@@ -12,26 +12,26 @@ namespace OrangeJuice.Server.Api.Controllers
 {
 	public class FoodController : ApiController
 	{
-		private readonly AwsOptions _awsOptions;
 		private readonly GroceryDescriptionFactory _groceryDescriptionFactory;
+		private readonly AwsClientFactory _awsClientFactory;
 
-		public FoodController(AwsOptions awsOptions, GroceryDescriptionFactory groceryDescriptionFactory)
+		public FoodController(AwsClientFactory awsClientFactory, GroceryDescriptionFactory groceryDescriptionFactory)
 		{
-			if (awsOptions == null)
-				throw new ArgumentNullException("awsOptions");
+			if (awsClientFactory == null)
+				throw new ArgumentNullException("awsClientFactory");
 			if (groceryDescriptionFactory == null)
 				throw new ArgumentNullException("groceryDescriptionFactory");
 
-			_awsOptions = awsOptions;
+			_awsClientFactory = awsClientFactory;
 			_groceryDescriptionFactory = groceryDescriptionFactory;
 		}
 
 		/// <url>GET api/food/</url>
-		public async Task<IEnumerable<GroceryDescription>> GetDescription(string title)
+		public async Task<IEnumerable<GroceryDescription>> GetDescription(string text)
 		{
-			AwsClient apiClient = new AwsClient(_awsOptions);
+			AwsClient apiClient = _awsClientFactory.Create();
 
-			IEnumerable<string> asins = await apiClient.ItemSearch(title);
+			IEnumerable<string> asins = await apiClient.ItemSearch(text);
 
 			XElement[] items = await Task.WhenAll(asins.Select(apiClient.ItemLookup));
 

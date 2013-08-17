@@ -12,7 +12,7 @@ namespace OrangeJuice.Server
 		}
 
 		/// <summary>
-		/// Current time in IS0 8601 format as required by Amazon
+		/// Current time in IS0 8601 format
 		/// </summary>
 		public string FormatToUniversal(DateTime dateTime)
 		{

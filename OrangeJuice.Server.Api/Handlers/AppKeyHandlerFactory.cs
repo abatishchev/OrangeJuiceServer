@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Api.Handlers
 			string environment = _environmentProvider.GetCurrentEnvironment();
 			switch (environment)
 			{
-				case Configuration.Environment.Development:
+				case Configuration.Environment.Local:
 					return null;
 				default:
 					return new AppKeyQueryHandler(AppKey.Version0);

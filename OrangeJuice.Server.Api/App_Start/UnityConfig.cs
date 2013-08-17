@@ -8,6 +8,7 @@ using OrangeJuice.Server.Api.Services;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Model.Repository;
+using OrangeJuice.Server.Web;
 
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
@@ -34,10 +35,13 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<IConfigurationProvider>()));
 
+			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(new ContainerControlledLifetimeManager());
+
 			// Web
 			container.RegisterType<AppKeyHandlerBase>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
+			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
 			// UserController
 			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());
@@ -45,9 +49,12 @@ namespace OrangeJuice.Server.Api
 			// FoodController
 			container.RegisterType<AwsOptions>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionFactory(c => new AswOptionsFactory(c.Resolve<IConfigurationProvider>())));
+				new InjectionFactory(c => new AswOptionsFactory(c.Resolve<IConfigurationProvider>()).Create()));
+			container.RegisterType<AwsClientFactory>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container.Resolve<AwsOptions>(), container.Resolve<IUrlEncoder>(), container.Resolve<IDateTimeProvider>()));
 			container.RegisterInstance(
-				new GroceryDescriptionFactory(), // TODO: review registration strategy
+				new GroceryDescriptionFactory(),
 				new ContainerControlledLifetimeManager());
 		}
 	}
