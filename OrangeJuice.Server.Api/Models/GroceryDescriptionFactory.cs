@@ -17,10 +17,11 @@ namespace OrangeJuice.Server.Api.Models
 				Title = (string)itemAttributes.Element(ns + "Title"),
 				Manufacturer = (string)itemAttributes.Element(ns + "Manufacturer"),
 
-				DetailPageUrl = (string)element.Element(ns + "DetailPageUrl"),
-				TechnicalDetailsUrl = (string)element.Elements(ns + "ItemLink")
+				DetailPageUrl = (string)element.Element(ns + "DetailPageURL"),
+				TechnicalDetailsUrl = (string)element.Elements(ns + "ItemLinks")
+													 .Elements(ns + "ItemLink")
 													 .Single(e => (string)e.Element(ns + "Description") == "Technical Details")
-													 .Element(ns + "URL"),
+													 .Element(ns + "URL")
 			};
 		}
 	}

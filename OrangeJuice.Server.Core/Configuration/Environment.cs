@@ -11,15 +11,5 @@ namespace OrangeJuice.Server.Configuration
 		public const string Staging = "Staging";
 		public const string AzureProduction = "AzureProduction";
 		#endregion
-
-		#region Properties
-		public static string Current
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
-		#endregion
 	}
 }

@@ -20,10 +20,5 @@ namespace OrangeJuice.Server.Api.Handlers
 		}
 
 		internal abstract bool IsValid(HttpRequestMessage request);
-
-		internal virtual Task<HttpResponseMessage> RequestIsValid(HttpRequestMessage request, CancellationToken cancellationToken)
-		{
-			return base.SendAsync(request, cancellationToken);
-		}
 	}
 }

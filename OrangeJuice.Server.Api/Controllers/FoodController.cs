@@ -32,7 +32,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			AwsClient apiClient = _awsClientFactory.Create();
 
 			IEnumerable<string> asins = await apiClient.ItemSearch(text);
-
 			XElement[] items = await Task.WhenAll(asins.Select(apiClient.ItemLookup));
 
 			return items.Select(item => _groceryDescriptionFactory.Create(item));
