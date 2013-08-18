@@ -38,8 +38,8 @@ namespace OrangeJuice.Server.Api.Test.Policies
 			const IncludeErrorDetailPolicy expected = IncludeErrorDetailPolicy.Default;
 
 			var environmentProviderMock = new Mock<IEnvironmentProvider>(MockBehavior.Strict);
-			environmentProviderMock.Setup(p => p.GetCurrentEnvironment())
-								   .Returns(environment);
+			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
+
 			var resolver = new ErrorDetailPolicyResolver(
 				environmentProviderMock.Object,
 				new Dictionary<string, IncludeErrorDetailPolicy>
@@ -53,15 +53,16 @@ namespace OrangeJuice.Server.Api.Test.Policies
 			// Assert
 			actual.Should().Be(expected);
 		}
-
+		
+		[TestMethod]
 		public void Resolve_Should_Throw_Exception_When_Policies_Do_Not_Contain_Environment()
 		{
 			// Arrange
 			const string environment = "Test";
 
 			var environmentProviderMock = new Mock<IEnvironmentProvider>(MockBehavior.Strict);
-			environmentProviderMock.Setup(p => p.GetCurrentEnvironment())
-								   .Returns(environment);
+			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
+
 			var resolver = new ErrorDetailPolicyResolver(
 				environmentProviderMock.Object,
 				new Dictionary<string, IncludeErrorDetailPolicy>());
