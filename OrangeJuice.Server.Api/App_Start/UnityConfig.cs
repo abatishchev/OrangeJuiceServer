@@ -47,7 +47,7 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => new AswOptionsFactory(c.Resolve<IConfigurationProvider>())));
 			container.RegisterInstance(
-				new GroceryDescriptionFactory(), // TODO: review registration strategy
+				new FoodDescriptionFactory(), // TODO: review registration strategy
 				new ContainerControlledLifetimeManager());
 		}
 	}

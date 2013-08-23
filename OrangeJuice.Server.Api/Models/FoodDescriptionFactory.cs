@@ -3,9 +3,9 @@ using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Api.Models
 {
-	public sealed class GroceryDescriptionFactory : IGroceryDescriptionFactory
+	public sealed class FoodDescriptionFactory : IFoodDescriptionFactory
 	{
-		public GroceryDescription Create(XElement element)
+		public FoodDescription Create(XElement element)
 		{
 			throw new NotImplementedException();
 		}

@@ -1,6 +1,6 @@
 ﻿namespace OrangeJuice.Server.Api.Models
 {
-	public class GroceryDescription
+	public class FoodDescription
 	{
 		public string Name { get; set; }
 	}

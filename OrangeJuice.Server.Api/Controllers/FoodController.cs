@@ -16,21 +16,21 @@ namespace OrangeJuice.Server.Api.Controllers
 	public class FoodController : ApiController
 	{
 		private readonly IAwsClientFactory _awsClientFactory;
-		private readonly IGroceryDescriptionFactory _groceryDescriptionFactory;
+		private readonly IFoodDescriptionFactory _foodDescriptionFactory;
 
-		public FoodController(IAwsClientFactory awsClientFactory, IGroceryDescriptionFactory groceryDescriptionFactory)
+		public FoodController(IAwsClientFactory awsClientFactory, IFoodDescriptionFactory foodDescriptionFactory)
 		{
 			if (awsClientFactory == null)
 				throw new ArgumentNullException("awsClientFactory");
-			if (groceryDescriptionFactory == null)
-				throw new ArgumentNullException("groceryDescriptionFactory");
+			if (foodDescriptionFactory == null)
+				throw new ArgumentNullException("foodDescriptionFactory");
 
 			_awsClientFactory = awsClientFactory;
-			_groceryDescriptionFactory = groceryDescriptionFactory;
+			_foodDescriptionFactory = foodDescriptionFactory;
 		}
 
 		/// <url>GET api/food/</url>
-		public async Task<HttpResponseMessage> GetDescription([FromUri]GrocerSearchCriteria searchCriteria)
+		public async Task<HttpResponseMessage> GetDescription([FromUri]FoodSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
@@ -44,7 +44,7 @@ namespace OrangeJuice.Server.Api.Controllers
 
 			XElement[] items = await Task.WhenAll(asins.Select(apiClient.ItemLookup));
 
-			return Request.CreateResponse(HttpStatusCode.OK, items.Select(item => _groceryDescriptionFactory.Create(item)));
+			return Request.CreateResponse(HttpStatusCode.OK, items.Select(item => _foodDescriptionFactory.Create(item)));
 		}
 	}
 }

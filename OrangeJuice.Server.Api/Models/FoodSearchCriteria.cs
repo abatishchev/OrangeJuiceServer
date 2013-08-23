@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace OrangeJuice.Server.Api.Models
 {
-	public class GrocerSearchCriteria
+	public class FoodSearchCriteria
 	{
 		[Required]
 		[StringLength(56, MinimumLength = 3)]

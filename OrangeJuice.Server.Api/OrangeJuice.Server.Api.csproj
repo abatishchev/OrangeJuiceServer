@@ -134,10 +134,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="Models\GrocerSearchCriteria.cs" />
-    <Compile Include="Models\GroceryDescriptionFactory.cs" />
-    <Compile Include="Models\GroceryDescription.cs" />
-    <Compile Include="Models\IGroceryDescriptionFactory.cs" />
+    <Compile Include="Models\FoodSearchCriteria.cs" />
+    <Compile Include="Models\FoodDescriptionFactory.cs" />
+    <Compile Include="Models\FoodDescription.cs" />
+    <Compile Include="Models\IFoodDescriptionFactory.cs" />
     <Compile Include="Services\AswOptionsFactory.cs" />
     <Compile Include="Services\AwsClient.cs" />
     <Compile Include="Services\AwsClientFactory.cs" />
