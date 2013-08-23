@@ -81,6 +81,7 @@
     <Compile Include="Configuration\Temp\TempConnectionStringTest.cs" />
     <Compile Include="Configuration\Temp\TempAppSettingsTest.cs" />
     <Compile Include="Data\AwsFoodRepositoryTest.cs" />
+    <Compile Include="Data\FoodDescriptionFactoryTest.cs" />
     <Compile Include="MoqExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Builders\ArgumentBuilderTest.cs" />

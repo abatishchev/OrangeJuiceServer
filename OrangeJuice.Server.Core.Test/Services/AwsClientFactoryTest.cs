@@ -63,14 +63,24 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void Create_Should_()
+		public void Create_Should_Return_AwsClient()
 		{
 			// Arrange
+			IAwsClientFactory factory = new AwsClientFactory(
+				new AwsOptions
+				{
+					AccessKey = "anyKey",
+					AssociateTag = "anyTag",
+					SecretKey = "anyKey"
+				},
+				new Mock<IUrlEncoder>().Object,
+				new Mock<IDateTimeProvider>().Object);
 
 			// Act
+			IAwsClient client = factory.Create();
 
 			// Assert
-			Assert.Inconclusive();
+			client.Should().BeOfType<AwsClient>();
 		}
 	}
 }
