@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Xml.Linq;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Services;
+using OrangeJuice.Server.Api.Validation;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
 	public class FoodController : ApiController
 	{
-		private readonly AwsClientFactory _awsClientFactory;
-		private readonly GroceryDescriptionFactory _groceryDescriptionFactory;
+		private readonly IAwsClientFactory _awsClientFactory;
+		private readonly IGroceryDescriptionFactory _groceryDescriptionFactory;
 
-		public FoodController(AwsClientFactory awsClientFactory, GroceryDescriptionFactory groceryDescriptionFactory)
+		public FoodController(IAwsClientFactory awsClientFactory, IGroceryDescriptionFactory groceryDescriptionFactory)
 		{
 			if (awsClientFactory == null)
 				throw new ArgumentNullException("awsClientFactory");
@@ -27,15 +30,21 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		/// <url>GET api/food/</url>
-		public async Task<IEnumerable<GroceryDescription>> GetDescription(string title)
+		public async Task<HttpResponseMessage> GetDescription([FromUri]GrocerSearchCriteria searchCriteria)
 		{
+			if (searchCriteria == null)
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
+
+			if (!ModelValidator.Current.IsValid(this.ModelState))
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
+
 			AwsClient apiClient = _awsClientFactory.Create();
 
-			IEnumerable<string> asins = await apiClient.ItemSearch(title);
+			IEnumerable<string> asins = await apiClient.ItemSearch(searchCriteria.Title);
 
 			XElement[] items = await Task.WhenAll(asins.Select(apiClient.ItemLookup));
 
-			return items.Select(item => _groceryDescriptionFactory.Create(item));
+			return Request.CreateResponse(HttpStatusCode.OK, items.Select(item => _groceryDescriptionFactory.Create(item)));
 		}
 	}
 }
