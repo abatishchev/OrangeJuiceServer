@@ -4,7 +4,7 @@ using System.Text;
 
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Api.Builders
+namespace OrangeJuice.Server.Builders
 {
 	public sealed class SignatureBuilder
 	{

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http.ModelBinding;
 
 using FluentAssertions;
 
@@ -11,9 +10,8 @@ using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Api.Services;
-using OrangeJuice.Server.Api.Validation;
-using OrangeJuice.Server.Web;
+using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
@@ -22,33 +20,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region Ctor
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_AwsClientFactory_Is_Null()
+		public void Ctor_Should_Throw_Exception_When_AwsFoodRepository_Is_Null()
 		{
 			// Arrange
-			const IAwsClientFactory awsClientFactory = null;
-			const IGroceryDescriptionFactory groceryDescriptionFactory = null;
+			const AwsFoodRepository foodRepository = null;
 
 			// Act
-			Action action = () => new FoodController(awsClientFactory, groceryDescriptionFactory);
+			Action action = () => new FoodController(foodRepository);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("awsClientFactory");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_GroceryDescriptionFactorys_Is_Null()
-		{
-			// Arrange
-			IAwsClientFactory awsClientFactory = new Mock<IAwsClientFactory>().Object;
-			const IGroceryDescriptionFactory groceryDescriptionFactory = null;
-
-			// Act
-			Action action = () => new FoodController(awsClientFactory, groceryDescriptionFactory);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("groceryDescriptionFactory");
+				  .And.ParamName.Should().Be("foodRepository");
 		}
 		#endregion
 
@@ -58,7 +40,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			FoodController controller = CreateController();
-			const GrocerSearchCriteria searchCriteria = null;
+			const FoodSearchCriteria searchCriteria = null;
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
@@ -74,7 +56,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			FoodController controller = CreateController();
-			GrocerSearchCriteria searchCriteria = new GrocerSearchCriteria();
+			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
@@ -88,14 +70,54 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			}
 		}
 
+		[TestMethod]
+		public async void GetDescription_Should_Pass_SearchCriteria_To_FoodRepository_Register()
+		{
+			// Arrange
+			Assert.Inconclusive();
+
+			FoodController controller = CreateController();
+			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
+
+			// Act
+			using (ControllerFactory.NewContext())
+			{
+				await controller.GetDescription(searchCriteria);
+
+				// Assert
+				//userRepositoryMock.Verify(r => r.Register(email), Times.Once());
+			}
+		}
+
+		[TestMethod]
+		public async void GetDescription_Should_Return_Description_Of_Found_Food()
+		{
+			// Arrange
+			FoodDescription expected = new FoodDescription();
+
+			Assert.Inconclusive();
+
+			FoodController controller = CreateController();
+			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
+
+			// Act
+			using (ControllerFactory.NewContext())
+			{
+				HttpResponseMessage message = await controller.GetDescription(searchCriteria);
+				HttpStatusCode actual = message.StatusCode;
+
+				// Assert
+				actual.Should().Be(expected);
+			}
+		}
 		#endregion
 
 		#region Helper methods
-		private static FoodController CreateController(IAwsClientFactory awsClientFactory = null, IGroceryDescriptionFactory groceryDescriptionFactory = null)
+		private static FoodController CreateController(IAwsClientFactory awsClientFactory = null, IFoodDescriptionFactory foodDescriptionFactory = null)
 		{
 			return ControllerFactory.Create<FoodController>(
 				awsClientFactory ?? new Mock<IAwsClientFactory>(MockBehavior.Strict).Object,
-				groceryDescriptionFactory ?? new Mock<IGroceryDescriptionFactory>(MockBehavior.Strict).Object);
+				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>(MockBehavior.Strict).Object);
 		}
 		#endregion
 	}

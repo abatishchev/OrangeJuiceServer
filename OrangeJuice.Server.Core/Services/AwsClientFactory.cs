@@ -1,9 +1,9 @@
 ﻿using System;
 
-using OrangeJuice.Server.Api.Builders;
+using OrangeJuice.Server.Builders;
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Api.Services
+namespace OrangeJuice.Server.Services
 {
 	public sealed class AwsClientFactory : IAwsClientFactory
 	{
@@ -25,7 +25,7 @@ namespace OrangeJuice.Server.Api.Services
 			_dateTimeProvider = dateTimeProvider;
 		}
 
-		public AwsClient Create()
+		public IAwsClient Create()
 		{
 			return new AwsClient(
 				new ArgumentBuilder(_awsOptions.AssociateTag),

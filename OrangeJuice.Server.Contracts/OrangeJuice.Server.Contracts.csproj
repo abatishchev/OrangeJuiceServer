@@ -37,6 +37,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -45,9 +47,14 @@
     <Compile Include="AppKey.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
+    <Compile Include="Data\FoodDescription.cs" />
+    <Compile Include="Data\IFoodDescriptionFactory.cs" />
+    <Compile Include="Data\IFoodRepository.cs" />
     <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\IUserRepository.cs" />
     <Compile Include="IDateTimeProvider.cs" />
+    <Compile Include="Services\IAwsClient.cs" />
+    <Compile Include="Services\IAwsClientFactory.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

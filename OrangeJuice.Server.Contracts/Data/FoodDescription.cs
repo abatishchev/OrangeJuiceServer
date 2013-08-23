@@ -1,4 +1,4 @@
-﻿namespace OrangeJuice.Server.Api.Models
+﻿namespace OrangeJuice.Server.Data
 {
 	public class FoodDescription
 	{

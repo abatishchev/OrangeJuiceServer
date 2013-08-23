@@ -3,11 +3,10 @@ using System.Web.Http;
 using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Api.Handlers;
-using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Api.Services;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Model.Repository;
+using OrangeJuice.Server.Services;
 
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api

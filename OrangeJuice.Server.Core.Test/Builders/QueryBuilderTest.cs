@@ -8,10 +8,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Api.Builders;
+using OrangeJuice.Server.Builders;
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Api.Test.Builders
+namespace OrangeJuice.Server.Test.Builders
 {
 	[TestClass]
 	public class QueryBuilderTest
@@ -224,7 +224,7 @@ namespace OrangeJuice.Server.Api.Test.Builders
 		{
 			var dateTimeProviderMock = new Mock<IDateTimeProvider>();
 			dateTimeProviderMock.Setup(p => p.GetNow()).Returns(now);
-			dateTimeProviderMock.Setup(p => p.FormatToUniversal(now)).Returns(now.ToString());
+			dateTimeProviderMock.Setup(p => p.FormatToUniversal(now)).Returns(now.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			return dateTimeProviderMock;
 		}
 

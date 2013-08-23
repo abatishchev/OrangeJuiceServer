@@ -1,4 +1,4 @@
-﻿namespace OrangeJuice.Server.Api.Services
+﻿namespace OrangeJuice.Server.Services
 {
 	public class AwsOptions
 	{

@@ -6,10 +6,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Api.Services;
+using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Api.Test.Services
+namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
 	public class AwsClientFactoryTest

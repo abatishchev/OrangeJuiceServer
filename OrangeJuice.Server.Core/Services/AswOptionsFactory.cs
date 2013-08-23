@@ -1,9 +1,8 @@
 ﻿using System;
 
-using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Configuration;
 
-namespace OrangeJuice.Server.Api.Services
+namespace OrangeJuice.Server.Services
 {
 	public class AswOptionsFactory
 	{

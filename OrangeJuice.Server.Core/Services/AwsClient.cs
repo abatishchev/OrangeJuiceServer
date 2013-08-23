@@ -7,11 +7,11 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using OrangeJuice.Server.Api.Builders;
+using OrangeJuice.Server.Builders;
 
-namespace OrangeJuice.Server.Api.Services
+namespace OrangeJuice.Server.Services
 {
-	public sealed class AwsClient
+	public sealed class AwsClient : IAwsClient
 	{
 		private readonly ArgumentBuilder _argumentBuilder;
 		private readonly QueryBuilder _queryBuilder;

@@ -7,10 +7,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Api.Builders;
+using OrangeJuice.Server.Builders;
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Api.Test.Builders
+namespace OrangeJuice.Server.Test.Builders
 {
 	[TestClass]
 	public class SignatureBuilderTest

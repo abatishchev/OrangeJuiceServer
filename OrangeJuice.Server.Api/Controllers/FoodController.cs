@@ -1,32 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Xml.Linq;
 
 using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Api.Services;
 using OrangeJuice.Server.Api.Validation;
+using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
 	public class FoodController : ApiController
 	{
-		private readonly IAwsClientFactory _awsClientFactory;
-		private readonly IFoodDescriptionFactory _foodDescriptionFactory;
+		private readonly IFoodRepository _foodRepository;
 
-		public FoodController(IAwsClientFactory awsClientFactory, IFoodDescriptionFactory foodDescriptionFactory)
+		public FoodController(IFoodRepository foodRepository)
 		{
-			if (awsClientFactory == null)
-				throw new ArgumentNullException("awsClientFactory");
-			if (foodDescriptionFactory == null)
-				throw new ArgumentNullException("foodDescriptionFactory");
-
-			_awsClientFactory = awsClientFactory;
-			_foodDescriptionFactory = foodDescriptionFactory;
+			if (foodRepository == null)
+				throw new ArgumentNullException("foodRepository");
+			_foodRepository = foodRepository;
 		}
 
 		/// <url>GET api/food/</url>
@@ -38,13 +30,8 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			AwsClient apiClient = _awsClientFactory.Create();
-
-			IEnumerable<string> asins = await apiClient.ItemSearch(searchCriteria.Title);
-
-			XElement[] items = await Task.WhenAll(asins.Select(apiClient.ItemLookup));
-
-			return Request.CreateResponse(HttpStatusCode.OK, items.Select(item => _foodDescriptionFactory.Create(item)));
+			var description = await _foodRepository.Find(searchCriteria.Title);
+			return Request.CreateResponse(HttpStatusCode.OK, description);
 		}
 	}
 }

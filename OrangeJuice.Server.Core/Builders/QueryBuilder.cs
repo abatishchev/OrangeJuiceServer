@@ -4,7 +4,7 @@ using System.Linq;
 
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Api.Builders
+namespace OrangeJuice.Server.Builders
 {
 	public class QueryBuilder
 	{

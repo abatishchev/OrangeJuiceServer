@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OrangeJuice.Server.Api.Builders
+namespace OrangeJuice.Server.Builders
 {
 	public sealed class ArgumentBuilder
 	{

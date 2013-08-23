@@ -94,9 +94,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Builders\ArgumentBuilderTest.cs" />
-    <Compile Include="Builders\QueryBuilderTest.cs" />
-    <Compile Include="Builders\SignatureBuilderTest.cs" />
     <Compile Include="Controllers\ControllerFactory.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\FoodControllerTest.cs" />
@@ -110,9 +107,6 @@
     <Compile Include="ObjectContextExtensions.cs" />
     <Compile Include="Policies\ErrorDetailPolicyResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AswOptionsFactoryTest.cs" />
-    <Compile Include="Services\AwsClientFactoryTest.cs" />
-    <Compile Include="Services\AwsClientTest.cs" />
     <Compile Include="TestContext.cs" />
     <Compile Include="TestContextTest.cs" />
     <Compile Include="Validation\ModelValidatorTest.cs" />

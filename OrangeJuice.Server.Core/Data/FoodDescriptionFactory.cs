@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Xml.Linq;
 
-namespace OrangeJuice.Server.Api.Models
+namespace OrangeJuice.Server.Data
 {
 	public sealed class FoodDescriptionFactory : IFoodDescriptionFactory
 	{
-		public FoodDescription Create(XElement element)
+		public FoodDescription Create(System.Xml.Linq.XElement element)
 		{
+			// TODO:
 			throw new NotImplementedException();
 		}
 	}

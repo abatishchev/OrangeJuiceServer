@@ -5,9 +5,9 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using OrangeJuice.Server.Api.Builders;
+using OrangeJuice.Server.Builders;
 
-namespace OrangeJuice.Server.Api.Test.Builders
+namespace OrangeJuice.Server.Test.Builders
 {
 	[TestClass]
 	public class ArgumentBuilderTest
