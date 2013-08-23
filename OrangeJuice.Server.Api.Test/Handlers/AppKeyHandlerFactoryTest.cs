@@ -44,10 +44,10 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_Null_When_Environment_Is_Development()
+		public void Create_Should_Return_Null_When_Environment_Is_Local()
 		{
 			// Arrange
-			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.Development);
+			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.Local);
 			var factory = new AppKeyHandlerFactory(environmentProviderMock.Object);
 
 			// Act
