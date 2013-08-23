@@ -4,9 +4,12 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Moq;
+
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Services;
+using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
@@ -15,29 +18,29 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region Ctor
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_AwsOptions_Is_Null()
+		public void Ctor_Should_Throw_Exception_When_AwsClientFactory_Is_Null()
 		{
 			// Arrange
-			const AwsOptions awsOptions = null;
+			const AwsClientFactory awsClientFactory = null;
 			const GroceryDescriptionFactory groceryDescriptionFactory = null;
 
 			// Act
-			Action action = () => new FoodController(awsOptions, groceryDescriptionFactory);
+			Action action = () => new FoodController(awsClientFactory, groceryDescriptionFactory);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("awsOptions");
+				  .And.ParamName.Should().Be("awsClientFactory");
 		}
 
 		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_GroceryDescriptionFactorys_Is_Null()
 		{
 			// Arrange
-			AwsOptions awsOptions = new AwsOptions();
+			AwsClientFactory awsClientFactory = new AwsClientFactory(new AwsOptions(), new Mock<IUrlEncoder>().Object, new Mock<IDateTimeProvider>().Object);
 			const GroceryDescriptionFactory groceryDescriptionFactory = null;
 
 			// Act
-			Action action = () => new FoodController(awsOptions, groceryDescriptionFactory);
+			Action action = () => new FoodController(awsClientFactory, groceryDescriptionFactory);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -45,12 +48,16 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 		#endregion
 
-
 		#region GetDescription
 		[TestMethod]
-		public void GetDescription_Should_Bla()
+		public void GetDescription_Should_()
 		{
-			// TODO: tests
+			// Arrange
+
+			// Act
+
+			// Assert
+			Assert.Inconclusive();
 		}
 		#endregion
 	}
