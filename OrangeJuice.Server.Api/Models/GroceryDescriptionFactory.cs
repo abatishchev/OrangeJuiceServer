@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Api.Models
 {
-	public class GroceryDescriptionFactory
+	public sealed class GroceryDescriptionFactory : IGroceryDescriptionFactory
 	{
 		public GroceryDescription Create(XElement element)
 		{

@@ -73,7 +73,6 @@ namespace OrangeJuice.Server.Api.Services
 		private string BuildUrl(IDictionary<string, string> args, [CallerMemberName]string operationName = null)
 		{
 			args = _argumentBuilder.BuildArgs(args, operationName);
-
 			string query = _queryBuilder.BuildQuery(args);
 			return _signatureBuilder.SignQuery(query);
 		}

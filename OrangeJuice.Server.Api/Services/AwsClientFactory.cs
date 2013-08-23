@@ -5,7 +5,7 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Api.Services
 {
-	public sealed class AwsClientFactory
+	public sealed class AwsClientFactory : IAwsClientFactory
 	{
 		private readonly AwsOptions _awsOptions;
 		private readonly IUrlEncoder _urlEncoder;
