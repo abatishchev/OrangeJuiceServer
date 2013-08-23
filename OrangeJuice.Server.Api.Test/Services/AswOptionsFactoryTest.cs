@@ -18,8 +18,7 @@ namespace OrangeJuice.Server.Api.Test.Services
 		{
 			// Arrange
 			var configurationProviderMock = new Mock<IConfigurationProvider>(MockBehavior.Strict);
-			configurationProviderMock.Setup(p => p.GetValue(It.IsAny<string>()))
-									 .Returns("non-empty-string");
+			configurationProviderMock.Setup(p => p.GetValue(It.IsAny<string>())).Returns("non-empty-string");
 			var factory = new AswOptionsFactory(configurationProviderMock.Object);
 
 			// Act

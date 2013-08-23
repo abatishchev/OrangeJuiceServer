@@ -77,8 +77,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider(string environment = Configuration.Environment.Test)
 		{
 			var environmentProviderMock = new Mock<IEnvironmentProvider>(MockBehavior.Strict);
-			environmentProviderMock.Setup(p => p.GetCurrentEnvironment())
-								   .Returns(environment);
+			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
 			return environmentProviderMock;
 		}
 		#endregion

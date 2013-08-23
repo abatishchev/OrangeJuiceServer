@@ -38,14 +38,10 @@ namespace OrangeJuice.Server.Api.Test.Policies
 			const IncludeErrorDetailPolicy expected = IncludeErrorDetailPolicy.Default;
 
 			var environmentProviderMock = new Mock<IEnvironmentProvider>(MockBehavior.Strict);
-			environmentProviderMock.Setup(p => p.GetCurrentEnvironment())
-								   .Returns(environment);
+			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
 			var resolver = new ErrorDetailPolicyResolver(
 				environmentProviderMock.Object,
-				new Dictionary<string, IncludeErrorDetailPolicy>
-				{
-					{ environment, expected }
-				});
+				new Dictionary<string, IncludeErrorDetailPolicy> { { environment, expected } });
 
 			// Act
 			IncludeErrorDetailPolicy actual = resolver.Resolve();
@@ -60,8 +56,7 @@ namespace OrangeJuice.Server.Api.Test.Policies
 			const string environment = "Test";
 
 			var environmentProviderMock = new Mock<IEnvironmentProvider>(MockBehavior.Strict);
-			environmentProviderMock.Setup(p => p.GetCurrentEnvironment())
-								   .Returns(environment);
+			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
 			var resolver = new ErrorDetailPolicyResolver(
 				environmentProviderMock.Object,
 				new Dictionary<string, IncludeErrorDetailPolicy>());

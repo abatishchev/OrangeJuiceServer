@@ -79,8 +79,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			//Arrange
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Find(It.IsAny<Guid>()))
-							  .Returns<Guid>(id => Task.FromResult<IUser>(null));
+			userRepositoryMock.Setup(r => r.Find(It.IsAny<Guid>())).Returns<Guid>(id => Task.FromResult<IUser>(null));
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserInformation userInformation = new UserInformation
@@ -128,8 +127,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IUser user = CreateUser(userGuid);
 
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Find(userGuid))
-							  .ReturnsAsync(user);
+			userRepositoryMock.Setup(r => r.Find(userGuid)).ReturnsAsync(user);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserInformation userInformation = new UserInformation
@@ -152,8 +150,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IUser expected = CreateUser(userGuid);
 
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Find(userGuid))
-							  .ReturnsAsync(expected);
+			userRepositoryMock.Setup(r => r.Find(userGuid)).ReturnsAsync(expected);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserInformation userInformation = new UserInformation
@@ -212,8 +209,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			IUser user = CreateUser();
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
-							  .ReturnsAsync(user);
+			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(user);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();
@@ -235,8 +231,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
-							  .Returns<IUser>(null);
+			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).Returns<IUser>(null);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();
@@ -287,8 +282,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			const string email = "test@example.com";
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
-							  .ReturnsAsync(It.IsAny<IUser>());
+			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(It.IsAny<IUser>());
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration { Email = email };
@@ -311,8 +305,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IUser user = CreateUser(expected);
 
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
-							  .ReturnsAsync(user);
+			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(user);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();
