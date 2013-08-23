@@ -64,7 +64,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			using (NewContext(CreateModelValidator(s => false)))
+			using (ControllerFactory.NewContext(ControllerFactory.CreateModelValidator(s => false)))
 			{
 				HttpResponseMessage message = await controller.GetUserInformation(userInformation);
 				HttpStatusCode actual = message.StatusCode;
@@ -82,7 +82,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.Find(It.IsAny<Guid>()))
 							  .Returns<Guid>(id => Task.FromResult<IUser>(null));
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserInformation userInformation = new UserInformation
 			{
 				UserKey = Guid.NewGuid()
@@ -110,7 +110,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 								  called = true;
 							  });
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserInformation userInformation = new UserInformation();
 
 			// Act
@@ -131,7 +131,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.Find(userGuid))
 							  .ReturnsAsync(user);
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserInformation userInformation = new UserInformation
 			{
 				UserKey = userGuid
@@ -155,7 +155,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.Find(userGuid))
 							  .ReturnsAsync(expected);
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserInformation userInformation = new UserInformation
 			{
 				UserKey = userGuid
@@ -196,7 +196,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			using (NewContext(CreateModelValidator(s => false)))
+			using (ControllerFactory.NewContext())
 			{
 				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
 				HttpStatusCode actual = message.StatusCode;
@@ -215,12 +215,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
 							  .ReturnsAsync(user);
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();
 			const HttpStatusCode expected = HttpStatusCode.OK;
 
 			// Act
-			using (NewContext(CreateModelValidator()))
+			using (ControllerFactory.NewContext())
 			{
 				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
 				HttpStatusCode actual = message.StatusCode;
@@ -238,12 +238,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
 							  .Returns<IUser>(null);
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();
 			const HttpStatusCode expected = HttpStatusCode.InternalServerError;
 
 			// Act
-			using (NewContext(CreateModelValidator()))
+			using (ControllerFactory.NewContext())
 			{
 				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
 				HttpStatusCode actual = message.StatusCode;
@@ -268,11 +268,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 									  e.Should().Be(email);
 								  });
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration { Email = email };
 
 			// Act
-			using (NewContext(CreateModelValidator()))
+			using (ControllerFactory.NewContext())
 			{
 				await controller.PutUserRegistration(userRegistration);
 
@@ -290,11 +290,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
 							  .ReturnsAsync(It.IsAny<IUser>());
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration { Email = email };
 
 			// Act
-			using (NewContext(CreateModelValidator()))
+			using (ControllerFactory.NewContext())
 			{
 				await controller.PutUserRegistration(userRegistration);
 
@@ -314,11 +314,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>()))
 							  .ReturnsAsync(user);
 
-			UserController controller = CreateController(userRepositoryMock);
+			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();
 
 			// Act
-			using (NewContext(CreateModelValidator(s => true)))
+			using (ControllerFactory.NewContext())
 			{
 				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
 				Guid actual = message.Content.GetValue<Guid>();
@@ -330,36 +330,16 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static UserController CreateController(Mock<IUserRepository> userRepositoryMock = null)
+		private static UserController CreateController(IUserRepository userRepository = null)
 		{
-			return ControllerFactory.Create<UserController>((userRepositoryMock ?? new Mock<IUserRepository>(MockBehavior.Strict)).Object);
-		}
-
-		private static IModelValidator CreateModelValidator(Func<ModelStateDictionary, bool> isValidFunc = null)
-		{
-			var modelValidatorMock = new Mock<IModelValidator>(MockBehavior.Strict);
-			modelValidatorMock.Setup(v => v.IsValid(It.IsAny<ModelStateDictionary>())).Returns(isValidFunc ?? (s => true));
-			return modelValidatorMock.Object;
+			return ControllerFactory.Create<UserController>(userRepository ?? new Mock<IUserRepository>(MockBehavior.Strict).Object);
 		}
 
 		private static IUser CreateUser(Guid? userGuid = null)
 		{
-			var userMock = new Mock<IUser>(MockBehavior.Strict);
-			userMock.Setup(u => u.UserGuid)
-					.Returns(userGuid ?? Guid.NewGuid());
+			var userMock = new Mock<IUser>();
+			userMock.Setup(u => u.UserGuid).Returns(userGuid ?? Guid.NewGuid());
 			return userMock.Object;
-		}
-
-		private static IDisposable NewContext(IModelValidator modelValidator)
-		{
-			IModelValidator current = ModelValidator.Current;
-			return new TestContext(() =>
-				{
-					ModelValidator.Current = modelValidator;
-				}, () =>
-				{
-					ModelValidator.Current = current;
-				});
 		}
 		#endregion
 	}
