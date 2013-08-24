@@ -5,7 +5,7 @@ using System.Net;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyHeaderHandler : ValidatingDelegatingHandler
+	public sealed class AppKeyHeaderHandler : AppKeyHandlerBase
 	{
 		internal const string AppKeyHeaderName = "X-ApiKey";
 

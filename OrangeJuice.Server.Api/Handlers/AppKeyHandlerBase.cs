@@ -1,11 +1,10 @@
-﻿using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public abstract class ValidatingDelegatingHandler : DelegatingHandler
+	public abstract class AppKeyHandlerBase : DelegatingHandler
 	{
 		internal abstract System.Net.HttpStatusCode ErrorCode { get; }
 
@@ -21,10 +20,5 @@ namespace OrangeJuice.Server.Api.Handlers
 		}
 
 		internal abstract bool IsValid(HttpRequestMessage request);
-
-		internal virtual Task<HttpResponseMessage> RequestIsValid(HttpRequestMessage request, CancellationToken cancellationToken)
-		{
-			return base.SendAsync(request, cancellationToken);
-		}
 	}
 }

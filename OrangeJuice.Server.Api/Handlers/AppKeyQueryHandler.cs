@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyQueryHandler : ValidatingDelegatingHandler
+	public sealed class AppKeyQueryHandler : AppKeyHandlerBase
 	{
 		internal const string AppKeySegmentName = "appKey";
 

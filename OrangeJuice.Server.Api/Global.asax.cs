@@ -15,7 +15,7 @@ namespace OrangeJuice.Server.Api
 			RouteConfig.RegisterRoutes(GlobalConfiguration.Configuration.Routes);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-			HandlerConfig.ConfigurHandlers(GlobalConfiguration.Configuration.MessageHandlers);
+			HandlerConfig.ConfigurHandlers(container, GlobalConfiguration.Configuration.MessageHandlers);
 
 			FilterConfig.RegisterFilters(GlobalFilters.Filters);
 			FilterConfig.RegisterFilters(GlobalConfiguration.Configuration.Filters);

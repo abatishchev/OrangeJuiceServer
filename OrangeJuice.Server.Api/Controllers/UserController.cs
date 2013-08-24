@@ -30,7 +30,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Retrieves a user
 		/// </summary>
-		/// <param name="information">??</param>
+		/// <param name="information">User search criteria</param>
 		/// <returns>User entity</returns>
 		/// <url>GET /api/user/</url>
 		public async Task<HttpResponseMessage> GetUserInformation([FromUri]UserInformation information)

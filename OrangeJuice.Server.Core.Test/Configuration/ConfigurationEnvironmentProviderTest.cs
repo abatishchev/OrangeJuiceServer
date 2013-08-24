@@ -33,8 +33,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			// Arrange
 			const string environment = "SomeEnvironment";
 			var configurationProviderMock = new Mock<IConfigurationProvider>(MockBehavior.Strict);
-			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName))
-									 .Returns(environment);
+			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName)).Returns(environment);
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
 			// Act
@@ -50,8 +49,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			// Arrange
 			const string expected = "SomeEnvironment";
 			var configurationProviderMock = new Mock<IConfigurationProvider>(MockBehavior.Strict);
-			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName))
-									 .Returns(expected);
+			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName)).Returns(expected);
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
 			// Act
@@ -66,8 +64,7 @@ namespace OrangeJuice.Server.Test.Configuration
 		{
 			// Arrange
 			var configurationProviderMock = new Mock<IConfigurationProvider>(MockBehavior.Strict);
-			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName))
-									 .Returns((string)null);
+			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName)).Returns((string)null);
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
 			// Act
@@ -82,8 +79,7 @@ namespace OrangeJuice.Server.Test.Configuration
 		{
 			// Arrange
 			var configurationProviderMock = new Mock<IConfigurationProvider>(MockBehavior.Strict);
-			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName))
-									 .Returns("");
+			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName)).Returns("");
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
 			// Act

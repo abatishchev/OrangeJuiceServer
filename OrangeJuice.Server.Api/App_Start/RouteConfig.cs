@@ -5,7 +5,7 @@ using System.Web.Routing;
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
-	public class RouteConfig
+	internal class RouteConfig
 	{
 		public static void RegisterRoutes(HttpRouteCollection routes)
 		{
