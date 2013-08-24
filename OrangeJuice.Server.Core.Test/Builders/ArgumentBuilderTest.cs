@@ -54,7 +54,8 @@ namespace OrangeJuice.Server.Test.Builders
 
 			// Assert
 			args.Should().Contain(ArgumentBuilder.AssociateTagKey, associateTag)
-					 .And.Contain(ArgumentBuilder.OperationNameKey, operationName);
+					 .And.Contain(ArgumentBuilder.OperationNameKey, operationName)
+					 .And.Contain(ArgumentBuilder.ServiceKey, ArgumentBuilder.ServiceName);
 		}
 	}
 }

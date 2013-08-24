@@ -8,6 +8,9 @@ namespace OrangeJuice.Server.Builders
 		internal const string AssociateTagKey = "AssociateTag";
 		internal const string OperationNameKey = "Operation";
 
+		internal const string ServiceKey = "Service";
+		internal const string ServiceName = "AWSECommerceService";
+
 		private readonly string _associateTag;
 
 		public ArgumentBuilder(string associateTag)
@@ -21,6 +24,7 @@ namespace OrangeJuice.Server.Builders
 		{
 			return new Dictionary<string, string>(args)
 			{
+				{ ServiceKey, ServiceName },
 				{ AssociateTagKey, _associateTag },
 				{ OperationNameKey, operationName }
 			};
