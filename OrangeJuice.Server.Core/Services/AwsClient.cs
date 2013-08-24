@@ -17,6 +17,8 @@ namespace OrangeJuice.Server.Services
 		private readonly QueryBuilder _queryBuilder;
 		private readonly SignatureBuilder _signatureBuilder;
 
+		private readonly HttpClient _httpClient;
+
 		public AwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder)
 		{
 			if (argumentBuilder == null)
@@ -29,6 +31,8 @@ namespace OrangeJuice.Server.Services
 			_argumentBuilder = argumentBuilder;
 			_queryBuilder = queryBuilder;
 			_signatureBuilder = signatureBuilder;
+
+			_httpClient = new HttpClient();
 		}
 
 		public async Task<XElement> ItemLookup(string asin)
@@ -70,6 +74,11 @@ namespace OrangeJuice.Server.Services
 						.Select(e => e.Value);
 		}
 
+		public void Dispose()
+		{
+			_httpClient.Dispose();
+		}
+
 		private string BuildUrl(IDictionary<string, string> args, [CallerMemberName]string operationName = null)
 		{
 			args = _argumentBuilder.BuildArgs(args, operationName);
@@ -93,10 +102,9 @@ namespace OrangeJuice.Server.Services
 							  .Element(ns + "IsValid");
 		}
 
-		private static async Task<XDocument> LoadDocument(string url)
+		private async Task<XDocument> LoadDocument(string url)
 		{
-			HttpClient client = new HttpClient();
-			using (Stream stream = await client.GetStreamAsync(url))
+			using (Stream stream = await _httpClient.GetStreamAsync(url))
 			{
 				return XDocument.Load(stream);
 			}
