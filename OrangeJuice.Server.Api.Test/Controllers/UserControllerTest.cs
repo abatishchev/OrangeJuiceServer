@@ -191,7 +191,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			using (ControllerFactory.NewContext())
+			using (ControllerFactory.NewContext(ControllerFactory.CreateModelValidator(s => false)))
 			{
 				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
 				HttpStatusCode actual = message.StatusCode;
@@ -229,7 +229,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).Returns<IUser>(null);
+			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(null);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();

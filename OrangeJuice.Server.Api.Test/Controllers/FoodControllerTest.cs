@@ -12,7 +12,6 @@ using Moq;
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
@@ -61,7 +60,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			using (ControllerFactory.NewContext())
+			using (ControllerFactory.NewContext(ControllerFactory.CreateModelValidator(s => false)))
 			{
 				HttpResponseMessage message = await controller.GetDescription(searchCriteria);
 				HttpStatusCode actual = message.StatusCode;
@@ -114,11 +113,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static FoodController CreateController(IAwsClientFactory awsClientFactory = null, IFoodDescriptionFactory foodDescriptionFactory = null)
+		private static FoodController CreateController(IFoodRepository repository = null)
 		{
-			return ControllerFactory.Create<FoodController>(
-				awsClientFactory ?? new Mock<IAwsClientFactory>(MockBehavior.Strict).Object,
-				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>(MockBehavior.Strict).Object);
+			return ControllerFactory.Create<FoodController>(repository ?? new Mock<IFoodRepository>(MockBehavior.Strict).Object);
 		}
 		#endregion
 	}
