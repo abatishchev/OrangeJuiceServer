@@ -14,6 +14,7 @@ namespace OrangeJuice.Server.Test.Data
 	[TestClass]
 	public class AwsFoodRepositoryTest
 	{
+		#region Test methods
 		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_AwsClientFactory_Is_Null()
 		{
@@ -43,5 +44,37 @@ namespace OrangeJuice.Server.Test.Data
 			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("foodDescriptionFactory");
 		}
+
+		[TestMethod]
+		public void Find_Should_TThrow_Exception_When_Title_Is_Null()
+		{
+			// Arrange
+
+			// Act
+
+			// Assert
+
+		}
+
+		[TestMethod]
+		public void Find_Should_TThrow_Exception_When_Title_Is_Empty()
+		{
+			// Arrange
+
+			// Act
+
+			// Assert
+
+		}
+		#endregion
+
+		#region Helper methods
+		private static IFoodRepository CreateRepository(IAwsClientFactory awsClientFactory = null, IFoodDescriptionFactory foodDescriptionFactory = null)
+		{
+			return new AwsFoodRepository(
+				awsClientFactory ?? new Mock<IAwsClientFactory>(MockBehavior.Strict).Object,
+				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>(MockBehavior.Strict).Object);
+		}
+		#endregion
 	}
 }

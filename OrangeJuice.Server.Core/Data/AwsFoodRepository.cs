@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using OrangeJuice.Server.Services;
 
@@ -33,9 +32,9 @@ namespace OrangeJuice.Server.Data
 			{
 				IEnumerable<string> asins = await apiClient.ItemSearch(title);
 
-				XElement[] items = await Task.WhenAll(asins.Select(apiClient.ItemLookup));
-
-				return items.Select(item => _foodDescriptionFactory.Create(item));
+				return asins.Select(id => _foodDescriptionFactory.Create(
+					apiClient.ItemDescription(id),
+					apiClient.ItemImages(id)));
 			}
 		}
 	}

@@ -13,12 +13,15 @@ namespace OrangeJuice.Server.Services
 {
 	public sealed class AwsClient : IAwsClient
 	{
+		#region Fields
 		private readonly ArgumentBuilder _argumentBuilder;
 		private readonly QueryBuilder _queryBuilder;
 		private readonly SignatureBuilder _signatureBuilder;
 
 		private readonly HttpClient _httpClient;
+		#endregion
 
+		#region Constructors
 		public AwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder)
 		{
 			if (argumentBuilder == null)
@@ -34,31 +37,16 @@ namespace OrangeJuice.Server.Services
 
 			_httpClient = new HttpClient();
 		}
+		#endregion
 
-		public async Task<XElement> ItemLookup(string asin)
-		{
-			var args = new Dictionary<string, string>
-			{
-				{ "IdType", "ASIN" },
-				{ "ItemId", asin }
-			};
-
-			string url = BuildUrl(args);
-
-			XDocument doc = await LoadDocument(url);
-			XNamespace ns = doc.Root.Name.Namespace;
-
-			XElement items = GetItems(doc, ns);
-
-			return items.Element(ns + "Item");
-		}
-
+		#region IAwsClient Members
 		public async Task<IEnumerable<string>> ItemSearch(string title)
 		{
 			var args = new Dictionary<string, string>
 			{
-				{ "Condition", "All" },
 				{ "SearchIndex", "Grocery" },
+				{ "ResponseGroup", "Small" },
+				{ "Condition", "All" },
 				{ "Title", title }
 			};
 
@@ -68,38 +56,35 @@ namespace OrangeJuice.Server.Services
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			var items = GetItems(doc, ns);
-
 			return items.Elements(ns + "Item")
 						.Elements(ns + "ASIN")
 						.Select(e => e.Value);
 		}
 
+		public async Task<XElement> ItemDescription(string id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<XElement> ItemImages(string id)
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
+
+		#region IDisposable Members
 		public void Dispose()
 		{
 			_httpClient.Dispose();
 		}
+		#endregion
 
+		#region Methods
 		private string BuildUrl(IDictionary<string, string> args, [CallerMemberName]string operationName = null)
 		{
 			args = _argumentBuilder.BuildArgs(args, operationName);
 			string query = _queryBuilder.BuildQuery(args);
 			return _signatureBuilder.SignQuery(query);
-		}
-
-		private static XElement GetItems(XDocument doc, XNamespace ns)
-		{
-			var items = doc.Root.Element(ns + "Items");
-
-			if (!IsValid(items, ns))
-				throw new Exception();
-
-			return items;
-		}
-
-		private static bool IsValid(XContainer items, XNamespace ns)
-		{
-			return (bool)items.Element(ns + "Request")
-							  .Element(ns + "IsValid");
 		}
 
 		private async Task<XDocument> LoadDocument(string url)
@@ -109,5 +94,22 @@ namespace OrangeJuice.Server.Services
 				return XDocument.Load(stream);
 			}
 		}
+
+		private static XElement GetItems(XDocument doc, XNamespace ns)
+		{
+			var items = doc.Root.Element(ns + "Items");
+			if (items == null)
+				throw new InvalidOperationException("Response recieved has no items");
+			if (!IsValid(items, ns))
+				throw new InvalidOperationException("Response recieved was not valid");
+			return items;
+		}
+
+		private static bool IsValid(XContainer items, XNamespace ns)
+		{
+			return (bool)items.Element(ns + "Request")
+							  .Element(ns + "IsValid");
+		}
+		#endregion
 	}
 }
