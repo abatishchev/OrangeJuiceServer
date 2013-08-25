@@ -52,13 +52,13 @@ namespace OrangeJuice.Server.Web
 				{ "*", "%2A" },
 				{ "!", "%21" },
 				{ "~", "%7E" },
-				{ "+", "%2B" },
+				{ "+", "%20" },
 			};
 		}
 
 		private static IEnumerable<Func<string, string>> GetDefaultEncodingSteps()
 		{
-			yield return s => HttpUtility.UrlEncode(s);
+			yield return HttpUtility.UrlEncode;
 			yield return PercentEncode;
 			yield return UpperCaseEncoding;
 		}
@@ -70,7 +70,7 @@ namespace OrangeJuice.Server.Web
 
 		internal static string UpperCaseEncoding(string url)
 		{
-			return Regex.Replace(url, "%([a-z]{2})", m => '%' + m.Groups[1].Value.ToUpperInvariant());
+			return Regex.Replace(url, "%([a-z0-9]{2})", m => '%' + m.Groups[1].Value.ToUpperInvariant());
 		}
 		#endregion
 	}
