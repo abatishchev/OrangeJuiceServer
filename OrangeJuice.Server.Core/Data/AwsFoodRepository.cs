@@ -28,14 +28,12 @@ namespace OrangeJuice.Server.Data
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
 
-			using (IAwsClient apiClient = _awsClientFactory.Create())
-			{
-				IEnumerable<string> asins = await apiClient.ItemSearch(title);
+			IAwsClient apiClient = _awsClientFactory.Create();
+			IEnumerable<string> asins = await apiClient.ItemSearch(title);
 
-				return asins.Select(id => _foodDescriptionFactory.Create(
-					apiClient.ItemDescription(id),
-					apiClient.ItemImages(id)));
-			}
+			return asins.Select(id => _foodDescriptionFactory.Create(
+				apiClient.ItemDescription(id),
+				apiClient.ItemImages(id)));
 		}
 	}
 }

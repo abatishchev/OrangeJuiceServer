@@ -1,54 +1,53 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Data
 {
 	public sealed class FoodDescriptionFactory : IFoodDescriptionFactory
 	{
-		public FoodDescription Create(Task<XElement> descriptionTask, Task<XElement> imageTask)
+		public FoodDescription Create(Task<XElement> attributesTask, Task<XElement> imagesTask)
 		{
 			FoodDescription description = new FoodDescription();
 
-			descriptionTask = descriptionTask.ContinueWith(t =>
+			attributesTask = attributesTask.ContinueWith(t =>
 				{
-					if (t.Exception != null)
-						Debug.Print(t.Exception.ToString());
+					XElement itemElement = t.Result;
+					XNamespace ns = itemElement.Name.Namespace;
+					XElement attributesElement = itemElement.Element(ns + "ItemAttributes");
 
-					XElement descriptionElement = t.Result;
-					XNamespace ns = descriptionElement.Name.Namespace;
-					XElement itemAttributes = descriptionElement.Element(ns + "ItemAttributes");
-
-					description.ASIN = (string)descriptionElement.Element(ns + "ASIN");
-					description.Title = (string)itemAttributes.Element(ns + "Title");
-					description.Brand = (string)itemAttributes.Element(ns + "Brand");
+					description.ASIN = GetAttribute(itemElement, ns, "ASIN");
+					description.Title = GetAttribute(attributesElement, ns, "Title");
+					description.Brand = GetAttribute(attributesElement, ns, "Brand");
 
 					return t.Result;
 				});
 
-			imageTask = imageTask.ContinueWith(t =>
+			imagesTask = imagesTask.ContinueWith(t =>
 				{
-					if (t.Exception != null)
-						Debug.Print(t.Exception.ToString());
+					XElement imagesElement = t.Result;
+					XNamespace ns = imagesElement.Name.Namespace;
 
-					XElement imageElement = t.Result;
-					XNamespace ns = imageElement.Name.Namespace;
-
-					description.SmallImageUrl = (string)imageElement.Element(ns + "SmallImage").Element(ns + "URL");
-					description.MediumImageUrl = (string)imageElement.Element(ns + "MediumImage").Element(ns + "URL");
-					description.LargeImageUrl = (string)imageElement.Element(ns + "LargeImage").Element(ns + "URL");
+					description.SmallImageUrl = GetImageUrl(imagesElement, ns, "SmallImage");
+					description.MediumImageUrl = GetImageUrl(imagesElement, ns, "MediumImage");
+					description.LargeImageUrl = GetImageUrl(imagesElement, ns, "LargeImage");
 
 					return t.Result;
 				});
 
-			Task.WaitAll(descriptionTask, imageTask);
+			Task.WaitAll(attributesTask, imagesTask);
 			return description;
 		}
 
-		private static string GetValue<T>(XElement descriptionElement, XNamespace ns, Func<FoodDescription, T> propertyFunc)
+		private static string GetAttribute(XElement element, XNamespace ns, string elementName)
 		{
-			return null;
+			return (string)element.Element(ns + elementName);
+		}
+
+		private static string GetImageUrl(XElement element, XNamespace ns, string elementName)
+		{
+			// ReSharper disable once PossibleNullReferenceException
+			return (string)element.Element(ns + elementName)
+								  .Element(ns + "URL");
 		}
 	}
 }

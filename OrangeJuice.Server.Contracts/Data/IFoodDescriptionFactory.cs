@@ -5,6 +5,6 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IFoodDescriptionFactory
 	{
-		FoodDescription Create(Task<XElement> descriptionTask, Task<XElement> imageTask);
+		FoodDescription Create(Task<XElement> attributesTask, Task<XElement> imagesTask);
 	}
 }

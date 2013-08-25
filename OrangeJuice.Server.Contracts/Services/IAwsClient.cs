@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Services
 {
-	public interface IAwsClient : IDisposable
+	public interface IAwsClient
 	{
 		Task<IEnumerable<string>> ItemSearch(string title);
 

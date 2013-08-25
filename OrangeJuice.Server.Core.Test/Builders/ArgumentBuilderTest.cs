@@ -41,21 +41,20 @@ namespace OrangeJuice.Server.Test.Builders
 		}
 
 		[TestMethod]
-		public void BuildArgs_Should_Add_AssociateTag_And_OperationName()
+		public void BuildArgs_Should_Add_Arguments()
 		{
 			// Arrange
 			const string associateTag = "anyTag";
-			const string operationName = "anyOperation";
 
 			var argumentBuilder = new ArgumentBuilder(associateTag);
 
 			// Act
-			var args = argumentBuilder.BuildArgs(new Dictionary<string, string>(), operationName);
+			var args = argumentBuilder.BuildArgs(new Dictionary<string, string>());
 
 			// Assert
 			args.Should().Contain(ArgumentBuilder.AssociateTagKey, associateTag)
-					 .And.Contain(ArgumentBuilder.OperationNameKey, operationName)
-					 .And.Contain(ArgumentBuilder.ServiceKey, ArgumentBuilder.ServiceName);
+						 .And.Contain(ArgumentBuilder.ServiceKey, ArgumentBuilder.ServiceValue)
+						 .And.Contain(ArgumentBuilder.ConditionKey, ArgumentBuilder.ConditionValue);
 		}
 	}
 }

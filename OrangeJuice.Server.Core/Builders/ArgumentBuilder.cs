@@ -5,29 +5,37 @@ namespace OrangeJuice.Server.Builders
 {
 	public sealed class ArgumentBuilder
 	{
+		#region Fields
 		internal const string AssociateTagKey = "AssociateTag";
-		internal const string OperationNameKey = "Operation";
 
 		internal const string ServiceKey = "Service";
-		internal const string ServiceName = "AWSECommerceService";
+		internal const string ServiceValue = "AWSECommerceService";
+
+		internal const string ConditionKey = "Condition";
+		internal const string ConditionValue = "All";
 
 		private readonly string _associateTag;
+		#endregion
 
+		#region Constructors
 		public ArgumentBuilder(string associateTag)
 		{
 			if (String.IsNullOrEmpty(associateTag))
 				throw new ArgumentNullException("associateTag");
 			_associateTag = associateTag;
 		}
+		#endregion
 
-		public IDictionary<string, string> BuildArgs(IDictionary<string, string> args, string operationName)
+		#region Methods
+		public IDictionary<string, string> BuildArgs(IDictionary<string, string> args)
 		{
 			return new Dictionary<string, string>(args)
 			{
-				{ ServiceKey, ServiceName },
-				{ AssociateTagKey, _associateTag },
-				{ OperationNameKey, operationName }
+				{ServiceKey, ServiceValue},
+				{AssociateTagKey, _associateTag},
+				{ConditionKey, ConditionValue}
 			};
 		}
+		#endregion
 	}
 }
