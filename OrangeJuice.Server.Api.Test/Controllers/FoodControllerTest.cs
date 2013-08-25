@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 using FluentAssertions;
 
@@ -36,7 +37,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetDescription
 		[TestMethod]
-		public async void GetDescription_Should_Return_BadRequest_When_SearchCriteria_Is_Null()
+		public async Task GetDescription_Should_Return_BadRequest_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
 			FoodController controller = CreateController();
@@ -52,7 +53,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void GetDescription_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public async Task GetDescription_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			FoodController controller = CreateController();
@@ -71,7 +72,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void GetDescription_Should_Pass_SearchCriteria_To_FoodRepository_Register()
+		public async Task GetDescription_Should_Pass_SearchCriteria_To_FoodRepository_Register()
 		{
 			// Arrange
 			Assert.Inconclusive();
@@ -90,7 +91,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void GetDescription_Should_Return_Description_Of_Found_Food()
+		public async Task GetDescription_Should_Return_Description_Of_Found_Food()
 		{
 			// Arrange
 			FoodDescription expected = new FoodDescription();

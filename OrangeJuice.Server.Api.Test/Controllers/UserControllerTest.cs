@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 
 using FluentAssertions;
 
@@ -13,7 +12,6 @@ using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Test;
 
@@ -40,7 +38,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetUserInformation
 		[TestMethod]
-		public async void GetUser_Should_Return_BadRequest_When_UserInformation_Is_Null()
+		public async Task GetUser_Should_Return_BadRequest_When_UserInformation_Is_Null()
 		{
 			// Arrange
 			const UserInformation userInformation = null;
@@ -56,7 +54,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public async Task GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController();
@@ -96,7 +94,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void GetUser_Should_Call_UserRepository_Find()
+		public async Task GetUser_Should_Call_UserRepository_Find()
 		{
 			//Arrange
 			bool called = false;
@@ -120,7 +118,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void GetUser_Should_Pass_UserGuid_To_UserRepository_Find()
+		public async Task GetUser_Should_Pass_UserGuid_To_UserRepository_Find()
 		{
 			// Arrange
 			Guid userGuid = Guid.NewGuid();
@@ -143,7 +141,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void GetUser_Should_Return_User_By_Specified_UserGuid()
+		public async Task GetUser_Should_Return_User_By_Specified_UserGuid()
 		{
 			// Arrange
 			Guid userGuid = Guid.NewGuid();
@@ -169,7 +167,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region PutUserRegistration
 		[TestMethod]
-		public async void PutUser_Should_Return_BadRequest_When_UserRegistration_Is_Null()
+		public async Task PutUser_Should_Return_BadRequest_When_UserRegistration_Is_Null()
 		{
 			// Arrange
 			UserController controller = CreateController();
@@ -185,7 +183,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public async Task PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController();
@@ -204,7 +202,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void PutUser_Should_Return_Ok_When_Model_IsValid()
+		public async Task PutUser_Should_Return_Ok_When_Model_IsValid()
 		{
 			// Arrange
 			IUser user = CreateUser();
@@ -227,7 +225,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void PutUser_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
+		public async Task PutUser_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
 		{
 			// Arrange
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
@@ -249,7 +247,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void PutUser_Should_Call_UserRepository_Register()
+		public async Task PutUser_Should_Call_UserRepository_Register()
 		{
 			// Arrange
 			const string email = "test@example.com";
@@ -277,7 +275,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void PutUser_Should_Pass_Email_To_UserRepository_Register()
+		public async Task PutUser_Should_Pass_Email_To_UserRepository_Register()
 		{
 			// Arrange
 			const string email = "test@example.com";
@@ -298,7 +296,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async void PutUser_Should_Return_Guid_Of_Created_User()
+		public async Task PutUser_Should_Return_Guid_Of_Created_User()
 		{
 			// Arrange
 			Guid expected = Guid.NewGuid();
