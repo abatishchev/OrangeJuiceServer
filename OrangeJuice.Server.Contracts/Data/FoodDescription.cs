@@ -7,10 +7,12 @@
 
 		public string Title { get; set; }
 
-		public string Manufacturer { get; set; }
+		public string Brand { get; set; }
 
-		public string DetailPageUrl { get; set; }
+		public string SmallImageUrl { get; set; }
 
-		public string TechnicalDetailsUrl { get; set; }
+		public string MediumImageUrl { get; set; }
+
+		public string LargeImageUrl { get; set; }
 	}
 }

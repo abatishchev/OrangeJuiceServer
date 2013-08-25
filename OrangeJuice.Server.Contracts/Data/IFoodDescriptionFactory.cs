@@ -1,7 +1,10 @@
-﻿namespace OrangeJuice.Server.Data
+﻿using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace OrangeJuice.Server.Data
 {
 	public interface IFoodDescriptionFactory
 	{
-		FoodDescription Create(System.Xml.Linq.XElement element);
+		FoodDescription Create(Task<XElement> descriptionTask, Task<XElement> imageTask);
 	}
 }

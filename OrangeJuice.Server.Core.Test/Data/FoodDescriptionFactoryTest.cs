@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FluentAssertions;
@@ -18,39 +19,54 @@ namespace OrangeJuice.Server.Test.Data
 			// Arrange
 			const string asin = "asin";
 			const string title = "title";
-			const string detailPageUrl = "detailPageUrl";
-			const string technicalUrl = "technicalDetailsUrl";
+			const string brand = "brand";
+			var descriptionTask = Task.FromResult(CreateDescription(asin, title, brand));
 
-			XElement element = CreateElement(asin, title, detailPageUrl, technicalUrl);
+			const string smallImageUrl = "smallImageUrl";
+			const string mediumImageUrl = "mediumImageUrl";
+			const string largeImageUrl = "largeImageUrl";
+			var itemTask = Task.FromResult(CreateImages(smallImageUrl, mediumImageUrl, largeImageUrl));
+
 			FoodDescriptionFactory factory = new FoodDescriptionFactory();
 
 			// Act
-			FoodDescription description = factory.Create(element);
+			FoodDescription description = factory.Create(descriptionTask, itemTask);
 
 			// Assert
 			description.ASIN.Should().Be(asin);
 			description.Title.Should().Be(title);
-			description.DetailPageUrl.Should().Be(detailPageUrl);
-			description.TechnicalDetailsUrl.Should().Be(technicalUrl);
+
+			description.SmallImageUrl.Should().Be(smallImageUrl);
+			description.MediumImageUrl.Should().Be(mediumImageUrl);
+			description.LargeImageUrl.Should().Be(largeImageUrl);
 		}
 
-		private static XElement CreateElement(string asin, string title, string detailPageUrl, string technicalDetailsUrl)
+		private static XElement CreateDescription(string asin, string title, string brand)
 		{
-			const string xml = @"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
-  <ASIN>{0}</ASIN>
-  <DetailPageURL>{2}</DetailPageURL>
-  <ItemLinks>
-    <ItemLink>
-      <Description>Technical Details</Description>
-      <URL>{3}</URL>
-    </ItemLink>
-  </ItemLinks>
-  <ItemAttributes>
-    <ProductGroup>Grocery</ProductGroup>
-    <Title>{1}</Title>
-  </ItemAttributes>
-</Item>";
-			return XElement.Parse(String.Format(xml, asin, title, detailPageUrl, technicalDetailsUrl));
+			return XElement.Parse(String.Format(
+@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
+	<ASIN>{0}</ASIN>
+	<ItemAttributes>
+		<Title>{1}</Title>
+		<Brand>{2}</Brand>
+	</ItemAttributes>
+</Item>", asin, title, brand));
+		}
+
+		private static XElement CreateImages(string smallImageUrl, string mediumImageUrl, string largeImageUrl)
+		{
+			return XElement.Parse(String.Format(
+@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
+	<SmallImage>
+		<URL>{0}</URL>
+	</SmallImage>
+	<MediumImage>
+		<URL>{1}</URL>
+	</MediumImage>
+	<LargeImage>
+		<URL>{2}</URL>
+	</LargeImage>
+</Item>", smallImageUrl, mediumImageUrl, largeImageUrl));
 		}
 	}
 }
