@@ -4,7 +4,7 @@ namespace OrangeJuice.Server
 {
 	public sealed class UtcDateTimeProvider : IDateTimeProvider
 	{
-		internal const string UniversalDateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
+		internal const string UniversalDateTimeFormat = "yyyy-MM-ddTHH:mm:ss.000Z";
 
 		public DateTime GetNow()
 		{
