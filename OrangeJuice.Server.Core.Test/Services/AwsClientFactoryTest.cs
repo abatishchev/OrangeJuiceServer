@@ -63,7 +63,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_AwsClient()
+		public void Create_Should_Return_XmlAwsClient()
 		{
 			// Arrange
 			IAwsClientFactory factory = new AwsClientFactory(
@@ -80,7 +80,7 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = factory.Create();
 
 			// Assert
-			client.Should().BeOfType<AwsClient>();
+			client.Should().BeOfType<XmlAwsClient>();
 		}
 	}
 }

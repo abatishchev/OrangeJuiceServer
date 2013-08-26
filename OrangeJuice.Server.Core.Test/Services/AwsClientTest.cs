@@ -5,10 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class AwsClientTest
+	public class XmlAwsClientTest
 	{
 		[TestMethod]
-		public void ItemLookup_Should_()
+		public void SearchItem_Should_()
 		{
 			// Arrange
 
@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void ItemAttributes_Should_()
+		public void LookupAttributes_Should_()
 		{
 			// Arrange
 
@@ -30,7 +30,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void ItemImages_Should_()
+		public void LookupImages_Should_()
 		{
 			// Arrange
 

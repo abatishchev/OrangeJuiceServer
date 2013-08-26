@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using OrangeJuice.Server.Builders;
+using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
 {
 	// ReSharper disable PossibleNullReferenceException
-	public sealed class AwsClient : IAwsClient
+	public sealed class XmlAwsClient : IAwsClient
 	{
 		#region Fields
 		private readonly ArgumentBuilder _argumentBuilder;
@@ -20,7 +21,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Constructors
-		public AwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder, DocumentLoader documentLoader)
+		public XmlAwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder, DocumentLoader documentLoader)
 		{
 			if (argumentBuilder == null)
 				throw new ArgumentNullException("argumentBuilder");
@@ -39,7 +40,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsClient Members
-		public async Task<IEnumerable<string>> ItemSearch(string title)
+		public async Task<IEnumerable<string>> SearchItem(string title)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -59,7 +60,7 @@ namespace OrangeJuice.Server.Services
 						.Select(e => e.Value);
 		}
 
-		public async Task<XElement> ItemAttributes(string id)
+		public async Task<XElement> LookupAttributes(string id)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -76,7 +77,7 @@ namespace OrangeJuice.Server.Services
 			return items.Element(ns + "Item");
 		}
 
-		public async Task<XElement> ItemImages(string id)
+		public async Task<XElement> LookupImages(string id)
 		{
 			var args = new Dictionary<string, string>
 			{
