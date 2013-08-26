@@ -30,7 +30,8 @@ namespace OrangeJuice.Server.Services
 			return new AwsClient(
 				new ArgumentBuilder(_awsOptions.AssociateTag),
 				new QueryBuilder(_awsOptions.AccessKey, _urlEncoder, _dateTimeProvider),
-				new SignatureBuilder(_awsOptions.SecretKey, _urlEncoder));
+				new SignatureBuilder(_awsOptions.SecretKey, _urlEncoder),
+				new DocumentLoader());
 		}
 	}
 }

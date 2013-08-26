@@ -70,6 +70,7 @@
     <Compile Include="Services\AwsClientFactory.cs" />
     <Compile Include="Services\AwsOptions.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
+    <Compile Include="Web\DocumentLoader.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
   </ItemGroup>
   <ItemGroup>

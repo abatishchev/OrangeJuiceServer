@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using OrangeJuice.Server.Builders;
+using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
 {
@@ -17,12 +16,11 @@ namespace OrangeJuice.Server.Services
 		private readonly ArgumentBuilder _argumentBuilder;
 		private readonly QueryBuilder _queryBuilder;
 		private readonly SignatureBuilder _signatureBuilder;
-
-		private readonly HttpClient _httpClient = new HttpClient();
+		private readonly DocumentLoader _documentLoader;
 		#endregion
 
 		#region Constructors
-		public AwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder)
+		public AwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder, DocumentLoader documentLoader)
 		{
 			if (argumentBuilder == null)
 				throw new ArgumentNullException("argumentBuilder");
@@ -30,10 +28,13 @@ namespace OrangeJuice.Server.Services
 				throw new ArgumentNullException("queryBuilder");
 			if (signatureBuilder == null)
 				throw new ArgumentNullException("signatureBuilder");
+			if (documentLoader == null)
+				throw new ArgumentNullException("documentLoader");
 
 			_argumentBuilder = argumentBuilder;
 			_queryBuilder = queryBuilder;
 			_signatureBuilder = signatureBuilder;
+			_documentLoader = documentLoader;
 		}
 		#endregion
 
@@ -49,10 +50,10 @@ namespace OrangeJuice.Server.Services
 			};
 
 			string url = BuildUrl(args);
-			XDocument doc = await LoadDocument(url);
+			XDocument doc = await _documentLoader.LoadXml(url);
 			XNamespace ns = doc.Root.Name.Namespace;
 
-			var items = GetItems(doc, ns);
+			XElement items = GetItems(doc, ns);
 			return items.Elements(ns + "Item")
 						.Elements(ns + "ASIN")
 						.Select(e => e.Value);
@@ -68,10 +69,10 @@ namespace OrangeJuice.Server.Services
 			};
 
 			string url = BuildUrl(args);
-			XDocument doc = await LoadDocument(url);
+			XDocument doc = await _documentLoader.LoadXml(url);
 			XNamespace ns = doc.Root.Name.Namespace;
 
-			var items = GetItems(doc, ns);
+			XElement items = GetItems(doc, ns);
 			return items.Element(ns + "Item")
 						.Element(ns + "ItemAttributes");
 		}
@@ -86,10 +87,10 @@ namespace OrangeJuice.Server.Services
 			};
 
 			string url = BuildUrl(args);
-			XDocument doc = await LoadDocument(url);
+			XDocument doc = await _documentLoader.LoadXml(url);
 			XNamespace ns = doc.Root.Name.Namespace;
 
-			var items = GetItems(doc, ns);
+			XElement items = GetItems(doc, ns);
 			return items.Element(ns + "Item")
 						.Element(ns + "ItemAttributes");
 		}
@@ -101,14 +102,6 @@ namespace OrangeJuice.Server.Services
 			args = _argumentBuilder.BuildArgs(args);
 			string query = _queryBuilder.BuildQuery(args);
 			return _signatureBuilder.SignQuery(query);
-		}
-
-		private async Task<XDocument> LoadDocument(string url)
-		{
-			using (Stream stream = await _httpClient.GetStreamAsync(url))
-			{
-				return XDocument.Load(stream);
-			}
 		}
 
 		private static XElement GetItems(XDocument doc, XNamespace ns)
