@@ -3,6 +3,7 @@ using System.Web.Http;
 using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Model.Repository;
@@ -42,6 +43,15 @@ namespace OrangeJuice.Server.Api
 				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
+
+			// HomeController
+			//container.RegisterInstance(
+			//	new ApiInfoFactory(),
+			//	new ContainerControlledLifetimeManager());
+
+			//container.RegisterType<ApiInfo>(
+			//	new ContainerControlledLifetimeManager(),
+			//	new InjectionFactory(c => c.Resolve<ApiInfoFactory>().Create()));
 
 			// UserController
 			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());

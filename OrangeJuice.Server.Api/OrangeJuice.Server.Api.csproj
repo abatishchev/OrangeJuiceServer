@@ -127,11 +127,13 @@
     </Compile>
     <Compile Include="App_Start\HandlerConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="Controllers\JsonDotNetResult.cs" />
     <Compile Include="Handlers\AppKeyHandlerFactory.cs" />
     <Compile Include="Handlers\AppKeyHandlerBase.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Models\ApiInfo.cs" />
     <Compile Include="Models\FoodSearchCriteria.cs" />
     <Compile Include="Controllers\FoodController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
