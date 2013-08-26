@@ -56,7 +56,7 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			ArgumentBuilder argumentBuilder = CreateArgumentBuilder();
 			QueryBuilder queryBuilder = CreateQueryBuilder();
-			SignatureBuilder signatureBuilder = CreateSignatureBuilder();
+			SignatureBuilder signatureBuilder = null;
 			const HttpDocumentLoader documentLoader = null;
 
 			// Act

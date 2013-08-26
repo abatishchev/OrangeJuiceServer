@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,7 +21,12 @@ namespace OrangeJuice.Server.Api.Controllers
 			_foodRepository = foodRepository;
 		}
 
-		/// <url>GET api/food/</url>
+		/// <summary>
+		/// Searches for food
+		/// </summary>
+		/// <returns>Brief description of food found</returns>
+		/// <param name="searchCriteria">Food search criteria</param>
+		/// <url>GET /api/food/</url>
 		public async Task<HttpResponseMessage> GetDescription([FromUri]FoodSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
