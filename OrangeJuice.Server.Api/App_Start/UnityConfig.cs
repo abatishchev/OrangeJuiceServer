@@ -69,7 +69,7 @@ namespace OrangeJuice.Server.Api
 				new PerResolveLifetimeManager(),
 				new InjectionFactory(c => c.Resolve<IAwsClientFactory>().Create()));
 
-			container.RegisterType<IFoodDescriptionFactory, FoodDescriptionFactory>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),

@@ -61,7 +61,7 @@
     <Compile Include="Configuration\AppSettingsConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Configuration\Environment.cs" />
-    <Compile Include="Data\FoodDescriptionFactory.cs" />
+    <Compile Include="Data\XmlFoodDescriptionFactory.cs" />
     <Compile Include="Diagnostics\TraceSourceExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\AwsFoodRepository.cs" />

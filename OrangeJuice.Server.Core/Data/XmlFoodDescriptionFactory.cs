@@ -4,7 +4,7 @@ using System.Xml.Linq;
 namespace OrangeJuice.Server.Data
 {
 	// ReSharper disable PossibleNullReferenceException
-	public sealed class FoodDescriptionFactory : IFoodDescriptionFactory
+	public sealed class XmlFoodDescriptionFactory : IFoodDescriptionFactory
 	{
 		public async Task<FoodDescription> Create(string id, Task<XElement> attributesTask, Task<XElement> imagesTask)
 		{

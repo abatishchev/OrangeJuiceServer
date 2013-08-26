@@ -11,7 +11,7 @@ using OrangeJuice.Server.Data;
 namespace OrangeJuice.Server.Test.Data
 {
 	[TestClass]
-	public class FoodDescriptionFactoryTest
+	public class XmlFoodDescriptionFactoryTest
 	{
 		[TestMethod]
 		public async Task Create_Should_Return_GroceryDescription_Having_Properies_Populated_From_XElement()
@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Test.Data
 			var attributesTask = Task.Factory.StartNew(() => CreateAttributes());
 			var imagesTask = Task.Factory.StartNew(() => CreateImages());
 
-			FoodDescriptionFactory factory = new FoodDescriptionFactory();
+			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
 			FoodDescription description = await factory.Create(asin, attributesTask, imagesTask);
@@ -47,7 +47,7 @@ namespace OrangeJuice.Server.Test.Data
 			XElement attributesElement = CreateAttributes(title, brand);
 
 			// Act
-			FoodDescriptionFactory.AssignAttributes(description, attributesElement);
+			XmlFoodDescriptionFactory.AssignAttributes(description, attributesElement);
 
 			// Assert
 			description.Title.Should().Be(title);
@@ -66,7 +66,7 @@ namespace OrangeJuice.Server.Test.Data
 			XElement imagesElement = CreateImages(smallImageUrl, mediumImageUrl, largeImageUrl);
 
 			// Act
-			FoodDescriptionFactory.AssignImages(description, imagesElement);
+			XmlFoodDescriptionFactory.AssignImages(description, imagesElement);
 
 			// Assert
 			description.SmallImageUrl.Should().Be(smallImageUrl);
