@@ -12,6 +12,7 @@ using Moq;
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Test;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
@@ -71,13 +72,16 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetDescription_Should_Pass_SearchCriteria_To_FoodRepository_Register()
+		public async Task GetDescription_Should_Pass_Title_To_FoodRepository_SearchByTitle()
 		{
 			// Arrange
-			Assert.Inconclusive();
+			const string title = "title";
 
-			FoodController controller = CreateController();
-			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
+			var foodRepositoryMock = new Mock<IFoodRepository>();
+			foodRepositoryMock.Setup(r => r.SearchByTitle(title)).ReturnsAsync(new[] { new FoodDescription() });
+
+			FoodController controller = CreateController(foodRepositoryMock.Object);
+			FoodSearchCriteria searchCriteria = new FoodSearchCriteria { Title = title };
 
 			// Act
 			using (ControllerFactory.NewContext())
@@ -85,7 +89,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 				await controller.GetDescription(searchCriteria);
 
 				// Assert
-				//userRepositoryMock.Verify(r => r.Register(email), Times.Once());
+				foodRepositoryMock.Verify(r => r.SearchByTitle(title), Times.Once());
 			}
 		}
 
@@ -93,21 +97,22 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetDescription_Should_Return_Description_Of_Found_Food()
 		{
 			// Arrange
-			FoodDescription expected = new FoodDescription();
+			FoodDescription[] expected = new[] { new FoodDescription() };
 
-			Assert.Inconclusive();
+			var foodRepositoryMock = new Mock<IFoodRepository>();
+			foodRepositoryMock.Setup(r => r.SearchByTitle(It.IsAny<string>())).ReturnsAsync(expected);
 
-			FoodController controller = CreateController();
+			FoodController controller = CreateController(foodRepositoryMock.Object);
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 
 			// Act
 			using (ControllerFactory.NewContext())
 			{
 				HttpResponseMessage message = await controller.GetDescription(searchCriteria);
-				HttpStatusCode actual = message.StatusCode;
+				FoodDescription[] actual = message.Content.GetValue<FoodDescription[]>();
 
 				// Assert
-				actual.Should().Be(expected);
+				actual.ShouldBeEquivalentTo(expected);
 			}
 		}
 		#endregion

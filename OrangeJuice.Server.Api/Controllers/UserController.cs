@@ -8,6 +8,8 @@ using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Data;
 
+using UserSearchCriteria = OrangeJuice.Server.Api.Models.UserSearchCriteria;
+
 namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class UserController : ApiController
@@ -30,18 +32,18 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Retrieves a user
 		/// </summary>
-		/// <param name="information">User search criteria</param>
+		/// <param name="searchCriteria">User search criteria</param>
 		/// <returns>User entity</returns>
 		/// <url>GET /api/user/</url>
-		public async Task<HttpResponseMessage> GetUserInformation([FromUri]UserInformation information)
+		public async Task<HttpResponseMessage> GetUserInformation([FromUri]UserSearchCriteria searchCriteria)
 		{
-			if (information == null)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("information"));
+			if (searchCriteria == null)
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
 
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			IUser user = await _userRepository.Find(information.UserKey.GetValueOrDefault());
+			IUser user = await _userRepository.SearchByGuid(searchCriteria.UserGuid.GetValueOrDefault());
 			if (user == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 
@@ -51,18 +53,18 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Registers a user
 		/// </summary>
-		/// <param name="registration">User registration information</param>
+		/// <param name="userRegistration">User userRegistration information</param>
 		/// <returns>Guid representing the user</returns>
 		/// <url>PUT /api/user/</url>
-		public async Task<HttpResponseMessage> PutUserRegistration([FromBody]UserRegistration registration)
+		public async Task<HttpResponseMessage> PutUserRegistration([FromBody]UserRegistration userRegistration)
 		{
-			if (registration == null)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("registration"));
+			if (userRegistration == null)
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("userRegistration"));
 
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			IUser user = await _userRepository.Register(registration.Email);
+			IUser user = await _userRepository.Register(userRegistration.Email);
 			if (user == null)
 				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User is null");
 

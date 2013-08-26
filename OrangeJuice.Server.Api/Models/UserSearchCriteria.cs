@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrangeJuice.Server.Api.Models
 {
-	public class UserInformation
+	public class UserSearchCriteria
 	{
 		[Required]
-		public Guid? UserKey { get; set; }
+		public Guid? UserGuid { get; set; }
 	}
 }

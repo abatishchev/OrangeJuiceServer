@@ -7,14 +7,6 @@ namespace OrangeJuice.Server.Data.Model.Repository
 {
 	public sealed class EntityModelUserRepository : IUserRepository
 	{
-		public Task<IUser> Find(Guid userGuid)
-		{
-			using (var db = new ModelContainer())
-			{
-				return Task.FromResult<IUser>(db.Users.SingleOrDefault(u => u.UserGuid == userGuid));
-			}
-		}
-
 		public Task<IUser> Register(string email)
 		{
 			using (var db = new ModelContainer())
@@ -29,6 +21,14 @@ namespace OrangeJuice.Server.Data.Model.Repository
 					throw new DataException("Error saving user");
 
 				return Task.FromResult<IUser>(user);
+			}
+		}
+
+		public Task<IUser> SearchByGuid(Guid userGuid)
+		{
+			using (var db = new ModelContainer())
+			{
+				return Task.FromResult<IUser>(db.Users.SingleOrDefault(u => u.UserGuid == userGuid));
 			}
 		}
 	}

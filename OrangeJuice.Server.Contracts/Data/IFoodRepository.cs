@@ -6,6 +6,6 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IFoodRepository
 	{
-		Task<IEnumerable<FoodDescription>> Find(string title);
+		Task<FoodDescription[]> SearchByTitle(string title);
 	}
 }

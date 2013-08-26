@@ -5,8 +5,8 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IUserRepository
 	{
-		Task<IUser> Find(Guid userGuid);
-
 		Task<IUser> Register(string email);
+
+		Task<IUser> SearchByGuid(Guid userGuid);
 	}
 }

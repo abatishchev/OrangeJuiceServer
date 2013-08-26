@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelValidator.Current.IsValid(this.ModelState))
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			var description = await _foodRepository.Find(searchCriteria.Title);
+			FoodDescription[] description = await _foodRepository.SearchByTitle(searchCriteria.Title);
 			return Request.CreateResponse(HttpStatusCode.OK, description);
 		}
 	}

@@ -142,7 +142,7 @@
     </Compile>
     <Compile Include="Handlers\AppKeyHeaderHandler.cs" />
     <Compile Include="Handlers\AppKeyQueryHandler.cs" />
-    <Compile Include="Models\UserInformation.cs" />
+    <Compile Include="Models\UserSearchCriteria.cs" />
     <Compile Include="Models\UserRegistration.cs">
       <SubType>Code</SubType>
     </Compile>

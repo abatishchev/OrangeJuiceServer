@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Data
 			_foodDescriptionFactory = foodDescriptionFactory;
 		}
 
-		public async Task<IEnumerable<FoodDescription>> Find(string title)
+		public async Task<FoodDescription[]> SearchByTitle(string title)
 		{
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
