@@ -89,7 +89,7 @@
     <Compile Include="Builders\SignatureBuilderTest.cs" />
     <Compile Include="Services\AswOptionsFactoryTest.cs" />
     <Compile Include="Services\AwsClientFactoryTest.cs" />
-    <Compile Include="Services\AwsClientTest.cs" />
+    <Compile Include="Services\XmlAwsClientTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
     <Compile Include="Web\PercentUrlEncoderTest.cs" />
   </ItemGroup>

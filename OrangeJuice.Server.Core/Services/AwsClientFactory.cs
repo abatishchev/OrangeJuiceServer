@@ -25,13 +25,14 @@ namespace OrangeJuice.Server.Services
 			_dateTimeProvider = dateTimeProvider;
 		}
 
+		// TODO: replace with contrainer-based injection
 		public IAwsClient Create()
 		{
 			return new XmlAwsClient(
 				new ArgumentBuilder(_awsOptions.AssociateTag),
 				new QueryBuilder(_awsOptions.AccessKey, _urlEncoder, _dateTimeProvider),
 				new SignatureBuilder(_awsOptions.SecretKey, _urlEncoder),
-				new DocumentLoader());
+				new HttpDocumentLoader());
 		}
 	}
 }

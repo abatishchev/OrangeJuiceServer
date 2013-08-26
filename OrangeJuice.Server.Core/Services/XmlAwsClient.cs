@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using OrangeJuice.Server.Builders;
-using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
@@ -17,11 +16,11 @@ namespace OrangeJuice.Server.Services
 		private readonly ArgumentBuilder _argumentBuilder;
 		private readonly QueryBuilder _queryBuilder;
 		private readonly SignatureBuilder _signatureBuilder;
-		private readonly DocumentLoader _documentLoader;
+		private readonly IDocumentLoader _documentLoader;
 		#endregion
 
 		#region Constructors
-		public XmlAwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder, DocumentLoader documentLoader)
+		public XmlAwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder, IDocumentLoader documentLoader)
 		{
 			if (argumentBuilder == null)
 				throw new ArgumentNullException("argumentBuilder");

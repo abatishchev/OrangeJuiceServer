@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Web
 {
-	public sealed class DocumentLoader
+	public sealed class HttpDocumentLoader : IDocumentLoader
 	{
 		private readonly HttpClient _httpClient = new HttpClient();
 

@@ -55,6 +55,7 @@
     <Compile Include="IDateTimeProvider.cs" />
     <Compile Include="Services\IAwsClient.cs" />
     <Compile Include="Services\IAwsClientFactory.cs" />
+    <Compile Include="Web\IDocumentLoader.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

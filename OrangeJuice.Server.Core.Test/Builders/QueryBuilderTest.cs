@@ -33,6 +33,7 @@ namespace OrangeJuice.Server.Test.Builders
 				  .And.ParamName.Should().Be("accessKey");
 		}
 
+		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_AccessKey_Is_Empty()
 		{
 			// Arange
