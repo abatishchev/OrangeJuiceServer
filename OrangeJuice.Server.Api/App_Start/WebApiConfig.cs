@@ -34,7 +34,7 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
 		{
-			//formatters.Remove(formatters.XmlFormatter);
+			formatters.Remove(formatters.XmlFormatter);
 
 			var jsonSerializerSettings = formatters.JsonFormatter.SerializerSettings;
 			jsonSerializerSettings.Formatting = Formatting.Indented;

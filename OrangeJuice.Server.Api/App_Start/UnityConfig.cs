@@ -55,11 +55,15 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<AwsOptions>(), container.Resolve<IUrlEncoder>(), container.Resolve<IDateTimeProvider>()));
 
+			container.RegisterType<IAwsClient>(
+				new PerResolveLifetimeManager(),
+				new InjectionFactory(c => c.Resolve<IAwsClientFactory>().Create()));
+
 			container.RegisterType<IFoodDescriptionFactory, FoodDescriptionFactory>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IAwsClientFactory>(), container.Resolve<IFoodDescriptionFactory>()));
+				new InjectionConstructor(container.Resolve<IAwsClient>(), container.Resolve<IFoodDescriptionFactory>()));
 		}
 	}
 }

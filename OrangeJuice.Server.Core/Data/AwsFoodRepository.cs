@@ -9,17 +9,17 @@ namespace OrangeJuice.Server.Data
 {
 	public sealed class AwsFoodRepository : IFoodRepository
 	{
-		private readonly IAwsClientFactory _awsClientFactory;
+		private readonly IAwsClient _awsClient;
 		private readonly IFoodDescriptionFactory _foodDescriptionFactory;
 
-		public AwsFoodRepository(IAwsClientFactory awsClientFactory, IFoodDescriptionFactory foodDescriptionFactory)
+		public AwsFoodRepository(IAwsClient awsClient, IFoodDescriptionFactory foodDescriptionFactory)
 		{
-			if (awsClientFactory == null)
-				throw new ArgumentNullException("awsClientFactory");
+			if (awsClient == null)
+				throw new ArgumentNullException("awsClient");
 			if (foodDescriptionFactory == null)
 				throw new ArgumentNullException("foodDescriptionFactory");
 
-			_awsClientFactory = awsClientFactory;
+			_awsClient = awsClient;
 			_foodDescriptionFactory = foodDescriptionFactory;
 		}
 
@@ -28,15 +28,19 @@ namespace OrangeJuice.Server.Data
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
 
-			IAwsClient apiClient = _awsClientFactory.Create();
-			var ids = await apiClient.SearchItem(title);
+			var ids = await _awsClient.SearchItem(title);
 
-			var tasks = ids.Select(id => _foodDescriptionFactory.Create(
-				id,
-				apiClient.LookupAttributes(id),
-				apiClient.LookupImages(id)));
+			var tasks = ids.Select(CreateDescription).ToArray();
 			return await Task.WhenAll(tasks)
 							 .ContinueWith(t => t.Result);
+		}
+
+		private Task<FoodDescription> CreateDescription(string id)
+		{
+			return _foodDescriptionFactory.Create(
+				id,
+				_awsClient.LookupAttributes(id),
+				_awsClient.LookupImages(id));
 		}
 	}
 }
