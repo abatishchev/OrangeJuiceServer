@@ -1,40 +1,58 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Data
 {
 	public sealed class FoodDescriptionFactory : IFoodDescriptionFactory
 	{
-		public FoodDescription Create(Task<XElement> attributesTask, Task<XElement> imagesTask)
+		public async Task<FoodDescription> Create(string id, Task<XElement> attributesTask, Task<XElement> imagesTask)
 		{
-			FoodDescription description = new FoodDescription();
+			return await NewFlow(id, attributesTask, imagesTask).Aggregate(
+				Task.FromResult(new FoodDescription()),
+				(d, func) => func(d));
+		}
 
-			attributesTask = attributesTask.ContinueWith(t =>
-				{
-					XElement itemElement = t.Result;
-					XNamespace ns = itemElement.Name.Namespace;
-					XElement attributesElement = itemElement.Element(ns + "ItemAttributes");
+		private static IEnumerable<Func<Task<FoodDescription>, Task<FoodDescription>>> NewFlow(string id, Task<XElement> attributesTask, Task<XElement> imagesTask)
+		{
+			yield return d => AssignId(d, id);
+			yield return d => ParseAttributes(d, attributesTask);
+			yield return d => ParseImages(d, imagesTask);
+		}
 
-					description.ASIN = GetAttribute(itemElement, ns, "ASIN");
-					description.Title = GetAttribute(attributesElement, ns, "Title");
-					description.Brand = GetAttribute(attributesElement, ns, "Brand");
+		private static async Task<FoodDescription> AssignId(Task<FoodDescription> descriptionTask, string id)
+		{
+			FoodDescription description = await descriptionTask;
+			description.ASIN = id;
+			return description;
+		}
 
-					return t.Result;
-				});
+		//TODO: test
+		private static async Task<FoodDescription> ParseAttributes(Task<FoodDescription> descriptionTask, Task<XElement> attributesTask)
+		{
+			FoodDescription description = await descriptionTask;
+			XElement attributesElement = await attributesTask;
+			XNamespace ns = attributesElement.Name.Namespace;
 
-			imagesTask = imagesTask.ContinueWith(t =>
-				{
-					XElement imagesElement = t.Result;
-					XNamespace ns = imagesElement.Name.Namespace;
+			description.Title = GetAttribute(attributesElement, ns, "Title");
+			description.Brand = GetAttribute(attributesElement, ns, "Brand");
 
-					description.SmallImageUrl = GetImageUrl(imagesElement, ns, "SmallImage");
-					description.MediumImageUrl = GetImageUrl(imagesElement, ns, "MediumImage");
-					description.LargeImageUrl = GetImageUrl(imagesElement, ns, "LargeImage");
+			return description;
+		}
 
-					return t.Result;
-				});
+		//TODO: test
+		private static async Task<FoodDescription> ParseImages(Task<FoodDescription> descriptionTask, Task<XElement> imagesTask)
+		{
+			FoodDescription description = await descriptionTask;
+			XElement imagesElement = await imagesTask;
+			XNamespace ns = imagesElement.Name.Namespace;
 
-			Task.WaitAll(attributesTask, imagesTask);
+			description.SmallImageUrl = GetImageUrl(imagesElement, ns, "SmallImage");
+			description.MediumImageUrl = GetImageUrl(imagesElement, ns, "MediumImage");
+			description.LargeImageUrl = GetImageUrl(imagesElement, ns, "LargeImage");
+
 			return description;
 		}
 

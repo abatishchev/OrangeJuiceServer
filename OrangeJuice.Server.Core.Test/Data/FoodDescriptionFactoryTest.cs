@@ -14,23 +14,23 @@ namespace OrangeJuice.Server.Test.Data
 	public class FoodDescriptionFactoryTest
 	{
 		[TestMethod]
-		public void Create_Should_Return_GroceryDescription_Having_Properies_Populated_From_XElement()
+		public async Task Create_Should_Return_GroceryDescription_Having_Properies_Populated_From_XElement()
 		{
 			// Arrange
 			const string asin = "asin";
 			const string title = "title";
 			const string brand = "brand";
-			var attributeTask = Task.FromResult(CreateAttributes(asin, title, brand));
+			var attributesTask = Task.Factory.StartNew(() => CreateAttributes(title, brand));
 
 			const string smallImageUrl = "smallImageUrl";
 			const string mediumImageUrl = "mediumImageUrl";
 			const string largeImageUrl = "largeImageUrl";
-			var imagesTask = Task.FromResult(CreateImages(smallImageUrl, mediumImageUrl, largeImageUrl));
+			var imagesTask = Task.Factory.StartNew(() => CreateImages(smallImageUrl, mediumImageUrl, largeImageUrl));
 
 			FoodDescriptionFactory factory = new FoodDescriptionFactory();
 
 			// Act
-			FoodDescription description = factory.Create(attributeTask, imagesTask);
+			FoodDescription description = await factory.Create(asin, attributesTask, imagesTask);
 
 			// Assert
 			description.ASIN.Should().Be(asin);
@@ -41,16 +41,15 @@ namespace OrangeJuice.Server.Test.Data
 			description.LargeImageUrl.Should().Be(largeImageUrl);
 		}
 
-		private static XElement CreateAttributes(string asin, string title, string brand)
+		private static XElement CreateAttributes(string title, string brand)
 		{
 			return XElement.Parse(String.Format(
 @"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
-	<ASIN>{0}</ASIN>
 	<ItemAttributes>
-		<Title>{1}</Title>
-		<Brand>{2}</Brand>
+		<Title>{0}</Title>
+		<Brand>{1}</Brand>
 	</ItemAttributes>
-</Item>", asin, title, brand));
+</Item>", title, brand));
 		}
 
 		private static XElement CreateImages(string smallImageUrl, string mediumImageUrl, string largeImageUrl)

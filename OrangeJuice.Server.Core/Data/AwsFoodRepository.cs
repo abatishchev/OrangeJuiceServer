@@ -29,11 +29,14 @@ namespace OrangeJuice.Server.Data
 				throw new ArgumentNullException("title");
 
 			IAwsClient apiClient = _awsClientFactory.Create();
-			IEnumerable<string> asins = await apiClient.ItemSearch(title);
+			IEnumerable<string> ids = await apiClient.ItemSearch(title);
 
-			return asins.Select(id => _foodDescriptionFactory.Create(
+			var tasks = ids.Select(id => _foodDescriptionFactory.Create(
+				id,
 				apiClient.ItemDescription(id),
 				apiClient.ItemImages(id)));
+			return await Task.WhenAll(tasks)
+			                 .ContinueWith(t => t.Result);
 		}
 	}
 }

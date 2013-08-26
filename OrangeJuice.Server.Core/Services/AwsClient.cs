@@ -91,8 +91,7 @@ namespace OrangeJuice.Server.Services
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			XElement items = GetItems(doc, ns);
-			return items.Element(ns + "Item")
-						.Element(ns + "ItemAttributes");
+			return items.Element(ns + "Item");
 		}
 		#endregion
 
