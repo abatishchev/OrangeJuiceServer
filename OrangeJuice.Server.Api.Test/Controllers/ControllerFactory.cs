@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using System.Web.Http.ModelBinding;
+using System.Web.Http.Routing;
 
 using Moq;
 
@@ -13,9 +15,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		public static T Create<T>(params object[] args) where T : ApiController
 		{
+			var config = new HttpConfiguration();
+			var request = new HttpRequestMessage();
+			var routeData = new HttpRouteData(new HttpRoute());
+			
 			T controller = (T)Activator.CreateInstance(typeof(T), args);
-			controller.Request = new HttpRequestMessage();
-			controller.Request.Properties["MS_HttpConfiguration"] = new HttpConfiguration();
+			controller.ControllerContext = new HttpControllerContext(config, routeData, request);
+			controller.Request = request;
+			controller.Request.Properties.Add(System.Web.Http.Hosting.HttpPropertyKeys.HttpConfigurationKey, config);
 			return controller;
 		}
 
