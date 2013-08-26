@@ -9,7 +9,7 @@ namespace OrangeJuice.Server.Services
 	{
 		Task<IEnumerable<string>> ItemSearch(string title);
 
-		Task<XElement> ItemDescription(string id);
+		Task<XElement> ItemAttributes(string id);
 
 		Task<XElement> ItemImages(string id);
 	}

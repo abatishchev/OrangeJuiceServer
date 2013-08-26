@@ -59,7 +59,7 @@ namespace OrangeJuice.Server.Services
 						.Select(e => e.Value);
 		}
 
-		public async Task<XElement> ItemDescription(string id)
+		public async Task<XElement> ItemAttributes(string id)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -73,8 +73,7 @@ namespace OrangeJuice.Server.Services
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			XElement items = GetItems(doc, ns);
-			return items.Element(ns + "Item")
-						.Element(ns + "ItemAttributes");
+			return items.Element(ns + "Item");
 		}
 
 		public async Task<XElement> ItemImages(string id)

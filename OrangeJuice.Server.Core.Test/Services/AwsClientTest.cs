@@ -19,7 +19,18 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void ItemSearch_Should_()
+		public void ItemAttributes_Should_()
+		{
+			// Arrange
+
+			// Act
+
+			// Assert
+			Assert.Inconclusive();
+		}
+
+		[TestMethod]
+		public void ItemImages_Should_()
 		{
 			// Arrange
 

@@ -33,7 +33,7 @@ namespace OrangeJuice.Server.Data
 
 			var tasks = ids.Select(id => _foodDescriptionFactory.Create(
 				id,
-				apiClient.ItemDescription(id),
+				apiClient.ItemAttributes(id),
 				apiClient.ItemImages(id)));
 			return await Task.WhenAll(tasks)
 			                 .ContinueWith(t => t.Result);

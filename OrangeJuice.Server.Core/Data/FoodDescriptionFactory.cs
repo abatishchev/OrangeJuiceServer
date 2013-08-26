@@ -1,71 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Data
 {
+	// ReSharper disable PossibleNullReferenceException
 	public sealed class FoodDescriptionFactory : IFoodDescriptionFactory
 	{
 		public async Task<FoodDescription> Create(string id, Task<XElement> attributesTask, Task<XElement> imagesTask)
 		{
-			return await NewFlow(id, attributesTask, imagesTask).Aggregate(
-				Task.FromResult(new FoodDescription()),
-				(d, func) => func(d));
-		}
+			FoodDescription description = new FoodDescription();
 
-		private static IEnumerable<Func<Task<FoodDescription>, Task<FoodDescription>>> NewFlow(string id, Task<XElement> attributesTask, Task<XElement> imagesTask)
-		{
-			yield return d => AssignId(d, id);
-			yield return d => ParseAttributes(d, attributesTask);
-			yield return d => ParseImages(d, imagesTask);
-		}
+			AssignId(description, id);
 
-		private static async Task<FoodDescription> AssignId(Task<FoodDescription> descriptionTask, string id)
-		{
-			FoodDescription description = await descriptionTask;
-			description.ASIN = id;
+			XElement attributesElement = await attributesTask;
+			AssignAttributes(description, attributesElement);
+
+			XElement imagesElement = await imagesTask;
+			AssignImages(description, imagesElement);
+
 			return description;
 		}
 
-		//TODO: test
-		private static async Task<FoodDescription> ParseAttributes(Task<FoodDescription> descriptionTask, Task<XElement> attributesTask)
+		private static void AssignId(FoodDescription description, string id)
 		{
-			FoodDescription description = await descriptionTask;
-			XElement attributesElement = await attributesTask;
+			description.ASIN = id;
+		}
+
+		internal static void AssignAttributes(FoodDescription description, XElement attributesElement)
+		{
 			XNamespace ns = attributesElement.Name.Namespace;
 
 			description.Title = GetAttribute(attributesElement, ns, "Title");
 			description.Brand = GetAttribute(attributesElement, ns, "Brand");
-
-			return description;
 		}
 
-		//TODO: test
-		private static async Task<FoodDescription> ParseImages(Task<FoodDescription> descriptionTask, Task<XElement> imagesTask)
+		internal static void AssignImages(FoodDescription description, XElement imagesElement)
 		{
-			FoodDescription description = await descriptionTask;
-			XElement imagesElement = await imagesTask;
 			XNamespace ns = imagesElement.Name.Namespace;
 
 			description.SmallImageUrl = GetImageUrl(imagesElement, ns, "SmallImage");
 			description.MediumImageUrl = GetImageUrl(imagesElement, ns, "MediumImage");
 			description.LargeImageUrl = GetImageUrl(imagesElement, ns, "LargeImage");
-
-			return description;
 		}
 
-		private static string GetAttribute(XElement element, XNamespace ns, string elementName)
+		private static string GetAttribute(XElement attributesElement, XNamespace ns, string elementName)
 		{
-			return (string)element.Element(ns + elementName);
+			return (string)attributesElement.Element(ns + "ItemAttributes")
+								  .Element(ns + elementName);
 		}
 
-		private static string GetImageUrl(XElement element, XNamespace ns, string elementName)
+		private static string GetImageUrl(XElement imagesElement, XNamespace ns, string elementName)
 		{
-			// ReSharper disable once PossibleNullReferenceException
-			return (string)element.Element(ns + elementName)
-								  .Element(ns + "URL");
+			XElement element = imagesElement.Element(ns + elementName);
+			return element != null ? (string)element.Element(ns + "URL") : null;
 		}
 	}
 }
