@@ -1,11 +1,10 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace OrangeJuice.Server.Api.Models
 {
+	/// <seealso cref="OrangeJuice.Server.Api.Validation.UserSearchCriteriaValidator" />
 	public class UserSearchCriteria
 	{
-		[Required]
 		public Guid? UserGuid { get; set; }
 	}
 }
