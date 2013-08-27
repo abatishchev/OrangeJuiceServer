@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Models;
+using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Model.Repository;
@@ -47,10 +48,9 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
-			// TODO: inject ModelValidatorProvider, etc.
-			//container.RegisterType<ModelValidatorProvider>(
-			//	new ContainerControlledLifetimeManager(),
-			//	new InjectionConstructor(container.Resolve<ValidatorFactoryBase>()));
+			container.RegisterType<IValidatorFactory>(
+				new ContainerControlledLifetimeManager(),
+				new UnityValidatorFactory(container));
 
 			// TODO: inject ApiInfo
 			// HomeController
