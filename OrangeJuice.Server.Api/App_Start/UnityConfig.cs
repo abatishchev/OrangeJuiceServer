@@ -1,4 +1,7 @@
 using System.Web.Http;
+using System.Web.Http.Validation;
+
+using FluentValidation;
 
 using Microsoft.Practices.Unity;
 
@@ -44,6 +47,12 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
+			// TODO: inject ModelValidatorProvider, etc.
+			//container.RegisterType<ModelValidatorProvider>(
+			//	new ContainerControlledLifetimeManager(),
+			//	new InjectionConstructor(container.Resolve<ValidatorFactoryBase>()));
+
+			// TODO: inject ApiInfo
 			// HomeController
 			//container.RegisterInstance(
 			//	new ApiInfoFactory(),
