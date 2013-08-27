@@ -50,6 +50,7 @@ namespace OrangeJuice.Server.Api.Test.Policies
 			actual.Should().Be(expected);
 		}
 
+		[TestMethod]
 		public void Resolve_Should_Throw_Exception_When_Policies_Do_Not_Contain_Environment()
 		{
 			// Arrange

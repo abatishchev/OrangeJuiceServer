@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 using FluentAssertions;
 
@@ -50,6 +51,24 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Assert
 			actual.Should().Be(expected);
+		}
+
+		[TestMethod]
+		public async Task GetDescription_Should_Return_Message_Having_Exception_Set_When_SearchCriteria_Is_Null()
+		{
+			// Arrange
+			FoodController controller = CreateController();
+			const FoodSearchCriteria searchCriteria = null;
+
+			// Act
+			HttpResponseMessage message = await controller.GetDescription(searchCriteria);
+
+			// Assert
+			ObjectContent<HttpError> content = message.Content as ObjectContent<HttpError>;
+			Action action = () => { throw content.GetException(); };
+
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("searchCriteria");
 		}
 
 		[TestMethod]

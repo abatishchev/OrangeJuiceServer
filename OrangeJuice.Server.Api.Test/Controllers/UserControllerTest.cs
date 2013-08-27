@@ -54,6 +54,24 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
+		public async Task GetUser_Should_Return_Message_Having_Exception_Set_When_SearchCriteria_Is_Null()
+		{
+			// Arrange
+			UserController controller = CreateController();
+			const UserSearchCriteria searchCriteria = null;
+
+			// Act
+			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
+
+			// Assert
+			ObjectContent<HttpError> content = message.Content as ObjectContent<HttpError>;
+			Action action = () => { throw content.GetException(); };
+
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("searchCriteria");
+		}
+
+		[TestMethod]
 		public async Task GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
@@ -147,6 +165,24 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Assert
 			actual.Should().Be(expected);
+		}
+
+		[TestMethod]
+		public async Task PutUser_Should_Return_Message_Having_Exception_Set_When_UserRegistration_Is_Null()
+		{
+			// Arrange
+			UserController controller = CreateController();
+			const UserRegistration userRegistration = null;
+
+			// Act
+			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
+
+			// Assert
+			ObjectContent<HttpError> content = message.Content as ObjectContent<HttpError>;
+			Action action = () => { throw content.GetException(); };
+
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("userRegistration");
 		}
 
 		[TestMethod]
