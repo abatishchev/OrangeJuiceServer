@@ -46,7 +46,7 @@ namespace OrangeJuice.Server.Data
 		private static string GetAttribute(XElement attributesElement, XNamespace ns, string elementName)
 		{
 			return (string)attributesElement.Element(ns + "ItemAttributes")
-								  .Element(ns + elementName);
+			                                .Element(ns + elementName);
 		}
 
 		private static string GetImageUrl(XElement imagesElement, XNamespace ns, string elementName)

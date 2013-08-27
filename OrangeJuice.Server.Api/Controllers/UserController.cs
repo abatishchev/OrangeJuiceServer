@@ -8,8 +8,6 @@ using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Data;
 
-using UserSearchCriteria = OrangeJuice.Server.Api.Models.UserSearchCriteria;
-
 namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class UserController : ApiController

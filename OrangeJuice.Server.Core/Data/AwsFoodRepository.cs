@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,7 +34,7 @@ namespace OrangeJuice.Server.Data
 							 .ContinueWith(t => t.Result);
 		}
 
-		private Task<FoodDescription> CreateDescription(string id)
+		internal Task<FoodDescription> CreateDescription(string id)
 		{
 			return _foodDescriptionFactory.Create(
 				id,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FluentAssertions;
 
@@ -79,8 +80,32 @@ namespace OrangeJuice.Server.Test.Data
 		}
 		#endregion
 
+		[TestMethod]
+		public async Task CreateDescription_Should_Pass_Id_AttributesTask_ImagesTask_To_FoodDescriptionFactory()
+		{
+			// Arrange
+			const string id = "id";
+			Task<XElement> attributesTask = Task.FromResult(new XElement("attributes"));
+			Task<XElement> imagesTask = Task.FromResult(new XElement("images"));
+
+			var awsClientMock = new Mock<IAwsClient>();
+			awsClientMock.Setup(c => c.LookupAttributes(id)).Returns(attributesTask);
+			awsClientMock.Setup(c => c.LookupImages(id)).Returns(imagesTask);
+
+			var factoryMock = new Mock<IFoodDescriptionFactory>();
+			factoryMock.Setup(f => f.Create(id, attributesTask, imagesTask)).ReturnsAsync(new FoodDescription());
+
+			AwsFoodRepository repository = CreateRepository(awsClientMock.Object, factoryMock.Object);
+
+			// Act
+			await repository.CreateDescription(id);
+
+			// Assert
+			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once());
+		}
+
 		#region Helper methods
-		private static IFoodRepository CreateRepository(IAwsClient awsClient = null, IFoodDescriptionFactory foodDescriptionFactory = null)
+		private static AwsFoodRepository CreateRepository(IAwsClient awsClient = null, IFoodDescriptionFactory foodDescriptionFactory = null)
 		{
 			return new AwsFoodRepository(
 				awsClient ?? new Mock<IAwsClient>(MockBehavior.Strict).Object,

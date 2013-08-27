@@ -15,8 +15,6 @@ using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Test;
 
-using UserSearchCriteria = OrangeJuice.Server.Api.Models.UserSearchCriteria;
-
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
 	[TestClass]
@@ -43,16 +41,16 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetUser_Should_Return_BadRequest_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
-			const UserSearchCriteria userInformation = null;
 			UserController controller = CreateController();
+			const UserSearchCriteria searchCriteria = null;
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpResponseMessage message = await controller.GetUserInformation(userInformation);
+			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
 			HttpStatusCode actual = message.StatusCode;
 
 			// Assert
-			actual.Should().Be(expected); // TODO: check underlying exception
+			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
@@ -60,13 +58,13 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			UserController controller = CreateController();
-			UserSearchCriteria userInformation = new UserSearchCriteria();
+			UserSearchCriteria searchCriteria = new UserSearchCriteria();
 			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
 			using (ControllerFactory.NewContext(ControllerFactory.CreateModelValidator(s => false)))
 			{
-				HttpResponseMessage message = await controller.GetUserInformation(userInformation);
+				HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
 				HttpStatusCode actual = message.StatusCode;
 
 				// Assert
@@ -82,13 +80,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.SearchByGuid(It.IsAny<Guid>())).ReturnsAsync(null);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
-			UserSearchCriteria userInformation = new UserSearchCriteria
-			{
-				UserGuid = Guid.NewGuid()
-			};
+			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = Guid.NewGuid() };
 
 			// Act
-			Func<Task<HttpResponseMessage>> func = () => controller.GetUserInformation(userInformation);
+			Func<Task<HttpResponseMessage>> func = () => controller.GetUserInformation(searchCriteria);
 
 			// Assert
 			func.ShouldThrow<HttpResponseException>()
@@ -106,13 +101,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.SearchByGuid(userGuid)).ReturnsAsync(user);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
-			UserSearchCriteria userInformation = new UserSearchCriteria
-			{
-				UserGuid = userGuid
-			};
+			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = userGuid };
 
 			// Act
-			await controller.GetUserInformation(userInformation);
+			await controller.GetUserInformation(searchCriteria);
 
 			// Assert
 			userRepositoryMock.Verify(r => r.SearchByGuid(userGuid), Times.Once());
@@ -129,13 +121,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			userRepositoryMock.Setup(r => r.SearchByGuid(userGuid)).ReturnsAsync(expected);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
-			UserSearchCriteria userInformation = new UserSearchCriteria
-			{
-				UserGuid = userGuid
-			};
+			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = userGuid };
 
 			// Act
-			HttpResponseMessage message = await controller.GetUserInformation(userInformation);
+			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
 			IUser actual = message.Content.GetValue<IUser>();
 
 			// Assert

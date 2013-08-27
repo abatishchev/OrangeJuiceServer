@@ -13,6 +13,7 @@ namespace OrangeJuice.Server.Test.Data
 	[TestClass]
 	public class XmlFoodDescriptionFactoryTest
 	{
+		#region Test methods
 		[TestMethod]
 		public async Task Create_Should_Return_GroceryDescription_Having_Properies_Populated_From_XElement()
 		{
@@ -73,11 +74,13 @@ namespace OrangeJuice.Server.Test.Data
 			description.MediumImageUrl.Should().Be(mediumImageUrl);
 			description.LargeImageUrl.Should().Be(largeImageUrl);
 		}
+		#endregion
 
+		#region Helper methods
 		private static XElement CreateAttributes(string title = "", string brand = "")
 		{
 			return XElement.Parse(String.Format(
-@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
+				@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
 	<ItemAttributes>
 		<Title>{0}</Title>
 		<Brand>{1}</Brand>
@@ -88,7 +91,7 @@ namespace OrangeJuice.Server.Test.Data
 		private static XElement CreateImages(string smallImageUrl = "", string mediumImageUrl = "", string largeImageUrl = "")
 		{
 			return XElement.Parse(String.Format(
-@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
+				@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
 	<SmallImage>
 		<URL>{0}</URL>
 	</SmallImage>
@@ -100,5 +103,6 @@ namespace OrangeJuice.Server.Test.Data
 	</LargeImage>
 </Item>", smallImageUrl, mediumImageUrl, largeImageUrl));
 		}
+		#endregion
 	}
 }
