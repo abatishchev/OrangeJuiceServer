@@ -67,8 +67,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ObjectContent<HttpError> content = message.Content as ObjectContent<HttpError>;
 			Action action = () => { throw content.GetException(); };
 
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("searchCriteria");
+			action.ShouldThrow<ArgumentNullException>();
 		}
 
 		[TestMethod]

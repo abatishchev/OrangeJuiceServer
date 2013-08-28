@@ -14,13 +14,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			{
 				IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always
 			};
+
 			var request = new HttpRequestMessage();
-			var routeData = new HttpRouteData(new HttpRoute());
+			request.SetRequestContext(new HttpRequestContext { IncludeErrorDetail = true });
+			request.SetConfiguration(config);
 
 			T controller = (T)Activator.CreateInstance(typeof(T), args);
-			controller.ControllerContext = new HttpControllerContext(config, routeData, request);
+			controller.ControllerContext = new HttpControllerContext(config, new HttpRouteData(new HttpRoute()), request);
 			controller.Request = request;
-			controller.Request.Properties.Add(System.Web.Http.Hosting.HttpPropertyKeys.HttpConfigurationKey, config);
 			return controller;
 		}
 	}

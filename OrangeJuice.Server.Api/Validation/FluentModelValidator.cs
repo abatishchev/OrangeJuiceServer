@@ -10,7 +10,7 @@ using FluentValidation.Results;
 namespace OrangeJuice.Server.Api.Validation
 {
 	// TODO: tests
-	internal sealed class FluentModelValidator : System.Web.Http.Validation.ModelValidator
+	internal sealed class FluentModelValidator : ModelValidator
 	{
 		private readonly IValidator _validator;
 
@@ -24,6 +24,8 @@ namespace OrangeJuice.Server.Api.Validation
 
 		public override IEnumerable<ModelValidationResult> Validate(ModelMetadata metadata, object instance)
 		{
+			// TODO: why called twice?
+
 			ValidationResult result = _validator.Validate(instance);
 			return from error in result.Errors
 				   select new ModelValidationResult
