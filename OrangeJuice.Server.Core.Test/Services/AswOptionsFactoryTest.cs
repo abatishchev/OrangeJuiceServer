@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+
+using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,6 +14,20 @@ namespace OrangeJuice.Server.Test.Services
 	[TestClass]
 	public class AswOptionsFactoryTest
 	{
+		[TestMethod]
+		public void Ctor_Should_Throw_Exception_When_ConfigurationProvider_Is_Null()
+		{
+			// Arrange
+			const IConfigurationProvider configurationProvider = null;
+
+			// Act
+			Action action = () => new AswOptionsFactory(configurationProvider);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("configurationProvider");
+		}
+
 		[TestMethod]
 		public void Create_Should_Return_Options_With_Populated_Properties()
 		{

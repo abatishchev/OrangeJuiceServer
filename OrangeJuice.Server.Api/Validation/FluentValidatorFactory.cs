@@ -6,7 +6,6 @@ using Microsoft.Practices.Unity;
 
 namespace OrangeJuice.Server.Api.Validation
 {
-	// TODO: tests
 	internal sealed class UnityValidatorFactory : ValidatorFactoryBase
 	{
 		private readonly IUnityContainer _container;
@@ -18,11 +17,11 @@ namespace OrangeJuice.Server.Api.Validation
 			_container = container;
 		}
 
-		public override IValidator CreateInstance(Type validatorType)
+		public override IValidator CreateInstance(Type type)
 		{
-			if (validatorType == null)
-				throw new ArgumentNullException("validatorType");
-			return (IValidator)_container.Resolve(validatorType);
+			if (type == null)
+				throw new ArgumentNullException("type");
+			return (IValidator)_container.Resolve(type, null, null);
 		}
 	}
 }

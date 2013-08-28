@@ -5,16 +5,15 @@ using System.Web.Http.Validation;
 
 using FluentValidation;
 
-using HttpModelValidator = System.Web.Http.Validation.ModelValidator;
-
 namespace OrangeJuice.Server.Api.Validation
 {
-	// TODO: tests
 	internal sealed class FluentModelValidatorProvider : ModelValidatorProvider
 	{
-		private readonly ValidatorFactoryBase _validationFactory;
+		#region Fields
+		private readonly IValidatorFactory _validationFactory;
+		#endregion
 
-		public FluentModelValidatorProvider(ValidatorFactoryBase validationFactory)
+		public FluentModelValidatorProvider(IValidatorFactory validationFactory)
 		{
 			if (validationFactory == null)
 				throw new ArgumentNullException("validationFactory");
@@ -22,12 +21,12 @@ namespace OrangeJuice.Server.Api.Validation
 			_validationFactory = validationFactory;
 		}
 
-		public override IEnumerable<HttpModelValidator> GetValidators(ModelMetadata metadata, IEnumerable<ModelValidatorProvider> validatorProviders)
+		public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, IEnumerable<ModelValidatorProvider> validatorProviders)
 		{
 			Type type = GetType(metadata);
 			if (type != null)
 			{
-				IValidator validator = _validationFactory.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
+				IValidator validator = _validationFactory.GetValidator(typeof(IValidator<>).MakeGenericType(type));
 				yield return new FluentModelValidator(validatorProviders, validator);
 			}
 		}

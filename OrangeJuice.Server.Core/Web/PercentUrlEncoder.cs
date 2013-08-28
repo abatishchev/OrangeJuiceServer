@@ -8,8 +8,8 @@ namespace OrangeJuice.Server.Web
 {
 	public sealed class PercentUrlEncoder : IUrlEncoder
 	{
-		#region FIelds
-		private static readonly Lazy<IDictionary<string, string>> _charDir = new Lazy<IDictionary<string, string>>(CreateCharacterDictionary);
+		#region Fields
+		private static readonly Lazy<IDictionary<string, string>> _charDictionary = new Lazy<IDictionary<string, string>>(CreateCharacterDictionary);
 
 		private readonly IEnumerable<Func<string, string>> _encodingSteps;
 		#endregion
@@ -18,7 +18,6 @@ namespace OrangeJuice.Server.Web
 		public PercentUrlEncoder()
 			: this(GetDefaultEncodingSteps())
 		{
-
 		}
 
 		internal PercentUrlEncoder(IEnumerable<Func<string, string>> encodingSteps)
@@ -65,7 +64,7 @@ namespace OrangeJuice.Server.Web
 
 		internal static string PercentEncode(string url)
 		{
-			return _charDir.Value.Aggregate(url, (str, pair) => str.Replace(pair.Key, pair.Value));
+			return _charDictionary.Value.Aggregate(url, (str, pair) => str.Replace(pair.Key, pair.Value));
 		}
 
 		internal static string UpperCaseEncoding(string url)
