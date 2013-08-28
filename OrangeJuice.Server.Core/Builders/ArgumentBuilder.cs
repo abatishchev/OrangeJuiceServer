@@ -5,7 +5,8 @@ namespace OrangeJuice.Server.Builders
 {
 	public sealed class ArgumentBuilder
 	{
-		#region Fields
+		#region Constants
+		internal const string AwsAccessKey = "AWSAccessKeyId";
 		internal const string AssociateTagKey = "AssociateTag";
 
 		internal const string ServiceKey = "Service";
@@ -14,27 +15,47 @@ namespace OrangeJuice.Server.Builders
 		internal const string ConditionKey = "Condition";
 		internal const string ConditionValue = "All";
 
+		internal const string TimestampKey = "Timestamp";
+		#endregion
+
+		#region Fields
+		private readonly string _accessKey;
 		private readonly string _associateTag;
+		private readonly IDateTimeProvider _dateTimeProvider;
 		#endregion
 
 		#region Constructors
-		public ArgumentBuilder(string associateTag)
+		public ArgumentBuilder(string accessKey, string associateTag, IDateTimeProvider dateTimeProvider)
 		{
+			if (String.IsNullOrEmpty(accessKey))
+				throw new ArgumentNullException("accessKey");
 			if (String.IsNullOrEmpty(associateTag))
 				throw new ArgumentNullException("associateTag");
+			if (dateTimeProvider == null)
+				throw new ArgumentNullException("dateTimeProvider");
+
+			_accessKey = accessKey;
 			_associateTag = associateTag;
+			_dateTimeProvider = dateTimeProvider;
 		}
 		#endregion
 
 		#region Methods
 		public IDictionary<string, string> BuildArgs(IDictionary<string, string> args)
 		{
-			return new Dictionary<string, string>(args)
+			DateTime now = _dateTimeProvider.GetNow();
+
+			args = new Dictionary<string, string>(args)
 			{
-				{ServiceKey, ServiceValue},
-				{AssociateTagKey, _associateTag},
-				{ConditionKey, ConditionValue}
+				{ AwsAccessKey, _accessKey },
+				{ AssociateTagKey, _associateTag },
+				{ ServiceKey, ServiceValue },
+				{ ConditionKey, ConditionValue },
+				{ TimestampKey, _dateTimeProvider.FormatToUniversal(now) }
 			};
+
+			// Use a SortedDictionary to get the parameters in naturual byte order, as required by AWS.
+			return new SortedDictionary<string, string>(args, StringComparer.Ordinal);
 		}
 		#endregion
 	}

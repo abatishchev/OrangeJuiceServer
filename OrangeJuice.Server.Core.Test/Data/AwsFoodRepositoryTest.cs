@@ -80,6 +80,7 @@ namespace OrangeJuice.Server.Test.Data
 		}
 		#endregion
 
+		#region Internal methods
 		[TestMethod]
 		public async Task CreateDescription_Should_Pass_Id_AttributesTask_ImagesTask_To_FoodDescriptionFactory()
 		{
@@ -103,6 +104,7 @@ namespace OrangeJuice.Server.Test.Data
 			// Assert
 			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once());
 		}
+		#endregion
 
 		#region Helper methods
 		private static AwsFoodRepository CreateRepository(IAwsClient awsClient = null, IFoodDescriptionFactory foodDescriptionFactory = null)

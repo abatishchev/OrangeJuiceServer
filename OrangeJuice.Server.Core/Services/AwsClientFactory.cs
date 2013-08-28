@@ -29,8 +29,8 @@ namespace OrangeJuice.Server.Services
 		public IAwsClient Create()
 		{
 			return new XmlAwsClient(
-				new ArgumentBuilder(_awsOptions.AssociateTag),
-				new QueryBuilder(_awsOptions.AccessKey, _urlEncoder, _dateTimeProvider),
+				new ArgumentBuilder(_awsOptions.AccessKey, _awsOptions.AssociateTag, _dateTimeProvider),
+				new QueryBuilder(_urlEncoder),
 				new SignatureBuilder(_awsOptions.SecretKey, _urlEncoder),
 				new HttpDocumentLoader());
 		}
