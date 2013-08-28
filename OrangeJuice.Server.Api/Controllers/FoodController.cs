@@ -32,9 +32,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (searchCriteria == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
 
-			if (!ModelValidator.Current.IsValid(this.ModelState))
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
-
 			FoodDescription[] description = await _foodRepository.SearchByTitle(searchCriteria.Title);
 			return Request.CreateResponse(HttpStatusCode.OK, description);
 		}

@@ -1,9 +1,13 @@
 using System.Web.Http;
+using System.Web.Http.Validation;
+
+using FluentValidation;
 
 using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Models;
+using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Model.Repository;
@@ -42,8 +46,22 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
 
+			// Validation
+			container.RegisterType<IValidatorFactory, UnityValidatorFactory>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container));
+
+			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container.Resolve<IValidatorFactory>()));
+
+			container.RegisterType<IValidator<FoodSearchCriteria>, FoodSearchCriteriaValidator>(new ContainerControlledLifetimeManager())
+					 .RegisterType<IValidator<UserRegistration>, UserRegistrationValidator>(new ContainerControlledLifetimeManager())
+					 .RegisterType<IValidator<UserSearchCriteria>, UserSearchCriteriaValidator>(new ContainerControlledLifetimeManager());
+
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
+			// TODO: inject ApiInfo
 			// HomeController
 			//container.RegisterInstance(
 			//	new ApiInfoFactory(),
@@ -66,7 +84,7 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(container.Resolve<AwsOptions>(), container.Resolve<IUrlEncoder>(), container.Resolve<IDateTimeProvider>()));
 
 			container.RegisterType<IAwsClient>(
-				new PerResolveLifetimeManager(),
+				new PerResolveLifetimeManager(), // important!
 				new InjectionFactory(c => c.Resolve<IAwsClientFactory>().Create()));
 
 			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());

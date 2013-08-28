@@ -1,12 +1,8 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-
-namespace OrangeJuice.Server.Api.Models
+﻿namespace OrangeJuice.Server.Api.Models
 {
+	/// <seealso cref="OrangeJuice.Server.Api.Validation.FoodSearchCriteriaValidator" />
 	public class FoodSearchCriteria
 	{
-		[Required]
-		[StringLength(56, MinimumLength = 3)]
 		public string Title { get; set; }
 	}
 }

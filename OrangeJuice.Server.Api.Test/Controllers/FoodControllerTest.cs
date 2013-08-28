@@ -67,27 +67,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ObjectContent<HttpError> content = message.Content as ObjectContent<HttpError>;
 			Action action = () => { throw content.GetException(); };
 
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("searchCriteria");
-		}
-
-		[TestMethod]
-		public async Task GetDescription_Should_Return_BadRequest_When_Model_Not_IsValid()
-		{
-			// Arrange
-			FoodController controller = CreateController();
-			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
-
-			// Act
-			using (ControllerFactory.NewContext(ControllerFactory.CreateModelValidator(s => false)))
-			{
-				HttpResponseMessage message = await controller.GetDescription(searchCriteria);
-				HttpStatusCode actual = message.StatusCode;
-
-				// Assert
-				actual.Should().Be(expected);
-			}
+			action.ShouldThrow<ArgumentNullException>();
 		}
 
 		[TestMethod]
@@ -103,13 +83,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria { Title = title };
 
 			// Act
-			using (ControllerFactory.NewContext())
-			{
-				await controller.GetDescription(searchCriteria);
+			await controller.GetDescription(searchCriteria);
 
-				// Assert
-				foodRepositoryMock.Verify(r => r.SearchByTitle(title), Times.Once());
-			}
+			// Assert
+			foodRepositoryMock.Verify(r => r.SearchByTitle(title), Times.Once());
 		}
 
 		[TestMethod]
@@ -125,14 +102,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 
 			// Act
-			using (ControllerFactory.NewContext())
-			{
-				HttpResponseMessage message = await controller.GetDescription(searchCriteria);
-				FoodDescription[] actual = message.Content.GetValue<FoodDescription[]>();
+			HttpResponseMessage message = await controller.GetDescription(searchCriteria);
+			FoodDescription[] actual = message.Content.GetValue<FoodDescription[]>();
 
-				// Assert
-				actual.ShouldBeEquivalentTo(expected);
-			}
+			// Assert
+			actual.ShouldBeEquivalentTo(expected);
 		}
 		#endregion
 
