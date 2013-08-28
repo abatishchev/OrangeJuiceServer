@@ -72,25 +72,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
-		{
-			// Arrange
-			UserController controller = CreateController();
-			UserSearchCriteria searchCriteria = new UserSearchCriteria();
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
-
-			// Act
-			using (ControllerFactory.NewContext(ControllerFactory.CreateModelValidator(s => false)))
-			{
-				HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
-				HttpStatusCode actual = message.StatusCode;
-
-				// Assert
-				actual.Should().Be(expected);
-			}
-		}
-
-		[TestMethod]
 		public void GetUser_Should_Throw_Exception_When_User_By_Specified_Guid_Does_Not_Exist()
 		{
 			//Arrange
@@ -186,48 +167,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
-		{
-			// Arrange
-			UserController controller = CreateController();
-			UserRegistration userRegistration = new UserRegistration();
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
-
-			// Act
-			using (ControllerFactory.NewContext(ControllerFactory.CreateModelValidator(s => false)))
-			{
-				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-				HttpStatusCode actual = message.StatusCode;
-
-				// Assert
-				actual.Should().Be(expected);
-			}
-		}
-
-		[TestMethod]
-		public async Task PutUser_Should_Return_Ok_When_Model_IsValid()
-		{
-			// Arrange
-			IUser user = CreateUser();
-			var userRepositoryMock = new Mock<IUserRepository>();
-			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(user);
-
-			UserController controller = CreateController(userRepositoryMock.Object);
-			UserRegistration userRegistration = new UserRegistration();
-			const HttpStatusCode expected = HttpStatusCode.OK;
-
-			// Act
-			using (ControllerFactory.NewContext())
-			{
-				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-				HttpStatusCode actual = message.StatusCode;
-
-				// Assert
-				actual.Should().Be(expected);
-			}
-		}
-
-		[TestMethod]
 		public async Task PutUser_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
 		{
 			// Arrange
@@ -239,14 +178,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const HttpStatusCode expected = HttpStatusCode.InternalServerError;
 
 			// Act
-			using (ControllerFactory.NewContext())
-			{
-				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-				HttpStatusCode actual = message.StatusCode;
+			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
+			HttpStatusCode actual = message.StatusCode;
 
-				// Assert
-				actual.Should().Be(expected);
-			}
+			// Assert
+			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
@@ -261,13 +197,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserRegistration userRegistration = new UserRegistration { Email = email };
 
 			// Act
-			using (ControllerFactory.NewContext())
-			{
-				await controller.PutUserRegistration(userRegistration);
+			await controller.PutUserRegistration(userRegistration);
 
-				// Assert
-				userRepositoryMock.Verify(r => r.Register(email), Times.Once());
-			}
+			// Assert
+			userRepositoryMock.Verify(r => r.Register(email), Times.Once());
 		}
 
 		[TestMethod]
@@ -284,14 +217,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserRegistration userRegistration = new UserRegistration();
 
 			// Act
-			using (ControllerFactory.NewContext())
-			{
-				HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-				Guid actual = message.Content.GetValue<Guid>();
+			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
+			Guid actual = message.Content.GetValue<Guid>();
 
-				// Assert
-				actual.Should().Be(expected);
-			}
+			// Assert
+			actual.Should().Be(expected);
 		}
 		#endregion
 

@@ -165,11 +165,8 @@
     </Compile>
     <Compile Include="Validation\FluentValidatorFactory.cs" />
     <Compile Include="Validation\FoodSearchCriteriaValidator.cs" />
-    <Compile Include="Validation\IModelValidator.cs" />
-    <Compile Include="Validation\ModelValidator.cs" />
     <Compile Include="Validation\UserRegistrationValidator.cs" />
     <Compile Include="Validation\UserSearchCriteriaValidator.cs" />
-    <Compile Include="Validation\ValidationError.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

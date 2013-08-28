@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
@@ -38,9 +37,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (searchCriteria == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
 
-			if (!ModelValidator.Current.IsValid(this.ModelState))
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
-
 			IUser user = await _userRepository.SearchByGuid(searchCriteria.UserGuid.GetValueOrDefault());
 			if (user == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -58,9 +54,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		{
 			if (userRegistration == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("userRegistration"));
-
-			if (!ModelValidator.Current.IsValid(this.ModelState))
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
 			IUser user = await _userRepository.Register(userRegistration.Email);
 			if (user == null)
