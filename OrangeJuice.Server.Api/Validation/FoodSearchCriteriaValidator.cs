@@ -1,6 +1,4 @@
-﻿using System;
-
-using FluentValidation;
+﻿using FluentValidation;
 
 using OrangeJuice.Server.Api.Models;
 

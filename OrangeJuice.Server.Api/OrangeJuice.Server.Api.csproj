@@ -159,6 +159,10 @@
     </Compile>
     <Compile Include="Policies\ErrorDetailPolicyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\FluentModelValidator.cs" />
+    <Compile Include="Validation\FluentModelValidatorProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Validation\FluentValidatorFactory.cs" />
     <Compile Include="Validation\FoodSearchCriteriaValidator.cs" />
     <Compile Include="Validation\IModelValidator.cs" />

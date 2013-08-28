@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Http.Validation;
+﻿using System.Web.Http.Validation;
 
 using Microsoft.Practices.Unity;
 
@@ -13,7 +12,7 @@ namespace OrangeJuice.Server.Api
 			// TODO: wait for FluentValidation+WebApi intergration/implementation
 			// see https://fluentvalidation.codeplex.com/SourceControl/network/forks/havard/webapisupport/contribution/2253
 
-			//services.Add(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
+			services.Add(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
 		}
 	}
 }

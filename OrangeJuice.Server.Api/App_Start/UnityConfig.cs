@@ -46,11 +46,20 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
 
-			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
-
-			container.RegisterType<IValidatorFactory>(
+			// Validation
+			container.RegisterType<IValidatorFactory, UnityValidatorFactory>(
 				new ContainerControlledLifetimeManager(),
-				new UnityValidatorFactory(container));
+				new InjectionConstructor(container));
+
+			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container.Resolve<IValidatorFactory>()));
+
+			container.RegisterType<IValidator<FoodSearchCriteria>, FoodSearchCriteriaValidator>(new ContainerControlledLifetimeManager())
+					 .RegisterType<IValidator<UserRegistration>, UserRegistrationValidator>(new ContainerControlledLifetimeManager())
+					 .RegisterType<IValidator<UserSearchCriteria>, UserSearchCriteriaValidator>(new ContainerControlledLifetimeManager());
+
+			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
 			// TODO: inject ApiInfo
 			// HomeController
@@ -75,7 +84,7 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(container.Resolve<AwsOptions>(), container.Resolve<IUrlEncoder>(), container.Resolve<IDateTimeProvider>()));
 
 			container.RegisterType<IAwsClient>(
-				new PerResolveLifetimeManager(),
+				new PerResolveLifetimeManager(), // important!
 				new InjectionFactory(c => c.Resolve<IAwsClientFactory>().Create()));
 
 			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());
