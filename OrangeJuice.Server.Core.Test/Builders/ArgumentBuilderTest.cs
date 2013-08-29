@@ -5,6 +5,8 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Moq;
+
 using OrangeJuice.Server.Builders;
 
 namespace OrangeJuice.Server.Test.Builders
@@ -12,14 +14,49 @@ namespace OrangeJuice.Server.Test.Builders
 	[TestClass]
 	public class ArgumentBuilderTest
 	{
+		#region Ctor
+		[TestMethod]
+		public void Ctor_Should_Throw_Exception_When_AccessKey_Is_Null()
+		{
+			// Arange
+			const string accessKey = null;
+			const string associateTag = null;
+			const IDateTimeProvider dateTimeProvider = null;
+
+			// Act
+			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("accessKey");
+		}
+
+		[TestMethod]
+		public void Ctor_Should_Throw_Exception_When_AccessKey_Is_Empty()
+		{
+			// Arange
+			const string accessKey = "";
+			const string associateTag = null;
+			const IDateTimeProvider dateTimeProvider = null;
+
+			// Act
+			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("accessKey");
+		}
+
 		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_AssociateTag_Is_Null()
 		{
 			// Arange
+			const string accessKey = "anyKey";
 			const string associateTag = null;
+			const IDateTimeProvider dateTimeProvider = null;
 
 			// Act
-			Action action = () => new ArgumentBuilder(associateTag);
+			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -30,10 +67,12 @@ namespace OrangeJuice.Server.Test.Builders
 		public void Ctor_Should_Throw_Exception_When_AssociateTag_Is_Empty()
 		{
 			// Arange
+			const string accessKey = "anyKey";
 			const string associateTag = "";
+			const IDateTimeProvider dateTimeProvider = null;
 
 			// Act
-			Action action = () => new ArgumentBuilder(associateTag);
+			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -41,20 +80,133 @@ namespace OrangeJuice.Server.Test.Builders
 		}
 
 		[TestMethod]
-		public void BuildArgs_Should_Add_Arguments()
+		public void Ctor_Should_Throw_Exception_When_DateTimeProvider_Is_Null()
+		{
+			// Arange
+			const string accessKey = "anyKey";
+			const string associateTag = "anyTag";
+			const IDateTimeProvider dateTimeProvider = null;
+
+			// Act
+			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("dateTimeProvider");
+		}
+		#endregion
+
+		#region BuildArgs
+		[TestMethod]
+		public void BuildArgs_Should_Add_Default_Arguments()
 		{
 			// Arrange
+			const string accessKey = "anyKey";
 			const string associateTag = "anyTag";
 
-			var argumentBuilder = new ArgumentBuilder(associateTag);
+			DateTime now = DateTime.UtcNow;
+			string timestamp = now.ToString();
+			var dateTimeProvider = CreateDateTimeProvider(now);
+
+			var argumentBuilder = CreateArgumentBuilder(accessKey, associateTag, dateTimeProvider.Object);
 
 			// Act
 			var args = argumentBuilder.BuildArgs(new Dictionary<string, string>());
 
 			// Assert
-			args.Should().Contain(ArgumentBuilder.AssociateTagKey, associateTag)
-						 .And.Contain(ArgumentBuilder.ServiceKey, ArgumentBuilder.ServiceValue)
-						 .And.Contain(ArgumentBuilder.ConditionKey, ArgumentBuilder.ConditionValue);
+			args.Should().Contain(ArgumentBuilder.AwsAccessKey, accessKey)
+				.And.Contain(ArgumentBuilder.AssociateTagKey, associateTag)
+				.And.Contain(ArgumentBuilder.ServiceKey, ArgumentBuilder.ServiceValue)
+				.And.Contain(ArgumentBuilder.ConditionKey, ArgumentBuilder.ConditionValue)
+				.And.Contain(ArgumentBuilder.TimestampKey, timestamp);
 		}
+
+		[TestMethod]
+		public void BuildArgs_Should_Return_Arguments_Containing_Input_Argument()
+		{
+			// Arange
+			const string key = "anyKey";
+			const string value = "anyValue";
+
+			var queryBuilder = CreateArgumentBuilder();
+			IDictionary<string, string> args = new Dictionary<string, string>
+			{
+				 { key, value }
+			};
+
+			// Act
+			args = queryBuilder.BuildArgs(args);
+
+			// Assert
+			args.Should().Contain(key, value);
+		}
+
+		[TestMethod]
+		public void BuildArgs_Should_Call_DateTimeProvider_GetNow()
+		{
+			// Arrange
+			var dateTimeProviderMock = CreateDateTimeProvider(DateTime.UtcNow);
+
+			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
+			var dic = new Dictionary<string, string>();
+
+			// Act
+			queryBuilder.BuildArgs(dic);
+
+			// Assert
+			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once());
+		}
+
+		[TestMethod]
+		public void BuildArgs_Should_Call_DateTimeProvider_FormatToUniversal()
+		{
+			// Arrange
+			var dateTimeProviderMock = CreateDateTimeProvider(DateTime.UtcNow);
+
+			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
+			var dic = new Dictionary<string, string>();
+
+			// Act
+			queryBuilder.BuildArgs(dic);
+
+			// Assert
+			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once());
+		}
+
+		[TestMethod]
+		public void BuildArgs_Should_Pass_Result_Of_DateTimeProvider_GetNow_To_DateTimeProvider_FormatToUniversal()
+		{
+			// Arrange
+			DateTime now = DateTime.UtcNow;
+			var dateTimeProviderMock = CreateDateTimeProvider(now);
+
+			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
+			var dic = new Dictionary<string, string>();
+
+			// Act
+			queryBuilder.BuildArgs(dic);
+
+			// Assert
+			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once());
+		}
+		#endregion
+
+		#region Helper methods
+		private static Mock<IDateTimeProvider> CreateDateTimeProvider(DateTime now)
+		{
+			var dateTimeProviderMock = new Mock<IDateTimeProvider>();
+			dateTimeProviderMock.Setup(p => p.GetNow()).Returns(now);
+			dateTimeProviderMock.Setup(p => p.FormatToUniversal(It.IsAny<DateTime>())).Returns(now.ToString());
+			return dateTimeProviderMock;
+		}
+
+		private static ArgumentBuilder CreateArgumentBuilder(string accessKey = null, string associateTag = null, IDateTimeProvider dateTimeProvider = null)
+		{
+			return new ArgumentBuilder(
+				accessKey ?? "anyKey",
+				associateTag ?? "anyTag",
+				dateTimeProvider ?? CreateDateTimeProvider(DateTime.UtcNow).Object);
+		}
+		#endregion
 	}
 }
