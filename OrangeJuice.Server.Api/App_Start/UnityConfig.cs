@@ -57,13 +57,15 @@ namespace OrangeJuice.Server.Api
 				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
 
 			// Validation
-			container.RegisterType<IValidatorFactory, UnityValidatorFactory>(
+			container.RegisterType<IValidatorFactory, ValidatorFactory>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container));
 
+			container.RegisterType<IModelValidatorFactory, ModelValidatorFactory>(new ContainerControlledLifetimeManager());
+
 			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IValidatorFactory>()));
+				new InjectionConstructor(container.Resolve<IValidatorFactory>(), container.Resolve<IModelValidatorFactory>()));
 
 			container.RegisterType<IValidator<FoodSearchCriteria>, FoodSearchCriteriaValidator>(new ContainerControlledLifetimeManager())
 					 .RegisterType<IValidator<UserRegistration>, UserRegistrationValidator>(new ContainerControlledLifetimeManager())

@@ -6,11 +6,11 @@ using Microsoft.Practices.Unity;
 
 namespace OrangeJuice.Server.Api.Validation
 {
-	internal sealed class UnityValidatorFactory : ValidatorFactoryBase
+	internal sealed class ValidatorFactory : ValidatorFactoryBase
 	{
 		private readonly IUnityContainer _container;
 
-		public UnityValidatorFactory(IUnityContainer container)
+		public ValidatorFactory(IUnityContainer container)
 		{
 			if (container == null)
 				throw new ArgumentNullException("container");

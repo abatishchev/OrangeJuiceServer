@@ -146,8 +146,10 @@
     <Compile Include="Validation\FluentModelValidatorProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Validation\FluentValidatorFactory.cs" />
+    <Compile Include="Validation\IModelValidatorFactory.cs" />
+    <Compile Include="Validation\ValidatorFactory.cs" />
     <Compile Include="Validation\FoodSearchCriteriaValidator.cs" />
+    <Compile Include="Validation\ModelValidatorFactory.cs" />
     <Compile Include="Validation\UserRegistrationValidator.cs" />
     <Compile Include="Validation\UserSearchCriteriaValidator.cs" />
   </ItemGroup>

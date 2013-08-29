@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http.Metadata;
+using System.Web.Http.Validation;
 
 using FluentAssertions;
 
 using FluentValidation;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Moq;
 
 using OrangeJuice.Server.Api.Validation;
 
@@ -13,40 +19,142 @@ namespace OrangeJuice.Server.Api.Test.Validation
 	[TestClass]
 	public class FluentModelValidatorProviderTest
 	{
+		#region Test methods
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_ValidationFactory_Is_Null()
+		public void Ctor_Should_Throw_Exception_When_ValidatorFactory_Is_Null()
 		{
 			// Arrange
-			const ValidatorFactoryBase validationFactory = null;
+			const ValidatorFactoryBase validatorFactory = null;
+			const IModelValidatorFactory modelValidatorFactory = null;
 
 			// Act
-			Action action = () => new FluentModelValidatorProvider(validationFactory);
+			Action action = () => new FluentModelValidatorProvider(validatorFactory, modelValidatorFactory);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("validationFactory");
+				  .And.ParamName.Should().Be("validatorFactory");
 		}
 
 		[TestMethod]
-		public void GetValidators_Should_()
+		public void Ctor_Should_Throw_Exception_When_ModelalidatorFactory_Is_Null()
 		{
 			// Arrange
+			ValidatorFactoryBase validatorFactory = new Mock<ValidatorFactoryBase>().Object;
+			const IModelValidatorFactory modelValidatorFactory = null;
 
 			// Act
+			Action action = () => new FluentModelValidatorProvider(validatorFactory, modelValidatorFactory);
 
 			// Assert
-			Assert.Inconclusive();
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("modelValidatorFactory");
 		}
 
 		[TestMethod]
-		public void GetType_Should_()
+		public void GetValidators_Should_Throw_Exception_When_Metadata_Is_Null()
 		{
 			// Arrange
+			ModelValidatorProvider provider = CreateProvider();
+
+			const ModelMetadata metadata = null;
+			const IEnumerable<ModelValidatorProvider> validatorProviders = null;
 
 			// Act
+			Action action = () => provider.GetValidators(metadata, validatorProviders).ToArray();
 
 			// Assert
-			Assert.Inconclusive();
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("metadata");
 		}
+
+		[TestMethod]
+		public void GetValidators_Should_Throw_Exception_When_ValidatorProviders_Is_Null()
+		{
+			// Arrange
+			ModelValidatorProvider provider = CreateProvider();
+
+			ModelMetadata metadata = CreateMetadata();
+			const IEnumerable<ModelValidatorProvider> validatorProviders = null;
+
+			// Act
+			Action action = () => provider.GetValidators(metadata, validatorProviders).ToArray();
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("validatorProviders");
+		}
+
+		[TestMethod]
+		public void GetValidators_Should_Pass_IValidator_Of_MetaData_ContainerType_UnderlyingSystemType_To_ValidatorFactory_CreateInstance()
+		{
+			// Arrange
+			IValidator validator = new Mock<IValidator>().Object;
+
+			var validatorFactoryMock = CreateValidatorFactory(validator);
+			var modelValidatorFactoryMock = CreateModelValidatorFactory();
+
+			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object, modelValidatorFactoryMock.Object);
+
+			ModelMetadata metadata = CreateMetadata(typeof(object));
+			IEnumerable<ModelValidatorProvider> modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
+
+			// Act
+			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
+
+			// Assert
+			validatorFactoryMock.Verify(f => f.CreateInstance(It.Is<Type>(t => t.IsAssignableFrom(typeof(IValidator<object>)))), Times.Once);
+		}
+
+		[TestMethod]
+		public void GetValidators_Should_Pass_ValidatorProviders_And_Validator_To_ModelValidatorFactory_Create()
+		{
+			// Arrange
+			IEnumerable<ModelValidatorProvider> validatorProviders = Enumerable.Empty<ModelValidatorProvider>();
+			IValidator validator = new Mock<IValidator>().Object;
+
+			var validatorFactoryMock = CreateValidatorFactory(validator);
+			var modelValidatorFactoryMock = CreateModelValidatorFactory();
+
+			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object, modelValidatorFactoryMock.Object);
+
+			ModelMetadata metadata = CreateMetadata();
+			IEnumerable<ModelValidatorProvider> modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
+
+			// Act
+			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
+
+			// Assert
+			modelValidatorFactoryMock.Verify(f => f.Create(validatorProviders, validator), Times.Once);
+		}
+		#endregion
+
+		#region Helper methods
+		private static ModelValidatorProvider CreateProvider(ValidatorFactoryBase validatorFactory = null, IModelValidatorFactory modelValidatorFactory = null)
+		{
+			return new FluentModelValidatorProvider(
+				validatorFactory ?? new Mock<ValidatorFactoryBase>().Object,
+				modelValidatorFactory ?? new Mock<IModelValidatorFactory>().Object);
+		}
+
+		private static ModelMetadata CreateMetadata(Type type = null)
+		{
+			return new ModelMetadata(new Mock<ModelMetadataProvider>().Object, type ?? typeof(object), () => new object(), type ?? typeof(object), "AnyPropertyName");
+		}
+
+		private static Mock<ValidatorFactoryBase> CreateValidatorFactory(IValidator validator)
+		{
+			var factoryMock = new Mock<ValidatorFactoryBase>();
+			factoryMock.Setup(f => f.CreateInstance(It.IsAny<Type>())).Returns(validator);
+			return factoryMock;
+		}
+
+		private static Mock<IModelValidatorFactory> CreateModelValidatorFactory()
+		{
+			var factoryMock = new Mock<IModelValidatorFactory>(MockBehavior.Strict);
+			factoryMock.Setup(f => f.Create(It.IsAny<IEnumerable<ModelValidatorProvider>>(), It.IsAny<IValidator>()))
+					   .Returns<IEnumerable<ModelValidatorProvider>, IValidator>((p, v) => new FluentModelValidator(p, v));
+			return factoryMock;
+		}
+		#endregion
 	}
 }

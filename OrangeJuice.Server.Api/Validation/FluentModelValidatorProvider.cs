@@ -10,30 +10,31 @@ namespace OrangeJuice.Server.Api.Validation
 	internal sealed class FluentModelValidatorProvider : ModelValidatorProvider
 	{
 		#region Fields
-		private readonly ValidatorFactoryBase _validationFactory;
+		private readonly ValidatorFactoryBase _validatorFactory;
+		private readonly IModelValidatorFactory _modelValidatorFactory;
 		#endregion
 
-		public FluentModelValidatorProvider(ValidatorFactoryBase validationFactory)
+		public FluentModelValidatorProvider(ValidatorFactoryBase validatorFactory, IModelValidatorFactory modelValidatorFactory)
 		{
-			if (validationFactory == null)
-				throw new ArgumentNullException("validationFactory");
+			if (validatorFactory == null)
+				throw new ArgumentNullException("validatorFactory");
+			if (modelValidatorFactory == null)
+				throw new ArgumentNullException("modelValidatorFactory");
 
-			_validationFactory = validationFactory;
+			_validatorFactory = validatorFactory;
+			_modelValidatorFactory = modelValidatorFactory;
 		}
 
 		public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, IEnumerable<ModelValidatorProvider> validatorProviders)
 		{
-			Type type = GetType(metadata);
-			if (type != null)
-			{
-				IValidator validator = _validationFactory.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
-				yield return new FluentModelValidator(validatorProviders, validator);
-			}
-		}
+			if (metadata == null)
+				throw new ArgumentNullException("metadata");
+			if (validatorProviders == null)
+				throw new ArgumentNullException("validatorProviders");
 
-		private static Type GetType(ModelMetadata metadata)
-		{
-			return metadata.ContainerType != null ? metadata.ContainerType.UnderlyingSystemType : null;
+			Type type = metadata.ContainerType.UnderlyingSystemType;
+			IValidator validator = _validatorFactory.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
+			yield return _modelValidatorFactory.Create(validatorProviders, validator);
 		}
 	}
 }
