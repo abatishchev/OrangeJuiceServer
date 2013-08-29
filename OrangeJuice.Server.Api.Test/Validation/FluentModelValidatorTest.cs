@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http.Metadata;
 using System.Web.Http.Validation;
@@ -20,6 +19,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 	[TestClass]
 	public class FluentModelValidatorTest
 	{
+		#region Ctor
 		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_Validator_Is_Null()
 		{
@@ -34,16 +34,51 @@ namespace OrangeJuice.Server.Api.Test.Validation
 			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("validator");
 		}
+		#endregion
+
+		#region Validate
+		[TestMethod]
+		public void Validate_Should_Throw_Exception_When_Metadata_Is_Null()
+		{
+			// Arrange
+			const ModelMetadata metadata = null;
+			const object container = null;
+
+			ModelValidator validator = CreateModelValidator();
+
+			// Act
+			Action action = () => validator.Validate(metadata, container);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("metadata");
+		}
+
+		[TestMethod]
+		public void Validate_Should_Throw_Exception_When_Container_Is_Null()
+		{
+			// Arrange
+			ModelMetadata metadata = CreateMetadata();
+			const object container = null;
+
+			ModelValidator validator = CreateModelValidator();
+
+			// Act
+			Action action = () => validator.Validate(metadata, container);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("container");
+		}
 
 		[TestMethod]
 		public void Validate_Should_Return_Empty_Sequence_When_Underlying_Validator_Validate_Returned_No_Errors()
 		{
 			// Arrange
-			IEnumerable<ModelValidatorProvider> validatorProviders = Enumerable.Empty<ModelValidatorProvider>();
 			var underlyingValidator = new Mock<IValidator>();
 			underlyingValidator.Setup(v => v.Validate(It.IsAny<object>())).Returns(new ValidationResult(Enumerable.Empty<ValidationFailure>()));
 
-			ModelValidator validator = new FluentModelValidator(validatorProviders, underlyingValidator.Object);
+			ModelValidator validator = CreateModelValidator(underlyingValidator.Object);
 
 			ModelMetadata metadata = CreateMetadata();
 			object container = new object();
@@ -61,12 +96,11 @@ namespace OrangeJuice.Server.Api.Test.Validation
 			// Arrange
 			const int count = 3;
 
-			IEnumerable<ModelValidatorProvider> validatorProviders = Enumerable.Empty<ModelValidatorProvider>();
 			var underlyingValidator = new Mock<IValidator>();
 			underlyingValidator.Setup(v => v.Validate(It.IsAny<object>()))
 							   .Returns(new ValidationResult(Enumerable.Repeat(CreateValidationFailure(), count)));
 
-			ModelValidator validator = new FluentModelValidator(validatorProviders, underlyingValidator.Object);
+			ModelValidator validator = CreateModelValidator(underlyingValidator.Object);
 
 			ModelMetadata metadata = CreateMetadata();
 			object container = new object();
@@ -77,8 +111,14 @@ namespace OrangeJuice.Server.Api.Test.Validation
 			// Assert
 			result.Should().HaveCount(count);
 		}
+		#endregion
 
 		#region Helper methods
+		private static FluentModelValidator CreateModelValidator(IValidator validator = null)
+		{
+			return new FluentModelValidator(Enumerable.Empty<ModelValidatorProvider>(), validator ?? new Mock<IValidator>().Object);
+		}
+
 		private static ModelMetadata CreateMetadata(Type type = null)
 		{
 			return new ModelMetadata(new Mock<ModelMetadataProvider>().Object, type ?? typeof(object), () => new object(), type ?? typeof(object), "AnyPropertyName");

@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 	[TestClass]
 	public class FluentModelValidatorProviderTest
 	{
-		#region Test methods
+		#region Ctor
 		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_ValidatorFactory_Is_Null()
 		{
@@ -49,7 +49,9 @@ namespace OrangeJuice.Server.Api.Test.Validation
 			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("modelValidatorFactory");
 		}
+		#endregion
 
+		#region GetValidators
 		[TestMethod]
 		public void GetValidators_Should_Throw_Exception_When_Metadata_Is_Null()
 		{
