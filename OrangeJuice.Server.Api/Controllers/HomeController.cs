@@ -7,10 +7,12 @@ namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class HomeController : Controller
 	{
-		private readonly ApiInfoFactory _apiInfoFactory;
+		private readonly IApiInfoFactory _apiInfoFactory;
 
-		public HomeController(ApiInfoFactory apiInfoFactory)
+		public HomeController(IApiInfoFactory apiInfoFactory)
 		{
+			if (apiInfoFactory == null)
+				throw new ArgumentNullException("apiInfoFactory");
 			_apiInfoFactory = apiInfoFactory;
 		}
 

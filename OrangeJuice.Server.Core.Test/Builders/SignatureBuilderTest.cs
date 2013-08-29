@@ -70,7 +70,7 @@ namespace OrangeJuice.Server.Test.Builders
 			signatureBuilder.SignQuery(query);
 
 			// Assert
-			urlEncoderMock.Verify(e => e.Encode(It.IsAny<string>()), Times.Once());
+			urlEncoderMock.Verify(e => e.Encode(It.IsAny<string>()), Times.Once);
 		}
 
 		[TestMethod]

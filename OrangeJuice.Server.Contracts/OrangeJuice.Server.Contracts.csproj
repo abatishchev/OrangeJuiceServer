@@ -48,8 +48,8 @@
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\ApiInfo.cs" />
-    <Compile Include="Data\ApiInfoFactory.cs" />
     <Compile Include="Data\FoodDescription.cs" />
+    <Compile Include="Data\IApiInfoFactory.cs" />
     <Compile Include="Data\IFoodDescriptionFactory.cs" />
     <Compile Include="Data\IFoodRepository.cs" />
     <Compile Include="Data\IUser.cs" />

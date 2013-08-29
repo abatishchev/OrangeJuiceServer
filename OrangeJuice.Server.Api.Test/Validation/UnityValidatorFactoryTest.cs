@@ -60,7 +60,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 			factory.CreateInstance(type);
 
 			// Assert
-			containerMock.Verify(c => c.Resolve(type, null, null), Times.Once());
+			containerMock.Verify(c => c.Resolve(type, null, null), Times.Once);
 		}
 
 		[TestMethod]

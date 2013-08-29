@@ -56,7 +56,7 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			ArgumentBuilder argumentBuilder = CreateArgumentBuilder();
 			QueryBuilder queryBuilder = CreateQueryBuilder();
-			SignatureBuilder signatureBuilder = null;
+			const SignatureBuilder signatureBuilder = null;
 			const HttpDocumentLoader documentLoader = null;
 
 			// Act
@@ -121,15 +121,12 @@ namespace OrangeJuice.Server.Test.Services
 		#region Helper methods
 		private static ArgumentBuilder CreateArgumentBuilder()
 		{
-			return new ArgumentBuilder("anyTag");
+			return new ArgumentBuilder("anyKey", "anyTag", new Mock<IDateTimeProvider>().Object);
 		}
 
 		private static QueryBuilder CreateQueryBuilder()
 		{
-			return new QueryBuilder(
-				"anyKey",
-				new Mock<IUrlEncoder>().Object,
-				new Mock<IDateTimeProvider>().Object);
+			return new QueryBuilder(new Mock<IUrlEncoder>().Object);
 		}
 
 		private static SignatureBuilder CreateSignatureBuilder()

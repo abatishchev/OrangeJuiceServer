@@ -86,7 +86,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.GetDescription(searchCriteria);
 
 			// Assert
-			foodRepositoryMock.Verify(r => r.SearchByTitle(title), Times.Once());
+			foodRepositoryMock.Verify(r => r.SearchByTitle(title), Times.Once);
 		}
 
 		[TestMethod]

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace OrangeJuice.Server.Data
 {
-	public class ApiInfoFactory
+	public class ApiInfoFactory : IApiInfoFactory
 	{
 		private readonly Lazy<ApiInfo> _instance = new Lazy<ApiInfo>(CreateInstance);
 

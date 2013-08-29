@@ -102,7 +102,7 @@ namespace OrangeJuice.Server.Test.Data
 			await repository.CreateDescription(id);
 
 			// Assert
-			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once());
+			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once);
 		}
 		#endregion
 

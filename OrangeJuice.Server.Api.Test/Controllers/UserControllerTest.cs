@@ -105,7 +105,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.GetUserInformation(searchCriteria);
 
 			// Assert
-			userRepositoryMock.Verify(r => r.SearchByGuid(userGuid), Times.Once());
+			userRepositoryMock.Verify(r => r.SearchByGuid(userGuid), Times.Once);
 		}
 
 		[TestMethod]
@@ -198,7 +198,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.PutUserRegistration(userRegistration);
 
 			// Assert
-			userRepositoryMock.Verify(r => r.Register(email), Times.Once());
+			userRepositoryMock.Verify(r => r.Register(email), Times.Once);
 		}
 
 		[TestMethod]
