@@ -119,7 +119,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
 			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object, modelValidatorFactoryMock.Object);
 
-			ModelMetadata metadata = CreateMetadata();
+			ModelMetadata metadata = CreateMetadata(typeof(object));
 			IEnumerable<ModelValidatorProvider> modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
 
 			// Act
@@ -127,6 +127,22 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
 			// Assert
 			modelValidatorFactoryMock.Verify(f => f.Create(validatorProviders, validator), Times.Once);
+		}
+
+		[TestMethod]
+		public void GetValidators_Should_Return_Empty_Sequence_When_MetaData_ContainerType_UnderlyingSystemType_Is_Null()
+		{
+			// Arrange
+			ModelValidatorProvider provider = CreateProvider();
+
+			ModelMetadata metadata = CreateMetadata(contrainerType: null);
+			IEnumerable<ModelValidatorProvider> modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
+
+			// Act
+			var result = provider.GetValidators(metadata, modelValidatorProviders);
+
+			// Assert
+			result.Should().BeEmpty();
 		}
 		#endregion
 
@@ -138,9 +154,9 @@ namespace OrangeJuice.Server.Api.Test.Validation
 				modelValidatorFactory ?? new Mock<IModelValidatorFactory>().Object);
 		}
 
-		private static ModelMetadata CreateMetadata(Type type = null)
+		private static ModelMetadata CreateMetadata(Type contrainerType = null)
 		{
-			return new ModelMetadata(new Mock<ModelMetadataProvider>().Object, type ?? typeof(object), () => new object(), type ?? typeof(object), "AnyPropertyName");
+			return new ModelMetadata(new Mock<ModelMetadataProvider>().Object, contrainerType, () => null, typeof(object), "AnyPropertyName");
 		}
 
 		private static Mock<ValidatorFactoryBase> CreateValidatorFactory(IValidator validator)

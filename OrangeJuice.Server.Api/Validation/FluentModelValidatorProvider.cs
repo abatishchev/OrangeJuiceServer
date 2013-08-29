@@ -33,8 +33,11 @@ namespace OrangeJuice.Server.Api.Validation
 				throw new ArgumentNullException("validatorProviders");
 
 			Type type = GeType(metadata);
-			IValidator validator = _validatorFactory.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
-			yield return _modelValidatorFactory.Create(validatorProviders, validator);
+			if (type != null)
+			{
+				IValidator validator = _validatorFactory.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
+				yield return _modelValidatorFactory.Create(validatorProviders, validator);
+			}
 		}
 
 		private static Type GeType(ModelMetadata metadata)
