@@ -9,7 +9,6 @@ using FluentValidation.Results;
 
 namespace OrangeJuice.Server.Api.Validation
 {
-	// TODO: tests
 	internal sealed class FluentModelValidator : ModelValidator
 	{
 		private readonly IValidator _validator;
