@@ -54,6 +54,7 @@
     <Compile Include="Data\IFoodRepository.cs" />
     <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\IUserRepository.cs" />
+    <Compile Include="Filters\IFilter.cs" />
     <Compile Include="IDateTimeProvider.cs" />
     <Compile Include="Services\IAwsClient.cs" />
     <Compile Include="Services\IAwsClientFactory.cs" />
