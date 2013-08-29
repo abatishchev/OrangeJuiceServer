@@ -61,15 +61,8 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
-			// TODO: inject ApiInfo
 			// HomeController
-			//container.RegisterInstance(
-			//	new ApiInfoFactory(),
-			//	new ContainerControlledLifetimeManager());
-
-			//container.RegisterType<ApiInfo>(
-			//	new ContainerControlledLifetimeManager(),
-			//	new InjectionFactory(c => c.Resolve<ApiInfoFactory>().Create()));
+			container.RegisterType<ApiInfoFactory>(new ContainerControlledLifetimeManager());
 
 			// UserController
 			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());

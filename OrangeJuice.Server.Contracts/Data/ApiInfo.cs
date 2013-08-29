@@ -1,21 +1,11 @@
-﻿using System.Reflection;
-
-namespace OrangeJuice.Server.Api.Models
+﻿namespace OrangeJuice.Server.Data
 {
 	public class ApiInfo
 	{
-		private ApiInfo()
+		internal ApiInfo()
 		{
 		}
 
 		public string Version { get; set; }
-
-		public static ApiInfo Create()
-		{
-			return new ApiInfo
-			{
-				Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version
-			};
-		}
 	}
 }

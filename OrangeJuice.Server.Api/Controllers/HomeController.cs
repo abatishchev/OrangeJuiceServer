@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Web.Mvc;
 
-using Newtonsoft.Json;
-
-using OrangeJuice.Server.Api.Models;
+using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class HomeController : Controller
 	{
-		private readonly Lazy<ApiInfo> _apiInfo = new Lazy<ApiInfo>(ApiInfo.Create);
+		private readonly ApiInfoFactory _apiInfoFactory;
+
+		public HomeController(ApiInfoFactory apiInfoFactory)
+		{
+			_apiInfoFactory = apiInfoFactory;
+		}
 
 		public HttpStatusCodeResult Index()
 		{
@@ -18,7 +21,7 @@ namespace OrangeJuice.Server.Api.Controllers
 
 		public JsonDotNetResult Version()
 		{
-			return new JsonDotNetResult(_apiInfo.Value);
+			return new JsonDotNetResult(_apiInfoFactory.Create());
 		}
 	}
 }
