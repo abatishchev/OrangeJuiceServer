@@ -53,14 +53,14 @@ namespace OrangeJuice.Server.Api.Test.Validation
 			Type type = typeof(object);
 
 			var containerMock = new Mock<IUnityContainer>(MockBehavior.Strict);
-			containerMock.Setup(c => c.Resolve(type, null, null)).Returns(null);
+			containerMock.Setup(c => c.Resolve(type, null)).Returns(null);
 			ValidatorFactoryBase factory = new UnityValidatorFactory(containerMock.Object);
 
 			// Act
 			factory.CreateInstance(type);
 
 			// Assert
-			containerMock.Verify(c => c.Resolve(type, null, null), Times.Once);
+			containerMock.Verify(c => c.Resolve(type, null), Times.Once);
 		}
 
 		[TestMethod]
@@ -71,7 +71,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 			Type type = typeof(object);
 
 			var containerMock = new Mock<IUnityContainer>(MockBehavior.Strict);
-			containerMock.Setup(c => c.Resolve(type, null, null)).Returns(expected);
+			containerMock.Setup(c => c.Resolve(type, null)).Returns(expected);
 			ValidatorFactoryBase factory = new UnityValidatorFactory(containerMock.Object);
 
 			// Act
