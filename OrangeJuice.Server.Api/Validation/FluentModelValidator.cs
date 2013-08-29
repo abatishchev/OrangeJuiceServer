@@ -21,11 +21,16 @@ namespace OrangeJuice.Server.Api.Validation
 			_validator = validator;
 		}
 
-		public override IEnumerable<ModelValidationResult> Validate(ModelMetadata metadata, object instance)
+		public override IEnumerable<ModelValidationResult> Validate(ModelMetadata metadata, object container)
 		{
-			// TODO: why called twice?
+			if (metadata == null)
+				throw new ArgumentNullException("metadata");
+			if (container == null)
+				throw new ArgumentNullException("container");
 
-			ValidationResult result = _validator.Validate(instance);
+			// TODO: why is called twice?
+
+			ValidationResult result = _validator.Validate(container);
 			return from error in result.Errors
 				   select new ModelValidationResult
 				   {
