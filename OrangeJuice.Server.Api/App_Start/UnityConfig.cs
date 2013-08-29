@@ -1,5 +1,5 @@
 using System.Web.Http;
-using System.Web.Http.Validation;
+using System.Web.Mvc;
 
 using FluentValidation;
 
@@ -14,6 +14,10 @@ using OrangeJuice.Server.Data.Model.Repository;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
+using Unity.WebApi;
+
+using ModelValidatorProvider = System.Web.Http.Validation.ModelValidatorProvider;
+
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
@@ -25,7 +29,11 @@ namespace OrangeJuice.Server.Api
 
 			RegisterTypes(container);
 
-			GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
+			// MVC
+			// TODO: install resolver using Unity.Mvc4
+
+			// Web API
+			GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
 
 			return container;
 		}
@@ -62,7 +70,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
 			// HomeController
-			container.RegisterType<ApiInfoFactory>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IApiInfoFactory, ApiInfoFactory>(new ContainerControlledLifetimeManager());
 
 			// UserController
 			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());

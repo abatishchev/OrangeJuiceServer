@@ -10,10 +10,10 @@ namespace OrangeJuice.Server.Api.Validation
 	internal sealed class FluentModelValidatorProvider : ModelValidatorProvider
 	{
 		#region Fields
-		private readonly IValidatorFactory _validationFactory;
+		private readonly ValidatorFactoryBase _validationFactory;
 		#endregion
 
-		public FluentModelValidatorProvider(IValidatorFactory validationFactory)
+		public FluentModelValidatorProvider(ValidatorFactoryBase validationFactory)
 		{
 			if (validationFactory == null)
 				throw new ArgumentNullException("validationFactory");
@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Api.Validation
 			Type type = GetType(metadata);
 			if (type != null)
 			{
-				IValidator validator = _validationFactory.GetValidator(typeof(IValidator<>).MakeGenericType(type));
+				IValidator validator = _validationFactory.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
 				yield return new FluentModelValidator(validatorProviders, validator);
 			}
 		}

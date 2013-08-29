@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Api.Validation
 		{
 			if (type == null)
 				throw new ArgumentNullException("type");
-			return (IValidator)_container.Resolve(type, null, null);
+			return (IValidator)_container.Resolve(type);
 		}
 	}
 }
