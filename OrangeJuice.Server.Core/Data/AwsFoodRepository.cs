@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,9 +11,9 @@ namespace OrangeJuice.Server.Data
 	{
 		private readonly IAwsClient _awsClient;
 		private readonly IFoodDescriptionFactory _foodDescriptionFactory;
-		private readonly IFilter<IEnumerable<FoodDescription>> _foodDescriptionFilter;
+		private readonly IFilter<FoodDescription> _foodDescriptionFilter;
 
-		public AwsFoodRepository(IAwsClient awsClient, IFoodDescriptionFactory foodDescriptionFactory, IFilter<IEnumerable<FoodDescription>> foodDescriptionFilter)
+		public AwsFoodRepository(IAwsClient awsClient, IFoodDescriptionFactory foodDescriptionFactory, IFilter<FoodDescription> foodDescriptionFilter)
 		{
 			if (awsClient == null)
 				throw new ArgumentNullException("awsClient");
@@ -37,8 +36,7 @@ namespace OrangeJuice.Server.Data
 
 			var tasks = ids.Select(CreateDescription);
 			return await Task.WhenAll(tasks)
-			                 .ContinueWith(t => _foodDescriptionFilter.Filter(t.Result)
-			                                                          .ToArray());
+							 .ContinueWith(t => t.Result.Where(_foodDescriptionFilter.Filter).ToArray());
 		}
 
 		private Task<FoodDescription> CreateDescription(string id)

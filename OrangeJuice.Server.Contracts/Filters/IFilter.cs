@@ -1,7 +1,7 @@
 ﻿namespace OrangeJuice.Server.Filters
 {
-	public interface IFilter<T>
+	public interface IFilter<in T>
 	{
-		T Filter(T item);
+		bool Filter(T obj);
 	}
 }

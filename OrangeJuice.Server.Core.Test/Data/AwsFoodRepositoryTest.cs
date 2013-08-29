@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Test.Data
 			// Arrange
 			const IAwsClient awsClient = null;
 			const IFoodDescriptionFactory foodDescriptionFactory = null;
-			const IFilter<IEnumerable<FoodDescription>> foodDescriptionFilter = null;
+			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
 			// Act
 			Action action = () => new AwsFoodRepository(awsClient, foodDescriptionFactory, foodDescriptionFilter);
@@ -42,7 +42,7 @@ namespace OrangeJuice.Server.Test.Data
 			// Arrange
 			IAwsClient awsClient = new Mock<IAwsClient>().Object;
 			const IFoodDescriptionFactory foodDescriptionFactory = null;
-			const IFilter<IEnumerable<FoodDescription>> foodDescriptionFilter = null;
+			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
 			// Act
 			Action action = () => new AwsFoodRepository(awsClient, foodDescriptionFactory, foodDescriptionFilter);
@@ -58,7 +58,7 @@ namespace OrangeJuice.Server.Test.Data
 			// Arrange
 			IAwsClient awsClient = new Mock<IAwsClient>().Object;
 			IFoodDescriptionFactory foodDescriptionFactory = new Mock<IFoodDescriptionFactory>().Object;
-			const IFilter<IEnumerable<FoodDescription>> foodDescriptionFilter = null;
+			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
 			// Act
 			Action action = () => new AwsFoodRepository(awsClient, foodDescriptionFactory, foodDescriptionFilter);
@@ -148,12 +148,12 @@ namespace OrangeJuice.Server.Test.Data
 		private static AwsFoodRepository CreateRepository(
 			IAwsClient awsClient = null,
 			IFoodDescriptionFactory foodDescriptionFactory = null,
-			IFilter<IEnumerable<FoodDescription>> foodDescriptionFilter = null)
+			IFilter<FoodDescription> foodDescriptionFilter = null)
 		{
 			return new AwsFoodRepository(
 				awsClient ?? new Mock<IAwsClient>(MockBehavior.Strict).Object,
 				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>(MockBehavior.Strict).Object,
-				foodDescriptionFilter ?? new Mock<IFilter<IEnumerable<FoodDescription>>>().Object);
+				foodDescriptionFilter ?? new Mock<IFilter<FoodDescription>>().Object);
 		}
 		#endregion
 	}
