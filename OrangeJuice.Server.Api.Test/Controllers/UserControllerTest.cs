@@ -144,6 +144,27 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Assert
 			actual.Should().Be(expected);
 		}
+
+		[TestMethod]
+		public async Task GetUser_Should_Return_Status_OK()
+		{
+			// Arrange
+			const HttpStatusCode expected = HttpStatusCode.Created;
+
+			IUser user = CreateUser();
+			var userRepositoryMock = new Mock<IUserRepository>();
+			userRepositoryMock.Setup(r => r.SearchByGuid(It.IsAny<Guid>())).ReturnsAsync(user);
+
+			UserController controller = CreateController(userRepositoryMock.Object);
+			UserSearchCriteria searchCriteria = new UserSearchCriteria();
+
+			// Act
+			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
+			HttpStatusCode actual = message.StatusCode;
+
+			// Assert
+			actual.Should().Be(expected);
+		}
 		#endregion
 
 		#region PutUserRegistration
@@ -255,17 +276,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Status_Created_When_User_Registered()
+		public async Task PutUser_Should_Return_Status_Created()
 		{
 			// Arrange
-			IUser user = CreateUser();
+			const HttpStatusCode expected = HttpStatusCode.Created;
 
+			IUser user = CreateUser();
 			var userRepositoryMock = new Mock<IUserRepository>();
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(user);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();
-			const HttpStatusCode expected = HttpStatusCode.Created;
 
 			// Act
 			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
