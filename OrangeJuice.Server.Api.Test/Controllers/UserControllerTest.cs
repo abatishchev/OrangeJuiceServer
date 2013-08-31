@@ -36,7 +36,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 		#endregion
 
-		#region GetUserInformation
+		#region GetUser
 		[TestMethod]
 		public async Task GetUser_Should_Return_Status_BadRequest_When_SearchCriteria_Is_Null()
 		{
@@ -146,10 +146,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetUser_Should_Return_Status_OK()
+		public async Task GetUser_Should_Return_Status_Ok()
 		{
 			// Arrange
-			const HttpStatusCode expected = HttpStatusCode.Created;
+			const HttpStatusCode expected = HttpStatusCode.OK;
 
 			IUser user = CreateUser();
 			var userRepositoryMock = new Mock<IUserRepository>();
@@ -167,7 +167,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 		#endregion
 
-		#region PutUserRegistration
+		#region PutUser
 		[TestMethod]
 		public async Task PutUser_Should_Return_Status_BadRequest_When_UserRegistration_Is_Null()
 		{

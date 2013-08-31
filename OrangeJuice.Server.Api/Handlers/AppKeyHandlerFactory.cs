@@ -4,7 +4,7 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	internal class AppKeyHandlerFactory
+	public sealed class AppKeyHandlerFactory
 	{
 		private readonly IEnvironmentProvider _environmentProvider;
 

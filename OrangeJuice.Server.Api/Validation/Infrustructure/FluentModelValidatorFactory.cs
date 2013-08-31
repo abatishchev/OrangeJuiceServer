@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
-	internal sealed class FluentModelValidatorFactory : IModelValidatorFactory
+	public sealed class FluentModelValidatorFactory : IModelValidatorFactory
 	{
 		public ModelValidator Create(IEnumerable<ModelValidatorProvider> validatorProviders, IValidator validator)
 		{

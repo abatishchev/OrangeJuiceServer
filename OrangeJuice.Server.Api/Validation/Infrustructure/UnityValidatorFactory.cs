@@ -6,7 +6,7 @@ using Microsoft.Practices.Unity;
 
 namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
-	internal sealed class UnityValidatorFactory : ValidatorFactoryBase
+	public sealed class UnityValidatorFactory : ValidatorFactoryBase
 	{
 		private readonly IUnityContainer _container;
 

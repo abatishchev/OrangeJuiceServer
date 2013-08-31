@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
-	internal sealed class FluentModelValidatorProvider : ModelValidatorProvider
+	public sealed class FluentModelValidatorProvider : ModelValidatorProvider
 	{
 		#region Fields
 		private readonly ValidatorFactoryBase _validatorFactory;
