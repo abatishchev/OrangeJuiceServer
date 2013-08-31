@@ -12,9 +12,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Api.Validation;
+using OrangeJuice.Server.Api.Validation.Infrustructure;
 
-namespace OrangeJuice.Server.Api.Test.Validation
+namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 {
 	[TestClass]
 	public class FluentModelValidatorTest
@@ -32,7 +32,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("validator");
+			      .And.ParamName.Should().Be("validator");
 		}
 		#endregion
 
@@ -51,7 +51,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("metadata");
+			      .And.ParamName.Should().Be("metadata");
 		}
 
 		[TestMethod]
@@ -68,7 +68,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("container");
+			      .And.ParamName.Should().Be("container");
 		}
 
 		[TestMethod]
@@ -98,7 +98,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
 			var underlyingValidator = new Mock<IValidator>();
 			underlyingValidator.Setup(v => v.Validate(It.IsAny<object>()))
-							   .Returns(new ValidationResult(Enumerable.Repeat(CreateValidationFailure(), count)));
+			                   .Returns(new ValidationResult(Enumerable.Repeat(CreateValidationFailure(), count)));
 
 			ModelValidator validator = CreateModelValidator(underlyingValidator.Object);
 

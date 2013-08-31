@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using System.Web.Http;
-using System.Web.Mvc;
+using System.Web.Http.Validation;
 
 using FluentValidation;
 
@@ -9,6 +8,7 @@ using Microsoft.Practices.Unity;
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Api.Validation;
+using OrangeJuice.Server.Api.Validation.Infrustructure;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Model.Repository;
@@ -17,8 +17,6 @@ using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
 using Unity.WebApi;
-
-using ModelValidatorProvider = System.Web.Http.Validation.ModelValidatorProvider;
 
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
@@ -57,11 +55,11 @@ namespace OrangeJuice.Server.Api
 				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
 
 			// Validation
-			container.RegisterType<IValidatorFactory, ValidatorFactory>(
+			container.RegisterType<IValidatorFactory, UnityValidatorFactory>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container));
 
-			container.RegisterType<IModelValidatorFactory, ModelValidatorFactory>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IModelValidatorFactory, FluentModelValidatorFactory>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
 				new ContainerControlledLifetimeManager(),

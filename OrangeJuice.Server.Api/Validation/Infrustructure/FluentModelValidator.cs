@@ -7,7 +7,7 @@ using System.Web.Http.Validation;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace OrangeJuice.Server.Api.Validation
+namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
 	internal sealed class FluentModelValidator : ModelValidator
 	{

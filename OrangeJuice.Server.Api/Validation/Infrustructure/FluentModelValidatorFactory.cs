@@ -3,9 +3,9 @@ using System.Web.Http.Validation;
 
 using FluentValidation;
 
-namespace OrangeJuice.Server.Api.Validation
+namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
-	internal sealed class ModelValidatorFactory : IModelValidatorFactory
+	internal sealed class FluentModelValidatorFactory : IModelValidatorFactory
 	{
 		public ModelValidator Create(IEnumerable<ModelValidatorProvider> validatorProviders, IValidator validator)
 		{

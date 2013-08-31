@@ -3,7 +3,7 @@ using System.Web.Http.Validation;
 
 using FluentValidation;
 
-namespace OrangeJuice.Server.Api.Validation
+namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
 	public interface IModelValidatorFactory
 	{

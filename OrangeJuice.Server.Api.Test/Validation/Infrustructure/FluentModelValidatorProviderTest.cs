@@ -12,9 +12,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Api.Validation;
+using OrangeJuice.Server.Api.Validation.Infrustructure;
 
-namespace OrangeJuice.Server.Api.Test.Validation
+namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 {
 	[TestClass]
 	public class FluentModelValidatorProviderTest

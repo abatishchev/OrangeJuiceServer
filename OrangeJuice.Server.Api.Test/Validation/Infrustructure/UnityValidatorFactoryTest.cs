@@ -9,9 +9,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Api.Validation;
+using OrangeJuice.Server.Api.Validation.Infrustructure;
 
-namespace OrangeJuice.Server.Api.Test.Validation
+namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 {
 	[TestClass]
 	public class UnityValidatorFactoryTest
@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 			const IUnityContainer container = null;
 
 			// Act
-			Action action = () => new ValidatorFactory(container);
+			Action action = () => new UnityValidatorFactory(container);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -35,7 +35,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 		{
 			// Arrange
 			IUnityContainer container = new Mock<IUnityContainer>().Object;
-			ValidatorFactoryBase factory = new ValidatorFactory(container);
+			ValidatorFactoryBase factory = new UnityValidatorFactory(container);
 			const Type type = null;
 
 			// Act
@@ -54,7 +54,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
 			var containerMock = new Mock<IUnityContainer>(MockBehavior.Strict);
 			containerMock.Setup(c => c.Resolve(type, null)).Returns(null);
-			ValidatorFactoryBase factory = new ValidatorFactory(containerMock.Object);
+			ValidatorFactoryBase factory = new UnityValidatorFactory(containerMock.Object);
 
 			// Act
 			factory.CreateInstance(type);
@@ -72,7 +72,7 @@ namespace OrangeJuice.Server.Api.Test.Validation
 
 			var containerMock = new Mock<IUnityContainer>(MockBehavior.Strict);
 			containerMock.Setup(c => c.Resolve(type, null)).Returns(expected);
-			ValidatorFactoryBase factory = new ValidatorFactory(containerMock.Object);
+			ValidatorFactoryBase factory = new UnityValidatorFactory(containerMock.Object);
 
 			// Act
 			object actual = factory.CreateInstance(type);

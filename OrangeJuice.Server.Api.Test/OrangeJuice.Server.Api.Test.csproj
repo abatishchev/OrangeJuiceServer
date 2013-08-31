@@ -117,9 +117,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestContext.cs" />
     <Compile Include="TestContextTest.cs" />
-    <Compile Include="Validation\FluentModelValidatorProviderTest.cs" />
-    <Compile Include="Validation\FluentModelValidatorTest.cs" />
-    <Compile Include="Validation\UnityValidatorFactoryTest.cs" />
+    <Compile Include="Validation\Infrustructure\FluentModelValidatorTest.cs" />
+    <Compile Include="Validation\Infrustructure\FluentModelValidatorProviderTest.cs" />
+    <Compile Include="Validation\Infrustructure\UnityValidatorFactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Api\OrangeJuice.Server.Api.csproj">
