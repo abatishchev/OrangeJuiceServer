@@ -16,8 +16,6 @@ using OrangeJuice.Server.Filters;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
-using Unity.WebApi;
-
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
@@ -30,10 +28,10 @@ namespace OrangeJuice.Server.Api
 			RegisterTypes(container);
 
 			// MVC
-			// TODO: install resolver using Unity.Mvc4
+			System.Web.Mvc.DependencyResolver.SetResolver(new Unity.Mvc4.UnityDependencyResolver(container));
 
 			// Web API
-			GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
+			GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
 
 			return container;
 		}

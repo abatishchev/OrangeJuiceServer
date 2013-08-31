@@ -9,12 +9,6 @@ namespace OrangeJuice.Server.Api.Controllers
 	{
 		private readonly IApiInfoFactory _apiInfoFactory;
 
-		// TODO: remove
-		public HomeController()
-			: this(new ApiInfoFactory())
-		{
-		}
-
 		public HomeController(IApiInfoFactory apiInfoFactory)
 		{
 			if (apiInfoFactory == null)
