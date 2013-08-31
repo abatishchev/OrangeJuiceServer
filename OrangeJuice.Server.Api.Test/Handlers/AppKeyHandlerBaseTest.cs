@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 	{
 		#region Test methods
 		[TestMethod]
-		public void SendAsync_Should_Set_Result_To_ErrorCode_When_IsValid_Returns_False()
+		public void SendAsync_Should_Return_Status_ErrorCode_When_IsValid_Returns_False()
 		{
 			// Arrange
 			const HttpStatusCode expected = HttpStatusCode.InternalServerError;

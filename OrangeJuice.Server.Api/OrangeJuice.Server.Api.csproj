@@ -125,9 +125,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\ValidationConfig.cs" />
     <Compile Include="Controllers\JsonDotNetResult.cs" />
-    <Compile Include="Filters\ModelValidationFilterAttribute.cs" />
     <Compile Include="Handlers\AppKeyHandlerFactory.cs" />
     <Compile Include="Handlers\AppKeyHandlerBase.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

@@ -38,7 +38,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetDescription
 		[TestMethod]
-		public async Task GetDescription_Should_Return_BadRequest_When_SearchCriteria_Is_Null()
+		public async Task GetDescription_Should_Return_Status_BadRequest_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
 			FoodController controller = CreateController();
@@ -68,6 +68,22 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			Action action = () => { throw content.GetException(); };
 
 			action.ShouldThrow<ArgumentNullException>();
+		}
+
+		[TestMethod]
+		public async Task GetDescription_Should_Return_Status_BadRequest_When_Model_Not_IsValid()
+		{
+			// Arrange
+			FoodController controller = CreateController(exception: new ArgumentNullException());
+			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
+			const HttpStatusCode expected = HttpStatusCode.BadRequest;
+
+			// Act
+			HttpResponseMessage message = await controller.GetDescription(searchCriteria);
+			HttpStatusCode actual = message.StatusCode;
+
+			// Assert
+			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
@@ -111,9 +127,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static FoodController CreateController(IFoodRepository repository = null)
+		private static FoodController CreateController(IFoodRepository repository = null, Exception exception = null)
 		{
-			return ControllerFactory.Create<FoodController>(repository ?? new Mock<IFoodRepository>(MockBehavior.Strict).Object);
+			var controller = ControllerFactory.Create<FoodController>(repository ?? new Mock<IFoodRepository>(MockBehavior.Strict).Object);
+			if (exception != null)
+				controller.ModelState.AddModelError("", exception);
+			return controller;
 		}
 		#endregion
 	}

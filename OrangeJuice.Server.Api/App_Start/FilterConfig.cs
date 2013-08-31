@@ -16,7 +16,6 @@ namespace OrangeJuice.Server.Api
 		public static void RegisterFilters(HttpFilterCollection filters)
 		{
 			filters.Add(new Elmah.Contrib.WebApi.ElmahHandleErrorApiAttribute());
-			filters.Add(new Filters.ModelValidationFilterAttribute());
 		}
 	}
 }

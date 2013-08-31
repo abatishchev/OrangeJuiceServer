@@ -19,8 +19,6 @@ namespace OrangeJuice.Server.Api
 			FilterConfig.RegisterFilters(GlobalConfiguration.Configuration.Filters);
 
 			WebApiConfig.Configure(GlobalConfiguration.Configuration, container);
-
-			ValidationConfig.Configure(GlobalConfiguration.Configuration.Services, container);
 		}
 	}
 }

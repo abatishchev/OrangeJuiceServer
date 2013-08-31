@@ -36,6 +36,8 @@ namespace OrangeJuice.Server.Api.Controllers
 		{
 			if (searchCriteria == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
+			if (!ModelState.IsValid)
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
 			IUser user = await _userRepository.SearchByGuid(searchCriteria.UserGuid.GetValueOrDefault());
 			if (user == null)
@@ -54,12 +56,14 @@ namespace OrangeJuice.Server.Api.Controllers
 		{
 			if (userRegistration == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("userRegistration"));
+			if (!ModelState.IsValid)
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
 			IUser user = await _userRepository.Register(userRegistration.Email);
 			if (user == null)
 				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User is null");
 
-			return Request.CreateResponse(HttpStatusCode.OK, user.UserGuid);
+			return Request.CreateResponse(HttpStatusCode.Created, user.UserGuid);
 		}
 		#endregion
 	}
