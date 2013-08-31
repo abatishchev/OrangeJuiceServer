@@ -36,9 +36,7 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureServices(ServicesContainer services, IUnityContainer container)
 		{
-			services.Add(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
-
-			//ModelValidatorProviders.Providers.Add(new FluentValidationModelValidatorProvider(mvcValidationFactory));
+			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
 		}
 
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)
