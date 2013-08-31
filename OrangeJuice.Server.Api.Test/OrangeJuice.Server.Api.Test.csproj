@@ -119,6 +119,7 @@
     <Compile Include="TestContextTest.cs" />
     <Compile Include="Validation\Infrustructure\FluentModelValidatorTest.cs" />
     <Compile Include="Validation\Infrustructure\FluentModelValidatorProviderTest.cs" />
+    <Compile Include="Validation\Infrustructure\AttributeValidatorFactoryTest.cs" />
     <Compile Include="Validation\Infrustructure\UnityValidatorFactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>

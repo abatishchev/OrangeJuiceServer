@@ -9,7 +9,7 @@ using FluentValidation.Results;
 
 namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
-	internal sealed class FluentModelValidator : ModelValidator
+	public sealed class FluentModelValidator : ModelValidator
 	{
 		private readonly IValidator _validator;
 
@@ -35,7 +35,7 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 				   select new ModelValidationResult
 				   {
 					   Message = error.ErrorMessage,
-					   MemberName = error.ErrorMessage
+					   MemberName = error.PropertyName
 				   };
 		}
 	}
