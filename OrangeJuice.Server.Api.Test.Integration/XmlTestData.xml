@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XmlTestData>
+	<UrlData>
+		<Url>http://localhost:8086/api/user/</Url>
+		<Url>http://dev.api.orangejuice.mobi/api/user/</Url>
+	</UrlData>
+</XmlTestData>
