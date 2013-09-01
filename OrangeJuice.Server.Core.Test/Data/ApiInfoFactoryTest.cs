@@ -89,7 +89,7 @@ namespace OrangeJuice.Server.Test.Data
 		private static Mock<IAssemblyProvider> CreateAssemblyProvider()
 		{
 			var providerMock = new Mock<IAssemblyProvider>();
-			providerMock.Setup(p => p.GetExecutingAssembly()).Returns(System.Reflection.Assembly.GetExecutingAssembly());
+			providerMock.Setup(p => p.GetExecutingAssembly()).Returns(typeof(ApiInfoFactoryTest).Assembly);
 			return providerMock;
 		}
 
