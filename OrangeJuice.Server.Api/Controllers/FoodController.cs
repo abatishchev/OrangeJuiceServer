@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -33,8 +34,8 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			FoodDescription[] description = await _foodRepository.SearchByTitle(searchCriteria.Title);
-			return Request.CreateResponse(HttpStatusCode.OK, description);
+			var description = await _foodRepository.SearchByTitle(searchCriteria.Title);
+			return Request.CreateResponse(HttpStatusCode.OK, description.ToArray());
 		}
 	}
 }

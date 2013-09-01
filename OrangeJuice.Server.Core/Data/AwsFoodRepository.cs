@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,16 +28,19 @@ namespace OrangeJuice.Server.Data
 			_foodDescriptionFilter = foodDescriptionFilter;
 		}
 
-		public async Task<FoodDescription[]> SearchByTitle(string title)
+		public async Task<IEnumerable<FoodDescription>> SearchByTitle(string title)
 		{
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
 
-			var ids = await _awsClient.SearchItem(title);
+			var items = await _awsClient.SearchItem(title);
 
-			var tasks = ids.Select(CreateDescription);
+			var tasks = from item in items
+						from e in item.Elements(item.Name.Namespace + "ASIN")
+						select CreateDescription(e.Value);
+
 			return await Task.WhenAll(tasks)
-							 .ContinueWith(t => t.Result.Where(_foodDescriptionFilter.Filter).ToArray());
+							 .ContinueWith(t => t.Result.Where(_foodDescriptionFilter.Filter));
 		}
 
 		private Task<FoodDescription> CreateDescription(string id)

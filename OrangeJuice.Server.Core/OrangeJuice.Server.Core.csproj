@@ -55,9 +55,10 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Builders\ArgumentBuilder.cs" />
-    <Compile Include="Builders\QueryBuilder.cs" />
-    <Compile Include="Builders\SignatureBuilder.cs" />
+    <Compile Include="Services\AwsArgumentBuilder.cs" />
+    <Compile Include="Web\FlattenArgumentFormatter.cs" />
+    <Compile Include="Services\AwsQuerySigner.cs" />
+    <Compile Include="Services\AwsQueryBuilder.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Configuration\Environment.cs" />
@@ -68,6 +69,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\AwsFoodRepository.cs" />
     <Compile Include="Services\AswOptionsFactory.cs" />
+    <Compile Include="Services\XmlItemProvider.cs" />
+    <Compile Include="Services\XmlRequestValidator.cs" />
     <Compile Include="Services\XmlAwsClient.cs" />
     <Compile Include="Services\AwsClientFactory.cs" />
     <Compile Include="Services\AwsOptions.cs" />

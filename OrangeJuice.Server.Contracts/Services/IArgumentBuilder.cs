@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OrangeJuice.Server.Builders
+namespace OrangeJuice.Server.Services
 {
 	public interface IArgumentBuilder
 	{

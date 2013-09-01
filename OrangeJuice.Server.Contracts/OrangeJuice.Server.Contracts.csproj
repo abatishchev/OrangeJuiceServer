@@ -46,9 +46,10 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppKey.cs" />
-    <Compile Include="Builders\IArgumentBuilder.cs" />
-    <Compile Include="Builders\IQueryBuilder.cs" />
-    <Compile Include="Builders\ISignatureBuilder.cs" />
+    <Compile Include="Services\IArgumentBuilder.cs" />
+    <Compile Include="Web\IArgumentFormatter.cs" />
+    <Compile Include="Services\IQuerySigner.cs" />
+    <Compile Include="Services\IQueryBuilder.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\ApiInfo.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="IDateTimeProvider.cs" />
     <Compile Include="Services\IAwsClient.cs" />
     <Compile Include="Services\IAwsClientFactory.cs" />
+    <Compile Include="Services\IItemProvider.cs" />
+    <Compile Include="Services\IRequestValidator.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

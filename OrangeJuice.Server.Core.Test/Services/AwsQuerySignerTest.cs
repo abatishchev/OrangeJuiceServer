@@ -7,13 +7,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Builders;
+using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Test.Builders
+namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class SignatureBuilderTest
+	public class AwsQuerySignerTest
 	{
 		[TestMethod]
 		// ReSharper disable once InconsistentNaming
@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Test.Builders
 			const string secretKey = "anyKey";
 
 			// Act
-			HashAlgorithm hashAlgorithm = SignatureBuilder.CreateHashAlgorithm(secretKey);
+			HashAlgorithm hashAlgorithm = AwsQuerySigner.CreateHashAlgorithm(secretKey);
 
 			// Assert
 			hashAlgorithm.Should().BeOfType<HMACSHA256>();
@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Test.Builders
 			string signedQuery = signatureBuilder.SignQuery(query);
 
 			// Assert
-			signedQuery.Should().StartWith(String.Format("{0}://{1}{2}", Uri.UriSchemeHttp, SignatureBuilder.RequestEndpoint, SignatureBuilder.RequestPath));
+			signedQuery.Should().StartWith(String.Format("{0}://{1}{2}", Uri.UriSchemeHttp, AwsQuerySigner.RequestEndpoint, AwsQuerySigner.RequestPath));
 		}
 
 		[TestMethod]
@@ -89,9 +89,9 @@ namespace OrangeJuice.Server.Test.Builders
 			urlEncoderMock.Verify(e => e.Encode(signature));
 		}
 
-		private static SignatureBuilder CreateSignatureBuilder(IUrlEncoder urlEncoder = null)
+		private static AwsQuerySigner CreateSignatureBuilder(IUrlEncoder urlEncoder = null)
 		{
-			return new SignatureBuilder("anyKey", urlEncoder ?? CreateUrlEncoder().Object);
+			return new AwsQuerySigner("anyKey", urlEncoder ?? CreateUrlEncoder().Object);
 		}
 
 		private static Mock<IUrlEncoder> CreateUrlEncoder()

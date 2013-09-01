@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using OrangeJuice.Server.Web;
-
-namespace OrangeJuice.Server.Builders
+namespace OrangeJuice.Server.Web
 {
-	public class QueryBuilder : IQueryBuilder
+	public class FlattenArgumentFormatter : IArgumentFormatter
 	{
 		private readonly IUrlEncoder _urlEncoder;
 
-		public QueryBuilder(IUrlEncoder urlEncoder)
+		public FlattenArgumentFormatter(IUrlEncoder urlEncoder)
 		{
 			if (urlEncoder == null)
 				throw new ArgumentNullException("urlEncoder");
@@ -18,11 +16,10 @@ namespace OrangeJuice.Server.Builders
 			_urlEncoder = urlEncoder;
 		}
 
-		public string BuildQuery(IDictionary<string, string> dic)
+		public string FormatArgs(IDictionary<string, string> args)
 		{
-			// Get the canonical query string
 			return String.Join("&",
-				dic.Select(p => String.Format("{0}={1}",
+				args.Select(p => String.Format("{0}={1}",
 					_urlEncoder.Encode(p.Key),
 					_urlEncoder.Encode(p.Value))));
 		}

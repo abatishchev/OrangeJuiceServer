@@ -1,6 +1,5 @@
 ﻿using System;
 
-using OrangeJuice.Server.Builders;
 using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
@@ -29,10 +28,13 @@ namespace OrangeJuice.Server.Services
 		public IAwsClient Create()
 		{
 			return new XmlAwsClient(
-				new ArgumentBuilder(_awsOptions.AccessKey, _awsOptions.AssociateTag, _dateTimeProvider),
-				new QueryBuilder(_urlEncoder),
-				new SignatureBuilder(_awsOptions.SecretKey, _urlEncoder),
-				new HttpDocumentLoader());
+				new AwsQueryBuilder(
+					new AwsArgumentBuilder(_awsOptions.AccessKey, _awsOptions.AssociateTag, _dateTimeProvider),
+					new FlattenArgumentFormatter(_urlEncoder),
+					new AwsQuerySigner(_awsOptions.SecretKey, _urlEncoder)),
+				new HttpDocumentLoader(),
+				new XmlItemProvider(
+					new XmlRequestValidator()));
 		}
 	}
 }

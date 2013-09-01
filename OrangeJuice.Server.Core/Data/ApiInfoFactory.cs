@@ -9,6 +9,7 @@ namespace OrangeJuice.Server.Data
 
 		private static ApiInfo CreateInstance()
 		{
+			// TODO: refactor with AssemblyProvider
 			return new ApiInfo
 			{
 				Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version

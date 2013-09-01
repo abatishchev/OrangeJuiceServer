@@ -4,9 +4,9 @@ using System.Text;
 
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Builders
+namespace OrangeJuice.Server.Services
 {
-	public sealed class SignatureBuilder : ISignatureBuilder
+	public sealed class AwsQuerySigner : IQuerySigner
 	{
 		internal const string RequestEndpoint = "webservices.amazon.com";
 		internal const string RequestPath = "/onca/xml";
@@ -15,12 +15,12 @@ namespace OrangeJuice.Server.Builders
 		private readonly HashAlgorithm _hashAlgorithm;
 		private readonly IUrlEncoder _urlEncoder;
 
-		public SignatureBuilder(string secretKey, IUrlEncoder urlEncoder)
+		public AwsQuerySigner(string secretKey, IUrlEncoder urlEncoder)
 			: this(CreateHashAlgorithm(secretKey), urlEncoder)
 		{
 		}
 
-		public SignatureBuilder(HashAlgorithm hashAlgorithm, IUrlEncoder urlEncoder)
+		public AwsQuerySigner(HashAlgorithm hashAlgorithm, IUrlEncoder urlEncoder)
 		{
 			_hashAlgorithm = hashAlgorithm;
 			_urlEncoder = urlEncoder;

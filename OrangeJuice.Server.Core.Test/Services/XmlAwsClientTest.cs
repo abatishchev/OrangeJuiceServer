@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FluentAssertions;
 
@@ -6,27 +8,27 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Builders;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
+
+using StringDictionary = System.Collections.Generic.IDictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
 	public class XmlAwsClientTest
 	{
-		#region Test methods
+		#region Ctor
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_ArgumentBuilder_Is_Null()
+		public void Ctor_Should_Throw_Exception_When_UrBuilder_Is_Null()
 		{
 			// Arrange
-			const ArgumentBuilder argumentBuilder = null;
-			const QueryBuilder queryBuilder = null;
-			const SignatureBuilder signatureBuilder = null;
-			const HttpDocumentLoader documentLoader = null;
+			const IQueryBuilder urlBuilder = null;
+			const IDocumentLoader documentLoader = null;
+			const IItemProvider itemProvider = null;
 
 			// Act
-			Action action = () => new XmlAwsClient(argumentBuilder, queryBuilder, signatureBuilder, documentLoader);
+			Action action = () => new XmlAwsClient(urlBuilder, documentLoader, itemProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -34,50 +36,15 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_QueryBuilder_Is_Null()
-		{
-			// Arrange
-			ArgumentBuilder argumentBuilder = CreateArgumentBuilder();
-			const QueryBuilder queryBuilder = null;
-			const SignatureBuilder signatureBuilder = null;
-			const HttpDocumentLoader documentLoader = null;
-
-			// Act
-			Action action = () => new XmlAwsClient(argumentBuilder, queryBuilder, signatureBuilder, documentLoader);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("queryBuilder");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_SignatureBuilder_Is_Null()
-		{
-			// Arrange
-			ArgumentBuilder argumentBuilder = CreateArgumentBuilder();
-			QueryBuilder queryBuilder = CreateQueryBuilder();
-			const SignatureBuilder signatureBuilder = null;
-			const HttpDocumentLoader documentLoader = null;
-
-			// Act
-			Action action = () => new XmlAwsClient(argumentBuilder, queryBuilder, signatureBuilder, documentLoader);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("signatureBuilder");
-		}
-
-		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_DocumentLoader_Is_Null()
 		{
 			// Arrange
-			ArgumentBuilder argumentBuilder = CreateArgumentBuilder();
-			QueryBuilder queryBuilder = CreateQueryBuilder();
-			SignatureBuilder signatureBuilder = CreateSignatureBuilder();
+			IQueryBuilder queryBuilder = CreateUrlBuilder();
 			const IDocumentLoader documentLoader = null;
+			const IItemProvider itemProvider = null;
 
 			// Act
-			Action action = () => new XmlAwsClient(argumentBuilder, queryBuilder, signatureBuilder, documentLoader);
+			Action action = () => new XmlAwsClient(queryBuilder, documentLoader, itemProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -85,14 +52,109 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void SearchItem_Should_()
+		public void Ctor_Should_Throw_Exception_When_ItemProvider_Is_Null()
 		{
 			// Arrange
+			IQueryBuilder queryBuilder = CreateUrlBuilder();
+			IDocumentLoader documentLoader = CreateDocumentLoader();
+			const IItemProvider itemProvider = null;
 
 			// Act
+			Action action = () => new XmlAwsClient(queryBuilder, documentLoader, itemProvider);
 
 			// Assert
-			Assert.Inconclusive();
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("itemProvider");
+		}
+		#endregion
+
+		#region SearchItem
+		[TestMethod]
+		public void SearchItem_Should_Throw_Exception_When_Title_Is_Null()
+		{
+			// Arrange
+			const string title = null;
+
+			IAwsClient client = CreateClient();
+
+			// Act
+			Func<Task> action = () => client.SearchItem(title);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("title");
+		}
+
+		[TestMethod]
+		public void SearchItem_Should_Throw_Exception_When_Title_Is_Empty()
+		{
+			// Arrange
+			const string title = "";
+
+			IAwsClient client = CreateClient();
+
+			// Act
+			Func<Task> action = () => client.SearchItem(title);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("title");
+		}
+
+		[TestMethod]
+		public async Task SearchItem_Should_Pass_Arguments_To_UrlBuilder()
+		{
+			// Arrange
+			const string title = "anyTitle";
+
+			Action<StringDictionary> callback = d => d.Should()
+													  .Contain("Operation", "ItemSearch")
+													  .And.Contain("SearchIndex", "Grocery")
+													  .And.Contain("ResponseGroup", "Small")
+													  .And.Contain("Title", title);
+			var agumentBuilderMock = CreateUrlBuilder(callback);
+
+			IAwsClient client = CreateClient(agumentBuilderMock.Object);
+
+			// Act
+			await client.SearchItem(title);
+
+			// Assert
+			agumentBuilderMock.Verify(b => b.BuildUrl(It.IsAny<StringDictionary>()), Times.Once);
+		}
+		#endregion
+
+		#region LookupAttributes
+		[TestMethod]
+		public void LookupAttributes_Should_Throw_Exception_When_Id_Is_Null()
+		{
+			// Arrange
+			const string id = null;
+
+			IAwsClient client = CreateClient();
+
+			// Act
+			Func<Task> action = () => client.LookupAttributes(id);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("id");
+		}
+
+		[TestMethod]
+		public void LookupAttributes_Should_Throw_Exception_When_Id_Is_Empty()
+		{
+			// Arrange
+			const string id = "";
+
+			IAwsClient client = CreateClient();
+
+			// Act
+			Func<Task> action = () => client.LookupAttributes(id);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("id");
 		}
 
 		[TestMethod]
@@ -104,6 +166,40 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			Assert.Inconclusive();
+		}
+		#endregion
+
+		#region LookupImages
+		[TestMethod]
+		public void LookupImages_Should_Throw_Exception_When_Id_Is_Null()
+		{
+			// Arrange
+			const string id = null;
+
+			IAwsClient client = CreateClient();
+
+			// Act
+			Func<Task> action = () => client.LookupImages(id);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("id");
+		}
+
+		[TestMethod]
+		public void LookupImages_Should_Throw_Exception_When_Id_Is_Empty()
+		{
+			// Arrange
+			const string id = "";
+
+			IAwsClient client = CreateClient();
+
+			// Act
+			Func<Task> action = () => client.LookupImages(id);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("id");
 		}
 
 		[TestMethod]
@@ -119,21 +215,47 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static ArgumentBuilder CreateArgumentBuilder()
+		private static IAwsClient CreateClient(IQueryBuilder queryBuilder = null, IDocumentLoader documentLoader = null, IItemProvider itemProvider = null)
 		{
-			return new ArgumentBuilder("anyKey", "anyTag", new Mock<IDateTimeProvider>().Object);
+			return new XmlAwsClient(
+				queryBuilder ?? CreateUrlBuilder(),
+				documentLoader ?? CreateDocumentLoader(),
+				itemProvider ?? CreateItemProvider());
 		}
 
-		private static QueryBuilder CreateQueryBuilder()
+		private static IQueryBuilder CreateUrlBuilder()
 		{
-			return new QueryBuilder(new Mock<IUrlEncoder>().Object);
+			return CreateUrlBuilder(null).Object;
 		}
 
-		private static SignatureBuilder CreateSignatureBuilder()
+		private static Mock<IQueryBuilder> CreateUrlBuilder(Action<StringDictionary> callback)
 		{
-			return new SignatureBuilder(
-				new Mock<System.Security.Cryptography.HashAlgorithm>().Object,
-				new Mock<IUrlEncoder>().Object);
+			var builderMock = new Mock<IQueryBuilder>();
+			builderMock.Setup(b => b.BuildUrl(It.IsAny<StringDictionary>()))
+					   .Returns("query")
+					   .Callback<StringDictionary>(d =>
+					   {
+						   if (callback != null)
+							   callback(d);
+					   });
+			return builderMock;
+		}
+
+		private static IDocumentLoader CreateDocumentLoader()
+		{
+			var loaderMock = new Mock<IDocumentLoader>();
+			loaderMock.Setup(l => l.Load(It.IsAny<string>()))
+					  .ReturnsAsync(XDocument.Parse(
+@"<?xml version='1.0'?>
+<Items xmlns=''>
+</Items>"));
+			return loaderMock.Object;
+		}
+
+		private static IItemProvider CreateItemProvider()
+		{
+			var providerMock = new Mock<IItemProvider>();
+			return providerMock.Object;
 		}
 		#endregion
 	}

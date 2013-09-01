@@ -5,6 +5,6 @@ namespace OrangeJuice.Server.Web
 {
 	public interface IDocumentLoader
 	{
-		Task<XDocument> LoadXml(string url);
+		Task<XDocument> Load(string url);
 	}
 }
