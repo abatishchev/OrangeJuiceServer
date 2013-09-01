@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using FluentAssertions;
 
@@ -12,7 +13,7 @@ namespace OrangeJuice.Server.Test.Web
 	public class HttpDocumentLoaderTest
 	{
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_Url_Is_Null()
+		public void Load_Should_Throw_Exception_When_Url_Is_Null()
 		{
 			// Arange
 			const string url = null;
@@ -20,7 +21,7 @@ namespace OrangeJuice.Server.Test.Web
 			IDocumentLoader documentLoader = new HttpDocumentLoader();
 
 			// Act
-			Action action = () => documentLoader.Load(url);
+			Func<Task> action = () => documentLoader.Load(url);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -28,7 +29,7 @@ namespace OrangeJuice.Server.Test.Web
 		}
 
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_Url_Is_Empty()
+		public void Load_Should_Throw_Exception_When_Url_Is_Empty()
 		{
 			// Arange
 			const string url = "";
@@ -36,7 +37,7 @@ namespace OrangeJuice.Server.Test.Web
 			IDocumentLoader documentLoader = new HttpDocumentLoader();
 
 			// Act
-			Action action = () => documentLoader.Load(url);
+			Func<Task> action = () => documentLoader.Load(url);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()

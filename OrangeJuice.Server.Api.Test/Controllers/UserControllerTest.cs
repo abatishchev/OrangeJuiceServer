@@ -121,7 +121,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.GetUserInformation(searchCriteria);
 
 			// Assert
-			userRepositoryMock.Verify(r => r.SearchByGuid(userGuid), Times.Once);
+			userRepositoryMock.Verify(r => r.SearchByGuid(userGuid), Times.Once());
 		}
 
 		[TestMethod]
@@ -251,11 +251,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.PutUserRegistration(userRegistration);
 
 			// Assert
-			userRepositoryMock.Verify(r => r.Register(email), Times.Once);
+			userRepositoryMock.Verify(r => r.Register(email), Times.Once());
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Guid_Of_Created_User()
+		public async Task PutUser_Should_Return_Guid_Returned_By_UserRepository_Register()
 		{
 			// Arrange
 			Guid expected = Guid.NewGuid();

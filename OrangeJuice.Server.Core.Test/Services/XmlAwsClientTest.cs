@@ -20,19 +20,19 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Ctor
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_UrBuilder_Is_Null()
+		public void Ctor_Should_Throw_Exception_When_QueryBuilder_Is_Null()
 		{
 			// Arrange
-			const IQueryBuilder urlBuilder = null;
+			const IQueryBuilder queryBuilder = null;
 			const IDocumentLoader documentLoader = null;
 			const IItemProvider itemProvider = null;
 
 			// Act
-			Action action = () => new XmlAwsClient(urlBuilder, documentLoader, itemProvider);
+			Action action = () => new XmlAwsClient(queryBuilder, documentLoader, itemProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("argumentBuilder");
+				  .And.ParamName.Should().Be("queryBuilder");
 		}
 
 		[TestMethod]
@@ -112,15 +112,58 @@ namespace OrangeJuice.Server.Test.Services
 													  .And.Contain("SearchIndex", "Grocery")
 													  .And.Contain("ResponseGroup", "Small")
 													  .And.Contain("Title", title);
-			var agumentBuilderMock = CreateUrlBuilder(callback);
+			var builderMock = new Mock<IQueryBuilder>();
+			builderMock.Setup(b => b.BuildUrl(It.IsAny<StringDictionary>())).Returns("query").Callback(callback);
 
-			IAwsClient client = CreateClient(agumentBuilderMock.Object);
+			IAwsClient client = CreateClient(builderMock.Object);
 
 			// Act
 			await client.SearchItem(title);
 
 			// Assert
-			agumentBuilderMock.Verify(b => b.BuildUrl(It.IsAny<StringDictionary>()), Times.Once);
+			builderMock.Verify(b => b.BuildUrl(It.IsAny<StringDictionary>()), Times.Once());
+		}
+
+		[TestMethod]
+		public async Task SearchItem_Should_Pass_Query_Returned_By_QueryBuilder_To_DocumentLoader_Load()
+		{
+			// Arrange
+			const string url = "anyUrl";
+
+			var builderMock = CreateUrlBuilder(url);
+
+			var loaderMock = new Mock<IDocumentLoader>();
+			loaderMock.Setup(l => l.Load(url)).ReturnsAsync(new XDocument());
+
+			IAwsClient client = CreateClient(builderMock, loaderMock.Object);
+			const string title = "anyTitle";
+
+			// Act
+			await client.SearchItem(title);
+
+			// Assert
+			loaderMock.Verify(l => l.Load(url), Times.Once());
+		}
+
+		[TestMethod]
+		public async Task SearchItem_Should_Pass_Document_Returned_By_DocumentLoader_To_ItemProvider_GetItems()
+		{
+			// Arrange
+			XDocument doc = new XDocument();
+
+			var loaderMock = CreateDocumentLoader(doc);
+
+			var providerMock = new Mock<IItemProvider>();
+			providerMock.Setup(l => l.GetItems(doc)).Returns(new XElement("Item"));
+
+			IAwsClient client = CreateClient(documentLoader: loaderMock, itemProvider: providerMock.Object);
+			const string title = "anyTitle";
+
+			// Act
+			await client.SearchItem(title);
+
+			// Assert
+			providerMock.Verify(p => p.GetItems(doc), Times.Once());
 		}
 		#endregion
 
@@ -156,17 +199,6 @@ namespace OrangeJuice.Server.Test.Services
 			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("id");
 		}
-
-		[TestMethod]
-		public void LookupAttributes_Should_()
-		{
-			// Arrange
-
-			// Act
-
-			// Assert
-			Assert.Inconclusive();
-		}
 		#endregion
 
 		#region LookupImages
@@ -201,17 +233,6 @@ namespace OrangeJuice.Server.Test.Services
 			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("id");
 		}
-
-		[TestMethod]
-		public void LookupImages_Should_()
-		{
-			// Arrange
-
-			// Act
-
-			// Assert
-			Assert.Inconclusive();
-		}
 		#endregion
 
 		#region Helper methods
@@ -223,38 +244,24 @@ namespace OrangeJuice.Server.Test.Services
 				itemProvider ?? CreateItemProvider());
 		}
 
-		private static IQueryBuilder CreateUrlBuilder()
-		{
-			return CreateUrlBuilder(null).Object;
-		}
-
-		private static Mock<IQueryBuilder> CreateUrlBuilder(Action<StringDictionary> callback)
+		private static IQueryBuilder CreateUrlBuilder(string query = null)
 		{
 			var builderMock = new Mock<IQueryBuilder>();
-			builderMock.Setup(b => b.BuildUrl(It.IsAny<StringDictionary>()))
-					   .Returns("query")
-					   .Callback<StringDictionary>(d =>
-					   {
-						   if (callback != null)
-							   callback(d);
-					   });
-			return builderMock;
+			builderMock.Setup(b => b.BuildUrl(It.IsAny<StringDictionary>())).Returns(query ?? "query");
+			return builderMock.Object;
 		}
 
-		private static IDocumentLoader CreateDocumentLoader()
+		private static IDocumentLoader CreateDocumentLoader(XDocument doc = null)
 		{
 			var loaderMock = new Mock<IDocumentLoader>();
-			loaderMock.Setup(l => l.Load(It.IsAny<string>()))
-					  .ReturnsAsync(XDocument.Parse(
-@"<?xml version='1.0'?>
-<Items xmlns=''>
-</Items>"));
+			loaderMock.Setup(l => l.Load(It.IsAny<string>())).ReturnsAsync(doc ?? new XDocument());
 			return loaderMock.Object;
 		}
 
-		private static IItemProvider CreateItemProvider()
+		private static IItemProvider CreateItemProvider(XElement element = null)
 		{
 			var providerMock = new Mock<IItemProvider>();
+			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(element ?? new XElement("Item"));
 			return providerMock.Object;
 		}
 		#endregion

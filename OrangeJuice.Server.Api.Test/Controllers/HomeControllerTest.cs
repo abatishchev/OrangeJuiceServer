@@ -54,7 +54,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.Version();
 
 			// Assert
-			factoryMock.Verify(f => f.Create(), Times.Once);
+			factoryMock.Verify(f => f.Create(), Times.Once());
 		}
 	}
 }

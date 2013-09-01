@@ -82,7 +82,7 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildUrl(args);
 
 			// Assert
-			agumentBuilderMock.Verify(b => b.BuildArgs(args), Times.Once);
+			agumentBuilderMock.Verify(b => b.BuildArgs(args), Times.Once());
 		}
 
 		[TestMethod]

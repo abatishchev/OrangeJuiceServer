@@ -45,6 +45,7 @@ namespace OrangeJuice.Server.Services
 				{ "Title", title }
 			};
 
+			// TODO: extract class
 			string url = _queryBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
 			XElement items = _itemProvider.GetItems(doc);

@@ -104,7 +104,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
 
 			// Assert
-			validatorFactoryMock.Verify(f => f.CreateInstance(It.Is<Type>(t => t.IsAssignableFrom(typeof(IValidator<object>)))), Times.Once);
+			validatorFactoryMock.Verify(f => f.CreateInstance(It.Is<Type>(t => t.IsAssignableFrom(typeof(IValidator<object>)))), Times.Once());
 		}
 
 		[TestMethod]
@@ -126,7 +126,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
 
 			// Assert
-			modelValidatorFactoryMock.Verify(f => f.Create(validatorProviders, validator), Times.Once);
+			modelValidatorFactoryMock.Verify(f => f.Create(validatorProviders, validator), Times.Once());
 		}
 
 		[TestMethod]

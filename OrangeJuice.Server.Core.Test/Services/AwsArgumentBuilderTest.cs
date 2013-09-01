@@ -154,7 +154,7 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildArgs(dic);
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once);
+			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once());
 		}
 
 		[TestMethod]
@@ -170,7 +170,7 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildArgs(dic);
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once);
+			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once());
 		}
 
 		[TestMethod]
@@ -187,7 +187,7 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildArgs(dic);
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once);
+			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once());
 		}
 		#endregion
 

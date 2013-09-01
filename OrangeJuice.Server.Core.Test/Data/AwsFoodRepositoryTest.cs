@@ -114,7 +114,7 @@ namespace OrangeJuice.Server.Test.Data
 			await repository.SearchByTitle(title);
 
 			// Assert
-			clientMock.Verify(c => c.SearchItem(title), Times.Once);
+			clientMock.Verify(c => c.SearchItem(title), Times.Once());
 		}
 
 		[TestMethod]
@@ -139,7 +139,7 @@ namespace OrangeJuice.Server.Test.Data
 			await repository.SearchByTitle(id);
 
 			// Assert
-			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once);
+			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once());
 		}
 		#endregion
 
