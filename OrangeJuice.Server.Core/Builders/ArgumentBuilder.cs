@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OrangeJuice.Server.Builders
 {
-	public sealed class ArgumentBuilder
+	public sealed class ArgumentBuilder : IArgumentBuilder
 	{
 		#region Constants
 		internal const string AwsAccessKey = "AWSAccessKeyId";

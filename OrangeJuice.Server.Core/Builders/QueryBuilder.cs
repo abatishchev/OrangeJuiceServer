@@ -6,7 +6,7 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Builders
 {
-	public class QueryBuilder
+	public class QueryBuilder : IQueryBuilder
 	{
 		private readonly IUrlEncoder _urlEncoder;
 

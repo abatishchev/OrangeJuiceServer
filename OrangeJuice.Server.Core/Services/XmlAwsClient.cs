@@ -13,14 +13,14 @@ namespace OrangeJuice.Server.Services
 	public sealed class XmlAwsClient : IAwsClient
 	{
 		#region Fields
-		private readonly ArgumentBuilder _argumentBuilder;
+		private readonly IArgumentBuilder _argumentBuilder;
 		private readonly QueryBuilder _queryBuilder;
-		private readonly SignatureBuilder _signatureBuilder;
+		private readonly ISignatureBuilder _signatureBuilder;
 		private readonly IDocumentLoader _documentLoader;
 		#endregion
 
 		#region Constructors
-		public XmlAwsClient(ArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, SignatureBuilder signatureBuilder, IDocumentLoader documentLoader)
+		public XmlAwsClient(IArgumentBuilder argumentBuilder, QueryBuilder queryBuilder, ISignatureBuilder signatureBuilder, IDocumentLoader documentLoader)
 		{
 			if (argumentBuilder == null)
 				throw new ArgumentNullException("argumentBuilder");
@@ -41,6 +41,9 @@ namespace OrangeJuice.Server.Services
 		#region IAwsClient Members
 		public async Task<IEnumerable<string>> SearchItem(string title)
 		{
+			if (String.IsNullOrEmpty(title))
+				throw new ArgumentNullException("title");
+
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemSearch" },
@@ -61,6 +64,9 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<XElement> LookupAttributes(string id)
 		{
+			if (String.IsNullOrEmpty(id))
+				throw new ArgumentNullException("id");
+
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },
@@ -78,6 +84,9 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<XElement> LookupImages(string id)
 		{
+			if (String.IsNullOrEmpty(id))
+				throw new ArgumentNullException("id");
+
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },

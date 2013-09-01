@@ -6,7 +6,7 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Builders
 {
-	public sealed class SignatureBuilder
+	public sealed class SignatureBuilder : ISignatureBuilder
 	{
 		internal const string RequestEndpoint = "webservices.amazon.com";
 		internal const string RequestPath = "/onca/xml";

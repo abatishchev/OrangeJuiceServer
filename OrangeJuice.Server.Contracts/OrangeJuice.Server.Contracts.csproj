@@ -46,6 +46,9 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppKey.cs" />
+    <Compile Include="Builders\IArgumentBuilder.cs" />
+    <Compile Include="Builders\IQueryBuilder.cs" />
+    <Compile Include="Builders\ISignatureBuilder.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\ApiInfo.cs" />
