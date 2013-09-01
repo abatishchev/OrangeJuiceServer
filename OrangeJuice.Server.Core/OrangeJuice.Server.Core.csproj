@@ -55,6 +55,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ReflectionAssemblyProvider.cs" />
     <Compile Include="Services\AwsArgumentBuilder.cs" />
     <Compile Include="Web\FlattenArgumentFormatter.cs" />
     <Compile Include="Services\AwsQuerySigner.cs" />

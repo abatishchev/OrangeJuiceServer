@@ -47,6 +47,8 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(new ContainerControlledLifetimeManager());
 
+			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(new ContainerControlledLifetimeManager());
+
 			// Web
 			container.RegisterType<AppKeyHandlerBase>(
 				new ContainerControlledLifetimeManager(),
@@ -70,7 +72,9 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
 			// HomeController
-			container.RegisterType<IApiInfoFactory, ApiInfoFactory>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IApiInfoFactory, ApiInfoFactory>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container.Resolve<IAssemblyProvider>(), container.Resolve<IEnvironmentProvider>()));
 
 			// UserController
 			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());
