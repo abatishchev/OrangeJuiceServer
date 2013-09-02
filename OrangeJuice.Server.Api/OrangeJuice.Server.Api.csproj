@@ -162,7 +162,6 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="ping.html" />
     <Content Include="Properties\PublishProfiles\Dev.pubxml.user" />
     <Content Include="Properties\PublishProfiles\Prod.pubxml.user" />
     <Content Include="Properties\PublishProfiles\Stg.pubxml.user" />
@@ -192,7 +191,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Deploy.ps1" />
+    <Content Include="Deploy.ps1" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Prod.pubxml" />
     <None Include="Properties\PublishProfiles\Stg.pubxml" />
