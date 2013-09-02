@@ -80,18 +80,22 @@
     <Compile Include="Configuration\Temp\TempConnectionStringTest.cs" />
     <Compile Include="Configuration\Temp\TempAppSettingsTest.cs" />
     <Compile Include="Data\AwsFoodRepositoryTest.cs" />
+    <Compile Include="Data\ApiInfoFactoryTest.cs" />
     <Compile Include="Data\XmlFoodDescriptionFactoryTest.cs" />
     <Compile Include="Filters\ValidImageFoodDescriptionFilterTest.cs" />
     <Compile Include="MoqExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Builders\ArgumentBuilderTest.cs" />
-    <Compile Include="Builders\QueryBuilderTest.cs" />
-    <Compile Include="Builders\SignatureBuilderTest.cs" />
+    <Compile Include="Web\FlattenArgumentFormatterTest.cs" />
+    <Compile Include="Services\AwsArgumentBuilderTest.cs" />
+    <Compile Include="Services\AwsQueryBuilderTest.cs" />
+    <Compile Include="Services\AwsQuerySignerTest.cs" />
     <Compile Include="Services\AswOptionsFactoryTest.cs" />
     <Compile Include="Services\AwsClientFactoryTest.cs" />
+    <Compile Include="Services\XmlItemProviderTest.cs" />
     <Compile Include="Services\XmlAwsClientTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
     <Compile Include="Web\PercentUrlEncoderTest.cs" />
+    <Compile Include="Web\HttpDocumentLoaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -107,6 +111,7 @@
       <Name>OrangeJuice.Server.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

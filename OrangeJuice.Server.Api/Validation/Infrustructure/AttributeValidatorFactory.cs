@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using FluentValidation;
 
@@ -6,11 +7,11 @@ using Microsoft.Practices.Unity;
 
 namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
-	public sealed class UnityValidatorFactory : ValidatorFactoryBase
+	public sealed class AttributeValidatorFactory : ValidatorFactoryBase
 	{
 		private readonly IUnityContainer _container;
 
-		public UnityValidatorFactory(IUnityContainer container)
+		public AttributeValidatorFactory(IUnityContainer container)
 		{
 			if (container == null)
 				throw new ArgumentNullException("container");
@@ -21,7 +22,12 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 		{
 			if (type == null)
 				throw new ArgumentNullException("type");
-			return (IValidator)_container.Resolve(type);
+
+			var validatorAttribute = type.GetCustomAttribute<FluentValidation.Attributes.ValidatorAttribute>();
+			if (validatorAttribute == null)
+				return null;
+
+			return (IValidator)_container.Resolve(validatorAttribute.ValidatorType);
 		}
 	}
 }

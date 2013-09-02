@@ -7,13 +7,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Builders;
 using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Test.Builders
 {
 	[TestClass]
-	public class QueryBuilderTest
+	public class FlattenArgumentFormatterTest
 	{
 		#region Test methods
 		[TestMethod]
@@ -23,7 +22,7 @@ namespace OrangeJuice.Server.Test.Builders
 			const IUrlEncoder urlEncoder = null;
 
 			// Act
-			Action action = () => new QueryBuilder(urlEncoder);
+			Action action = () => new FlattenArgumentFormatter(urlEncoder);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -42,7 +41,7 @@ namespace OrangeJuice.Server.Test.Builders
 			};
 
 			// Act
-			string query = queryBuilder.BuildQuery(dic);
+			string query = queryBuilder.FormatArgs(dic);
 
 			// Assert
 			query.Should().Contain("a=&b=");
@@ -59,7 +58,7 @@ namespace OrangeJuice.Server.Test.Builders
 			};
 
 			// Act
-			string query = queryBuilder.BuildQuery(dic);
+			string query = queryBuilder.FormatArgs(dic);
 
 			// Assert
 			query.Should().Contain("a=1");
@@ -67,9 +66,9 @@ namespace OrangeJuice.Server.Test.Builders
 		#endregion
 
 		#region Helper methods
-		private static QueryBuilder CreateQueryBuilder(IUrlEncoder urlEncoder = null)
+		private static FlattenArgumentFormatter CreateQueryBuilder(IUrlEncoder urlEncoder = null)
 		{
-			return new QueryBuilder(urlEncoder ?? CreateUrlEncoder().Object);
+			return new FlattenArgumentFormatter(urlEncoder ?? CreateUrlEncoder().Object);
 		}
 
 		private static Mock<IUrlEncoder> CreateUrlEncoder()

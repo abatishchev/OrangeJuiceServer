@@ -17,7 +17,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	public class HomeControllerTest
 	{
 		[TestMethod]
-		public void Ctor_Should_T()
+		public void Ctor_Should_Throw_When_Factory_Is_Null()
 		{
 			// Arange
 			const IApiInfoFactory apiInfoFactory = null;
@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void Index_Should_Return_403_Forbidden()
+		public void Index_Should_Return_Status_403_Forbidden()
 		{
 			// Assign
 			HomeController controller = new HomeController(new Mock<IApiInfoFactory>().Object);
@@ -54,7 +54,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.Version();
 
 			// Assert
-			factoryMock.Verify(f => f.Create(), Times.Once);
+			factoryMock.Verify(f => f.Create(), Times.Once());
 		}
 	}
 }

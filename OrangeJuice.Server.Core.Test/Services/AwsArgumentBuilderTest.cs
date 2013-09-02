@@ -7,12 +7,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Builders;
+using OrangeJuice.Server.Services;
 
-namespace OrangeJuice.Server.Test.Builders
+namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class ArgumentBuilderTest
+	public class AwsArgumentBuilderTest
 	{
 		#region Ctor
 		[TestMethod]
@@ -24,7 +24,7 @@ namespace OrangeJuice.Server.Test.Builders
 			const IDateTimeProvider dateTimeProvider = null;
 
 			// Act
-			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
+			Action action = () => new AwsArgumentBuilder(accessKey, associateTag, dateTimeProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Test.Builders
 			const IDateTimeProvider dateTimeProvider = null;
 
 			// Act
-			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
+			Action action = () => new AwsArgumentBuilder(accessKey, associateTag, dateTimeProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -56,7 +56,7 @@ namespace OrangeJuice.Server.Test.Builders
 			const IDateTimeProvider dateTimeProvider = null;
 
 			// Act
-			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
+			Action action = () => new AwsArgumentBuilder(accessKey, associateTag, dateTimeProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -72,7 +72,7 @@ namespace OrangeJuice.Server.Test.Builders
 			const IDateTimeProvider dateTimeProvider = null;
 
 			// Act
-			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
+			Action action = () => new AwsArgumentBuilder(accessKey, associateTag, dateTimeProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -88,7 +88,7 @@ namespace OrangeJuice.Server.Test.Builders
 			const IDateTimeProvider dateTimeProvider = null;
 
 			// Act
-			Action action = () => new ArgumentBuilder(accessKey, associateTag, dateTimeProvider);
+			Action action = () => new AwsArgumentBuilder(accessKey, associateTag, dateTimeProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -114,11 +114,11 @@ namespace OrangeJuice.Server.Test.Builders
 			var args = argumentBuilder.BuildArgs(new Dictionary<string, string>());
 
 			// Assert
-			args.Should().Contain(ArgumentBuilder.AwsAccessKey, accessKey)
-				.And.Contain(ArgumentBuilder.AssociateTagKey, associateTag)
-				.And.Contain(ArgumentBuilder.ServiceKey, ArgumentBuilder.ServiceValue)
-				.And.Contain(ArgumentBuilder.ConditionKey, ArgumentBuilder.ConditionValue)
-				.And.Contain(ArgumentBuilder.TimestampKey, timestamp);
+			args.Should().Contain(AwsArgumentBuilder.AwsAccessKey, accessKey)
+				.And.Contain(AwsArgumentBuilder.AssociateTagKey, associateTag)
+				.And.Contain(AwsArgumentBuilder.ServiceKey, AwsArgumentBuilder.ServiceValue)
+				.And.Contain(AwsArgumentBuilder.ConditionKey, AwsArgumentBuilder.ConditionValue)
+				.And.Contain(AwsArgumentBuilder.TimestampKey, timestamp);
 		}
 
 		[TestMethod]
@@ -154,7 +154,7 @@ namespace OrangeJuice.Server.Test.Builders
 			queryBuilder.BuildArgs(dic);
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once);
+			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once());
 		}
 
 		[TestMethod]
@@ -170,7 +170,7 @@ namespace OrangeJuice.Server.Test.Builders
 			queryBuilder.BuildArgs(dic);
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once);
+			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once());
 		}
 
 		[TestMethod]
@@ -187,7 +187,7 @@ namespace OrangeJuice.Server.Test.Builders
 			queryBuilder.BuildArgs(dic);
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once);
+			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once());
 		}
 		#endregion
 
@@ -200,9 +200,9 @@ namespace OrangeJuice.Server.Test.Builders
 			return dateTimeProviderMock;
 		}
 
-		private static ArgumentBuilder CreateArgumentBuilder(string accessKey = null, string associateTag = null, IDateTimeProvider dateTimeProvider = null)
+		private static AwsArgumentBuilder CreateArgumentBuilder(string accessKey = null, string associateTag = null, IDateTimeProvider dateTimeProvider = null)
 		{
-			return new ArgumentBuilder(
+			return new AwsArgumentBuilder(
 				accessKey ?? "anyKey",
 				associateTag ?? "anyTag",
 				dateTimeProvider ?? CreateDateTimeProvider(DateTime.UtcNow).Object);

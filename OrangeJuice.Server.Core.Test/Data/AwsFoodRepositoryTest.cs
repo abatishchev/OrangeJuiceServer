@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -107,7 +106,7 @@ namespace OrangeJuice.Server.Test.Data
 			const string title = "anyTitle";
 
 			var clientMock = new Mock<IAwsClient>();
-			clientMock.Setup(c => c.SearchItem(title)).ReturnsAsync(Enumerable.Empty<string>());
+			clientMock.Setup(c => c.SearchItem(title)).ReturnsAsync(Enumerable.Empty<XElement>());
 
 			IFoodRepository repository = CreateRepository(clientMock.Object);
 
@@ -115,7 +114,7 @@ namespace OrangeJuice.Server.Test.Data
 			await repository.SearchByTitle(title);
 
 			// Assert
-			clientMock.Verify(c => c.SearchItem(title), Times.Once);
+			clientMock.Verify(c => c.SearchItem(title), Times.Once());
 		}
 
 		[TestMethod]
@@ -127,7 +126,7 @@ namespace OrangeJuice.Server.Test.Data
 			Task<XElement> imagesTask = Task.FromResult(new XElement("images"));
 
 			var clientMock = new Mock<IAwsClient>();
-			clientMock.Setup(c => c.SearchItem(id)).ReturnsAsync(new[] { id });
+			clientMock.Setup(c => c.SearchItem(id)).ReturnsAsync(new[] { new XElement("Item", new XElement("ASIN", id)) });
 			clientMock.Setup(c => c.LookupAttributes(id)).Returns(attributesTask);
 			clientMock.Setup(c => c.LookupImages(id)).Returns(imagesTask);
 
@@ -140,7 +139,7 @@ namespace OrangeJuice.Server.Test.Data
 			await repository.SearchByTitle(id);
 
 			// Assert
-			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once);
+			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once());
 		}
 		#endregion
 

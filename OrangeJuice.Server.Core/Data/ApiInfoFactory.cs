@@ -1,23 +1,68 @@
 ﻿using System;
 using System.Reflection;
 
+using OrangeJuice.Server.Configuration;
+
+using Environment = OrangeJuice.Server.Configuration.Environment;
+
 namespace OrangeJuice.Server.Data
 {
-	public class ApiInfoFactory : IApiInfoFactory
+	public sealed class ApiInfoFactory : IApiInfoFactory
 	{
-		private readonly Lazy<ApiInfo> _instance = new Lazy<ApiInfo>(CreateInstance);
+		#region Fields
+		private readonly IAssemblyProvider _assemblyProvider;
+		private readonly IEnvironmentProvider _environmentProvider;
 
-		private static ApiInfo CreateInstance()
+		private ApiInfo _instance;
+		#endregion
+
+		#region Ctor
+		public ApiInfoFactory(IAssemblyProvider assemblyProvider, IEnvironmentProvider environmentProvider)
+		{
+			if (assemblyProvider == null)
+				throw new ArgumentNullException("assemblyProvider");
+			if (environmentProvider == null)
+				throw new ArgumentNullException("environmentProvider");
+
+			_environmentProvider = environmentProvider;
+			_assemblyProvider = assemblyProvider;
+		}
+		#endregion
+
+		#region IApiInfoFactory Members
+		public ApiInfo Create()
+		{
+			return _instance ?? (_instance = CreateInstance());
+		}
+		#endregion
+
+		#region Methods
+		private ApiInfo CreateInstance()
 		{
 			return new ApiInfo
 			{
-				Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version
+				Version = GetVersion(),
+				Key = GetKey()
 			};
 		}
 
-		public ApiInfo Create()
+		private string GetVersion()
 		{
-			return _instance.Value;
+			return _assemblyProvider.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
 		}
+
+		private Guid? GetKey()
+		{
+			string environment = _environmentProvider.GetCurrentEnvironment();
+			switch (environment)
+			{
+				case Environment.Local:
+				case Environment.Development:
+					return AppKey.Version0;
+				default:
+					return null;
+			}
+		}
+		#endregion
 	}
 }

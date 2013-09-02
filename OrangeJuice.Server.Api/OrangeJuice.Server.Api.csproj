@@ -124,8 +124,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="App_Start\ValidationConfig.cs" />
-    <Compile Include="App_Start\HandlerConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="Controllers\JsonDotNetResult.cs" />
     <Compile Include="Handlers\AppKeyHandlerFactory.cs" />
@@ -149,6 +147,7 @@
     </Compile>
     <Compile Include="Policies\ErrorDetailPolicyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\Infrustructure\AttributeValidatorFactory.cs" />
     <Compile Include="Validation\Infrustructure\FluentModelValidator.cs" />
     <Compile Include="Validation\Infrustructure\FluentModelValidatorProvider.cs">
       <SubType>Code</SubType>
@@ -163,7 +162,6 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="ping.html" />
     <Content Include="Properties\PublishProfiles\Dev.pubxml.user" />
     <Content Include="Properties\PublishProfiles\Prod.pubxml.user" />
     <Content Include="Properties\PublishProfiles\Stg.pubxml.user" />
@@ -193,7 +191,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Deploy.ps1" />
+    <Content Include="Deploy.ps1" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Prod.pubxml" />
     <None Include="Properties\PublishProfiles\Stg.pubxml" />

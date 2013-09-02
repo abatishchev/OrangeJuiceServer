@@ -7,7 +7,7 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IAwsClient
 	{
-		Task<IEnumerable<string>> SearchItem(string title);
+		Task<IEnumerable<XElement>> SearchItem(string title);
 
 		Task<XElement> LookupAttributes(string id);
 

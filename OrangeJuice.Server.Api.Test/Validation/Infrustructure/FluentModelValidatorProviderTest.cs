@@ -16,6 +16,7 @@ using OrangeJuice.Server.Api.Validation.Infrustructure;
 
 namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 {
+	// ReSharper disable ReturnValueOfPureMethodIsNotUsed
 	[TestClass]
 	public class FluentModelValidatorProviderTest
 	{
@@ -87,7 +88,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 		}
 
 		[TestMethod]
-		public void GetValidators_Should_Pass_IValidator_Of_MetaData_ContainerType_UnderlyingSystemType_To_ValidatorFactory_CreateInstance()
+		public void GetValidators_Should_Pass_IValidator_Of_MetaData_ContainerType_UnderlyingSystemType_To_IValidatorFactory_GetValidator()
 		{
 			// Arrange
 			IValidator validator = new Mock<IValidator>().Object;
@@ -104,7 +105,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
 
 			// Assert
-			validatorFactoryMock.Verify(f => f.CreateInstance(It.Is<Type>(t => t.IsAssignableFrom(typeof(IValidator<object>)))), Times.Once);
+			validatorFactoryMock.Verify(f => f.GetValidator(It.Is<Type>(t => t.IsAssignableFrom(typeof(IValidator<object>)))), Times.Once());
 		}
 
 		[TestMethod]
@@ -126,7 +127,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
 
 			// Assert
-			modelValidatorFactoryMock.Verify(f => f.Create(validatorProviders, validator), Times.Once);
+			modelValidatorFactoryMock.Verify(f => f.Create(validatorProviders, validator), Times.Once());
 		}
 
 		[TestMethod]
@@ -147,7 +148,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 		#endregion
 
 		#region Helper methods
-		private static ModelValidatorProvider CreateProvider(ValidatorFactoryBase validatorFactory = null, IModelValidatorFactory modelValidatorFactory = null)
+		private static ModelValidatorProvider CreateProvider(IValidatorFactory validatorFactory = null, IModelValidatorFactory modelValidatorFactory = null)
 		{
 			return new FluentModelValidatorProvider(
 				validatorFactory ?? new Mock<ValidatorFactoryBase>().Object,
@@ -159,10 +160,10 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			return new ModelMetadata(new Mock<ModelMetadataProvider>().Object, contrainerType, () => null, typeof(object), "AnyPropertyName");
 		}
 
-		private static Mock<ValidatorFactoryBase> CreateValidatorFactory(IValidator validator)
+		private static Mock<IValidatorFactory> CreateValidatorFactory(IValidator validator)
 		{
-			var factoryMock = new Mock<ValidatorFactoryBase>();
-			factoryMock.Setup(f => f.CreateInstance(It.IsAny<Type>())).Returns(validator);
+			var factoryMock = new Mock<IValidatorFactory>();
+			factoryMock.Setup(f => f.GetValidator(It.IsAny<Type>())).Returns(validator);
 			return factoryMock;
 		}
 

@@ -5,3 +5,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("OrangeJuice.Server.Api.Test")]
 
 [assembly: Guid("8ef823ae-7adc-4a8d-be97-114878deeebc")]
+
+[assembly: AssemblyVersion("0.0.0.0")]
+[assembly: AssemblyFileVersion("0.0.0.0")]

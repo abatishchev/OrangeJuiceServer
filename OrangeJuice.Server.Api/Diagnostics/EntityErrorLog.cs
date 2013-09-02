@@ -4,7 +4,7 @@ using System.Data.Entity.Core.EntityClient;
 
 namespace OrangeJuice.Server.Api.Diagnostics
 {
-	internal sealed class EntityErrorLog : Elmah.SqlErrorLog
+	public sealed class EntityErrorLog : Elmah.SqlErrorLog
 	{
 		internal const string ConnectionStringNameKey = "connectionStringName";
 

@@ -15,14 +15,10 @@ namespace OrangeJuice.Server.Api
 			RouteConfig.RegisterRoutes(GlobalConfiguration.Configuration.Routes);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-			HandlerConfig.ConfigurHandlers(container, GlobalConfiguration.Configuration.MessageHandlers);
-
 			FilterConfig.RegisterFilters(GlobalFilters.Filters);
 			FilterConfig.RegisterFilters(GlobalConfiguration.Configuration.Filters);
 
 			WebApiConfig.Configure(GlobalConfiguration.Configuration, container);
-
-			ValidationConfig.Configure(GlobalConfiguration.Configuration.Services, container);
 		}
 	}
 }

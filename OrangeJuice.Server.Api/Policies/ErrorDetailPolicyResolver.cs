@@ -8,7 +8,7 @@ using Environment = OrangeJuice.Server.Configuration.Environment;
 
 namespace OrangeJuice.Server.Api.Policies
 {
-	internal sealed class ErrorDetailPolicyResolver
+	public sealed class ErrorDetailPolicyResolver
 	{
 		private static readonly Lazy<IDictionary<string, IncludeErrorDetailPolicy>> _defaultPolicies = new Lazy<IDictionary<string, IncludeErrorDetailPolicy>>(GetDefaultPolicies);
 

@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		/// <summary>
-		/// Searches for food
+		/// Searches for food by text
 		/// </summary>
 		/// <returns>Brief description of food found</returns>
 		/// <param name="searchCriteria">Food search criteria</param>
@@ -31,9 +31,11 @@ namespace OrangeJuice.Server.Api.Controllers
 		{
 			if (searchCriteria == null)
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
+			if (!ModelState.IsValid)
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
 
-			FoodDescription[] description = await _foodRepository.SearchByTitle(searchCriteria.Title);
-			return Request.CreateResponse(HttpStatusCode.OK, description);
+			var description = await _foodRepository.SearchByTitle(searchCriteria.Title);
+			return Request.CreateResponse(HttpStatusCode.OK, description.ToArray());
 		}
 	}
 }

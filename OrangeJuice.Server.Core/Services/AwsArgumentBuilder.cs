@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OrangeJuice.Server.Builders
+namespace OrangeJuice.Server.Services
 {
-	public sealed class ArgumentBuilder
+	public sealed class AwsArgumentBuilder : IArgumentBuilder
 	{
 		#region Constants
 		internal const string AwsAccessKey = "AWSAccessKeyId";
@@ -25,7 +25,7 @@ namespace OrangeJuice.Server.Builders
 		#endregion
 
 		#region Constructors
-		public ArgumentBuilder(string accessKey, string associateTag, IDateTimeProvider dateTimeProvider)
+		public AwsArgumentBuilder(string accessKey, string associateTag, IDateTimeProvider dateTimeProvider)
 		{
 			if (String.IsNullOrEmpty(accessKey))
 				throw new ArgumentNullException("accessKey");
