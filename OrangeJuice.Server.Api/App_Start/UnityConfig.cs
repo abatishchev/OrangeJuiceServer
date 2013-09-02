@@ -6,8 +6,6 @@ using FluentValidation;
 using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Api.Handlers;
-using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Api.Validation;
 using OrangeJuice.Server.Api.Validation.Infrustructure;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
@@ -54,22 +52,16 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
 
+			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
+
 			// Validation
-			container.RegisterType<IValidatorFactory, UnityValidatorFactory>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container));
+			container.RegisterType<IValidatorFactory, FluentValidation.Attributes.AttributedValidatorFactory>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IModelValidatorFactory, FluentModelValidatorFactory>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<IValidatorFactory>(), container.Resolve<IModelValidatorFactory>()));
-
-			container.RegisterType<IValidator<FoodSearchCriteria>, FoodSearchCriteriaValidator>(new ContainerControlledLifetimeManager())
-					 .RegisterType<IValidator<UserRegistration>, UserRegistrationValidator>(new ContainerControlledLifetimeManager())
-					 .RegisterType<IValidator<UserSearchCriteria>, UserSearchCriteriaValidator>(new ContainerControlledLifetimeManager());
-
-			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 
 			// HomeController
 			container.RegisterType<IApiInfoFactory, ApiInfoFactory>(

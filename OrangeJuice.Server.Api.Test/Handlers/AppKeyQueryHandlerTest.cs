@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 	public class AppKeyQueryHandlerTest
 	{
 		[TestMethod]
-		public void AppKeySegmentName_Should_Return_XApiKey()
+		public void AppKeySegmentName_Should_Return_ApiKey()
 		{
 			// Arrange
 			const string expected = "appKey";

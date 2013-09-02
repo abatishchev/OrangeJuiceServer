@@ -7,7 +7,6 @@ using Microsoft.Practices.Unity;
 
 namespace OrangeJuice.Server.Api.Validation.Infrustructure
 {
-	// TODO: repalce with FluentValidation.Attributes.AttributeValidatorFactory
 	public sealed class AttributeValidatorFactory : ValidatorFactoryBase
 	{
 		private readonly IUnityContainer _container;

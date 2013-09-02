@@ -10,11 +10,12 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 	public sealed class FluentModelValidatorProvider : ModelValidatorProvider
 	{
 		#region Fields
-		private readonly ValidatorFactoryBase _validatorFactory;
+		private readonly IValidatorFactory _validatorFactory;
 		private readonly IModelValidatorFactory _modelValidatorFactory;
 		#endregion
 
-		public FluentModelValidatorProvider(ValidatorFactoryBase validatorFactory, IModelValidatorFactory modelValidatorFactory)
+		#region Ctor
+		public FluentModelValidatorProvider(IValidatorFactory validatorFactory, IModelValidatorFactory modelValidatorFactory)
 		{
 			if (validatorFactory == null)
 				throw new ArgumentNullException("validatorFactory");
@@ -24,7 +25,9 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 			_validatorFactory = validatorFactory;
 			_modelValidatorFactory = modelValidatorFactory;
 		}
+		#endregion
 
+		#region Methods
 		public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, IEnumerable<ModelValidatorProvider> validatorProviders)
 		{
 			if (metadata == null)
@@ -35,7 +38,7 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 			Type type = GeType(metadata);
 			if (type != null)
 			{
-				IValidator validator = _validatorFactory.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
+				IValidator validator = _validatorFactory.GetValidator(type);
 				yield return _modelValidatorFactory.Create(validatorProviders, validator);
 			}
 		}
@@ -44,5 +47,6 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 		{
 			return metadata.ContainerType != null ? metadata.ContainerType.UnderlyingSystemType : null;
 		}
+		#endregion
 	}
 }
