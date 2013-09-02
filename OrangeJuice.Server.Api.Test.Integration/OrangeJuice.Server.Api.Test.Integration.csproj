@@ -58,9 +58,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Controllers\FoodControllerTest.webtest" />
-    <None Include="Controllers\HomeControllerTest.webtest" />
-    <None Include="Controllers\UserControllerTest.webtest" />
+    <None Include="Controllers\FoodControllerWebTest.webtest" />
+    <None Include="Controllers\HomeControllerWebTest.webtest" />
+    <None Include="Controllers\UserControllerWebTest.webtest" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
