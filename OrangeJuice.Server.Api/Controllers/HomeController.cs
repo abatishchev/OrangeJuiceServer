@@ -5,6 +5,7 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
+	// TODO: change type to ApiController
 	public sealed class HomeController : Controller
 	{
 		private readonly IApiInfoFactory _apiInfoFactory;

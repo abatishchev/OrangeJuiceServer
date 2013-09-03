@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using FluentAssertions;
 
@@ -8,6 +7,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Services;
+
+using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
+using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Services
 {
@@ -111,7 +113,7 @@ namespace OrangeJuice.Server.Test.Services
 			var argumentBuilder = CreateArgumentBuilder(accessKey, associateTag, dateTimeProvider.Object);
 
 			// Act
-			var args = argumentBuilder.BuildArgs(new Dictionary<string, string>());
+			var args = argumentBuilder.BuildArgs(new StringDictionary());
 
 			// Assert
 			args.Should().Contain(AwsArgumentBuilder.AwsAccessKey, accessKey)
@@ -129,7 +131,7 @@ namespace OrangeJuice.Server.Test.Services
 			const string value = "anyValue";
 
 			var queryBuilder = CreateArgumentBuilder();
-			IDictionary<string, string> args = new Dictionary<string, string>
+			IStringDictionary args = new StringDictionary
 			{
 				 { key, value }
 			};
@@ -148,10 +150,10 @@ namespace OrangeJuice.Server.Test.Services
 			var dateTimeProviderMock = CreateDateTimeProvider(DateTime.UtcNow);
 
 			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
-			var dic = new Dictionary<string, string>();
+			var args = new StringDictionary();
 
 			// Act
-			queryBuilder.BuildArgs(dic);
+			queryBuilder.BuildArgs(args);
 
 			// Assert
 			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once());
@@ -164,10 +166,10 @@ namespace OrangeJuice.Server.Test.Services
 			var dateTimeProviderMock = CreateDateTimeProvider(DateTime.UtcNow);
 
 			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
-			var dic = new Dictionary<string, string>();
+			var args = new StringDictionary();
 
 			// Act
-			queryBuilder.BuildArgs(dic);
+			queryBuilder.BuildArgs(args);
 
 			// Assert
 			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once());
@@ -181,10 +183,10 @@ namespace OrangeJuice.Server.Test.Services
 			var dateTimeProviderMock = CreateDateTimeProvider(now);
 
 			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
-			var dic = new Dictionary<string, string>();
+			var args = new StringDictionary();
 
 			// Act
-			queryBuilder.BuildArgs(dic);
+			queryBuilder.BuildArgs(args);
 
 			// Assert
 			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once());

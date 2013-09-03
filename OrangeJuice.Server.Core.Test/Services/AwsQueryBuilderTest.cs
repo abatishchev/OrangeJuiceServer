@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using FluentAssertions;
 
@@ -10,7 +9,8 @@ using Moq;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
-using StringDictionary = System.Collections.Generic.IDictionary<string, string>;
+using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
+using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Services
 {
@@ -72,7 +72,7 @@ namespace OrangeJuice.Server.Test.Services
 		public void BuildUrl_Should_Pass_Arguments_To_ArgumentBuilder()
 		{
 			// Arrange
-			IDictionary<string, string> args = new Dictionary<string, string>();
+			IStringDictionary args = new StringDictionary();
 
 			var agumentBuilderMock = new Mock<IArgumentBuilder>();
 
@@ -88,13 +88,13 @@ namespace OrangeJuice.Server.Test.Services
 		[TestMethod]
 		public void BuildUrl_Should_Pass_Arguments_Returned_By_ArgumentBuilder_To_ArgumentFormatter_FormatArgs()
 		{
-
+			Assert.Inconclusive("TODO");
 		}
 
 		[TestMethod]
 		public void BuildUrl_Should_Pass_Quqery_Returned_By_ArgumentFormatter_To_SignatureBuilder_SignQuery()
 		{
-
+			Assert.Inconclusive("TODO");
 		}
 		#endregion
 
@@ -110,14 +110,14 @@ namespace OrangeJuice.Server.Test.Services
 		private static IArgumentBuilder CreateArgumentBuilder()
 		{
 			var builderMock = new Mock<IArgumentBuilder>();
-			builderMock.Setup(b => b.BuildArgs(It.IsAny<StringDictionary>())).Returns(new Dictionary<string, string>());
+			builderMock.Setup(b => b.BuildArgs(It.IsAny<IStringDictionary>())).Returns(new StringDictionary());
 			return builderMock.Object;
 		}
 
 		private static IArgumentFormatter CreateArgumentFormatter()
 		{
 			var builderMock = new Mock<IArgumentFormatter>();
-			builderMock.Setup(b => b.FormatArgs(It.IsAny<StringDictionary>())).Returns("query");
+			builderMock.Setup(b => b.FormatArgs(It.IsAny<IStringDictionary>())).Returns("query");
 			return builderMock.Object;
 		}
 

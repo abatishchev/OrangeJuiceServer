@@ -71,6 +71,22 @@ namespace OrangeJuice.Server.Test.Services
 
 		#region GetItems
 		[TestMethod]
+		public void GetItems_Should_Throw_Exception_When_Args_Is_Null()
+		{
+			// Arrange
+			const IStringDictionary args = null;
+
+			IAwsClient client = CreateClient();
+
+			// Act
+			Func<Task> action = () => client.GetItems(args);
+
+			// Assert
+			action.ShouldThrow<ArgumentNullException>()
+				  .And.ParamName.Should().Be("args");
+		}
+
+		[TestMethod]
 		public async Task GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_DocumentLoader_Load()
 		{
 			// Arrange

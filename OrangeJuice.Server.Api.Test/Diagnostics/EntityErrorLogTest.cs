@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 using FluentAssertions;
@@ -24,7 +23,7 @@ namespace OrangeJuice.Server.Api.Test.Diagnostics
 
 			using (new TempConnectionString(name, entityConnectionString))
 			{
-				IDictionary config = new Dictionary<string, string> { { EntityErrorLog.ConnectionStringNameKey, name } };
+				var config = new Dictionary<string, string> { { EntityErrorLog.ConnectionStringNameKey, name } };
 				EntityErrorLog errorLog = new EntityErrorLog(config);
 
 				// Act

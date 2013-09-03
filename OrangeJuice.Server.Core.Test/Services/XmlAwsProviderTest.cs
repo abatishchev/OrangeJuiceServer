@@ -20,17 +20,17 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Ctor
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_AwsClient_Is_Null()
+		public void Ctor_Should_Throw_Exception_When_Client_Is_Null()
 		{
 			// Arrange
-			const IAwsClient provider = null;
+			const IAwsClient client = null;
 
 			// Act
-			Action action = () => new XmlAwsProvider(provider);
+			Action action = () => new XmlAwsProvider(client);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("provider");
+			      .And.ParamName.Should().Be("client");
 		}
 		#endregion
 
@@ -48,7 +48,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("title");
+			      .And.ParamName.Should().Be("title");
 		}
 
 		[TestMethod]
@@ -64,26 +64,26 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("title");
+			      .And.ParamName.Should().Be("title");
 		}
 
 		[TestMethod]
-		public async Task SearchItem_Should_Pass_Arguments_To_AwsClient()
+		public async Task SearchItem_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
 			const string title = "anyTitle";
 
 			Action<IStringDictionary> callback = d => d.Should()
-													  .Contain("Operation", "ItemSearch")
-													  .And.Contain("SearchIndex", "Grocery")
-													  .And.Contain("ResponseGroup", "Small")
-													  .And.Contain("Title", title);
+			                                           .Contain("Operation", "ItemSearch")
+			                                           .And.Contain("SearchIndex", "Grocery")
+			                                           .And.Contain("ResponseGroup", "Small")
+			                                           .And.Contain("Title", title);
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
-					  .ReturnsAsync(new XElement("Items"))
-					  .Callback(callback);
+			          .ReturnsAsync(new XElement("Items"))
+			          .Callback(callback);
 
-			IAwsProvider provider = CreateProvider();
+			IAwsProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
 			await provider.SearchItem(title);
@@ -107,7 +107,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("id");
+			      .And.ParamName.Should().Be("id");
 		}
 
 		[TestMethod]
@@ -123,7 +123,31 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("id");
+			      .And.ParamName.Should().Be("id");
+		}
+
+		[TestMethod]
+		public async Task LookupAttributes_Should_Pass_Arguments_To_Client()
+		{
+			// Arrange
+			const string id = "anyId";
+
+			Action<IStringDictionary> callback = d => d.Should()
+			                                           .Contain("Operation", "ItemLookup")
+			                                           .And.Contain("ResponseGroup", "ItemAttributes")
+			                                           .And.Contain("ItemId", id);
+			var clientMock = new Mock<IAwsClient>();
+			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
+					  .ReturnsAsync(new XElement("Items"))
+			          .Callback(callback);
+
+			IAwsProvider provider = CreateProvider(clientMock.Object);
+
+			// Act
+			await provider.LookupAttributes(id);
+
+			// Assert
+			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
 		}
 		#endregion
 
@@ -141,7 +165,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("id");
+			      .And.ParamName.Should().Be("id");
 		}
 
 		[TestMethod]
@@ -157,14 +181,38 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("id");
+			      .And.ParamName.Should().Be("id");
+		}
+
+		[TestMethod]
+		public async Task LookupImages_Should_Pass_Arguments_To_Client()
+		{
+			// Arrange
+			const string id = "anyTitle";
+
+			Action<IStringDictionary> callback = d => d.Should()
+													  .Contain("Operation", "ItemLookup")
+													   .And.Contain("ResponseGroup", "Images")
+													   .And.Contain("ItemId", id);
+			var clientMock = new Mock<IAwsClient>();
+			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
+			          .ReturnsAsync(new XElement("Items"))
+			          .Callback(callback);
+
+			IAwsProvider provider = CreateProvider(clientMock.Object);
+
+			// Act
+			await provider.LookupImages(id);
+
+			// Assert
+			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
 		}
 		#endregion
 
 		#region Helper methods
-		private static IAwsProvider CreateProvider()
+		private static IAwsProvider CreateProvider(IAwsClient client = null)
 		{
-			throw new NotImplementedException();
+			return new XmlAwsProvider(client ?? new Mock<IAwsClient>().Object);
 		}
 		#endregion
 	}

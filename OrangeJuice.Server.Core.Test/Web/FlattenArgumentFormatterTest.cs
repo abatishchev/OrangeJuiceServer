@@ -9,7 +9,7 @@ using Moq;
 
 using OrangeJuice.Server.Web;
 
-namespace OrangeJuice.Server.Test.Builders
+namespace OrangeJuice.Server.Test.Web
 {
 	[TestClass]
 	public class FlattenArgumentFormatterTest
