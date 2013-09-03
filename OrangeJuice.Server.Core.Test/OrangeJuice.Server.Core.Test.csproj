@@ -85,6 +85,7 @@
     <Compile Include="Filters\ValidImageFoodDescriptionFilterTest.cs" />
     <Compile Include="MoqExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\XmlAwsProviderTest.cs" />
     <Compile Include="Web\FlattenArgumentFormatterTest.cs" />
     <Compile Include="Services\AwsArgumentBuilderTest.cs" />
     <Compile Include="Services\AwsQueryBuilderTest.cs" />

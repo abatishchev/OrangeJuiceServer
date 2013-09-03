@@ -57,7 +57,6 @@
     </Compile>
     <Compile Include="ReflectionAssemblyProvider.cs" />
     <Compile Include="Services\AwsArgumentBuilder.cs" />
-    <Compile Include="Services\IAwsProvider.cs" />
     <Compile Include="Services\XmlAwsProvider.cs" />
     <Compile Include="Web\FlattenArgumentFormatter.cs" />
     <Compile Include="Services\AwsQuerySigner.cs" />

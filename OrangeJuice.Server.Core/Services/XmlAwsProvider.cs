@@ -1,23 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-
-using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
 {
 	public sealed class XmlAwsProvider : IAwsProvider
 	{
 		#region Fields
-		private readonly XmlAwsProvider _awsProvider;
+		private readonly IAwsClient _awsClient;
 		#endregion
 
 		#region Ctor
-		public XmlAwsProvider(XmlAwsProvider awsProvider)
+		public XmlAwsProvider(IAwsClient awsClient)
 		{
-			if (awsProvider == null)
-				throw new ArgumentNullException("awsProvider");
-			_awsProvider = awsProvider;
+			if (awsClient == null)
+				throw new ArgumentNullException("awsClient");
+			_awsClient = awsClient;
 		}
 		#endregion
 
@@ -35,8 +34,7 @@ namespace OrangeJuice.Server.Services
 				{ "Title", title }
 			};
 
-			var items = await _awsProvider.GetItems(args);
-
+			var items = await _awsClient.GetItems(args);
 			return items.Elements(items.Name.Namespace + "Item");
 		}
 
@@ -52,10 +50,7 @@ namespace OrangeJuice.Server.Services
 				{ "ItemId", id }
 			};
 
-			string url = _awsProvider._queryBuilder.BuildUrl(args);
-			XDocument doc = await _awsProvider._documentLoader.Load(url);
-			XElement items = _awsProvider._itemProvider.GetItems(doc);
-
+			var items = await _awsClient.GetItems(args);
 			return items.Element(items.Name.Namespace + "Item");
 		}
 
@@ -71,10 +66,7 @@ namespace OrangeJuice.Server.Services
 				{ "ItemId", id }
 			};
 
-			string url = _awsProvider._queryBuilder.BuildUrl(args);
-			XDocument doc = await _awsProvider._documentLoader.Load(url);
-			XElement items = _awsProvider._itemProvider.GetItems(doc);
-
+			var items = await _awsClient.GetItems(args);
 			return items.Element(items.Name.Namespace + "Item");
 		}
 		#endregion
