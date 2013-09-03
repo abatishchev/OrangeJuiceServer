@@ -1,12 +1,16 @@
 ﻿using System;
-using System.Web.Mvc;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
-	// TODO: change type to ApiController
-	public sealed class HomeController : Controller
+	// TODO: split into ApiVersionController?
+	public sealed class HomeController : ApiController
 	{
 		private readonly IApiInfoFactory _apiInfoFactory;
 
@@ -17,14 +21,11 @@ namespace OrangeJuice.Server.Api.Controllers
 			_apiInfoFactory = apiInfoFactory;
 		}
 
-		public HttpStatusCodeResult Index()
+		public async Task<HttpResponseMessage> GetVersion()
 		{
-			return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
-		}
-
-		public JsonDotNetResult Version()
-		{
-			return new JsonDotNetResult(_apiInfoFactory.Create());
+			return Request.RequestUri.ParseQueryString().Cast<string>().Contains("version") ?
+				Request.CreateResponse(HttpStatusCode.OK, _apiInfoFactory.Create()) :
+				Request.CreateResponse(HttpStatusCode.Forbidden);
 		}
 	}
 }

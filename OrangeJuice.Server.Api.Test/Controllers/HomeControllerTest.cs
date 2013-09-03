@@ -1,6 +1,7 @@
 using System;
 using System.Net;
-using System.Web.Mvc;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 using FluentAssertions;
 
@@ -31,30 +32,38 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void Index_Should_Return_Status_403_Forbidden()
+		public async Task GetVersion_Should_Return_Status_403_Forbidden()
 		{
 			// Assign
-			HomeController controller = new HomeController(new Mock<IApiInfoFactory>().Object);
+			const HttpStatusCode expected = HttpStatusCode.Forbidden;
+
+			HomeController controller = CreateController();
 
 			// Act
-			HttpStatusCodeResult result = controller.Index();
+			HttpResponseMessage message = await controller.GetVersion();
+			HttpStatusCode actual = message.Content.GetValue<HttpStatusCode>();
 
 			// Assert
-			result.StatusCode.Should().Be((int)HttpStatusCode.Forbidden);
+			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public void Version_Should_Call_ApiInfoFactory_Create()
+		public async Task GetVersion_Should_Call_ApiInfoFactory_Create()
 		{
 			// Arrange
 			var factoryMock = new Mock<IApiInfoFactory>();
-			HomeController controller = new HomeController(factoryMock.Object);
+			HomeController controller = CreateController(factoryMock.Object);
 
 			// Act
-			controller.Version();
+			await controller.GetVersion();
 
 			// Assert
 			factoryMock.Verify(f => f.Create(), Times.Once());
+		}
+
+		private static HomeController CreateController(IApiInfoFactory factory = null)
+		{
+			return ControllerFactory.Create<HomeController>(factory ?? new Mock<IApiInfoFactory>().Object);
 		}
 	}
 }
