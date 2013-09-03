@@ -10,19 +10,18 @@ namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class VersionController : ApiController
 	{
-		private readonly IApiVersionFactory _apiVersionFactory;
+		private readonly ApiVersion _version;
 
-		public VersionController(IApiVersionFactory apiVersionFactory)
+		public VersionController(ApiVersion version)
 		{
-			if (apiVersionFactory == null)
-				throw new ArgumentNullException("apiVersionFactory");
-			_apiVersionFactory = apiVersionFactory;
+			if (version == null)
+				throw new ArgumentNullException("version");
+			_version = version;
 		}
 
 		public async Task<HttpResponseMessage> GetVersion()
 		{
-			ApiVersion version = await _apiVersionFactory.Create();
-			return Request.CreateResponse(HttpStatusCode.OK, version);
+			return Request.CreateResponse(HttpStatusCode.OK, _version);
 		}
 	}
 }

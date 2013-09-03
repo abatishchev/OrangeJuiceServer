@@ -80,7 +80,7 @@
     <Compile Include="Configuration\Temp\TempConnectionStringTest.cs" />
     <Compile Include="Configuration\Temp\TempAppSettingsTest.cs" />
     <Compile Include="Data\AwsFoodRepositoryTest.cs" />
-    <Compile Include="Data\ApiInfoFactoryTest.cs" />
+    <Compile Include="Data\ApiVersionFactoryTest.cs" />
     <Compile Include="Data\XmlFoodDescriptionFactoryTest.cs" />
     <Compile Include="Filters\ValidImageFoodDescriptionFilterTest.cs" />
     <Compile Include="MoqExtensions.cs" />

@@ -4,6 +4,6 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IApiVersionFactory
 	{
-		Task<ApiVersion> Create();
+		ApiVersion Create();
 	}
 }

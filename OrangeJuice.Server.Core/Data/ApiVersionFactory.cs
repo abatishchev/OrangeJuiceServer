@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using OrangeJuice.Server.Configuration;
 
@@ -13,8 +12,6 @@ namespace OrangeJuice.Server.Data
 		#region Fields
 		private readonly IAssemblyProvider _assemblyProvider;
 		private readonly IEnvironmentProvider _environmentProvider;
-
-		private Task<ApiVersion> _instance;
 		#endregion
 
 		#region Ctor
@@ -31,14 +28,7 @@ namespace OrangeJuice.Server.Data
 		#endregion
 
 		#region IApiVersionFactory Members
-		public async Task<ApiVersion> Create()
-		{
-			return await (_instance ?? (_instance = Task<ApiVersion>.Factory.StartNew(CreateInstance)));
-		}
-		#endregion
-
-		#region Methods
-		private ApiVersion CreateInstance()
+		public ApiVersion Create()
 		{
 			return new ApiVersion
 			{
@@ -46,7 +36,9 @@ namespace OrangeJuice.Server.Data
 				Key = GetKey()
 			};
 		}
+		#endregion
 
+		#region Methods
 		private string GetVersion()
 		{
 			return _assemblyProvider.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;

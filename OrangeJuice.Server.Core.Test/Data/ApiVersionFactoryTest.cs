@@ -12,7 +12,7 @@ using OrangeJuice.Server.Data;
 namespace OrangeJuice.Server.Test.Data
 {
 	[TestClass]
-	public class ApiInfoFactoryTest
+	public class ApiVersionFactoryTest
 	{
 		#region Ctor
 		[TestMethod]
@@ -89,7 +89,7 @@ namespace OrangeJuice.Server.Test.Data
 		private static Mock<IAssemblyProvider> CreateAssemblyProvider()
 		{
 			var providerMock = new Mock<IAssemblyProvider>();
-			providerMock.Setup(p => p.GetExecutingAssembly()).Returns(typeof(ApiInfoFactoryTest).Assembly);
+			providerMock.Setup(p => p.GetExecutingAssembly()).Returns(typeof(ApiVersionFactoryTest).Assembly);
 			return providerMock;
 		}
 
