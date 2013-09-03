@@ -7,10 +7,6 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IAwsClient
 	{
-		Task<IEnumerable<XElement>> SearchItem(string title);
-
-		Task<XElement> LookupAttributes(string id);
-
-		Task<XElement> LookupImages(string id);
+		Task<XElement> GetItems(IDictionary<string, string> args);
 	}
 }
