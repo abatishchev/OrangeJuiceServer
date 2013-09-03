@@ -1,6 +1,4 @@
 ﻿using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Routing;
 
 namespace OrangeJuice.Server.Api
 {
@@ -10,12 +8,8 @@ namespace OrangeJuice.Server.Api
 		{
 			var container = UnityConfig.InitializeContainer();
 
-			AreaRegistration.RegisterAllAreas();
-
 			RouteConfig.RegisterRoutes(GlobalConfiguration.Configuration.Routes);
-			RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-			FilterConfig.RegisterFilters(GlobalFilters.Filters);
 			FilterConfig.RegisterFilters(GlobalConfiguration.Configuration.Filters);
 
 			WebApiConfig.Configure(GlobalConfiguration.Configuration, container);

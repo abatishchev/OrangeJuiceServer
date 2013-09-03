@@ -25,9 +25,6 @@ namespace OrangeJuice.Server.Api
 
 			RegisterTypes(container);
 
-			// MVC
-			System.Web.Mvc.DependencyResolver.SetResolver(new Unity.Mvc4.UnityDependencyResolver(container));
-
 			// Web API
 			GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
 
