@@ -10,7 +10,7 @@ namespace OrangeJuice.Server.Api
 			routes.MapHttpRoute(
 				name: "DefaultApi",
 				routeTemplate: "api/{controller}/{id}",
-				defaults: new { controller = "Home", action ="GetVersion", id = RouteParameter.Optional });
+				defaults: new { controller = "Home", id = RouteParameter.Optional });
 		}
 	}
 }
