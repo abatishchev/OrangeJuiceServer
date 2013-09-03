@@ -11,7 +11,8 @@ using Moq;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
-using StringDictionary = System.Collections.Generic.IDictionary<string, string>;
+using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
+using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Services
 {
@@ -70,29 +71,6 @@ namespace OrangeJuice.Server.Test.Services
 
 		#region GetItems
 		[TestMethod]
-		public async Task GetItems_Should_Pass_Arguments_To_UrlBuilder()
-		{
-			// Arrange
-			const string title = "anyTitle";
-
-			Action<StringDictionary> callback = d => d.Should()
-													  .Contain("Operation", "ItemSearch")
-													  .And.Contain("SearchIndex", "Grocery")
-													  .And.Contain("ResponseGroup", "Small")
-													  .And.Contain("Title", title);
-			var builderMock = new Mock<IQueryBuilder>();
-			builderMock.Setup(b => b.BuildUrl(It.IsAny<StringDictionary>())).Returns("query").Callback(callback);
-
-			IAwsClient client = CreateClient(builderMock.Object);
-
-			// Act
-			await client.SearchItem(title);
-
-			// Assert
-			builderMock.Verify(b => b.BuildUrl(It.IsAny<StringDictionary>()), Times.Once());
-		}
-
-		[TestMethod]
 		public async Task GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_DocumentLoader_Load()
 		{
 			// Arrange
@@ -104,10 +82,10 @@ namespace OrangeJuice.Server.Test.Services
 			loaderMock.Setup(l => l.Load(url)).ReturnsAsync(new XDocument());
 
 			IAwsClient client = CreateClient(builderMock, loaderMock.Object);
-			const string title = "anyTitle";
+			var args = new StringDictionary();
 
 			// Act
-			await client.SearchItem(title);
+			await client.GetItems(args);
 
 			// Assert
 			loaderMock.Verify(l => l.Load(url), Times.Once());
@@ -117,21 +95,56 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task GetItems_Should_Pass_Document_Returned_By_DocumentLoader_To_ItemProvider_GetItems()
 		{
 			// Arrange
-			XDocument doc = new XDocument();
-
-			var loaderMock = CreateDocumentLoader(doc);
+			XElement expected = new XElement("Items");
 
 			var providerMock = new Mock<IItemProvider>();
-			providerMock.Setup(l => l.GetItems(doc)).Returns(new XElement("Item"));
+			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(expected);
 
-			IAwsClient client = CreateClient(documentLoader: loaderMock, itemProvider: providerMock.Object);
-			const string title = "anyTitle";
+			IAwsClient client = CreateClient(itemProvider: providerMock.Object);
+			var args = new StringDictionary();
 
 			// Act
-			await client.SearchItem(title);
+			XElement actual = await client.GetItems(args);
 
 			// Assert
-			providerMock.Verify(p => p.GetItems(doc), Times.Once());
+			actual.Should().Be(expected);
+		}
+
+		[TestMethod]
+		public async Task GetItems_Should_Return_Element_Returned_By_Item_Provider()
+		{
+			Assert.Inconclusive("TODO");
+		}
+		#endregion
+
+		#region Helper methods
+		private static IAwsClient CreateClient(IQueryBuilder queryBuilder = null, IDocumentLoader documentLoader = null, IItemProvider itemProvider = null)
+		{
+			return new XmlAwsClient(
+				queryBuilder ?? CreateUrlBuilder(),
+				documentLoader ?? CreateDocumentLoader(),
+				itemProvider ?? CreateItemProvider());
+		}
+
+		private static IQueryBuilder CreateUrlBuilder(string query = null)
+		{
+			var builderMock = new Mock<IQueryBuilder>();
+			builderMock.Setup(b => b.BuildUrl(It.IsAny<IStringDictionary>())).Returns(query ?? "query");
+			return builderMock.Object;
+		}
+
+		private static IDocumentLoader CreateDocumentLoader(XDocument doc = null)
+		{
+			var loaderMock = new Mock<IDocumentLoader>();
+			loaderMock.Setup(l => l.Load(It.IsAny<string>())).ReturnsAsync(doc ?? new XDocument());
+			return loaderMock.Object;
+		}
+
+		private static IItemProvider CreateItemProvider(XElement element = null)
+		{
+			var providerMock = new Mock<IItemProvider>();
+			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(element ?? new XElement("Item"));
+			return providerMock.Object;
 		}
 		#endregion
 	}

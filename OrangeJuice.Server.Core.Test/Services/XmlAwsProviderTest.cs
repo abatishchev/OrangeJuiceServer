@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Moq;
+
 using OrangeJuice.Server.Services;
-using OrangeJuice.Server.Web;
+
+using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
+using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Services
 {
@@ -18,14 +23,14 @@ namespace OrangeJuice.Server.Test.Services
 		public void Ctor_Should_Throw_Exception_When_AwsClient_Is_Null()
 		{
 			// Arrange
-			const IAwsClient client = null;
+			const IAwsClient provider = null;
 
 			// Act
-			Action action = () => new XmlAwsProvider(client);
+			Action action = () => new XmlAwsProvider(provider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("client");
+				  .And.ParamName.Should().Be("provider");
 		}
 		#endregion
 
@@ -36,10 +41,10 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			const string title = null;
 
-			IAwsClient client = CreateClient();
+			IAwsProvider provider = CreateProvider();
 
 			// Act
-			Func<Task> action = () => client.SearchItem(title);
+			Func<Task> action = () => provider.SearchItem(title);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -52,14 +57,39 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			const string title = "";
 
-			IAwsClient client = CreateClient();
+			IAwsProvider provider = CreateProvider();
 
 			// Act
-			Func<Task> action = () => client.SearchItem(title);
+			Func<Task> action = () => provider.SearchItem(title);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
 				  .And.ParamName.Should().Be("title");
+		}
+
+		[TestMethod]
+		public async Task SearchItem_Should_Pass_Arguments_To_AwsClient()
+		{
+			// Arrange
+			const string title = "anyTitle";
+
+			Action<IStringDictionary> callback = d => d.Should()
+													  .Contain("Operation", "ItemSearch")
+													  .And.Contain("SearchIndex", "Grocery")
+													  .And.Contain("ResponseGroup", "Small")
+													  .And.Contain("Title", title);
+			var clientMock = new Mock<IAwsClient>();
+			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
+					  .ReturnsAsync(new XElement("Items"))
+					  .Callback(callback);
+
+			IAwsProvider provider = CreateProvider();
+
+			// Act
+			await provider.SearchItem(title);
+
+			// Assert
+			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
 		}
 		#endregion
 
@@ -70,10 +100,10 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			const string id = null;
 
-			IAwsClient client = CreateClient();
+			IAwsProvider provider = CreateProvider();
 
 			// Act
-			Func<Task> action = () => client.LookupAttributes(id);
+			Func<Task> action = () => provider.LookupAttributes(id);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -86,10 +116,10 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			const string id = "";
 
-			IAwsClient client = CreateClient();
+			IAwsProvider provider = CreateProvider();
 
 			// Act
-			Func<Task> action = () => client.LookupAttributes(id);
+			Func<Task> action = () => provider.LookupAttributes(id);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -104,10 +134,10 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			const string id = null;
 
-			IAwsClient client = CreateClient();
+			IAwsProvider provider = CreateProvider();
 
 			// Act
-			Func<Task> action = () => client.LookupImages(id);
+			Func<Task> action = () => provider.LookupImages(id);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -120,10 +150,10 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			const string id = "";
 
-			IAwsClient client = CreateClient();
+			IAwsProvider provider = CreateProvider();
 
 			// Act
-			Func<Task> action = () => client.LookupImages(id);
+			Func<Task> action = () => provider.LookupImages(id);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -132,33 +162,9 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IAwsProvider CreateClient(IQueryBuilder queryBuilder = null, IDocumentLoader documentLoader = null, IItemProvider itemProvider = null)
+		private static IAwsProvider CreateProvider()
 		{
-			return new XmlAwsClient(
-				queryBuilder ?? CreateUrlBuilder(),
-				documentLoader ?? CreateDocumentLoader(),
-				itemProvider ?? CreateItemProvider());
-		}
-
-		private static IQueryBuilder CreateUrlBuilder(string query = null)
-		{
-			var builderMock = new Mock<IQueryBuilder>();
-			builderMock.Setup(b => b.BuildUrl(It.IsAny<StringDictionary>())).Returns(query ?? "query");
-			return builderMock.Object;
-		}
-
-		private static IDocumentLoader CreateDocumentLoader(XDocument doc = null)
-		{
-			var loaderMock = new Mock<IDocumentLoader>();
-			loaderMock.Setup(l => l.Load(It.IsAny<string>())).ReturnsAsync(doc ?? new XDocument());
-			return loaderMock.Object;
-		}
-
-		private static IItemProvider CreateItemProvider(XElement element = null)
-		{
-			var providerMock = new Mock<IItemProvider>();
-			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(element ?? new XElement("Item"));
-			return providerMock.Object;
+			throw new NotImplementedException();
 		}
 		#endregion
 	}

@@ -10,20 +10,20 @@ namespace OrangeJuice.Server.Data
 {
 	public sealed class AwsFoodRepository : IFoodRepository
 	{
-		private readonly IAwsClient _awsClient;
+		private readonly IAwsProvider _provider;
 		private readonly IFoodDescriptionFactory _foodDescriptionFactory;
 		private readonly IFilter<FoodDescription> _foodDescriptionFilter;
 
-		public AwsFoodRepository(IAwsClient awsClient, IFoodDescriptionFactory foodDescriptionFactory, IFilter<FoodDescription> foodDescriptionFilter)
+		public AwsFoodRepository(IAwsProvider provider, IFoodDescriptionFactory foodDescriptionFactory, IFilter<FoodDescription> foodDescriptionFilter)
 		{
-			if (awsClient == null)
-				throw new ArgumentNullException("awsClient");
+			if (provider == null)
+				throw new ArgumentNullException("provider");
 			if (foodDescriptionFactory == null)
 				throw new ArgumentNullException("foodDescriptionFactory");
 			if (foodDescriptionFilter == null)
 				throw new ArgumentNullException("foodDescriptionFilter");
 
-			_awsClient = awsClient;
+			_provider = provider;
 			_foodDescriptionFactory = foodDescriptionFactory;
 			_foodDescriptionFilter = foodDescriptionFilter;
 		}
@@ -33,7 +33,7 @@ namespace OrangeJuice.Server.Data
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
 
-			var items = await _awsClient.SearchItem(title);
+			var items = await _provider.SearchItem(title);
 
 			var tasks = from item in items
 						from e in item.Elements(item.Name.Namespace + "ASIN")
@@ -47,8 +47,8 @@ namespace OrangeJuice.Server.Data
 		{
 			return _foodDescriptionFactory.Create(
 				id,
-				_awsClient.LookupAttributes(id),
-				_awsClient.LookupImages(id));
+				_provider.LookupAttributes(id),
+				_provider.LookupImages(id));
 		}
 	}
 }
