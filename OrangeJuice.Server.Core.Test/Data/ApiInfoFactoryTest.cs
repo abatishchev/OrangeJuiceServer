@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Test.Data
 			const IEnvironmentProvider environmentProvider = null;
 
 			// Act
-			Action action = () => new ApiInfoFactory(assemblyProvider, environmentProvider);
+			Action action = () => new ApiVersionFactory(assemblyProvider, environmentProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -38,7 +38,7 @@ namespace OrangeJuice.Server.Test.Data
 			const IEnvironmentProvider environmentProvider = null;
 
 			// Act
-			Action action = () => new ApiInfoFactory(assemblyProvider, environmentProvider);
+			Action action = () => new ApiVersionFactory(assemblyProvider, environmentProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -52,7 +52,7 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			// Arrange
 			var assemblyProviderMock = CreateAssemblyProvider();
-			IApiInfoFactory factory = CreateFactory(assemblyProviderMock.Object);
+			IApiVersionFactory factory = CreateFactory(assemblyProviderMock.Object);
 
 			// Act
 			factory.Create();
@@ -67,7 +67,7 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			// Arrange
 			var environmentProviderMock = CreateEnvironmentProvider();
-			IApiInfoFactory factory = CreateFactory(environmentProvider: environmentProviderMock.Object);
+			IApiVersionFactory factory = CreateFactory(environmentProvider: environmentProviderMock.Object);
 
 			// Act
 			factory.Create();
@@ -79,9 +79,9 @@ namespace OrangeJuice.Server.Test.Data
 		#endregion
 
 		#region Helper methods
-		private static IApiInfoFactory CreateFactory(IAssemblyProvider assemblyProvider = null, IEnvironmentProvider environmentProvider = null)
+		private static IApiVersionFactory CreateFactory(IAssemblyProvider assemblyProvider = null, IEnvironmentProvider environmentProvider = null)
 		{
-			return new ApiInfoFactory(
+			return new ApiVersionFactory(
 				assemblyProvider ?? CreateAssemblyProvider().Object,
 				environmentProvider ?? CreateEnvironmentProvider().Object);
 		}

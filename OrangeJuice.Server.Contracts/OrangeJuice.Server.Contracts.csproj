@@ -54,9 +54,9 @@
     <Compile Include="Services\IQueryBuilder.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
-    <Compile Include="Data\ApiInfo.cs" />
+    <Compile Include="Data\ApiVersion.cs" />
     <Compile Include="Data\FoodDescription.cs" />
-    <Compile Include="Data\IApiInfoFactory.cs" />
+    <Compile Include="Data\IApiVersionFactory.cs" />
     <Compile Include="Data\IFoodDescriptionFactory.cs" />
     <Compile Include="Data\IFoodRepository.cs" />
     <Compile Include="Data\IUser.cs" />

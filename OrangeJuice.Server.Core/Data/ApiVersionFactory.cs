@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using OrangeJuice.Server.Configuration;
 
@@ -7,17 +8,17 @@ using Environment = OrangeJuice.Server.Configuration.Environment;
 
 namespace OrangeJuice.Server.Data
 {
-	public sealed class ApiInfoFactory : IApiInfoFactory
+	public sealed class ApiVersionFactory : IApiVersionFactory
 	{
 		#region Fields
 		private readonly IAssemblyProvider _assemblyProvider;
 		private readonly IEnvironmentProvider _environmentProvider;
 
-		private ApiInfo _instance;
+		private Task<ApiVersion> _instance;
 		#endregion
 
 		#region Ctor
-		public ApiInfoFactory(IAssemblyProvider assemblyProvider, IEnvironmentProvider environmentProvider)
+		public ApiVersionFactory(IAssemblyProvider assemblyProvider, IEnvironmentProvider environmentProvider)
 		{
 			if (assemblyProvider == null)
 				throw new ArgumentNullException("assemblyProvider");
@@ -29,17 +30,17 @@ namespace OrangeJuice.Server.Data
 		}
 		#endregion
 
-		#region IApiInfoFactory Members
-		public ApiInfo Create()
+		#region IApiVersionFactory Members
+		public async Task<ApiVersion> Create()
 		{
-			return _instance ?? (_instance = CreateInstance());
+			return await (_instance ?? (_instance = Task<ApiVersion>.Factory.StartNew(CreateInstance)));
 		}
 		#endregion
 
 		#region Methods
-		private ApiInfo CreateInstance()
+		private ApiVersion CreateInstance()
 		{
-			return new ApiInfo
+			return new ApiVersion
 			{
 				Version = GetVersion(),
 				Key = GetKey()
@@ -57,6 +58,7 @@ namespace OrangeJuice.Server.Data
 			switch (environment)
 			{
 				case Environment.Local:
+				case Environment.Test:
 				case Environment.Development:
 					return AppKey.Version0;
 				default:

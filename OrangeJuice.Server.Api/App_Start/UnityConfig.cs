@@ -61,7 +61,7 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(container.Resolve<IValidatorFactory>(), container.Resolve<IModelValidatorFactory>()));
 
 			// HomeController
-			container.RegisterType<IApiInfoFactory, ApiInfoFactory>(
+			container.RegisterType<IApiVersionFactory, ApiVersionFactory>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<IAssemblyProvider>(), container.Resolve<IEnvironmentProvider>()));
 

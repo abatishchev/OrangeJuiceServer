@@ -2,7 +2,7 @@
 
 namespace OrangeJuice.Server.Data
 {
-	public class ApiInfo
+	public class ApiVersion
 	{
 		public string Version { get; set; }
 
