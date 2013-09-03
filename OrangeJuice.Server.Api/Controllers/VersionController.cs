@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Data;
@@ -19,7 +18,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			_version = version;
 		}
 
-		public async Task<HttpResponseMessage> GetVersion()
+		public HttpResponseMessage GetVersion()
 		{
 			return Request.CreateResponse(HttpStatusCode.OK, _version);
 		}

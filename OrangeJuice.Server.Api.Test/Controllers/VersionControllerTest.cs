@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks;
+using System.Net.Http;
 
 using FluentAssertions;
 
@@ -9,7 +9,6 @@ using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Test;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
@@ -20,30 +19,33 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public void Ctor_Should_Throw_When_Factory_Is_Null()
 		{
 			// Arange
-			const IApiVersionFactory apiInfoFactory = null;
+			const ApiVersion apiVersion = null;
 
 			// Act
-			Action action = () => new VersionController(apiInfoFactory);
+			Action action = () => new VersionController(apiVersion);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("apiVersionFactory");
+				  .And.ParamName.Should().Be("apiVersion");
 		}
 
 		[TestMethod]
-		public async Task GetVersion_Should_Call_ApiInfoFactory_Create()
+		public void GetVersion_Should_Return_ApiVersion_Returned_By_ApiInfoFactory_Create()
 		{
 			// Arrange
+			ApiVersion expected = new ApiVersion();
+
 			var factoryMock = new Mock<IApiVersionFactory>();
-			factoryMock.Setup(f => f.Create()).ReturnsAsync(new ApiVersion());
+			factoryMock.Setup(f => f.Create()).Returns(expected);
 
 			VersionController controller = ControllerFactory.Create<VersionController>(factoryMock.Object);
 
 			// Act
-			await controller.GetVersion();
+			HttpResponseMessage message = controller.GetVersion();
+			ApiVersion actual = message.Content.GetValue<ApiVersion>();
 
 			// Assert
-			factoryMock.Verify(f => f.Create(), Times.Once());
+			actual.Should().Be(expected);
 		}
 	}
 }
