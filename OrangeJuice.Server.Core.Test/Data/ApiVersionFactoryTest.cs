@@ -48,7 +48,7 @@ namespace OrangeJuice.Server.Test.Data
 
 		#region Create
 		[TestMethod]
-		public void Create_Should_Call_AssemblyProvider_GetExecutingAssembly_Once()
+		public void Create_Should_Call_AssemblyProvider_GetExecutingAssembly()
 		{
 			// Arrange
 			var assemblyProviderMock = CreateAssemblyProvider();
@@ -56,21 +56,19 @@ namespace OrangeJuice.Server.Test.Data
 
 			// Act
 			factory.Create();
-			factory.Create();
 
 			// Assert
 			assemblyProviderMock.Verify(p => p.GetExecutingAssembly(), Times.Once());
 		}
 
 		[TestMethod]
-		public void Create_Should_Call_EnvironmentProvider_GetCurrentEnvironment_Once()
+		public void Create_Should_Call_EnvironmentProvider_GetCurrentEnvironment()
 		{
 			// Arrange
 			var environmentProviderMock = CreateEnvironmentProvider();
 			IApiVersionFactory factory = CreateFactory(environmentProvider: environmentProviderMock.Object);
 
 			// Act
-			factory.Create();
 			factory.Create();
 
 			// Assert

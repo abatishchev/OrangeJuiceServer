@@ -9,18 +9,18 @@ namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class VersionController : ApiController
 	{
-		private readonly ApiVersion _version;
+		private readonly ApiVersion _apiVersion;
 
-		public VersionController(ApiVersion version)
+		public VersionController(ApiVersion apiVersion)
 		{
-			if (version == null)
-				throw new ArgumentNullException("version");
-			_version = version;
+			if (apiVersion == null)
+				throw new ArgumentNullException("apiVersion");
+			_apiVersion = apiVersion;
 		}
 
 		public HttpResponseMessage GetVersion()
 		{
-			return Request.CreateResponse(HttpStatusCode.OK, _version);
+			return Request.CreateResponse(HttpStatusCode.OK, _apiVersion);
 		}
 	}
 }

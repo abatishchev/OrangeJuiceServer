@@ -5,8 +5,6 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
-
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Data;
 
@@ -30,15 +28,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public void GetVersion_Should_Return_ApiVersion_Returned_By_ApiInfoFactory_Create()
+		public void GetVersion_Should_Return_ApiVersion()
 		{
 			// Arrange
 			ApiVersion expected = new ApiVersion();
 
-			var factoryMock = new Mock<IApiVersionFactory>();
-			factoryMock.Setup(f => f.Create()).Returns(expected);
-
-			VersionController controller = ControllerFactory.Create<VersionController>(factoryMock.Object);
+			VersionController controller = ControllerFactory.Create<VersionController>(expected);
 
 			// Act
 			HttpResponseMessage message = controller.GetVersion();
