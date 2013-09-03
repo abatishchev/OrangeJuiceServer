@@ -8,15 +8,15 @@ namespace OrangeJuice.Server.Services
 	public sealed class XmlAwsProvider : IAwsProvider
 	{
 		#region Fields
-		private readonly IAwsClient _client;
+		private readonly IAwsClientFactory _clientFactory;
 		#endregion
 
 		#region Ctor
-		public XmlAwsProvider(IAwsClient client)
+		public XmlAwsProvider(IAwsClientFactory clientFactory)
 		{
-			if (client == null)
-				throw new ArgumentNullException("client");
-			_client = client;
+			if (clientFactory == null)
+				throw new ArgumentNullException("clientFactory");
+			_clientFactory = clientFactory;
 		}
 		#endregion
 
@@ -34,7 +34,8 @@ namespace OrangeJuice.Server.Services
 				{ "Title", title }
 			};
 
-			var items = await _client.GetItems(args);
+			IAwsClient client = _clientFactory.Create();
+			XElement items = await client.GetItems(args);
 			return items.Elements(items.Name.Namespace + "Item");
 		}
 
@@ -50,7 +51,8 @@ namespace OrangeJuice.Server.Services
 				{ "ItemId", id }
 			};
 
-			var items = await _client.GetItems(args);
+			IAwsClient client = _clientFactory.Create();
+			XElement items = await client.GetItems(args);
 			return items.Element(items.Name.Namespace + "Item");
 		}
 
@@ -66,7 +68,8 @@ namespace OrangeJuice.Server.Services
 				{ "ItemId", id }
 			};
 
-			var items = await _client.GetItems(args);
+			IAwsClient client = _clientFactory.Create();
+			XElement items = await client.GetItems(args);
 			return items.Element(items.Name.Namespace + "Item");
 		}
 		#endregion

@@ -23,14 +23,14 @@ namespace OrangeJuice.Server.Test.Services
 		public void Ctor_Should_Throw_Exception_When_Client_Is_Null()
 		{
 			// Arrange
-			const IAwsClient client = null;
+			const IAwsClientFactory clientFactory = null;
 
 			// Act
-			Action action = () => new XmlAwsProvider(client);
+			Action action = () => new XmlAwsProvider(clientFactory);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("client");
+				  .And.ParamName.Should().Be("clientFactory");
 		}
 		#endregion
 
@@ -48,7 +48,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("title");
+				  .And.ParamName.Should().Be("title");
 		}
 
 		[TestMethod]
@@ -64,7 +64,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("title");
+				  .And.ParamName.Should().Be("title");
 		}
 
 		[TestMethod]
@@ -74,14 +74,14 @@ namespace OrangeJuice.Server.Test.Services
 			const string title = "anyTitle";
 
 			Action<IStringDictionary> callback = d => d.Should()
-			                                           .Contain("Operation", "ItemSearch")
-			                                           .And.Contain("SearchIndex", "Grocery")
-			                                           .And.Contain("ResponseGroup", "Small")
-			                                           .And.Contain("Title", title);
+													   .Contain("Operation", "ItemSearch")
+													   .And.Contain("SearchIndex", "Grocery")
+													   .And.Contain("ResponseGroup", "Small")
+													   .And.Contain("Title", title);
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
-			          .ReturnsAsync(new XElement("Items"))
-			          .Callback(callback);
+					  .ReturnsAsync(new XElement("Items"))
+					  .Callback(callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
@@ -107,7 +107,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("id");
+				  .And.ParamName.Should().Be("id");
 		}
 
 		[TestMethod]
@@ -123,7 +123,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("id");
+				  .And.ParamName.Should().Be("id");
 		}
 
 		[TestMethod]
@@ -133,13 +133,13 @@ namespace OrangeJuice.Server.Test.Services
 			const string id = "anyId";
 
 			Action<IStringDictionary> callback = d => d.Should()
-			                                           .Contain("Operation", "ItemLookup")
-			                                           .And.Contain("ResponseGroup", "ItemAttributes")
-			                                           .And.Contain("ItemId", id);
+													   .Contain("Operation", "ItemLookup")
+													   .And.Contain("ResponseGroup", "ItemAttributes")
+													   .And.Contain("ItemId", id);
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
 					  .ReturnsAsync(new XElement("Items"))
-			          .Callback(callback);
+					  .Callback(callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
@@ -165,7 +165,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("id");
+				  .And.ParamName.Should().Be("id");
 		}
 
 		[TestMethod]
@@ -181,7 +181,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("id");
+				  .And.ParamName.Should().Be("id");
 		}
 
 		[TestMethod]
@@ -196,8 +196,8 @@ namespace OrangeJuice.Server.Test.Services
 													   .And.Contain("ItemId", id);
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
-			          .ReturnsAsync(new XElement("Items"))
-			          .Callback(callback);
+					  .ReturnsAsync(new XElement("Items"))
+					  .Callback(callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
@@ -212,7 +212,9 @@ namespace OrangeJuice.Server.Test.Services
 		#region Helper methods
 		private static IAwsProvider CreateProvider(IAwsClient client = null)
 		{
-			return new XmlAwsProvider(client ?? new Mock<IAwsClient>().Object);
+			var clientFactoryMock = new Mock<IAwsClientFactory>();
+			clientFactoryMock.Setup(f => f.Create()).Returns(client ?? new Mock<IAwsClient>().Object);
+			return new XmlAwsProvider(clientFactoryMock.Object);
 		}
 		#endregion
 	}

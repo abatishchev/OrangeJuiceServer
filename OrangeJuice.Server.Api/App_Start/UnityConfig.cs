@@ -81,13 +81,9 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<AwsOptions>(), container.Resolve<IUrlEncoder>(), container.Resolve<IDateTimeProvider>()));
 
-			container.RegisterType<IAwsClient>(
-				new PerResolveLifetimeManager(), // important!
-				new InjectionFactory(c => c.Resolve<IAwsClientFactory>().Create()));
-
 			container.RegisterType<IAwsProvider, XmlAwsProvider>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IAwsClient>()));
+				new InjectionConstructor(container.Resolve<IAwsClientFactory>()));
 
 			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());
 
