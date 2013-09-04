@@ -74,7 +74,6 @@
     <Compile Include="Services\XmlItemProvider.cs" />
     <Compile Include="Services\XmlRequestValidator.cs" />
     <Compile Include="Services\AwsClient.cs" />
-    <Compile Include="Services\AwsClientFactory.cs" />
     <Compile Include="Services\AwsOptions.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
     <Compile Include="Web\HttpDocumentLoader.cs" />

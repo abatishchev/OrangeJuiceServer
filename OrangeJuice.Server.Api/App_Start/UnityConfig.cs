@@ -1,3 +1,4 @@
+using System;
 using System.Web.Http;
 using System.Web.Http.Validation;
 
@@ -77,13 +78,34 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => new AswOptionsFactory(c.Resolve<IConfigurationProvider>()).Create()));
 
-			container.RegisterType<IAwsClientFactory, AwsClientFactory>(
+			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<AwsOptions>(), container.Resolve<IUrlEncoder>(), container.Resolve<IDateTimeProvider>()));
+				new InjectionConstructor(container.Resolve<AwsOptions>().AccessKey, container.Resolve<AwsOptions>().AssociateTag, container.Resolve<IDateTimeProvider>()));
 
+			container.RegisterType<IArgumentFormatter, FlattenArgumentFormatter>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container.Resolve<IUrlEncoder>()));
+
+			container.RegisterType<IQuerySigner, AwsQuerySigner>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey, container.Resolve<IUrlEncoder>()));
+
+			container.RegisterType<IQueryBuilder, AwsQueryBuilder>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container.Resolve<IArgumentBuilder>(), container.Resolve<IArgumentFormatter>(), container.Resolve<IQuerySigner>()));
+
+			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new ContainerControlledLifetimeManager());
+
+			container.RegisterType<IRequestValidator, XmlRequestValidator>(new ContainerControlledLifetimeManager());
+
+			container.RegisterType<IItemProvider, XmlItemProvider>(
+				new PerResolveLifetimeManager(), // important!
+				new InjectionConstructor(container.Resolve<IRequestValidator>()));
+
+			Func<IAwsClient> awsClientFactory = () => container.Resolve<IAwsClient>();
 			container.RegisterType<IAwsProvider, XmlAwsProvider>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IAwsClientFactory>()));
+				new InjectionConstructor(awsClientFactory));
 
 			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());
 

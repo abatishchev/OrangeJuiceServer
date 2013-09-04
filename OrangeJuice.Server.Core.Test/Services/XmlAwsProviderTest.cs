@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Test.Services
 		public void Ctor_Should_Throw_Exception_When_Client_Is_Null()
 		{
 			// Arrange
-			const IAwsClientFactory clientFactory = null;
+			const Func<IAwsClient> clientFactory = null;
 
 			// Act
 			Action action = () => new XmlAwsProvider(clientFactory);
@@ -212,9 +212,8 @@ namespace OrangeJuice.Server.Test.Services
 		#region Helper methods
 		private static IAwsProvider CreateProvider(IAwsClient client = null)
 		{
-			var clientFactoryMock = new Mock<IAwsClientFactory>();
-			clientFactoryMock.Setup(f => f.Create()).Returns(client ?? new Mock<IAwsClient>().Object);
-			return new XmlAwsProvider(clientFactoryMock.Object);
+			Func<IAwsClient> clientFactory = () => client ?? new Mock<IAwsClient>().Object;
+			return new XmlAwsProvider(clientFactory);
 		}
 		#endregion
 	}
