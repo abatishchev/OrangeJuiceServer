@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Services
 		// TODO: replace with contrainer-based injection
 		public IAwsClient Create()
 		{
-			return new XmlAwsClient(
+			return new AwsClient(
 				new AwsQueryBuilder(
 					new AwsArgumentBuilder(_awsOptions.AccessKey, _awsOptions.AssociateTag, _dateTimeProvider),
 					new FlattenArgumentFormatter(_urlEncoder),

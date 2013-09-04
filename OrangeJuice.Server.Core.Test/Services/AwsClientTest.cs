@@ -17,7 +17,7 @@ using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class XmlAwsClientTest
+	public class AwsClientTest
 	{
 		#region Ctor
 		[TestMethod]
@@ -29,7 +29,7 @@ namespace OrangeJuice.Server.Test.Services
 			const IItemProvider itemProvider = null;
 
 			// Act
-			Action action = () => new XmlAwsClient(queryBuilder, documentLoader, itemProvider);
+			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -45,7 +45,7 @@ namespace OrangeJuice.Server.Test.Services
 			const IItemProvider itemProvider = null;
 
 			// Act
-			Action action = () => new XmlAwsClient(queryBuilder, documentLoader, itemProvider);
+			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -61,7 +61,7 @@ namespace OrangeJuice.Server.Test.Services
 			const IItemProvider itemProvider = null;
 
 			// Act
-			Action action = () => new XmlAwsClient(queryBuilder, documentLoader, itemProvider);
+			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -136,7 +136,7 @@ namespace OrangeJuice.Server.Test.Services
 		#region Helper methods
 		private static IAwsClient CreateClient(IQueryBuilder queryBuilder = null, IDocumentLoader documentLoader = null, IItemProvider itemProvider = null)
 		{
-			return new XmlAwsClient(
+			return new AwsClient(
 				queryBuilder ?? CreateUrlBuilder(),
 				documentLoader ?? CreateDocumentLoader(),
 				itemProvider ?? CreateItemProvider());

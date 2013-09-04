@@ -80,7 +80,7 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = factory.Create();
 
 			// Assert
-			client.Should().BeOfType<XmlAwsClient>();
+			client.Should().BeOfType<AwsClient>();
 		}
 	}
 }

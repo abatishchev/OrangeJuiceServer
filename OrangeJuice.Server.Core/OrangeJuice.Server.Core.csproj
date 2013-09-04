@@ -73,7 +73,7 @@
     <Compile Include="Services\AswOptionsFactory.cs" />
     <Compile Include="Services\XmlItemProvider.cs" />
     <Compile Include="Services\XmlRequestValidator.cs" />
-    <Compile Include="Services\XmlAwsClient.cs" />
+    <Compile Include="Services\AwsClient.cs" />
     <Compile Include="Services\AwsClientFactory.cs" />
     <Compile Include="Services\AwsOptions.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />

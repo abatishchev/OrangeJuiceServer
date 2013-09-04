@@ -93,7 +93,7 @@
     <Compile Include="Services\AswOptionsFactoryTest.cs" />
     <Compile Include="Services\AwsClientFactoryTest.cs" />
     <Compile Include="Services\XmlItemProviderTest.cs" />
-    <Compile Include="Services\XmlAwsClientTest.cs" />
+    <Compile Include="Services\AwsClientTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
     <Compile Include="Web\PercentUrlEncoderTest.cs" />
     <Compile Include="Web\HttpDocumentLoaderTest.cs" />

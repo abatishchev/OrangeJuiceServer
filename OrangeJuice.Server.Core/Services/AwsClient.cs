@@ -7,7 +7,7 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class XmlAwsClient : IAwsClient
+	public sealed class AwsClient : IAwsClient
 	{
 		#region Fields
 		private readonly IQueryBuilder _queryBuilder;
@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public XmlAwsClient(IQueryBuilder queryBuilder, IDocumentLoader documentLoader, IItemProvider itemProvider)
+		public AwsClient(IQueryBuilder queryBuilder, IDocumentLoader documentLoader, IItemProvider itemProvider)
 		{
 			if (queryBuilder == null)
 				throw new ArgumentNullException("queryBuilder");
@@ -39,7 +39,7 @@ namespace OrangeJuice.Server.Services
 
 			string url = _queryBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
-			return _itemProvider.GetItems(doc);
+			return _itemProvider.GetItems(doc); // TODO: rework item provider
 		}
 		#endregion
 	}
