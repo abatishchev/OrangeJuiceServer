@@ -109,15 +109,35 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Pass_Document_Returned_By_DocumentLoader_To_ItemProvider_GetItems()
+		public async Task GetItems_Should_Pass_Document_Returned_By_DocumentLoader_To_ItemSelector_GetItems()
+		{
+			// Arrange
+			XDocument doc = new XDocument();
+
+			var loaderMock = new Mock<IDocumentLoader>();
+			loaderMock.Setup(l => l.Load(It.IsAny<string>())).ReturnsAsync(doc);
+
+			var selectorMock = new Mock<IItemSelector>();
+			selectorMock.Setup(p => p.GetItems(doc)).Returns(It.IsAny<IEnumerable<XElement>>());
+
+			IAwsClient client = CreateClient(documentLoader: loaderMock.Object, itemSelector: selectorMock.Object);
+			var args = new StringDictionary();
+
+			// Act
+			await client.GetItems(args);
+
+			// Assert
+			selectorMock.Verify(s => s.GetItems(doc), Times.Once());
+		}
+
+		[TestMethod]
+		public async Task GetItems_Should_Return_Elements_Returned_By_ItemSelector()
 		{
 			// Arrange
 			var expected = new[] { new XElement("Items") };
+			var selectorMock = CreateItemSelector(expected);
 
-			var providerMock = new Mock<IItemSelector>();
-			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(expected);
-
-			IAwsClient client = CreateClient(itemSelector: providerMock.Object);
+			IAwsClient client = CreateClient(itemSelector: selectorMock);
 			var args = new StringDictionary();
 
 			// Act
@@ -125,12 +145,6 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);
-		}
-
-		[TestMethod]
-		public void GetItems_Should_Return_Element_Returned_By_Item_Provider()
-		{
-			Assert.Inconclusive("TODO");
 		}
 		#endregion
 
@@ -140,7 +154,7 @@ namespace OrangeJuice.Server.Test.Services
 			return new AwsClient(
 				queryBuilder ?? CreateUrlBuilder(),
 				documentLoader ?? CreateDocumentLoader(),
-				itemSelector ?? CreateItemProvider());
+				itemSelector ?? CreateItemSelector());
 		}
 
 		private static IQueryBuilder CreateUrlBuilder(string query = null)
@@ -157,11 +171,11 @@ namespace OrangeJuice.Server.Test.Services
 			return loaderMock.Object;
 		}
 
-		private static IItemSelector CreateItemProvider(ICollection<XElement> element = null)
+		private static IItemSelector CreateItemSelector(IEnumerable<XElement> elements = null)
 		{
-			var providerMock = new Mock<IItemSelector>();
-			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(element ?? new[] { new XElement("Item") });
-			return providerMock.Object;
+			var selectorMock = new Mock<IItemSelector>();
+			selectorMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(elements ?? new[] { new XElement("Item") });
+			return selectorMock.Object;
 		}
 		#endregion
 	}
