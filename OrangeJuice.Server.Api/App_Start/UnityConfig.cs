@@ -39,7 +39,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IConfigurationProvider>()));
+				new InjectionConstructor(typeof(IConfigurationProvider)));
 
 			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(new ContainerControlledLifetimeManager());
 
@@ -59,12 +59,12 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IValidatorFactory>(), container.Resolve<IModelValidatorFactory>()));
+				new InjectionConstructor(typeof(IValidatorFactory), typeof(IModelValidatorFactory)));
 
 			// VersionController
 			container.RegisterType<IApiVersionFactory, ApiVersionFactory>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IAssemblyProvider>(), container.Resolve<IEnvironmentProvider>()));
+				new InjectionConstructor(typeof(IAssemblyProvider), typeof(IEnvironmentProvider)));
 
 			container.RegisterType<ApiVersion>(
 				new ContainerControlledLifetimeManager(),
@@ -80,19 +80,19 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<AwsOptions>().AccessKey, container.Resolve<AwsOptions>().AssociateTag, container.Resolve<IDateTimeProvider>()));
+				new InjectionConstructor(container.Resolve<AwsOptions>().AccessKey, container.Resolve<AwsOptions>().AssociateTag, typeof(IDateTimeProvider)));
 
 			container.RegisterType<IArgumentFormatter, FlattenArgumentFormatter>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IUrlEncoder>()));
+				new InjectionConstructor(typeof(IUrlEncoder)));
 
 			container.RegisterType<IQuerySigner, AwsQuerySigner>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey, container.Resolve<IUrlEncoder>()));
+				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey, typeof(IUrlEncoder)));
 
 			container.RegisterType<IQueryBuilder, AwsQueryBuilder>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IArgumentBuilder>(), container.Resolve<IArgumentFormatter>(), container.Resolve<IQuerySigner>()));
+				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IArgumentFormatter), typeof(IQuerySigner)));
 
 			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new TransientLifetimeManager());
 
@@ -100,15 +100,15 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IRequestValidator>()));
+				new InjectionConstructor(typeof(IRequestValidator)));
 
 			container.RegisterType<IAwsClient, AwsClient>(
 				new TransientLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IQueryBuilder>(), container.Resolve<IDocumentLoader>(), container.Resolve<IItemSelector>()));
+				new InjectionConstructor(typeof(IQueryBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
 
 			container.RegisterType<IAwsProvider, AwsProvider>(
 				new TransientLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IAwsClient>()));
+				new InjectionConstructor(typeof(IAwsClient)));
 
 			container.RegisterType<IAwsProviderFactory, AwsProviderProxyFactory>(
 				new ContainerControlledLifetimeManager(),
@@ -120,7 +120,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IAwsProviderFactory>(), container.Resolve<IFoodDescriptionFactory>(), container.Resolve<IFilter<FoodDescription>>()));
+				new InjectionConstructor(typeof(IAwsProviderFactory), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>)));
 		}
 	}
 }

@@ -10,10 +10,6 @@ namespace OrangeJuice.Server.Web
 	{
 		private readonly HttpClient _httpClient = new HttpClient();
 
-		public HttpDocumentLoader()
-		{
-		}
-
 		public async Task<XDocument> Load(string url)
 		{
 			if (String.IsNullOrEmpty(url))
