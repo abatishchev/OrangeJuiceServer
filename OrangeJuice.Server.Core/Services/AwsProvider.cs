@@ -9,15 +9,15 @@ namespace OrangeJuice.Server.Services
 	public sealed class AwsProvider : IAwsProvider
 	{
 		#region Fields
-		private readonly Func<IAwsClient> _clientFactory;
+		private readonly IAwsClient _awsClient;
 		#endregion
 
 		#region Ctor
-		public AwsProvider(Func<IAwsClient> clientFactory)
+		public AwsProvider(IAwsClient awsClient)
 		{
-			if (clientFactory == null)
-				throw new ArgumentNullException("clientFactory");
-			_clientFactory = clientFactory;
+			if (awsClient == null)
+				throw new ArgumentNullException("awsClient");
+			_awsClient = awsClient;
 		}
 		#endregion
 
@@ -35,8 +35,7 @@ namespace OrangeJuice.Server.Services
 				{ "Title", title }
 			};
 
-			IAwsClient client = _clientFactory();
-			return await client.GetItems(args);
+			return await _awsClient.GetItems(args);
 		}
 
 		public async Task<XElement> LookupAttributes(string id)
@@ -51,8 +50,7 @@ namespace OrangeJuice.Server.Services
 				{ "ItemId", id }
 			};
 
-			IAwsClient client = _clientFactory();
-			var items = await client.GetItems(args);
+			var items = await _awsClient.GetItems(args);
 			return items.Single();
 		}
 
@@ -68,8 +66,7 @@ namespace OrangeJuice.Server.Services
 				{ "ItemId", id }
 			};
 
-			IAwsClient client = _clientFactory();
-			var items = await client.GetItems(args);
+			var items = await _awsClient.GetItems(args);
 			return items.Single();
 		}
 		#endregion

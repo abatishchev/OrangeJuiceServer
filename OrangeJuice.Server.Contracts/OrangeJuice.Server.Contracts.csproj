@@ -67,6 +67,7 @@
     <Compile Include="Services\IItemSelector.cs" />
     <Compile Include="Services\IRequestValidator.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
+    <Compile Include="Web\IDocumentLoaderFactory.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

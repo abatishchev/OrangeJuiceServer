@@ -94,18 +94,25 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<IArgumentBuilder>(), container.Resolve<IArgumentFormatter>(), container.Resolve<IQuerySigner>()));
 
-			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new PerResolveLifetimeManager()); // important!
+
+			container.RegisterType<IDocumentLoaderFactory, HttpDocumentLoaderProxyFactory>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(new Func<IDocumentLoader>(() => container.Resolve<IDocumentLoader>())));
 
 			container.RegisterType<IRequestValidator, XmlRequestValidator>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
-				new PerResolveLifetimeManager(), // important!
+				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<IRequestValidator>()));
 
-			Func<IAwsClient> awsClientFactory = () => container.Resolve<IAwsClient>();
+			container.RegisterType<IAwsClient, AwsClient>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container.Resolve<IQueryBuilder>(), container.Resolve<IDocumentLoaderFactory>(), container.Resolve<IItemSelector>()));
+
 			container.RegisterType<IAwsProvider, AwsProvider>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(awsClientFactory));
+				new InjectionConstructor(container.Resolve<IAwsClient>()));
 
 			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());
 
