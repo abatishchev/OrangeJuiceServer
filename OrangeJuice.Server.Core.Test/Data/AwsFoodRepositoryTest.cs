@@ -23,28 +23,28 @@ namespace OrangeJuice.Server.Test.Data
 		public void Ctor_Should_Throw_Exception_When_AwsClientFactory_Is_Null()
 		{
 			// Arrange
-			const IAwsProvider provider = null;
+			const IAwsProviderFactory providerFactory = null;
 			const IFoodDescriptionFactory foodDescriptionFactory = null;
 			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
 			// Act
-			Action action = () => new AwsFoodRepository(provider, foodDescriptionFactory, foodDescriptionFilter);
+			Action action = () => new AwsFoodRepository(providerFactory, foodDescriptionFactory, foodDescriptionFilter);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("provider");
+				  .And.ParamName.Should().Be("providerFactory");
 		}
 
 		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_FoodDescriptionFactorys_Is_Null()
 		{
 			// Arrange
-			IAwsProvider provider = new Mock<IAwsProvider>().Object;
+			IAwsProviderFactory providerFactory = new Mock<IAwsProviderFactory>().Object;
 			const IFoodDescriptionFactory foodDescriptionFactory = null;
 			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
 			// Act
-			Action action = () => new AwsFoodRepository(provider, foodDescriptionFactory, foodDescriptionFilter);
+			Action action = () => new AwsFoodRepository(providerFactory, foodDescriptionFactory, foodDescriptionFilter);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -55,12 +55,12 @@ namespace OrangeJuice.Server.Test.Data
 		public void Ctor_Should_Throw_Exception_When_FoodDescriptionFilter_Is_Null()
 		{
 			// Arrange
-			IAwsProvider provider = new Mock<IAwsProvider>().Object;
+			IAwsProviderFactory providerFactory = new Mock<IAwsProviderFactory>().Object;
 			IFoodDescriptionFactory foodDescriptionFactory = new Mock<IFoodDescriptionFactory>().Object;
 			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
 			// Act
-			Action action = () => new AwsFoodRepository(provider, foodDescriptionFactory, foodDescriptionFilter);
+			Action action = () => new AwsFoodRepository(providerFactory, foodDescriptionFactory, foodDescriptionFilter);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -146,12 +146,15 @@ namespace OrangeJuice.Server.Test.Data
 
 		#region Helper methods
 		private static AwsFoodRepository CreateRepository(
-			IAwsProvider provider = null,
+			IAwsProvider awsProvider = null,
 			IFoodDescriptionFactory foodDescriptionFactory = null,
 			IFilter<FoodDescription> foodDescriptionFilter = null)
 		{
+			var providerFactoryMock = new Mock<IAwsProviderFactory>();
+			providerFactoryMock.Setup(c => c.Create()).Returns(awsProvider ?? new Mock<IAwsProvider>().Object);
+
 			return new AwsFoodRepository(
-				provider ?? new Mock<IAwsProvider>(MockBehavior.Strict).Object,
+				providerFactoryMock.Object,
 				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>(MockBehavior.Strict).Object,
 				foodDescriptionFilter ?? new Mock<IFilter<FoodDescription>>().Object);
 		}

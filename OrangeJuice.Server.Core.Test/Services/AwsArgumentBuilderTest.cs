@@ -116,11 +116,11 @@ namespace OrangeJuice.Server.Test.Services
 			var args = argumentBuilder.BuildArgs(new StringDictionary());
 
 			// Assert
-			args.Should().Contain(AwsArgumentBuilder.AwsAccessKey, accessKey)
-				.And.Contain(AwsArgumentBuilder.AssociateTagKey, associateTag)
-				.And.Contain(AwsArgumentBuilder.ServiceKey, AwsArgumentBuilder.ServiceValue)
-				.And.Contain(AwsArgumentBuilder.ConditionKey, AwsArgumentBuilder.ConditionValue)
-				.And.Contain(AwsArgumentBuilder.TimestampKey, timestamp);
+			args.Should().Contain("AWSAccessKeyId", accessKey)
+				.And.Contain("AssociateTag", associateTag)
+				.And.Contain("Service", "AWSECommerceService")
+				.And.Contain("Condition", "All")
+				.And.Contain("Timestamp", timestamp);
 		}
 
 		[TestMethod]

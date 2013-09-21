@@ -5,19 +5,6 @@ namespace OrangeJuice.Server.Services
 {
 	public sealed class AwsArgumentBuilder : IArgumentBuilder
 	{
-		#region Constants
-		internal const string AwsAccessKey = "AWSAccessKeyId";
-		internal const string AssociateTagKey = "AssociateTag";
-
-		internal const string ServiceKey = "Service";
-		internal const string ServiceValue = "AWSECommerceService";
-
-		internal const string ConditionKey = "Condition";
-		internal const string ConditionValue = "All";
-
-		internal const string TimestampKey = "Timestamp";
-		#endregion
-
 		#region Fields
 		private readonly string _accessKey;
 		private readonly string _associateTag;
@@ -47,11 +34,11 @@ namespace OrangeJuice.Server.Services
 
 			args = new Dictionary<string, string>(args)
 			{
-				{ AwsAccessKey, _accessKey },
-				{ AssociateTagKey, _associateTag },
-				{ ServiceKey, ServiceValue },
-				{ ConditionKey, ConditionValue },
-				{ TimestampKey, _dateTimeProvider.FormatToUniversal(now) }
+				{ "AWSAccessKeyId", _accessKey },
+				{ "AssociateTag", _associateTag },
+				{ "Service", "AWSECommerceService" },
+				{ "Condition", "All" },
+				{ "Timestamp", _dateTimeProvider.FormatToUniversal(now) }
 			};
 
 			// Use a SortedDictionary to get the parameters in naturual byte order, as required by AWS.

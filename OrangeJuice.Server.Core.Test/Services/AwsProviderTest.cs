@@ -22,14 +22,14 @@ namespace OrangeJuice.Server.Test.Services
 		public void Ctor_Should_Throw_Exception_When_Client_Is_Null()
 		{
 			// Arrange
-			const Func<IAwsClient> clientFactory = null;
+			const IAwsClient client = null;
 
 			// Act
-			Action action = () => new AwsProvider(clientFactory);
+			Action action = () => new AwsProvider(client);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("clientFactory");
+				  .And.ParamName.Should().Be("client");
 		}
 		#endregion
 
@@ -202,8 +202,7 @@ namespace OrangeJuice.Server.Test.Services
 		#region Helper methods
 		private static IAwsProvider CreateProvider(IAwsClient client = null)
 		{
-			Func<IAwsClient> clientFactory = () => client ?? new Mock<IAwsClient>().Object;
-			return new AwsProvider(clientFactory);
+			return new AwsProvider(client ?? new Mock<IAwsClient>().Object);
 		}
 
 		private static Mock<IAwsClient> CreateClient(Action<IStringDictionary> callback)
