@@ -72,29 +72,55 @@ namespace OrangeJuice.Server.Test.Services
 		public void BuildUrl_Should_Pass_Arguments_To_ArgumentBuilder()
 		{
 			// Arrange
+			var builderMock = new Mock<IArgumentBuilder>();
+			IQueryBuilder queryBuilder = CreateQueryBuilder(builderMock.Object);
 			IStringDictionary args = new StringDictionary();
-
-			var agumentBuilderMock = new Mock<IArgumentBuilder>();
-
-			IQueryBuilder queryBuilder = CreateQueryBuilder(agumentBuilderMock.Object);
 
 			// Act
 			queryBuilder.BuildUrl(args);
 
 			// Assert
-			agumentBuilderMock.Verify(b => b.BuildArgs(args), Times.Once());
+			builderMock.Verify(b => b.BuildArgs(args), Times.Once());
 		}
 
 		[TestMethod]
 		public void BuildUrl_Should_Pass_Arguments_Returned_By_ArgumentBuilder_To_ArgumentFormatter_FormatArgs()
 		{
-			Assert.Inconclusive("TODO");
+			// Arrange
+			IStringDictionary args = new StringDictionary();
+
+			var builderMock = new Mock<IArgumentBuilder>();
+			builderMock.Setup(b => b.BuildArgs(It.IsAny<IStringDictionary>())).Returns(args);
+
+			var formatterMock = new Mock<IArgumentFormatter>();
+
+			IQueryBuilder queryBuilder = CreateQueryBuilder(builderMock.Object, formatterMock.Object);
+
+			// Act
+			queryBuilder.BuildUrl(args);
+
+			// Assert
+			formatterMock.Verify(f => f.FormatArgs(args), Times.Once());
 		}
 
 		[TestMethod]
-		public void BuildUrl_Should_Pass_Query_Returned_By_ArgumentFormatter_To_SignatureBuilder_SignQuery()
+		public void BuildUrl_Should_Pass_Query_Returned_By_ArgumentFormatter_To_QuerySigner_SignQuery()
 		{
-			Assert.Inconclusive("TODO");
+			// Arrange
+			var signerMock = new Mock<IQuerySigner>();
+
+			const string query = "query";
+			var formatterMock = new Mock<IArgumentFormatter>();
+			formatterMock.Setup(f => f.FormatArgs(It.IsAny<IStringDictionary>())).Returns(query);
+
+			IQueryBuilder queryBuilder = CreateQueryBuilder(argumentFormatter: formatterMock.Object, querySigner: signerMock.Object);
+			IStringDictionary args = new StringDictionary();
+
+			// Act
+			queryBuilder.BuildUrl(args);
+
+			// Assert
+			signerMock.Verify(b => b.SignQuery(query), Times.Once());
 		}
 		#endregion
 
