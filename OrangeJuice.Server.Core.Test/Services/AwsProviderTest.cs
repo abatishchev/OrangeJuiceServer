@@ -184,9 +184,9 @@ namespace OrangeJuice.Server.Test.Services
 			const string id = "anyTitle";
 
 			Action<IStringDictionary> callback = d => d.Should()
-			                                           .Contain("Operation", "ItemLookup")
-			                                           .And.Contain("ResponseGroup", "Images")
-			                                           .And.Contain("ItemId", id);
+													   .Contain("Operation", "ItemLookup")
+													   .And.Contain("ResponseGroup", "Images")
+													   .And.Contain("ItemId", id);
 			var clientMock = CreateClient(callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);

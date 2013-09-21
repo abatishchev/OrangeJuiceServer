@@ -99,10 +99,9 @@ namespace OrangeJuice.Server.Test.Services
 			loaderMock.Setup(l => l.Load(url)).ReturnsAsync(new XDocument());
 
 			IAwsClient client = CreateClient(builderMock, loaderMock.Object);
-			var args = new StringDictionary();
 
 			// Act
-			await client.GetItems(args);
+			await client.GetItems(new StringDictionary());
 
 			// Assert
 			loaderMock.Verify(l => l.Load(url), Times.Once());
@@ -118,13 +117,11 @@ namespace OrangeJuice.Server.Test.Services
 			loaderMock.Setup(l => l.Load(It.IsAny<string>())).ReturnsAsync(doc);
 
 			var selectorMock = new Mock<IItemSelector>();
-			selectorMock.Setup(p => p.GetItems(doc)).Returns(It.IsAny<IEnumerable<XElement>>());
 
 			IAwsClient client = CreateClient(documentLoader: loaderMock.Object, itemSelector: selectorMock.Object);
-			var args = new StringDictionary();
 
 			// Act
-			await client.GetItems(args);
+			await client.GetItems(new StringDictionary());
 
 			// Assert
 			selectorMock.Verify(s => s.GetItems(doc), Times.Once());
@@ -138,10 +135,9 @@ namespace OrangeJuice.Server.Test.Services
 			var selectorMock = CreateItemSelector(expected);
 
 			IAwsClient client = CreateClient(itemSelector: selectorMock);
-			var args = new StringDictionary();
 
 			// Act
-			var actual = await client.GetItems(args);
+			var actual = await client.GetItems(new StringDictionary());
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);
@@ -174,7 +170,7 @@ namespace OrangeJuice.Server.Test.Services
 		private static IItemSelector CreateItemSelector(IEnumerable<XElement> elements = null)
 		{
 			var selectorMock = new Mock<IItemSelector>();
-			selectorMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(elements ?? new[] { new XElement("Item") });
+			selectorMock.Setup(s => s.GetItems(It.IsAny<XDocument>())).Returns(elements ?? new[] { new XElement("Item") });
 			return selectorMock.Object;
 		}
 		#endregion

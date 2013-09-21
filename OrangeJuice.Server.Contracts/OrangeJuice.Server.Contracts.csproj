@@ -64,7 +64,6 @@
     <Compile Include="Filters\IFilter.cs" />
     <Compile Include="IDateTimeProvider.cs" />
     <Compile Include="Services\IAwsClient.cs" />
-    <Compile Include="Services\IAwsClientFactory.cs" />
     <Compile Include="Services\IItemSelector.cs" />
     <Compile Include="Services\IRequestValidator.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
