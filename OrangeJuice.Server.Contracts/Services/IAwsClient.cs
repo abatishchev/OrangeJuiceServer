@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -7,6 +6,8 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IAwsClient
 	{
-		Task<XElement> GetItems(IDictionary<string, string> args);
+		Task<IEnumerable<XElement>> GetItems(IDictionary<string, string> args);
+
+		Task<XElement> GetItem(IDictionary<string, string> args);
 	}
 }

@@ -12,34 +12,58 @@ namespace OrangeJuice.Server.Services
 		#region Fields
 		private readonly IQueryBuilder _queryBuilder;
 		private readonly IDocumentLoader _documentLoader;
-		private readonly IItemProvider _itemProvider;
+		private readonly IItemSelector _itemSelector;
 		#endregion
 
 		#region Ctor
-		public AwsClient(IQueryBuilder queryBuilder, IDocumentLoader documentLoader, IItemProvider itemProvider)
+		public AwsClient(IQueryBuilder queryBuilder, IDocumentLoader documentLoader, IItemSelector itemSelector)
 		{
 			if (queryBuilder == null)
 				throw new ArgumentNullException("queryBuilder");
 			if (documentLoader == null)
 				throw new ArgumentNullException("documentLoader");
-			if (itemProvider == null)
-				throw new ArgumentNullException("itemProvider");
+			if (itemSelector == null)
+				throw new ArgumentNullException("itemSelector");
 
 			_queryBuilder = queryBuilder;
 			_documentLoader = documentLoader;
-			_itemProvider = itemProvider;
+			_itemSelector = itemSelector;
 		}
 		#endregion
 
 		#region IAwsClient Members
-		public async Task<XElement> GetItems(IDictionary<string, string> args)
+		public async Task<XElement> GetItem(IDictionary<string, string> args)
+		{
+			//if (args == null)
+			//	throw new ArgumentNullException("args");
+
+			//string url = _queryBuilder.BuildUrl(args);
+			//XDocument doc = await _documentLoader.Load(url);
+			//return _itemSelector.GetItem(doc);
+
+			return await Get(args, (s, doc) => s.GetItem(doc));
+		}
+
+		public async Task<IEnumerable<XElement>> GetItems(IDictionary<string, string> args)
+		{
+			//if (args == null)
+			//	throw new ArgumentNullException("args");
+
+			//string url = _queryBuilder.BuildUrl(args);
+			//XDocument doc = await _documentLoader.Load(url);
+			//return _itemSelector.GetItems(doc);
+
+			return await Get(args, (s, doc) => s.GetItems(doc));
+		}
+
+		private async Task<T> Get<T>(IDictionary<string, string> args, Func<IItemSelector, XDocument, T> getter)
 		{
 			if (args == null)
 				throw new ArgumentNullException("args");
 
 			string url = _queryBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
-			return _itemProvider.GetItems(doc); // TODO: rework item provider
+			return getter(_itemSelector, doc);
 		}
 		#endregion
 	}

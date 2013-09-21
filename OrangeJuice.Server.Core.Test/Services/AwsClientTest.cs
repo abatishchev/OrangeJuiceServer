@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -26,7 +27,7 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			const IQueryBuilder queryBuilder = null;
 			const IDocumentLoader documentLoader = null;
-			const IItemProvider itemProvider = null;
+			const IItemSelector itemProvider = null;
 
 			// Act
 			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
@@ -42,7 +43,7 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			IQueryBuilder queryBuilder = CreateUrlBuilder();
 			const IDocumentLoader documentLoader = null;
-			const IItemProvider itemProvider = null;
+			const IItemSelector itemProvider = null;
 
 			// Act
 			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
@@ -58,14 +59,14 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			IQueryBuilder queryBuilder = CreateUrlBuilder();
 			IDocumentLoader documentLoader = CreateDocumentLoader();
-			const IItemProvider itemProvider = null;
+			const IItemSelector itemProvider = null;
 
 			// Act
 			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("itemProvider");
+				  .And.ParamName.Should().Be("itemSelector");
 		}
 		#endregion
 
@@ -111,35 +112,35 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task GetItems_Should_Pass_Document_Returned_By_DocumentLoader_To_ItemProvider_GetItems()
 		{
 			// Arrange
-			XElement expected = new XElement("Items");
+			var expected = new[] { new XElement("Items") };
 
-			var providerMock = new Mock<IItemProvider>();
+			var providerMock = new Mock<IItemSelector>();
 			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(expected);
 
-			IAwsClient client = CreateClient(itemProvider: providerMock.Object);
+			IAwsClient client = CreateClient(itemSelector: providerMock.Object);
 			var args = new StringDictionary();
 
 			// Act
-			XElement actual = await client.GetItems(args);
+			var actual = await client.GetItems(args);
 
 			// Assert
-			actual.Should().Be(expected);
+			actual.ShouldBeEquivalentTo(expected);
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Return_Element_Returned_By_Item_Provider()
+		public void GetItems_Should_Return_Element_Returned_By_Item_Provider()
 		{
 			Assert.Inconclusive("TODO");
 		}
 		#endregion
 
 		#region Helper methods
-		private static IAwsClient CreateClient(IQueryBuilder queryBuilder = null, IDocumentLoader documentLoader = null, IItemProvider itemProvider = null)
+		private static IAwsClient CreateClient(IQueryBuilder queryBuilder = null, IDocumentLoader documentLoader = null, IItemSelector itemSelector = null)
 		{
 			return new AwsClient(
 				queryBuilder ?? CreateUrlBuilder(),
 				documentLoader ?? CreateDocumentLoader(),
-				itemProvider ?? CreateItemProvider());
+				itemSelector ?? CreateItemProvider());
 		}
 
 		private static IQueryBuilder CreateUrlBuilder(string query = null)
@@ -156,10 +157,10 @@ namespace OrangeJuice.Server.Test.Services
 			return loaderMock.Object;
 		}
 
-		private static IItemProvider CreateItemProvider(XElement element = null)
+		private static IItemSelector CreateItemProvider(ICollection<XElement> element = null)
 		{
-			var providerMock = new Mock<IItemProvider>();
-			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(element ?? new XElement("Item"));
+			var providerMock = new Mock<IItemSelector>();
+			providerMock.Setup(p => p.GetItems(It.IsAny<XDocument>())).Returns(element ?? new[] { new XElement("Item") });
 			return providerMock.Object;
 		}
 		#endregion

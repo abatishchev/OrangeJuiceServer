@@ -92,7 +92,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void BuildUrl_Should_Pass_Quqery_Returned_By_ArgumentFormatter_To_SignatureBuilder_SignQuery()
+		public void BuildUrl_Should_Pass_Query_Returned_By_ArgumentFormatter_To_SignatureBuilder_SignQuery()
 		{
 			Assert.Inconclusive("TODO");
 		}

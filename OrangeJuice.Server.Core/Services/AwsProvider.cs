@@ -5,14 +5,14 @@ using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class XmlAwsProvider : IAwsProvider
+	public sealed class AwsProvider : IAwsProvider
 	{
 		#region Fields
 		private readonly Func<IAwsClient> _clientFactory;
 		#endregion
 
 		#region Ctor
-		public XmlAwsProvider(Func<IAwsClient> clientFactory)
+		public AwsProvider(Func<IAwsClient> clientFactory)
 		{
 			if (clientFactory == null)
 				throw new ArgumentNullException("clientFactory");
@@ -35,8 +35,7 @@ namespace OrangeJuice.Server.Services
 			};
 
 			IAwsClient client = _clientFactory();
-			XElement items = await client.GetItems(args);
-			return items.Elements(items.Name.Namespace + "Item");
+			return await client.GetItems(args);
 		}
 
 		public async Task<XElement> LookupAttributes(string id)
@@ -52,8 +51,7 @@ namespace OrangeJuice.Server.Services
 			};
 
 			IAwsClient client = _clientFactory();
-			XElement items = await client.GetItems(args);
-			return items.Element(items.Name.Namespace + "Item");
+			return await client.GetItem(args);
 		}
 
 		public async Task<XElement> LookupImages(string id)
@@ -69,8 +67,7 @@ namespace OrangeJuice.Server.Services
 			};
 
 			IAwsClient client = _clientFactory();
-			XElement items = await client.GetItems(args);
-			return items.Element(items.Name.Namespace + "Item");
+			return await client.GetItem(args);
 		}
 		#endregion
 	}

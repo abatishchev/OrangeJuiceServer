@@ -16,7 +16,7 @@ using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class XmlAwsProviderTest
+	public class AwsProviderTest
 	{
 		#region Ctor
 		[TestMethod]
@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Test.Services
 			const Func<IAwsClient> clientFactory = null;
 
 			// Act
-			Action action = () => new XmlAwsProvider(clientFactory);
+			Action action = () => new AwsProvider(clientFactory);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -80,7 +80,7 @@ namespace OrangeJuice.Server.Test.Services
 													   .And.Contain("Title", title);
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
-					  .ReturnsAsync(new XElement("Items"))
+					  .ReturnsAsync(new[] { new XElement("Items") })
 					  .Callback(callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);
@@ -137,7 +137,7 @@ namespace OrangeJuice.Server.Test.Services
 													   .And.Contain("ResponseGroup", "ItemAttributes")
 													   .And.Contain("ItemId", id);
 			var clientMock = new Mock<IAwsClient>();
-			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
+			clientMock.Setup(b => b.GetItem(It.IsAny<IStringDictionary>()))
 					  .ReturnsAsync(new XElement("Items"))
 					  .Callback(callback);
 
@@ -147,7 +147,7 @@ namespace OrangeJuice.Server.Test.Services
 			await provider.LookupAttributes(id);
 
 			// Assert
-			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
+			clientMock.Verify(b => b.GetItem(It.IsAny<IStringDictionary>()), Times.Once());
 		}
 		#endregion
 
@@ -191,11 +191,11 @@ namespace OrangeJuice.Server.Test.Services
 			const string id = "anyTitle";
 
 			Action<IStringDictionary> callback = d => d.Should()
-													  .Contain("Operation", "ItemLookup")
-													   .And.Contain("ResponseGroup", "Images")
-													   .And.Contain("ItemId", id);
+			                                           .Contain("Operation", "ItemLookup")
+			                                           .And.Contain("ResponseGroup", "Images")
+			                                           .And.Contain("ItemId", id);
 			var clientMock = new Mock<IAwsClient>();
-			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
+			clientMock.Setup(b => b.GetItem(It.IsAny<IStringDictionary>()))
 					  .ReturnsAsync(new XElement("Items"))
 					  .Callback(callback);
 
@@ -205,7 +205,7 @@ namespace OrangeJuice.Server.Test.Services
 			await provider.LookupImages(id);
 
 			// Assert
-			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
+			clientMock.Verify(b => b.GetItem(It.IsAny<IStringDictionary>()), Times.Once());
 		}
 		#endregion
 
@@ -213,7 +213,7 @@ namespace OrangeJuice.Server.Test.Services
 		private static IAwsProvider CreateProvider(IAwsClient client = null)
 		{
 			Func<IAwsClient> clientFactory = () => client ?? new Mock<IAwsClient>().Object;
-			return new XmlAwsProvider(clientFactory);
+			return new AwsProvider(clientFactory);
 		}
 		#endregion
 	}

@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Test.Services
 			const IRequestValidator requestValidator = null;
 
 			// Act
-			Action action = () => new XmlItemProvider(requestValidator);
+			Action action = () => new XmlItemSelector(requestValidator);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()

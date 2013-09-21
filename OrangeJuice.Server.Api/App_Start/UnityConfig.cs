@@ -98,12 +98,12 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IRequestValidator, XmlRequestValidator>(new ContainerControlledLifetimeManager());
 
-			container.RegisterType<IItemProvider, XmlItemProvider>(
+			container.RegisterType<IItemSelector, XmlItemSelector>(
 				new PerResolveLifetimeManager(), // important!
 				new InjectionConstructor(container.Resolve<IRequestValidator>()));
 
 			Func<IAwsClient> awsClientFactory = () => container.Resolve<IAwsClient>();
-			container.RegisterType<IAwsProvider, XmlAwsProvider>(
+			container.RegisterType<IAwsProvider, AwsProvider>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(awsClientFactory));
 
