@@ -94,11 +94,7 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<IArgumentBuilder>(), container.Resolve<IArgumentFormatter>(), container.Resolve<IQuerySigner>()));
 
-			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new PerResolveLifetimeManager()); // important!
-
-			container.RegisterType<IDocumentLoaderFactory, HttpDocumentLoaderProxyFactory>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(new Func<IDocumentLoader>(() => container.Resolve<IDocumentLoader>())));
+			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new TransientLifetimeManager());
 
 			container.RegisterType<IRequestValidator, XmlRequestValidator>(new ContainerControlledLifetimeManager());
 
@@ -107,12 +103,16 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(container.Resolve<IRequestValidator>()));
 
 			container.RegisterType<IAwsClient, AwsClient>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IQueryBuilder>(), container.Resolve<IDocumentLoaderFactory>(), container.Resolve<IItemSelector>()));
+				new TransientLifetimeManager(),
+				new InjectionConstructor(container.Resolve<IQueryBuilder>(), container.Resolve<IDocumentLoader>(), container.Resolve<IItemSelector>()));
 
 			container.RegisterType<IAwsProvider, AwsProvider>(
-				new ContainerControlledLifetimeManager(),
+				new TransientLifetimeManager(),
 				new InjectionConstructor(container.Resolve<IAwsClient>()));
+
+			container.RegisterType<IAwsProviderFactory, AwsProviderProxyFactory>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(new Func<IAwsProvider>(() => container.Resolve<IAwsProvider>())));
 
 			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());
 
@@ -120,7 +120,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(container.Resolve<IAwsProvider>(), container.Resolve<IFoodDescriptionFactory>(), container.Resolve<IFilter<FoodDescription>>()));
+				new InjectionConstructor(container.Resolve<IAwsProviderFactory>(), container.Resolve<IFoodDescriptionFactory>(), container.Resolve<IFilter<FoodDescription>>()));
 		}
 	}
 }

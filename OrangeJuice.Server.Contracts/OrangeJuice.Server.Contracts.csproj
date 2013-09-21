@@ -46,6 +46,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppKey.cs" />
+    <Compile Include="Services\IAwsProviderFactory.cs" />
     <Compile Include="IAssemblyProvider.cs" />
     <Compile Include="Services\IArgumentBuilder.cs" />
     <Compile Include="Services\IAwsProvider.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Services\IItemSelector.cs" />
     <Compile Include="Services\IRequestValidator.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
-    <Compile Include="Web\IDocumentLoaderFactory.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

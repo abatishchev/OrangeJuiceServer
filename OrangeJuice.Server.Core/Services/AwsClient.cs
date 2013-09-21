@@ -11,22 +11,22 @@ namespace OrangeJuice.Server.Services
 	{
 		#region Fields
 		private readonly IQueryBuilder _queryBuilder;
-		private readonly IDocumentLoaderFactory _documentLoaderFactory;
+		private readonly IDocumentLoader _documentLoader;
 		private readonly IItemSelector _itemSelector;
 		#endregion
 
 		#region Ctor
-		public AwsClient(IQueryBuilder queryBuilder, IDocumentLoaderFactory documentLoaderFactory, IItemSelector itemSelector)
+		public AwsClient(IQueryBuilder queryBuilder, IDocumentLoader documentLoader, IItemSelector itemSelector)
 		{
 			if (queryBuilder == null)
 				throw new ArgumentNullException("queryBuilder");
-			if (documentLoaderFactory == null)
-				throw new ArgumentNullException("documentLoaderFactory");
+			if (documentLoader == null)
+				throw new ArgumentNullException("documentLoader");
 			if (itemSelector == null)
 				throw new ArgumentNullException("itemSelector");
 
 			_queryBuilder = queryBuilder;
-			_documentLoaderFactory = documentLoaderFactory;
+			_documentLoader = documentLoader;
 			_itemSelector = itemSelector;
 		}
 		#endregion
@@ -38,8 +38,7 @@ namespace OrangeJuice.Server.Services
 				throw new ArgumentNullException("args");
 
 			string url = _queryBuilder.BuildUrl(args);
-			IDocumentLoader documentLoader = _documentLoaderFactory.Create();
-			XDocument doc = await documentLoader.Load(url);
+			XDocument doc = await _documentLoader.Load(url);
 			return _itemSelector.GetItems(doc);
 		}
 		#endregion

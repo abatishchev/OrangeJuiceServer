@@ -58,6 +58,7 @@
     <Compile Include="ReflectionAssemblyProvider.cs" />
     <Compile Include="Services\AwsArgumentBuilder.cs" />
     <Compile Include="Services\AwsProvider.cs" />
+    <Compile Include="Services\AwsProviderProxyFactory.cs" />
     <Compile Include="Web\FlattenArgumentFormatter.cs" />
     <Compile Include="Services\AwsQuerySigner.cs" />
     <Compile Include="Services\AwsQueryBuilder.cs" />
@@ -77,7 +78,6 @@
     <Compile Include="Services\AwsOptions.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
     <Compile Include="Web\HttpDocumentLoader.cs" />
-    <Compile Include="Web\HttpDocumentLoaderProxyFactory.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
   </ItemGroup>
   <ItemGroup>
