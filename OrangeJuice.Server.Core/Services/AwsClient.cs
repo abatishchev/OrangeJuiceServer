@@ -32,38 +32,14 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsClient Members
-		public async Task<XElement> GetItem(IDictionary<string, string> args)
-		{
-			//if (args == null)
-			//	throw new ArgumentNullException("args");
-
-			//string url = _queryBuilder.BuildUrl(args);
-			//XDocument doc = await _documentLoader.Load(url);
-			//return _itemSelector.GetItem(doc);
-
-			return await Get(args, (s, doc) => s.GetItem(doc));
-		}
-
 		public async Task<IEnumerable<XElement>> GetItems(IDictionary<string, string> args)
-		{
-			//if (args == null)
-			//	throw new ArgumentNullException("args");
-
-			//string url = _queryBuilder.BuildUrl(args);
-			//XDocument doc = await _documentLoader.Load(url);
-			//return _itemSelector.GetItems(doc);
-
-			return await Get(args, (s, doc) => s.GetItems(doc));
-		}
-
-		private async Task<T> Get<T>(IDictionary<string, string> args, Func<IItemSelector, XDocument, T> getter)
 		{
 			if (args == null)
 				throw new ArgumentNullException("args");
 
 			string url = _queryBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
-			return getter(_itemSelector, doc);
+			return _itemSelector.GetItems(doc);
 		}
 		#endregion
 	}

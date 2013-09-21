@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -51,7 +52,8 @@ namespace OrangeJuice.Server.Services
 			};
 
 			IAwsClient client = _clientFactory();
-			return await client.GetItem(args);
+			var items = await client.GetItems(args);
+			return items.Single();
 		}
 
 		public async Task<XElement> LookupImages(string id)
@@ -67,7 +69,8 @@ namespace OrangeJuice.Server.Services
 			};
 
 			IAwsClient client = _clientFactory();
-			return await client.GetItem(args);
+			var items = await client.GetItems(args);
+			return items.Single();
 		}
 		#endregion
 	}

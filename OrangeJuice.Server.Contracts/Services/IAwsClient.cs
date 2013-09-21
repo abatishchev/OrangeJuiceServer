@@ -7,7 +7,5 @@ namespace OrangeJuice.Server.Services
 	public interface IAwsClient
 	{
 		Task<IEnumerable<XElement>> GetItems(IDictionary<string, string> args);
-
-		Task<XElement> GetItem(IDictionary<string, string> args);
 	}
 }

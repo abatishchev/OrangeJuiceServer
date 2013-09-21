@@ -33,8 +33,6 @@ namespace OrangeJuice.Server.Data
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
 
-			// TODO: rework provider/client instantiation strategy
-
 			var items = await _provider.SearchItem(title);
 
 			var tasks = from item in items
