@@ -36,16 +36,13 @@ namespace OrangeJuice.Server.Data
 			IAwsProvider provider = _providerFactory.Create();
 
 			var items = await provider.SearchItem(title);
+			var ids = items.Select(_foodDescriptionFactory.GetId).ToArray(); // TODO: move GetId inside provider
 
-			var tasks = from item in items
-						let id = _foodDescriptionFactory.GetId(item)
-						select _foodDescriptionFactory.Create(
-							id,
-							provider.LookupAttributes(id),
-							provider.LookupImages(id));
+			var attributes = await provider.LookupAttributes(ids);
+			var images = await provider.LookupImages(ids);
 
-			return await Task.WhenAll(tasks)
-							 .ContinueWith(t => t.Result.Where(_foodDescriptionFilter.Filter));
+			return Enumerable.Zip(attributes, images, (a, i) => _foodDescriptionFactory.Create(a, i))
+							 .Where(_foodDescriptionFilter.Filter);
 		}
 	}
 }

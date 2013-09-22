@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Data
@@ -15,35 +14,24 @@ namespace OrangeJuice.Server.Data
 			return (string)item.Element(ns + "ASIN");
 		}
 
-		public async Task<FoodDescription> Create(string id, Task<XElement> attributesTask, Task<XElement> imagesTask)
+		public FoodDescription Create(XElement attributesElement, XElement imagesElement)
 		{
-			if (String.IsNullOrEmpty(id))
-				throw new ArgumentNullException("id");
-			if (attributesTask == null)
-				throw new ArgumentNullException("attributesTask");
-			if (imagesTask == null)
-				throw new ArgumentNullException("imagesTask");
+			if (attributesElement == null)
+				throw new ArgumentNullException("attributesElement");
+			if (imagesElement == null)
+				throw new ArgumentNullException("imagesElement");
 
 			FoodDescription description = new FoodDescription();
 
-			AssignId(description, id);
-
-			XElement attributesElement = await attributesTask;
 			AssignAttributes(description, attributesElement);
-
-			XElement imagesElement = await imagesTask;
 			AssignImages(description, imagesElement);
 
 			return description;
 		}
+
 		#endregion
 
 		#region Methods
-		private static void AssignId(FoodDescription description, string id)
-		{
-			description.ASIN = id;
-		}
-
 		internal static void AssignAttributes(FoodDescription description, XElement attributesElement)
 		{
 			XNamespace ns = attributesElement.Name.Namespace;

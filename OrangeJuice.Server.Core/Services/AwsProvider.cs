@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -38,36 +37,28 @@ namespace OrangeJuice.Server.Services
 			return await _client.GetItems(args);
 		}
 
-		public async Task<XElement> LookupAttributes(string id)
+		public async Task<IEnumerable<XElement>> LookupAttributes(IEnumerable<string> ids)
 		{
-			if (String.IsNullOrEmpty(id))
-				throw new ArgumentNullException("id");
-
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },
 				{ "ResponseGroup", "ItemAttributes" },
-				{ "ItemId", id }
+				{ "ItemId", String.Join(",", ids) }
 			};
 
-			var items = await _client.GetItems(args);
-			return items.Single();
+			return await _client.GetItems(args);
 		}
 
-		public async Task<XElement> LookupImages(string id)
+		public async Task<IEnumerable<XElement>> LookupImages(IEnumerable<string> ids)
 		{
-			if (String.IsNullOrEmpty(id))
-				throw new ArgumentNullException("id");
-
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },
 				{ "ResponseGroup", "Images" },
-				{ "ItemId", id }
+				{ "ItemId", String.Join(",", ids) }
 			};
 
-			var items = await _client.GetItems(args);
-			return items.Single();
+			return await _client.GetItems(args);
 		}
 		#endregion
 	}

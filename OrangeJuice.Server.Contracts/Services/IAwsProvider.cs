@@ -8,8 +8,8 @@ namespace OrangeJuice.Server.Services
 	{
 		Task<IEnumerable<XElement>> SearchItem(string title);
 
-		Task<XElement> LookupAttributes(string id);
+		Task<IEnumerable<XElement>> LookupAttributes(IEnumerable<string> ids);
 
-		Task<XElement> LookupImages(string id);
+		Task<IEnumerable<XElement>> LookupImages(IEnumerable<string> ids);
 	}
 }

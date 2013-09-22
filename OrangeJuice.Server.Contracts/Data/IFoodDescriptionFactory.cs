@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Data
 {
@@ -7,6 +6,6 @@ namespace OrangeJuice.Server.Data
 	{
 		string GetId(XElement item);
 
-		Task<FoodDescription> Create(string id, Task<XElement> attributesTask, Task<XElement> imagesTask);
+		FoodDescription Create(XElement attributesElement, XElement imagesElement);
 	}
 }

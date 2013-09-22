@@ -2,9 +2,6 @@
 {
 	public class FoodDescription
 	{
-		// ReSharper disable once InconsistentNaming
-		public string ASIN { get; set; }
-
 		public string Title { get; set; }
 
 		public string Brand { get; set; }
