@@ -1,13 +1,29 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Data
 {
-	// ReSharper disable PossibleNullReferenceException
 	public sealed class XmlFoodDescriptionFactory : IFoodDescriptionFactory
 	{
+		#region IFoodDescriptionFactory Members
+		public string GetId(XElement item)
+		{
+			if (item == null)
+				throw new ArgumentNullException("item");
+			XNamespace ns = item.Name.Namespace;
+			return (string)item.Element(ns + "ASIN");
+		}
+
 		public async Task<FoodDescription> Create(string id, Task<XElement> attributesTask, Task<XElement> imagesTask)
 		{
+			if (String.IsNullOrEmpty(id))
+				throw new ArgumentNullException("id");
+			if (attributesTask == null)
+				throw new ArgumentNullException("attributesTask");
+			if (imagesTask == null)
+				throw new ArgumentNullException("imagesTask");
+
 			FoodDescription description = new FoodDescription();
 
 			AssignId(description, id);
@@ -20,7 +36,9 @@ namespace OrangeJuice.Server.Data
 
 			return description;
 		}
+		#endregion
 
+		#region Methods
 		private static void AssignId(FoodDescription description, string id)
 		{
 			description.ASIN = id;
@@ -43,16 +61,19 @@ namespace OrangeJuice.Server.Data
 			description.LargeImageUrl = GetImageUrl(imagesElement, ns, "LargeImage");
 		}
 
-		private static string GetAttribute(XElement attributesElement, XNamespace ns, string elementName)
+		// ReSharper disable PossibleNullReferenceException
+		private static string GetAttribute(XContainer attributesElement, XNamespace ns, string elementName)
 		{
 			return (string)attributesElement.Element(ns + "ItemAttributes")
-			                                .Element(ns + elementName);
+											.Element(ns + elementName);
 		}
 
-		private static string GetImageUrl(XElement imagesElement, XNamespace ns, string elementName)
+		private static string GetImageUrl(XContainer imagesElement, XNamespace ns, string elementName)
 		{
 			XElement element = imagesElement.Element(ns + elementName);
 			return element != null ? (string)element.Element(ns + "URL") : null;
 		}
+		#endregion
+
 	}
 }

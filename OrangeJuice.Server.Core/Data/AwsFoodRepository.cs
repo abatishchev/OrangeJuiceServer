@@ -38,8 +38,7 @@ namespace OrangeJuice.Server.Data
 			var items = await provider.SearchItem(title);
 
 			var tasks = from item in items
-						from e in item.Elements(item.Name.Namespace + "ASIN") // TODO: move XML work into dependency
-						let id = e.Value
+						let id = _foodDescriptionFactory.GetId(item)
 						select _foodDescriptionFactory.Create(
 							id,
 							provider.LookupAttributes(id),

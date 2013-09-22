@@ -123,15 +123,17 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			// Arrange
 			const string id = "id";
+			XElement itemElement = new XElement("Item", new XElement("ASIN", id));
 			Task<XElement> attributesTask = Task.FromResult(new XElement("attributes"));
 			Task<XElement> imagesTask = Task.FromResult(new XElement("images"));
 
 			var providerMock = new Mock<IAwsProvider>();
-			providerMock.Setup(c => c.SearchItem(id)).ReturnsAsync(new[] { new XElement("Item", new XElement("ASIN", id)) });
+			providerMock.Setup(c => c.SearchItem(id)).ReturnsAsync(new[] { itemElement });
 			providerMock.Setup(c => c.LookupAttributes(id)).Returns(attributesTask);
 			providerMock.Setup(c => c.LookupImages(id)).Returns(imagesTask);
 
 			var factoryMock = new Mock<IFoodDescriptionFactory>();
+			factoryMock.Setup(f => f.GetId(itemElement)).Returns(id);
 			factoryMock.Setup(f => f.Create(id, attributesTask, imagesTask)).ReturnsAsync(new FoodDescription());
 
 			AwsFoodRepository repository = CreateRepository(providerMock.Object, factoryMock.Object);
