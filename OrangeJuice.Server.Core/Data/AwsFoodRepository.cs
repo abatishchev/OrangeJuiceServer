@@ -10,11 +10,11 @@ namespace OrangeJuice.Server.Data
 {
 	public sealed class AwsFoodRepository : IFoodRepository
 	{
-		private readonly IAwsProviderFactory _providerFactory;
+		private readonly IFactory<IAwsProvider> _providerFactory;
 		private readonly IFoodDescriptionFactory _foodDescriptionFactory;
 		private readonly IFilter<FoodDescription> _foodDescriptionFilter;
 
-		public AwsFoodRepository(IAwsProviderFactory providerFactory, IFoodDescriptionFactory foodDescriptionFactory, IFilter<FoodDescription> foodDescriptionFilter)
+		public AwsFoodRepository(IFactory<IAwsProvider> providerFactory, IFoodDescriptionFactory foodDescriptionFactory, IFilter<FoodDescription> foodDescriptionFilter)
 		{
 			if (providerFactory == null)
 				throw new ArgumentNullException("providerFactory");

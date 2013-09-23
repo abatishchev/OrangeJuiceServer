@@ -175,7 +175,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("id");
+				  .And.ParamName.Should().Be("ids");
 		}
 
 		[TestMethod]
