@@ -55,10 +55,12 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="IFactory.cs" />
     <Compile Include="ReflectionAssemblyProvider.cs" />
     <Compile Include="Services\AwsArgumentBuilder.cs" />
     <Compile Include="Services\AwsProvider.cs" />
     <Compile Include="Services\AwsProviderProxyFactory.cs" />
+    <Compile Include="ProxyFactoryBase.cs" />
     <Compile Include="Web\FlattenArgumentFormatter.cs" />
     <Compile Include="Services\AwsQuerySigner.cs" />
     <Compile Include="Services\AwsQueryBuilder.cs" />
