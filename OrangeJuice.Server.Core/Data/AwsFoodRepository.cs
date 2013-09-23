@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Data
 			_foodDescriptionFilter = foodDescriptionFilter;
 		}
 
-		public async Task<IEnumerable<FoodDescription>> SearchByTitle(string title)
+		public async Task<ICollection<FoodDescription>> SearchByTitle(string title)
 		{
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
@@ -43,7 +43,8 @@ namespace OrangeJuice.Server.Data
 
 			return await Task.WhenAll(attributes, images)
 							 .ContinueWith(t => Enumerable.Zip(t.Result.First(), t.Result.Last(), _foodDescriptionFactory.Create)
-														  .Where(_foodDescriptionFilter.Filter));
+														  .Where(_foodDescriptionFilter.Filter)
+														  .ToArray());
 		}
 	}
 }

@@ -39,6 +39,9 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<IEnumerable<XElement>> LookupAttributes(IEnumerable<string> ids)
 		{
+			if (ids == null)
+				throw new ArgumentNullException("ids");
+
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },
@@ -51,6 +54,9 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<IEnumerable<XElement>> LookupImages(IEnumerable<string> ids)
 		{
+			if (ids == null)
+				throw new ArgumentNullException("ids");
+
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },

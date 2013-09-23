@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -107,6 +108,8 @@ namespace OrangeJuice.Server.Test.Data
 
 			var providerMock = new Mock<IAwsProvider>();
 			providerMock.Setup(c => c.SearchItems(title)).ReturnsAsync(Enumerable.Empty<XElement>());
+			providerMock.Setup(c => c.LookupAttributes(It.IsAny<IEnumerable<string>>())).ReturnsAsync(Enumerable.Empty<XElement>());
+			providerMock.Setup(c => c.LookupImages(It.IsAny<IEnumerable<string>>())).ReturnsAsync(Enumerable.Empty<XElement>());
 
 			IFoodRepository repository = CreateRepository(providerMock.Object);
 
@@ -117,24 +120,26 @@ namespace OrangeJuice.Server.Test.Data
 			providerMock.Verify(c => c.SearchItems(title), Times.Once());
 		}
 
-		// TODO: rewrite
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_AttributesElement_ImagesElement_To_FoodDescriptionFactory_Returned_By_AwsClient()
+		public void MyTestMethod()
+		{
+			Assert.Inconclusive("GetId");
+		}
+
+		[TestMethod]
+		public async Task SearchByTitle_Should_Pass_AttributesElement_ImagesElement_To_FoodDescriptionFactory_Returned_By_AwsProvider_SearchItems()
 		{
 			// Arrange
-			string[] ids = new[] { "id1", "id2" };
-
 			XElement itemElement = new XElement("Item");
-			var attributesTask = Task.FromResult(Enumerable.Repeat(new XElement("attributes"), 1));
-			var imagesTask = Task.FromResult(Enumerable.Repeat(new XElement("images"), 1));
+			XElement attributesElement = new XElement("attributes");
+			XElement imagesElement = new XElement("images");
 
 			var providerMock = new Mock<IAwsProvider>();
-			providerMock.Setup(c => c.SearchItems("anyTitle")).ReturnsAsync(new[] { itemElement });
-			providerMock.Setup(c => c.LookupAttributes(ids)).Returns(attributesTask);
-			providerMock.Setup(c => c.LookupImages(ids)).Returns(imagesTask);
+			providerMock.Setup(c => c.SearchItems(It.IsAny<string>())).ReturnsAsync(new[] { itemElement });
+			providerMock.Setup(c => c.LookupAttributes(It.IsAny<IEnumerable<string>>())).Returns(Task.FromResult(Enumerable.Repeat(attributesElement, 1)));
+			providerMock.Setup(c => c.LookupImages(It.IsAny<IEnumerable<string>>())).Returns(Task.FromResult(Enumerable.Repeat(imagesElement, 1)));
 
 			var factoryMock = new Mock<IFoodDescriptionFactory>();
-			factoryMock.Setup(f => f.GetId(itemElement)).Returns("id1");
 			factoryMock.Setup(f => f.Create(It.IsAny<XElement>(), It.IsAny<XElement>())).Returns(new FoodDescription());
 
 			AwsFoodRepository repository = CreateRepository(providerMock.Object, factoryMock.Object);
@@ -143,7 +148,7 @@ namespace OrangeJuice.Server.Test.Data
 			await repository.SearchByTitle("anyTitle");
 
 			// Assert
-			factoryMock.Verify(f => f.Create(attributesTask.Result.Single(), imagesTask.Result.Single()), Times.Once());
+			factoryMock.Verify(f => f.Create(attributesElement, imagesElement), Times.Once());
 		}
 		#endregion
 
@@ -158,7 +163,7 @@ namespace OrangeJuice.Server.Test.Data
 
 			return new AwsFoodRepository(
 				providerFactoryMock.Object,
-				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>(MockBehavior.Strict).Object,
+				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>().Object,
 				foodDescriptionFilter ?? new Mock<IFilter<FoodDescription>>().Object);
 		}
 		#endregion
