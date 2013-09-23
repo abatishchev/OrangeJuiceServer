@@ -7,17 +7,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace OrangeJuice.Server.Test
 {
 	[TestClass]
-	public class ProxyFactoryBaseTest
+	public class ProxyFactoryTest
 	{
 		#region Test methods
 		[TestMethod]
 		public void Ctor_Should_Throw_Exception_When_Func_Is_Null()
 		{
 			// Arrange
-			const Func<Stub> func = null;
+			const Func<object> func = null;
 
 			// Act
-			Action action = () => new ProxyFactoryStub(func);
+			Action action = () => new ProxyFactory<object>(func);
 
 			// Assert
 			action.ShouldThrow<ArgumentNullException>()
@@ -29,13 +29,13 @@ namespace OrangeJuice.Server.Test
 		{
 			// Arrange
 			bool called = false;
-			Func<Stub> func = () =>
+			Func<object> func = () =>
 				{
 					called = true;
-					return new Stub();
+					return new object();
 				};
 
-			IFactory<Stub> factory = new ProxyFactoryStub(func);
+			IFactory<object> factory = new ProxyFactory<object>(func);
 
 			// Act
 			factory.Create();
@@ -48,30 +48,16 @@ namespace OrangeJuice.Server.Test
 		public void Create_Should_Return_Object_Returned_By_Func()
 		{
 			// Arrange
-			Stub expected = new Stub();
-			Func<Stub> func = () => expected;
+			object expected = new object();
+			Func<object> func = () => expected;
 
-			IFactory<Stub> factory = new ProxyFactoryStub(func);
+			IFactory<object> factory = new ProxyFactory<object>(func);
 
 			// Act
-			Stub actual = factory.Create();
+			object actual = factory.Create();
 
 			// Assert
 			actual.Should().Be(expected);
-		}
-		#endregion
-
-		#region Helper classes
-		private class Stub
-		{
-		}
-
-		private class ProxyFactoryStub : ProxyFactoryBase<Stub>
-		{
-			public ProxyFactoryStub(Func<Stub> func)
-				: base(func)
-			{
-			}
 		}
 		#endregion
 	}

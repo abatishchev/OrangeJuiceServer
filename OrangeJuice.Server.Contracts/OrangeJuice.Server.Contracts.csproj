@@ -47,6 +47,8 @@
     </Compile>
     <Compile Include="AppKey.cs" />
     <Compile Include="IAssemblyProvider.cs" />
+    <Compile Include="IFactory.cs" />
+    <Compile Include="IValidator.cs" />
     <Compile Include="Services\IArgumentBuilder.cs" />
     <Compile Include="Services\IAwsProvider.cs" />
     <Compile Include="Web\IArgumentFormatter.cs" />
@@ -64,7 +66,6 @@
     <Compile Include="IDateTimeProvider.cs" />
     <Compile Include="Services\IAwsClient.cs" />
     <Compile Include="Services\IItemSelector.cs" />
-    <Compile Include="Services\IRequestValidator.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

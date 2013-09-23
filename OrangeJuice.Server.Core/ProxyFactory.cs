@@ -2,11 +2,11 @@
 
 namespace OrangeJuice.Server
 {
-	public abstract class ProxyFactoryBase<T> : IFactory<T>
+	public sealed class ProxyFactory<T> : IFactory<T>
 	{
 		private readonly Func<T> _func;
 
-		protected ProxyFactoryBase(Func<T> func)
+		public ProxyFactory(Func<T> func)
 		{
 			if (func == null)
 				throw new ArgumentNullException("func");

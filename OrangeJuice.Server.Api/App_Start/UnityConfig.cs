@@ -1,6 +1,7 @@
 using System;
 using System.Web.Http;
 using System.Web.Http.Validation;
+using System.Xml.Linq;
 
 using FluentValidation;
 
@@ -96,11 +97,11 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new TransientLifetimeManager());
 
-			container.RegisterType<IRequestValidator, XmlRequestValidator>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IRequestValidator)));
+				new InjectionConstructor(typeof(IValidator<XElement>)));
 
 			container.RegisterType<IAwsClient, AwsClient>(
 				new TransientLifetimeManager(),
@@ -110,7 +111,7 @@ namespace OrangeJuice.Server.Api
 				new TransientLifetimeManager(),
 				new InjectionConstructor(typeof(IAwsClient)));
 
-			container.RegisterType<IFactory<IAwsProvider>, AwsProviderProxyFactory>(
+			container.RegisterType<IFactory<IAwsProvider>, ProxyFactory<IAwsProvider>>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(new Func<IAwsProvider>(() => container.Resolve<IAwsProvider>())));
 
