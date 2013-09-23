@@ -67,7 +67,6 @@
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
     <Compile Include="Data\XmlFoodDescriptionFactory.cs" />
-    <Compile Include="Diagnostics\TraceSourceExtensions.cs" />
     <Compile Include="Filters\ValidImageFoodDescriptionFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\AwsFoodRepository.cs" />
