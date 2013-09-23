@@ -100,13 +100,13 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_Title_To_AwsClient_SearhItem()
+		public async Task SearchByTitle_Should_Pass_Title_To_AwsClient_SearhItems()
 		{
 			// Arrange
 			const string title = "anyTitle";
 
 			var providerMock = new Mock<IAwsProvider>();
-			providerMock.Setup(c => c.SearchItem(title)).ReturnsAsync(Enumerable.Empty<XElement>());
+			providerMock.Setup(c => c.SearchItems(title)).ReturnsAsync(Enumerable.Empty<XElement>());
 
 			IFoodRepository repository = CreateRepository(providerMock.Object);
 
@@ -114,35 +114,36 @@ namespace OrangeJuice.Server.Test.Data
 			await repository.SearchByTitle(title);
 
 			// Assert
-			providerMock.Verify(c => c.SearchItem(title), Times.Once());
+			providerMock.Verify(c => c.SearchItems(title), Times.Once());
 		}
 
-		// ReSharper disable ImplicitlyCapturedClosure
+		// TODO: rewrite
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_Id_AttributesTask_ImagesTask_To_FoodDescriptionFactory_Returned_By_AwsClient()
+		public async Task SearchByTitle_Should_Pass_AttributesElement_ImagesElement_To_FoodDescriptionFactory_Returned_By_AwsClient()
 		{
 			// Arrange
-			const string id = "id";
-			XElement itemElement = new XElement("Item", new XElement("ASIN", id));
-			Task<XElement> attributesTask = Task.FromResult(new XElement("attributes"));
-			Task<XElement> imagesTask = Task.FromResult(new XElement("images"));
+			string[] ids = new[] { "id1", "id2" };
+
+			XElement itemElement = new XElement("Item");
+			var attributesTask = Task.FromResult(Enumerable.Repeat(new XElement("attributes"), 1));
+			var imagesTask = Task.FromResult(Enumerable.Repeat(new XElement("images"), 1));
 
 			var providerMock = new Mock<IAwsProvider>();
-			providerMock.Setup(c => c.SearchItem(id)).ReturnsAsync(new[] { itemElement });
-			providerMock.Setup(c => c.LookupAttributes(id)).Returns(attributesTask);
-			providerMock.Setup(c => c.LookupImages(id)).Returns(imagesTask);
+			providerMock.Setup(c => c.SearchItems("anyTitle")).ReturnsAsync(new[] { itemElement });
+			providerMock.Setup(c => c.LookupAttributes(ids)).Returns(attributesTask);
+			providerMock.Setup(c => c.LookupImages(ids)).Returns(imagesTask);
 
 			var factoryMock = new Mock<IFoodDescriptionFactory>();
-			factoryMock.Setup(f => f.GetId(itemElement)).Returns(id);
-			factoryMock.Setup(f => f.Create(id, attributesTask, imagesTask)).ReturnsAsync(new FoodDescription());
+			factoryMock.Setup(f => f.GetId(itemElement)).Returns("id1");
+			factoryMock.Setup(f => f.Create(It.IsAny<XElement>(), It.IsAny<XElement>())).Returns(new FoodDescription());
 
 			AwsFoodRepository repository = CreateRepository(providerMock.Object, factoryMock.Object);
 
 			// Act
-			await repository.SearchByTitle(id);
+			await repository.SearchByTitle("anyTitle");
 
 			// Assert
-			factoryMock.Verify(f => f.Create(id, attributesTask, imagesTask), Times.Once());
+			factoryMock.Verify(f => f.Create(attributesTask.Result.Single(), imagesTask.Result.Single()), Times.Once());
 		}
 		#endregion
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FluentAssertions;
@@ -15,20 +14,18 @@ namespace OrangeJuice.Server.Test.Data
 	{
 		#region Test methods
 		[TestMethod]
-		public async Task Create_Should_Return_GroceryDescription_Having_Properies_Populated_From_XElement()
+		public void Create_Should_Return_GroceryDescription_Having_Properies_Populated_From_XElement()
 		{
 			// Arrange
-			const string asin = "asin";
-			var attributesTask = Task.Factory.StartNew(() => CreateAttributes());
-			var imagesTask = Task.Factory.StartNew(() => CreateImages());
+			XElement attributesTask = CreateAttributes();
+			XElement imagesTask = CreateImages();
 
 			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
-			FoodDescription description = await factory.Create(asin, attributesTask, imagesTask);
+			FoodDescription description = factory.Create(attributesTask, imagesTask);
 
 			// Assert
-			description.ASIN.Should().NotBeNull();
 			description.Title.Should().NotBeNull();
 			description.Brand.Should().NotBeNull();
 

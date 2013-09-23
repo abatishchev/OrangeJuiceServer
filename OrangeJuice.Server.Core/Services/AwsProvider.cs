@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsProvider Members
-		public async Task<IEnumerable<XElement>> SearchItem(string title)
+		public async Task<IEnumerable<XElement>> SearchItems(string title)
 		{
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
