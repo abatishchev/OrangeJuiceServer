@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -35,7 +36,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		#region SearchItems
 		[TestMethod]
-		public void SearchItem_Should_Throw_Exception_When_Title_Is_Null()
+		public void SearchItems_Should_Throw_Exception_When_Title_Is_Null()
 		{
 			// Arrange
 			const string title = null;
@@ -51,7 +52,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void SearchItem_Should_Throw_Exception_When_Title_Is_Empty()
+		public void SearchItems_Should_Throw_Exception_When_Title_Is_Empty()
 		{
 			// Arrange
 			const string title = "";
@@ -67,7 +68,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public async Task SearchItem_Should_Pass_Arguments_To_Client()
+		public async Task SearchItems_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
 			const string title = "anyTitle";
@@ -77,7 +78,7 @@ namespace OrangeJuice.Server.Test.Services
 													   .And.Contain("SearchIndex", "Grocery")
 													   .And.Contain("ResponseGroup", "Small")
 													   .And.Contain("Title", title);
-			var clientMock = CreateClient(callback);
+			var clientMock = CreateClient(callback: callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
@@ -86,6 +87,22 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
+		}
+
+		[TestMethod]
+		public async Task SearchItems_Should_Return_Elements_Returned_By_Client_GetItems()
+		{
+			// Arrange
+			var expected = new[] { new XElement("Items") };
+			var clientMock = CreateClient(expected);
+
+			IAwsProvider provider = CreateProvider(clientMock.Object);
+
+			// Act
+			var actual = await provider.SearchItems("anyTitle");
+
+			// Assert
+			actual.ShouldBeEquivalentTo(expected);
 		}
 		#endregion
 
@@ -116,7 +133,7 @@ namespace OrangeJuice.Server.Test.Services
 													   .Contain("Operation", "ItemLookup")
 													   .And.Contain("ResponseGroup", "ItemAttributes")
 													   .And.Contain("ItemId", String.Join(",", ids));
-			var clientMock = CreateClient(callback);
+			var clientMock = CreateClient(callback: callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
@@ -125,6 +142,22 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
+		}
+
+		[TestMethod]
+		public async Task LookupAttributes_Should_Return_Elements_Returned_By_Client_GetItems()
+		{
+			// Arrange
+			var expected = new[] { new XElement("Items") };
+			var clientMock = CreateClient(expected);
+
+			IAwsProvider provider = CreateProvider(clientMock.Object);
+
+			// Act
+			var actual = await provider.LookupAttributes(new[] { "id" });
+
+			// Assert
+			actual.ShouldBeEquivalentTo(expected);
 		}
 		#endregion
 
@@ -155,7 +188,7 @@ namespace OrangeJuice.Server.Test.Services
 													   .Contain("Operation", "ItemLookup")
 													   .And.Contain("ResponseGroup", "Images")
 													   .And.Contain("ItemId", String.Join(",", ids));
-			var clientMock = CreateClient(callback);
+			var clientMock = CreateClient(callback: callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
@@ -165,6 +198,22 @@ namespace OrangeJuice.Server.Test.Services
 			// Assert
 			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
 		}
+
+		[TestMethod]
+		public async Task LookupImages_Should_Return_Elements_Returned_By_Client_GetItems()
+		{
+			// Arrange
+			var expected = new[] { new XElement("Items") };
+			var clientMock = CreateClient(expected);
+
+			IAwsProvider provider = CreateProvider(clientMock.Object);
+
+			// Act
+			var actual = await provider.LookupImages(new[] { "id" });
+
+			// Assert
+			actual.ShouldBeEquivalentTo(expected);
+		}
 		#endregion
 
 		#region Helper methods
@@ -173,12 +222,12 @@ namespace OrangeJuice.Server.Test.Services
 			return new AwsProvider(client ?? new Mock<IAwsClient>().Object);
 		}
 
-		private static Mock<IAwsClient> CreateClient(Action<IStringDictionary> callback)
+		private static Mock<IAwsClient> CreateClient(IEnumerable<XElement> items = null, Action<IStringDictionary> callback = null)
 		{
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
-					  .ReturnsAsync(new[] { new XElement("Items") })
-					  .Callback(callback);
+					  .ReturnsAsync(items ?? new[] { new XElement("Items") })
+					  .Callback(callback ?? (d => { }));
 			return clientMock;
 		}
 		#endregion

@@ -128,7 +128,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Return_Elements_Returned_By_ItemSelector()
+		public async Task GetItems_Should_Return_Elements_Returned_By_ItemSelector_GetItems()
 		{
 			// Arrange
 			var expected = new[] { new XElement("Items") };
