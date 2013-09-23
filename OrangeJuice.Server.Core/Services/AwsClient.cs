@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -32,14 +33,14 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsClient Members
-		public async Task<IEnumerable<XElement>> GetItems(IDictionary<string, string> args)
+		public async Task<ICollection<XElement>> GetItems(IDictionary<string, string> args)
 		{
 			if (args == null)
 				throw new ArgumentNullException("args");
 
 			string url = _queryBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
-			return _itemSelector.GetItems(doc);
+			return _itemSelector.GetItems(doc).ToArray();
 		}
 		#endregion
 	}

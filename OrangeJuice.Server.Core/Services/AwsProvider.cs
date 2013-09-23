@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsProvider Members
-		public async Task<IEnumerable<XElement>> SearchItems(string title)
+		public async Task<ICollection<XElement>> SearchItems(string title)
 		{
 			if (String.IsNullOrEmpty(title))
 				throw new ArgumentNullException("title");
@@ -37,7 +37,7 @@ namespace OrangeJuice.Server.Services
 			return await _client.GetItems(args);
 		}
 
-		public async Task<IEnumerable<XElement>> LookupAttributes(IEnumerable<string> ids)
+		public async Task<ICollection<XElement>> LookupAttributes(IEnumerable<string> ids)
 		{
 			if (ids == null)
 				throw new ArgumentNullException("ids");
@@ -52,7 +52,7 @@ namespace OrangeJuice.Server.Services
 			return await _client.GetItems(args);
 		}
 
-		public async Task<IEnumerable<XElement>> LookupImages(IEnumerable<string> ids)
+		public async Task<ICollection<XElement>> LookupImages(IEnumerable<string> ids)
 		{
 			if (ids == null)
 				throw new ArgumentNullException("ids");
