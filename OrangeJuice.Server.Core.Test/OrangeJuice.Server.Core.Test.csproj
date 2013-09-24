@@ -86,12 +86,14 @@
     <Compile Include="MoqExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AwsProviderTest.cs" />
+    <Compile Include="ProxyFactoryTest.cs" />
+    <Compile Include="Services\XmlRequestValidatorTest.cs" />
     <Compile Include="Web\FlattenArgumentFormatterTest.cs" />
     <Compile Include="Services\AwsArgumentBuilderTest.cs" />
     <Compile Include="Services\AwsQueryBuilderTest.cs" />
     <Compile Include="Services\AwsQuerySignerTest.cs" />
     <Compile Include="Services\AswOptionsFactoryTest.cs" />
-    <Compile Include="Services\XmlItemProviderTest.cs" />
+    <Compile Include="Services\XmlItemSelectorTest.cs" />
     <Compile Include="Services\AwsClientTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
     <Compile Include="Web\PercentUrlEncoderTest.cs" />

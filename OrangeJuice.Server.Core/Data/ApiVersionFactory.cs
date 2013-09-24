@@ -7,7 +7,7 @@ using Environment = OrangeJuice.Server.Configuration.Environment;
 
 namespace OrangeJuice.Server.Data
 {
-	public sealed class ApiVersionFactory : IApiVersionFactory
+	public sealed class ApiVersionFactory : IFactory<ApiVersion>
 	{
 		#region Fields
 		private readonly IAssemblyProvider _assemblyProvider;

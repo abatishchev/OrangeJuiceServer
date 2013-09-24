@@ -3,16 +3,16 @@ using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class XmlRequestValidator : IRequestValidator
+	public sealed class XmlRequestValidator : IValidator<XElement>
 	{
 		// ReSharper disable once PossibleNullReferenceException
-		public bool IsValid(XElement items)
+		public bool IsValid(XElement item)
 		{
-			if (items == null)
-				throw new ArgumentNullException("items");
+			if (item == null)
+				throw new ArgumentNullException("item");
 
-			XNamespace ns = items.Name.Namespace;
-			return (bool)items.Element(ns + "Request")
+			XNamespace ns = item.Name.Namespace;
+			return (bool)item.Element(ns + "Request")
 							  .Element(ns + "IsValid");
 		}
 	}

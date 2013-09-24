@@ -58,7 +58,7 @@
     <Compile Include="ReflectionAssemblyProvider.cs" />
     <Compile Include="Services\AwsArgumentBuilder.cs" />
     <Compile Include="Services\AwsProvider.cs" />
-    <Compile Include="Services\AwsProviderProxyFactory.cs" />
+    <Compile Include="ProxyFactory.cs" />
     <Compile Include="Web\FlattenArgumentFormatter.cs" />
     <Compile Include="Services\AwsQuerySigner.cs" />
     <Compile Include="Services\AwsQueryBuilder.cs" />
@@ -67,7 +67,6 @@
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
     <Compile Include="Data\XmlFoodDescriptionFactory.cs" />
-    <Compile Include="Diagnostics\TraceSourceExtensions.cs" />
     <Compile Include="Filters\ValidImageFoodDescriptionFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\AwsFoodRepository.cs" />

@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Test.Data
 		public void Ctor_Should_Throw_Exception_When_AwsClientFactory_Is_Null()
 		{
 			// Arrange
-			const IAwsProviderFactory providerFactory = null;
+			const IFactory<IAwsProvider> providerFactory = null;
 			const IFoodDescriptionFactory foodDescriptionFactory = null;
 			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
@@ -39,7 +39,7 @@ namespace OrangeJuice.Server.Test.Data
 		public void Ctor_Should_Throw_Exception_When_FoodDescriptionFactorys_Is_Null()
 		{
 			// Arrange
-			IAwsProviderFactory providerFactory = new Mock<IAwsProviderFactory>().Object;
+			IFactory<IAwsProvider> providerFactory = new Mock<IFactory<IAwsProvider>>().Object;
 			const IFoodDescriptionFactory foodDescriptionFactory = null;
 			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
@@ -55,7 +55,7 @@ namespace OrangeJuice.Server.Test.Data
 		public void Ctor_Should_Throw_Exception_When_FoodDescriptionFilter_Is_Null()
 		{
 			// Arrange
-			IAwsProviderFactory providerFactory = new Mock<IAwsProviderFactory>().Object;
+			IFactory<IAwsProvider> providerFactory = new Mock<IFactory<IAwsProvider>>().Object;
 			IFoodDescriptionFactory foodDescriptionFactory = new Mock<IFoodDescriptionFactory>().Object;
 			const IFilter<FoodDescription> foodDescriptionFilter = null;
 
@@ -174,7 +174,7 @@ namespace OrangeJuice.Server.Test.Data
 			IFoodDescriptionFactory foodDescriptionFactory = null,
 			IFilter<FoodDescription> foodDescriptionFilter = null)
 		{
-			var providerFactoryMock = new Mock<IAwsProviderFactory>();
+			var providerFactoryMock = new Mock<IFactory<IAwsProvider>>();
 			providerFactoryMock.Setup(c => c.Create()).Returns(awsProvider ?? new Mock<IAwsProvider>().Object);
 
 			return new AwsFoodRepository(

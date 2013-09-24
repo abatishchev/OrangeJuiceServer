@@ -6,9 +6,9 @@ namespace OrangeJuice.Server.Services
 {
 	public sealed class XmlItemSelector : IItemSelector
 	{
-		private readonly IRequestValidator _requestValidator;
+		private readonly IValidator<XElement> _requestValidator;
 
-		public XmlItemSelector(IRequestValidator requestValidator)
+		public XmlItemSelector(IValidator<XElement> requestValidator)
 		{
 			if (requestValidator == null)
 				throw new ArgumentNullException("requestValidator");

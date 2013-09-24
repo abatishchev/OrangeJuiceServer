@@ -1,6 +1,7 @@
 using System;
 using System.Web.Http;
 using System.Web.Http.Validation;
+using System.Xml.Linq;
 
 using FluentValidation;
 
@@ -62,13 +63,13 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IValidatorFactory), typeof(IModelValidatorFactory)));
 
 			// VersionController
-			container.RegisterType<IApiVersionFactory, ApiVersionFactory>(
+			container.RegisterType<IFactory<ApiVersion>, ApiVersionFactory>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IAssemblyProvider), typeof(IEnvironmentProvider)));
 
 			container.RegisterType<ApiVersion>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionFactory(c => c.Resolve<IApiVersionFactory>().Create()));
+				new InjectionFactory(c => c.Resolve<IFactory<ApiVersion>>().Create()));
 
 			// UserController
 			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());
@@ -96,11 +97,11 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new TransientLifetimeManager());
 
-			container.RegisterType<IRequestValidator, XmlRequestValidator>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IRequestValidator)));
+				new InjectionConstructor(typeof(IValidator<XElement>)));
 
 			container.RegisterType<IAwsClient, AwsClient>(
 				new TransientLifetimeManager(),
@@ -110,7 +111,7 @@ namespace OrangeJuice.Server.Api
 				new TransientLifetimeManager(),
 				new InjectionConstructor(typeof(IAwsClient)));
 
-			container.RegisterType<IAwsProviderFactory, AwsProviderProxyFactory>(
+			container.RegisterType<IFactory<IAwsProvider>, ProxyFactory<IAwsProvider>>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(new Func<IAwsProvider>(() => container.Resolve<IAwsProvider>())));
 
@@ -120,7 +121,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IAwsProviderFactory), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>)));
+				new InjectionConstructor(typeof(IFactory<IAwsProvider>), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>)));
 		}
 	}
 }
