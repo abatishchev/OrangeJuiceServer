@@ -97,7 +97,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new TransientLifetimeManager());
 
-			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IValidator<XElement>, XmlItemValidator>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
 				new ContainerControlledLifetimeManager(),

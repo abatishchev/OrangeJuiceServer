@@ -222,7 +222,7 @@ namespace OrangeJuice.Server.Test.Services
 			return new AwsProvider(client ?? new Mock<IAwsClient>().Object);
 		}
 
-		private static Mock<IAwsClient> CreateClient(IEnumerable<XElement> items = null, Action<IStringDictionary> callback = null)
+		private static Mock<IAwsClient> CreateClient(ICollection<XElement> items = null, Action<IStringDictionary> callback = null)
 		{
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))

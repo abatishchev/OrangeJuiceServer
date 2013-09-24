@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class XmlRequestValidator : IValidator<XElement>
+	public sealed class XmlItemValidator : IValidator<XElement>
 	{
 		// ReSharper disable once PossibleNullReferenceException
 		public bool IsValid(XElement item)
@@ -13,7 +13,7 @@ namespace OrangeJuice.Server.Services
 
 			XNamespace ns = item.Name.Namespace;
 			return (bool)item.Element(ns + "Request")
-							  .Element(ns + "IsValid");
+			                 .Element(ns + "IsValid");
 		}
 	}
 }

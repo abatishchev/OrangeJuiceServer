@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Services
 
 			string url = _queryBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
-			return _itemSelector.GetItems(doc).ToArray();
+			return _itemSelector.SelectItems(doc).ToArray();
 		}
 		#endregion
 	}

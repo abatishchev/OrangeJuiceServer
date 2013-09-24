@@ -70,7 +70,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 		#endregion
 
-		#region GetItems
+		#region SelectItems
 		[TestMethod]
 		public void GetItems_Should_Throw_Exception_When_Args_Is_Null()
 		{
@@ -124,7 +124,7 @@ namespace OrangeJuice.Server.Test.Services
 			await client.GetItems(new StringDictionary());
 
 			// Assert
-			selectorMock.Verify(s => s.GetItems(doc), Times.Once());
+			selectorMock.Verify(s => s.SelectItems(doc), Times.Once());
 		}
 
 		[TestMethod]
@@ -170,7 +170,7 @@ namespace OrangeJuice.Server.Test.Services
 		private static IItemSelector CreateItemSelector(IEnumerable<XElement> elements = null)
 		{
 			var selectorMock = new Mock<IItemSelector>();
-			selectorMock.Setup(s => s.GetItems(It.IsAny<XDocument>())).Returns(elements ?? new[] { new XElement("Item") });
+			selectorMock.Setup(s => s.SelectItems(It.IsAny<XDocument>())).Returns(elements ?? new[] { new XElement("Item") });
 			return selectorMock.Object;
 		}
 		#endregion

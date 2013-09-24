@@ -5,6 +5,6 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IItemSelector
 	{
-		IEnumerable<XElement> GetItems(XDocument doc);
+		IEnumerable<XElement> SelectItems(XDocument doc);
 	}
 }

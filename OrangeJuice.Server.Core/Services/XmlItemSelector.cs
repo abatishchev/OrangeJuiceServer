@@ -6,16 +6,16 @@ namespace OrangeJuice.Server.Services
 {
 	public sealed class XmlItemSelector : IItemSelector
 	{
-		private readonly IValidator<XElement> _requestValidator;
+		private readonly IValidator<XElement> _itemValidator;
 
-		public XmlItemSelector(IValidator<XElement> requestValidator)
+		public XmlItemSelector(IValidator<XElement> itemValidator)
 		{
-			if (requestValidator == null)
-				throw new ArgumentNullException("requestValidator");
-			_requestValidator = requestValidator;
+			if (itemValidator == null)
+				throw new ArgumentNullException("itemValidator");
+			_itemValidator = itemValidator;
 		}
 
-		public IEnumerable<XElement> GetItems(XDocument doc)
+		public IEnumerable<XElement> SelectItems(XDocument doc)
 		{
 			if (doc == null)
 				throw new ArgumentNullException("doc");
@@ -25,7 +25,7 @@ namespace OrangeJuice.Server.Services
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			XElement items = doc.Root.Element(ns + "Items");
-			if (items == null || !_requestValidator.IsValid(items))
+			if (items == null || !_itemValidator.IsValid(items))
 				throw new InvalidOperationException("Response is not valid");
 
 			return items.Elements(ns + "Item");
