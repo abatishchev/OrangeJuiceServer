@@ -107,7 +107,7 @@ namespace OrangeJuice.Server.Test.Services
 			const string associateTag = "anyTag";
 
 			DateTime now = DateTime.UtcNow;
-			string timestamp = now.ToString();
+			string timestamp = Convert.ToString(now);
 			var dateTimeProvider = CreateDateTimeProvider(now);
 
 			var argumentBuilder = CreateArgumentBuilder(accessKey, associateTag, dateTimeProvider.Object);
@@ -198,7 +198,7 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			var dateTimeProviderMock = new Mock<IDateTimeProvider>();
 			dateTimeProviderMock.Setup(p => p.GetNow()).Returns(now);
-			dateTimeProviderMock.Setup(p => p.FormatToUniversal(It.IsAny<DateTime>())).Returns(now.ToString());
+			dateTimeProviderMock.Setup(p => p.FormatToUniversal(It.IsAny<DateTime>())).Returns(Convert.ToString(now));
 			return dateTimeProviderMock;
 		}
 

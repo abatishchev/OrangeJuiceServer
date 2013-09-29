@@ -37,7 +37,7 @@ namespace OrangeJuice.Server.Test.Services
 			XElement item = new XElement(ns + "Item",
 				new XElement(ns + "Request",
 					new XElement(ns + "IsValid",
-						new XText(expected.ToString()))));
+						new XText(Convert.ToString(expected)))));
 
 			IValidator<XElement> validator = new XmlItemValidator();
 
