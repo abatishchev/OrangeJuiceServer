@@ -17,7 +17,7 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Test Methods
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_RequestValidator_Is_Null()
+		public void Ctor_Should_Throw_Exception_When_ItemValidator_Is_Null()
 		{
 			// Arrange
 			const IValidator<XElement> validator = null;

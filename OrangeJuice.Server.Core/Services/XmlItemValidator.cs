@@ -1,19 +1,21 @@
 ﻿using System;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace OrangeJuice.Server.Services
 {
 	public sealed class XmlItemValidator : IValidator<XElement>
 	{
-		// ReSharper disable once PossibleNullReferenceException
 		public bool IsValid(XElement item)
 		{
 			if (item == null)
 				throw new ArgumentNullException("item");
 
-			XNamespace ns = item.Name.Namespace;
-			return (bool)item.Element(ns + "Request")
-			                 .Element(ns + "IsValid");
+			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
+			nm.AddNamespace("x", item.Name.Namespace.ToString());
+
+			return (bool)item.XPathSelectElement("x:Request/x:IsValid", nm);
 		}
 	}
 }

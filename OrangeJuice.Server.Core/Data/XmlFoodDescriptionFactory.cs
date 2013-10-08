@@ -1,17 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace OrangeJuice.Server.Data
 {
 	public sealed class XmlFoodDescriptionFactory : IFoodDescriptionFactory
 	{
 		#region IFoodDescriptionFactory Members
-		public string GetId(XElement item)
+		public string GetId(XElement element)
 		{
-			if (item == null)
-				throw new ArgumentNullException("item");
-			XNamespace ns = item.Name.Namespace;
-			return (string)item.Element(ns + "ASIN");
+			if (element == null)
+				throw new ArgumentNullException("element");
+
+			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
+			nm.AddNamespace("x", element.Name.Namespace.ToString());
+
+			return (string)element.XPathSelectElement("x:ASIN", nm);
 		}
 
 		public FoodDescription Create(XElement attributesElement, XElement imagesElement)
@@ -21,47 +28,40 @@ namespace OrangeJuice.Server.Data
 			if (imagesElement == null)
 				throw new ArgumentNullException("imagesElement");
 
-			FoodDescription description = new FoodDescription();
-
-			AssignAttributes(description, attributesElement);
-			AssignImages(description, imagesElement);
-
-			return description;
+			return GetSteps(attributesElement, imagesElement).Aggregate(new FoodDescription(), (d, func) => func(d));
 		}
 
 		#endregion
 
 		#region Methods
-		internal static void AssignAttributes(FoodDescription description, XElement attributesElement)
+		private static IEnumerable<Func<FoodDescription, FoodDescription>> GetSteps(XElement attributesElement, XElement imagesElement)
 		{
-			XNamespace ns = attributesElement.Name.Namespace;
-
-			description.Title = GetAttribute(attributesElement, ns, "Title");
-			description.Brand = GetAttribute(attributesElement, ns, "Brand");
+			yield return d => AssignAttributes(d, attributesElement);
+			yield return d => AssignImages(d, imagesElement);
 		}
 
-		internal static void AssignImages(FoodDescription description, XElement imagesElement)
+		internal static FoodDescription AssignAttributes(FoodDescription description, XElement element)
 		{
-			XNamespace ns = imagesElement.Name.Namespace;
+			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
+			nm.AddNamespace("x", element.Name.Namespace.ToString());
 
-			description.SmallImageUrl = GetImageUrl(imagesElement, ns, "SmallImage");
-			description.MediumImageUrl = GetImageUrl(imagesElement, ns, "MediumImage");
-			description.LargeImageUrl = GetImageUrl(imagesElement, ns, "LargeImage");
+			description.Title = (string)element.XPathSelectElement("x:ItemAttributes/x:Title", nm);
+			description.Brand = (string)element.XPathSelectElement("x:ItemAttributes/x:Brand", nm);
+
+			return description;
 		}
 
-		// ReSharper disable PossibleNullReferenceException
-		private static string GetAttribute(XContainer attributesElement, XNamespace ns, string elementName)
+		internal static FoodDescription AssignImages(FoodDescription description, XElement element)
 		{
-			return (string)attributesElement.Element(ns + "ItemAttributes")
-											.Element(ns + elementName);
-		}
+			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
+			nm.AddNamespace("x", element.Name.Namespace.ToString());
 
-		private static string GetImageUrl(XContainer imagesElement, XNamespace ns, string elementName)
-		{
-			XElement element = imagesElement.Element(ns + elementName);
-			return element != null ? (string)element.Element(ns + "URL") : null;
+			description.SmallImageUrl = (string)element.XPathSelectElement("x:SmallImage/x:URL", nm);
+			description.MediumImageUrl = (string)element.XPathSelectElement("x:MediumImage/x:URL", nm);
+			description.LargeImageUrl = (string)element.XPathSelectElement("x:LargeImage/x:URL", nm);
+
+			return description;
 		}
 		#endregion
-
 	}
 }

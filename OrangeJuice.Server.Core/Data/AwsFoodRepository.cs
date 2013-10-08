@@ -42,7 +42,7 @@ namespace OrangeJuice.Server.Data
 			var images = provider.LookupImages(ids);
 
 			return await Task.WhenAll(attributes, images)
-							 .ContinueWith(t => Enumerable.Zip(t.Result.First(), t.Result.Last(), _foodDescriptionFactory.Create)
+							 .ContinueWith(t => Enumerable.Zip(t.Result[0], t.Result[1], _foodDescriptionFactory.Create)
 														  .Where(_foodDescriptionFilter.Filter)
 														  .ToArray());
 		}
