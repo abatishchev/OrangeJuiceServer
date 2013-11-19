@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
@@ -9,14 +8,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		public static T Create<T>(params object[] args) where T : ApiController
 		{
-			var config = new HttpConfiguration();
-
 			var request = new HttpRequestMessage();
-			request.SetRequestContext(new HttpRequestContext { IncludeErrorDetail = true });
-			request.SetConfiguration(config);
+			request.SetConfiguration(new HttpConfiguration());
 
 			T controller = (T)Activator.CreateInstance(typeof(T), args);
 			controller.Request = request;
+			controller.RequestContext.IncludeErrorDetail = true;
 			return controller;
 		}
 	}
