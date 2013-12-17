@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Test
 			string output = dateTimeProvider.FormatToUniversal(DateTime.UtcNow);
 
 			// Assert
-			Regex.IsMatch(output, @"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$").Should().BeTrue();
+			Regex.IsMatch(output, @"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$").Should().BeTrue(); // TODO: update with recent FA
 		}
 	}
 }
