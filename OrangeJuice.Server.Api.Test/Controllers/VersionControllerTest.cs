@@ -1,5 +1,5 @@
 using System;
-using System.Net.Http;
+using System.Web.Http.Results;
 
 using FluentAssertions;
 
@@ -36,8 +36,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			VersionController controller = ControllerFactory.Create<VersionController>(expected);
 
 			// Act
-			HttpResponseMessage message = controller.GetVersion();
-			ApiVersion actual = message.Content.GetValue<ApiVersion>();
+			var result = controller.GetVersion() as OkNegotiatedContentResult<ApiVersion>;
+			ApiVersion actual = result.Content;
 
 			// Assert
 			actual.Should().Be(expected);

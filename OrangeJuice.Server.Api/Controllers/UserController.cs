@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -32,18 +30,18 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <param name="searchCriteria">User search criteria</param>
 		/// <returns>User entity</returns>
 		/// <url>GET /api/user/</url>
-		public async Task<HttpResponseMessage> GetUserInformation([FromUri]UserSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetUserInformation([FromUri]UserSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
+				return BadRequest("SearchCriteria is null");
 			if (!ModelState.IsValid)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
+				return BadRequest("Model is not valid");
 
 			IUser user = await _userRepository.SearchByGuid(searchCriteria.UserGuid.GetValueOrDefault());
 			if (user == null)
-				throw new HttpResponseException(HttpStatusCode.NotFound);
+				return NotFound();
 
-			return Request.CreateResponse(HttpStatusCode.OK, user);
+			return Ok(user);
 		}
 
 		/// <summary>
@@ -52,18 +50,18 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <param name="userRegistration">User userRegistration information</param>
 		/// <returns>Guid representing the user</returns>
 		/// <url>PUT /api/user/</url>
-		public async Task<HttpResponseMessage> PutUserRegistration([FromBody]UserRegistration userRegistration)
+		public async Task<IHttpActionResult> PutUserRegistration([FromBody]UserRegistration userRegistration)
 		{
 			if (userRegistration == null)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("userRegistration"));
+				return BadRequest("UserRegistration is null");
 			if (!ModelState.IsValid)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
+				return BadRequest("Model is not valid");
 
 			IUser user = await _userRepository.Register(userRegistration.Email);
 			if (user == null)
-				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User is null");
+				return InternalServerError(new InvalidOperationException("User is null"));
 
-			return Request.CreateResponse(HttpStatusCode.Created, user.UserGuid);
+			return Ok(user.UserGuid);
 		}
 		#endregion
 	}

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 using OrangeJuice.Server.Data;
@@ -18,9 +16,9 @@ namespace OrangeJuice.Server.Api.Controllers
 			_apiVersion = apiVersion;
 		}
 
-		public HttpResponseMessage GetVersion()
+		public IHttpActionResult GetVersion()
 		{
-			return Request.CreateResponse(HttpStatusCode.OK, _apiVersion);
+			return Ok(_apiVersion);
 		}
 	}
 }

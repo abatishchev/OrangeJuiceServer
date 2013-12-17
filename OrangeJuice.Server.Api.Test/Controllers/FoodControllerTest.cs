@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 using FluentAssertions;
 
@@ -38,52 +37,31 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetDescription
 		[TestMethod]
-		public async Task GetDescription_Should_Return_Status_BadRequest_When_SearchCriteria_Is_Null()
-		{
-			// Arrange
-			FoodController controller = CreateController();
-			const FoodSearchCriteria searchCriteria = null;
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
-
-			// Act
-			HttpResponseMessage message = await controller.GetDescription(searchCriteria);
-			HttpStatusCode actual = message.StatusCode;
-
-			// Assert
-			actual.Should().Be(expected);
-		}
-
-		[TestMethod]
-		public async Task GetDescription_Should_Return_Message_Having_Exception_Set_When_SearchCriteria_Is_Null()
+		public async Task GetDescription_Should_Return_BadRequest_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
 			FoodController controller = CreateController();
 			const FoodSearchCriteria searchCriteria = null;
 
 			// Act
-			HttpResponseMessage message = await controller.GetDescription(searchCriteria);
+			IHttpActionResult result = await controller.GetDescription(searchCriteria);
 
 			// Assert
-			ObjectContent<HttpError> content = message.Content as ObjectContent<HttpError>;
-			Action action = () => { throw content.GetException(); };
-
-			action.ShouldThrow<ArgumentNullException>();
+			result.Should().BeOfType<BadRequestErrorMessageResult>();
 		}
 
 		[TestMethod]
-		public async Task GetDescription_Should_Return_Status_BadRequest_When_Model_Not_IsValid()
+		public async Task GetDescription_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			FoodController controller = CreateController(exception: new ArgumentNullException());
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpResponseMessage message = await controller.GetDescription(searchCriteria);
-			HttpStatusCode actual = message.StatusCode;
+			IHttpActionResult result  = await controller.GetDescription(searchCriteria);
 
 			// Assert
-			actual.Should().Be(expected);
+			result.Should().BeOfType<BadRequestErrorMessageResult>();
 		}
 
 		[TestMethod]
@@ -109,7 +87,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetDescription_Should_Return_Description_Of_Found_Food()
 		{
 			// Arrange
-			FoodDescription[] expected = new[] { new FoodDescription() };
+			FoodDescription[] expected = { new FoodDescription() };
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
 			foodRepositoryMock.Setup(r => r.SearchByTitle(It.IsAny<string>())).ReturnsAsync(expected);
@@ -118,8 +96,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 
 			// Act
-			HttpResponseMessage message = await controller.GetDescription(searchCriteria);
-			FoodDescription[] actual = message.Content.GetValue<FoodDescription[]>();
+			var result  = await controller.GetDescription(searchCriteria) as OkNegotiatedContentResult<FoodDescription[]>;
+			FoodDescription[] actual = result.Content;
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);

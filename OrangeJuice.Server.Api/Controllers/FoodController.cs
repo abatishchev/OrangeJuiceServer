@@ -27,15 +27,15 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <returns>Brief description of food found</returns>
 		/// <param name="searchCriteria">Food search criteria</param>
 		/// <url>GET /api/food/</url>
-		public async Task<HttpResponseMessage> GetDescription([FromUri]FoodSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetDescription([FromUri]FoodSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentNullException("searchCriteria"));
+				return BadRequest("SearchCriteria is null");
 			if (!ModelState.IsValid)
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Model is not valid");
+				return BadRequest("Model is not valid");
 
 			var description = await _foodRepository.SearchByTitle(searchCriteria.Title);
-			return Request.CreateResponse(HttpStatusCode.OK, description.ToArray());
+			return Ok(description.ToArray());
 		}
 	}
 }

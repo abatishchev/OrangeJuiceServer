@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 using FluentAssertions;
 
@@ -38,56 +37,35 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetUser
 		[TestMethod]
-		public async Task GetUser_Should_Return_Status_BadRequest_When_SearchCriteria_Is_Null()
-		{
-			// Arrange
-			UserController controller = CreateController();
-			const UserSearchCriteria searchCriteria = null;
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
-
-			// Act
-			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
-			HttpStatusCode actual = message.StatusCode;
-
-			// Assert
-			actual.Should().Be(expected);
-		}
-
-		[TestMethod]
-		public async Task GetUser_Should_Return_Message_Having_Exception_Set_When_SearchCriteria_Is_Null()
+		public async Task GetUser_Should_Return_BadRequest_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
 			UserController controller = CreateController();
 			const UserSearchCriteria searchCriteria = null;
 
 			// Act
-			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
+			IHttpActionResult result = await controller.GetUserInformation(searchCriteria);
 
 			// Assert
-			ObjectContent<HttpError> content = message.Content as ObjectContent<HttpError>;
-			Action action = () => { throw content.GetException(); };
-
-			action.ShouldThrow<ArgumentNullException>();
+			result.Should().BeOfType<BadRequestErrorMessageResult>();
 		}
 
 		[TestMethod]
-		public async Task GetUser_Should_Return_Status_BadRequest_When_Model_Not_IsValid()
+		public async Task GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController(exception: new ArgumentNullException());
 			UserSearchCriteria searchCriteria = new UserSearchCriteria();
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
-			HttpStatusCode actual = message.StatusCode;
+			IHttpActionResult result = await controller.GetUserInformation(searchCriteria);
 
 			// Assert
-			actual.Should().Be(expected);
+			result.Should().BeOfType<BadRequestErrorMessageResult>();
 		}
 
 		[TestMethod]
-		public void GetUser_Should_Throw_Exception_When_User_By_Specified_Guid_Does_Not_Exist()
+		public async Task GetUser_Should_Return_NotFound_When_User_By_Specified_Guid_Does_Not_Exist()
 		{
 			//Arrange
 			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
@@ -97,11 +75,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = Guid.NewGuid() };
 
 			// Act
-			Func<Task<HttpResponseMessage>> func = () => controller.GetUserInformation(searchCriteria);
+			IHttpActionResult result = await controller.GetUserInformation(searchCriteria);
 
 			// Assert
-			func.ShouldThrow<HttpResponseException>()
-				.And.Response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+			result.Should().BeOfType<NotFoundResult>();
 		}
 
 		[TestMethod]
@@ -138,19 +115,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = userGuid };
 
 			// Act
-			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
-			IUser actual = message.Content.GetValue<IUser>();
+			var result = await controller.GetUserInformation(searchCriteria) as OkNegotiatedContentResult<IUser>;
+			IUser actual = result.Content;
 
 			// Assert
 			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public async Task GetUser_Should_Return_Status_Ok()
+		public async Task GetUser_Should_Return_Ok()
 		{
 			// Arrange
-			const HttpStatusCode expected = HttpStatusCode.OK;
-
 			IUser user = CreateUser();
 			var userRepositoryMock = new Mock<IUserRepository>();
 			userRepositoryMock.Setup(r => r.SearchByGuid(It.IsAny<Guid>())).ReturnsAsync(user);
@@ -159,66 +134,44 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserSearchCriteria searchCriteria = new UserSearchCriteria();
 
 			// Act
-			HttpResponseMessage message = await controller.GetUserInformation(searchCriteria);
-			HttpStatusCode actual = message.StatusCode;
+			IHttpActionResult result = await controller.GetUserInformation(searchCriteria);
 
 			// Assert
-			actual.Should().Be(expected);
+			result.Should().BeOfType<OkNegotiatedContentResult<IUser>>();
 		}
 		#endregion
 
 		#region PutUser
 		[TestMethod]
-		public async Task PutUser_Should_Return_Status_BadRequest_When_UserRegistration_Is_Null()
-		{
-			// Arrange
-			UserController controller = CreateController();
-			const UserRegistration userRegistration = null;
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
-
-			// Act
-			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-			HttpStatusCode actual = message.StatusCode;
-
-			// Assert
-			actual.Should().Be(expected);
-		}
-
-		[TestMethod]
-		public async Task PutUser_Should_Return_Message_Having_Exception_Set_When_UserRegistration_Is_Null()
+		public async Task PutUser_Should_Return_BadRequest_When_UserRegistration_Is_Null()
 		{
 			// Arrange
 			UserController controller = CreateController();
 			const UserRegistration userRegistration = null;
 
 			// Act
-			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
+			IHttpActionResult result = await controller.PutUserRegistration(userRegistration);
 
 			// Assert
-			ObjectContent<HttpError> content = message.Content as ObjectContent<HttpError>;
-			Action action = () => { throw content.GetException(); };
-
-			action.ShouldThrow<ArgumentNullException>();
+			result.Should().BeOfType<BadRequestErrorMessageResult>();
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Status_BadRequest_When_Model_Not_IsValid()
+		public async Task PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController(exception: new ArgumentNullException());
 			UserRegistration userRegistration = new UserRegistration();
-			const HttpStatusCode expected = HttpStatusCode.BadRequest;
 
 			// Act
-			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-			HttpStatusCode actual = message.StatusCode;
+			IHttpActionResult result = await controller.PutUserRegistration(userRegistration);
 
 			// Assert
-			actual.Should().Be(expected);
+			result.Should().BeOfType<BadRequestErrorMessageResult>();
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Status_InternalError_When_User_Repository_Register_Returns_Null()
+		public async Task PutUser_Should_Return_InternalError_When_User_Repository_Register_Returns_Null()
 		{
 			// Arrange
 			var userRepositoryMock = new Mock<IUserRepository>();
@@ -226,14 +179,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			UserController controller = CreateController(userRepositoryMock.Object);
 			UserRegistration userRegistration = new UserRegistration();
-			const HttpStatusCode expected = HttpStatusCode.InternalServerError;
 
 			// Act
-			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-			HttpStatusCode actual = message.StatusCode;
+			IHttpActionResult result = await controller.PutUserRegistration(userRegistration);
 
 			// Assert
-			actual.Should().Be(expected);
+			result.Should().BeOfType<ExceptionResult>();
 		}
 
 		[TestMethod]
@@ -268,19 +219,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserRegistration userRegistration = new UserRegistration();
 
 			// Act
-			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-			Guid actual = message.Content.GetValue<Guid>();
+			var result = await controller.PutUserRegistration(userRegistration) as OkNegotiatedContentResult<Guid>;
+			Guid actual = result.Content;
 
 			// Assert
 			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Status_Created()
+		public async Task PutUser_Should_Return_Ok()
 		{
 			// Arrange
-			const HttpStatusCode expected = HttpStatusCode.Created;
-
 			IUser user = CreateUser();
 			var userRepositoryMock = new Mock<IUserRepository>();
 			userRepositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(user);
@@ -289,11 +238,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserRegistration userRegistration = new UserRegistration();
 
 			// Act
-			HttpResponseMessage message = await controller.PutUserRegistration(userRegistration);
-			HttpStatusCode actual = message.StatusCode;
+			IHttpActionResult result = await controller.PutUserRegistration(userRegistration);
 
 			// Assert
-			actual.Should().Be(expected);
+			result.Should().BeOfType<OkNegotiatedContentResult<Guid>>();
 		}
 		#endregion
 
