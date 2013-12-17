@@ -115,7 +115,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = userGuid };
 
 			// Act
-			var result = await controller.GetUserInformation(searchCriteria) as OkNegotiatedContentResult<IUser>;
+			var result = (OkNegotiatedContentResult<IUser>)await controller.GetUserInformation(searchCriteria);
 			IUser actual = result.Content;
 
 			// Assert
@@ -219,7 +219,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserRegistration userRegistration = new UserRegistration();
 
 			// Act
-			var result = await controller.PutUserRegistration(userRegistration) as OkNegotiatedContentResult<Guid>;
+			var result = (OkNegotiatedContentResult<Guid>)await controller.PutUserRegistration(userRegistration);
 			Guid actual = result.Content;
 
 			// Assert

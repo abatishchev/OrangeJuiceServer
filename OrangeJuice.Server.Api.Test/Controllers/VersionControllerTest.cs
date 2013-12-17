@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	public class VersionControllerTest
 	{
 		[TestMethod]
-		public void Ctor_Should_Throw_When_Factory_Is_Null()
+		public void Ctor_Should_Throw_When_ApiVersion_Is_Null()
 		{
 			// Arange
 			const ApiVersion apiVersion = null;
@@ -36,7 +36,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			VersionController controller = ControllerFactory.Create<VersionController>(expected);
 
 			// Act
-			var result = controller.GetVersion() as OkNegotiatedContentResult<ApiVersion>;
+			var result = (OkNegotiatedContentResult<ApiVersion>)controller.GetVersion();
 			ApiVersion actual = result.Content;
 
 			// Assert

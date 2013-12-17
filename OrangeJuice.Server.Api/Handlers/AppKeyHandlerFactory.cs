@@ -22,6 +22,8 @@ namespace OrangeJuice.Server.Api.Handlers
 			{
 				case Configuration.Environment.Local:
 					return null;
+				case Configuration.Environment.AzureProduction:
+					return new AppKeyQueryHandler(AppKey.Version0);
 				default:
 					return new AppKeyQueryHandler(AppKey.Version0);
 			}

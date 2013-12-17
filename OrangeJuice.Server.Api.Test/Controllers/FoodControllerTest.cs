@@ -58,7 +58,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 
 			// Act
-			IHttpActionResult result  = await controller.GetDescription(searchCriteria);
+			IHttpActionResult result = await controller.GetDescription(searchCriteria);
 
 			// Assert
 			result.Should().BeOfType<BadRequestErrorMessageResult>();
@@ -96,7 +96,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 
 			// Act
-			var result  = await controller.GetDescription(searchCriteria) as OkNegotiatedContentResult<FoodDescription[]>;
+			var result = (OkNegotiatedContentResult<FoodDescription[]>)await controller.GetDescription(searchCriteria);
 			FoodDescription[] actual = result.Content;
 
 			// Assert
