@@ -7,6 +7,8 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Moq;
+
 using OrangeJuice.Server.Api.Handlers;
 
 namespace OrangeJuice.Server.Api.Test.Handlers
@@ -16,11 +18,11 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 	{
 		#region Test methods
 		[TestMethod]
-		public void SendAsync_Should_Return_Status_ErrorCode_When_IsValid_Returns_False()
+		public void SendAsync_Should_Return_Status_Forbidden_When_IsValid_Returns_False()
 		{
 			// Arrange
-			const HttpStatusCode expected = HttpStatusCode.InternalServerError;
-			HandlerStub handler = new HandlerStub(false, expected);
+			const HttpStatusCode expected = HttpStatusCode.Forbidden;
+			HandlerStub handler = new HandlerStub(false);
 			HttpRequestMessage request = new HttpRequestMessage();
 
 			// Act
@@ -36,17 +38,10 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		private class HandlerStub : AppKeyHandlerBase
 		{
 			private readonly bool _isValid;
-			private readonly HttpStatusCode _errorCode;
 
-			public HandlerStub(bool isValid, HttpStatusCode errorCode)
+			public HandlerStub(bool isValid)
 			{
 				_isValid = isValid;
-				_errorCode = errorCode;
-			}
-
-			internal override HttpStatusCode ErrorCode
-			{
-				get { return _errorCode; }
 			}
 
 			internal override bool IsValid(HttpRequestMessage request)

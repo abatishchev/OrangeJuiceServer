@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 
 using FluentAssertions;
@@ -21,20 +20,6 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 
 			// Act
 			const string actual = AppKeyQueryHandler.AppKeySegmentName;
-
-			// Assert
-			actual.Should().Be(expected);
-		}
-
-		[TestMethod]
-		public void ErrorCode_Should_Return_Forbidden()
-		{
-			// Arrange
-			AppKeyQueryHandler handler = CreateHandler();
-			const HttpStatusCode expected = HttpStatusCode.Forbidden;
-
-			// Act
-			HttpStatusCode actual = handler.ErrorCode;
 
 			// Assert
 			actual.Should().Be(expected);

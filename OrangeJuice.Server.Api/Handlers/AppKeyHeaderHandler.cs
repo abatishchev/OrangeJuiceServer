@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
@@ -16,17 +16,20 @@ namespace OrangeJuice.Server.Api.Handlers
 			_appKey = appKey;
 		}
 
-		internal override HttpStatusCode ErrorCode
+		internal override bool IsValid(HttpRequestMessage request)
 		{
-			get { return HttpStatusCode.Forbidden; }
+			return GetRules(request).All(b => b);
 		}
 
-		internal override bool IsValid(System.Net.Http.HttpRequestMessage request)
+		private IEnumerable<bool> GetRules(HttpRequestMessage request)
 		{
 			IEnumerable<string> values;
+			yield return request.Headers.TryGetValues(AppKeyHeaderName, out values);
+
 			Guid guid;
-			return request.Headers.TryGetValues(AppKeyHeaderName, out values) &&
-				Guid.TryParse(values.FirstOrDefault(), out guid) && guid == _appKey;
+			yield return Guid.TryParse(values.FirstOrDefault(), out guid);
+
+			yield return guid == _appKey;
 		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 
 namespace OrangeJuice.Server.Api.Handlers
@@ -13,11 +12,6 @@ namespace OrangeJuice.Server.Api.Handlers
 		public AppKeyQueryHandler(Guid appKey)
 		{
 			_appKey = appKey;
-		}
-
-		internal override HttpStatusCode ErrorCode
-		{
-			get { return HttpStatusCode.Forbidden; }
 		}
 
 		internal override bool IsValid(HttpRequestMessage request)
