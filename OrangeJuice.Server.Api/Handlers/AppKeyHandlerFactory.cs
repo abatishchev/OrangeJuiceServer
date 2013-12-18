@@ -4,7 +4,7 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyHandlerFactory
+	public sealed class AppKeyHandlerFactory : IFactory<AppKeyHandlerBase>
 	{
 		private readonly IEnvironmentProvider _environmentProvider;
 
@@ -21,11 +21,11 @@ namespace OrangeJuice.Server.Api.Handlers
 			switch (environment)
 			{
 				case Configuration.Environment.Local:
-					return null;
-				case Configuration.Environment.AzureProduction:
-					return new AppKeyQueryHandler(AppKey.Version0);
+					return new EmptyAppKeyHandler();
+				case Configuration.Environment.Production:
+					return new HeaderAppKeyHandler(AppKey.Version0);
 				default:
-					return new AppKeyQueryHandler(AppKey.Version0);
+					return new QueryAppKeyHandler(AppKey.Version0);
 			}
 		}
 	}

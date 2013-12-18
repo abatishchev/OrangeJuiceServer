@@ -50,11 +50,14 @@ namespace OrangeJuice.Server.Data
 			switch (environment)
 			{
 				case Environment.Local:
-				case Environment.Test:
+				case Environment.Testing:
 				case Environment.Development:
 					return AppKey.Version0;
-				default:
+				case Environment.Staging:
+				case Environment.Production:
 					return null;
+				default:
+					throw new NotSupportedException(String.Format("Environment '{0}' is not supported", environment));
 			}
 		}
 		#endregion

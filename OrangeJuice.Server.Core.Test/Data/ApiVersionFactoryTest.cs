@@ -46,13 +46,13 @@ namespace OrangeJuice.Server.Test.Data
 		}
 		#endregion
 
-		#region FillData
+		#region Create
 		[TestMethod]
 		public void Create_Should_Call_AssemblyProvider_GetExecutingAssembly()
 		{
 			// Arrange
 			var assemblyProviderMock = CreateAssemblyProvider();
-			var factory = CreateFactory(assemblyProviderMock.Object);
+			var factory = CreateFactory(assemblyProvider: assemblyProviderMock.Object);
 
 			// Act
 			factory.Create();
@@ -66,7 +66,7 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			// Arrange
 			var environmentProviderMock = CreateEnvironmentProvider();
-			var factory = CreateFactory(environmentProvider: environmentProviderMock.Object);
+			var factory = CreateFactory(environmentProviderMock.Object);
 
 			// Act
 			factory.Create();
@@ -74,10 +74,53 @@ namespace OrangeJuice.Server.Test.Data
 			// Assert
 			environmentProviderMock.Verify(p => p.GetCurrentEnvironment(), Times.Once());
 		}
+
+		[TestMethod]
+		public void Create_Should_Return_ApiVersion_Having_Key_When_Environment_Is_Local_Testing_Development()
+		{
+			foreach (string environment in new[]
+										   {
+												Server.Configuration.Environment.Local,
+												Server.Configuration.Environment.Testing,
+												Server.Configuration.Environment.Development
+										   })
+			{
+				// Arrange
+				var environmentProviderMock = CreateEnvironmentProvider(environment);
+				var factory = CreateFactory(environmentProviderMock.Object);
+
+				// Act
+				ApiVersion apiVersion = factory.Create();
+
+				// Assert
+				apiVersion.Key.Should().HaveValue();
+			}
+		}
+
+		[TestMethod]
+		public void Create_Should_Return_ApiVersion_Not_Having_Key_When_Environment_Is_Staging_Production()
+		{
+			foreach (string environment in new[]
+										   {
+												Server.Configuration.Environment.Staging,
+												Server.Configuration.Environment.Production
+										   })
+			{
+				// Arrange
+				var environmentProviderMock = CreateEnvironmentProvider(environment);
+				var factory = CreateFactory(environmentProviderMock.Object);
+
+				// Act
+				ApiVersion apiVersion = factory.Create();
+
+				// Assert
+				apiVersion.Key.Should().NotHaveValue();
+			}
+		}
 		#endregion
 
 		#region Helper methods
-		private static IFactory<ApiVersion> CreateFactory(IAssemblyProvider assemblyProvider = null, IEnvironmentProvider environmentProvider = null)
+		private static IFactory<ApiVersion> CreateFactory(IEnvironmentProvider environmentProvider = null, IAssemblyProvider assemblyProvider = null)
 		{
 			return new ApiVersionFactory(
 				assemblyProvider ?? CreateAssemblyProvider().Object,
@@ -91,10 +134,10 @@ namespace OrangeJuice.Server.Test.Data
 			return providerMock;
 		}
 
-		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider()
+		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider(string environment = null)
 		{
 			var providerMock = new Mock<IEnvironmentProvider>();
-			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(Server.Configuration.Environment.Test);
+			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment ?? Server.Configuration.Environment.Testing);
 			return providerMock;
 		}
 		#endregion

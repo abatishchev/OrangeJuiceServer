@@ -42,8 +42,7 @@ namespace OrangeJuice.Server.Api
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)
 		{
 			DelegatingHandler handler = container.Resolve<AppKeyHandlerBase>();
-			if (handler != null)
-				handlers.Add(handler);
+			handlers.Add(handler);
 		}
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)

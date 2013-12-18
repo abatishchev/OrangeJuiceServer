@@ -117,6 +117,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Handlers\EmptyAppKeyHandler.cs" />
     <Compile Include="Models\FoodSearchCriteria.cs" />
     <Compile Include="Controllers\FoodController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -125,8 +126,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\AppKeyHeaderHandler.cs" />
-    <Compile Include="Handlers\AppKeyQueryHandler.cs" />
+    <Compile Include="Handlers\HeaderAppKeyHandler.cs" />
+    <Compile Include="Handlers\QueryAppKeyHandler.cs" />
     <Compile Include="Models\UserSearchCriteria.cs" />
     <Compile Include="Models\UserRegistration.cs">
       <SubType>Code</SubType>
@@ -166,7 +167,7 @@
     <Content Include="Web.Stg.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Web.AzureProd.config">
+    <Content Include="Web.Prod.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>

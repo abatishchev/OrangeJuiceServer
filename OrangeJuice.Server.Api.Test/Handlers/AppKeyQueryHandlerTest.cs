@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			const string expected = "appKey";
 
 			// Act
-			const string actual = AppKeyQueryHandler.AppKeySegmentName;
+			const string actual = QueryAppKeyHandler.AppKeySegmentName;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -30,8 +30,8 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		{
 			// Arrange
 			Guid appKey = Guid.NewGuid();
-			AppKeyQueryHandler handler = CreateHandler(appKey);
-			HttpRequestMessage request = CreateRequest(AppKeyQueryHandler.AppKeySegmentName, appKey);
+			QueryAppKeyHandler handler = CreateHandler(appKey);
+			HttpRequestMessage request = CreateRequest(QueryAppKeyHandler.AppKeySegmentName, appKey);
 
 			// Act
 			bool valid = handler.IsValid(request);
@@ -44,8 +44,8 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		public void ValidateKey_Should_Return_False_When_Query_Contains_AppKey_But_It_Is_Not_Guid()
 		{
 			// Arrange
-			AppKeyQueryHandler handler = CreateHandler();
-			HttpRequestMessage request = CreateRequest(AppKeyQueryHandler.AppKeySegmentName, "not-a-guid");
+			QueryAppKeyHandler handler = CreateHandler();
+			HttpRequestMessage request = CreateRequest(QueryAppKeyHandler.AppKeySegmentName, "not-a-guid");
 
 			// Act
 			bool valid = handler.IsValid(request);
@@ -58,7 +58,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		public void ValidateKey_Should_Return_False_When_Query_Does_Not_Contain_AppKey()
 		{
 			// Arrange
-			AppKeyQueryHandler handler = CreateHandler();
+			QueryAppKeyHandler handler = CreateHandler();
 			HttpRequestMessage request = CreateRequest("any-name", "any-value");
 
 			// Act
@@ -68,9 +68,9 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			valid.Should().BeFalse();
 		}
 
-		private static AppKeyQueryHandler CreateHandler(Guid? appKey = null)
+		private static QueryAppKeyHandler CreateHandler(Guid? appKey = null)
 		{
-			return new AppKeyQueryHandler(appKey ?? Guid.NewGuid());
+			return new QueryAppKeyHandler(appKey ?? Guid.NewGuid());
 		}
 
 		private static HttpRequestMessage CreateRequest(string name, object value)

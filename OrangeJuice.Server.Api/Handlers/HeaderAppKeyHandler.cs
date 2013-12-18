@@ -5,13 +5,13 @@ using System.Net.Http;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyHeaderHandler : AppKeyHandlerBase
+	public sealed class HeaderAppKeyHandler : AppKeyHandlerBase
 	{
 		internal const string AppKeyHeaderName = "X-ApiKey";
 
 		private readonly Guid _appKey;
 
-		public AppKeyHeaderHandler(Guid appKey)
+		public HeaderAppKeyHandler(Guid appKey)
 		{
 			_appKey = appKey;
 		}

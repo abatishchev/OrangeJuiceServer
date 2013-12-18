@@ -6,10 +6,10 @@ namespace OrangeJuice.Server.Configuration
 	{
 		#region Constants
 		public const string Local = "Local";
-		public const string Test = "Test";
+		public const string Testing = "Testing";
 		public const string Development = "Development";
 		public const string Staging = "Staging";
-		public const string AzureProduction = "AzureProduction";
+		public const string Production = "Production";
 		#endregion
 	}
 }

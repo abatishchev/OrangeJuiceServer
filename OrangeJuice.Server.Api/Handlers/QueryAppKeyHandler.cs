@@ -3,13 +3,13 @@ using System.Net.Http;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyQueryHandler : AppKeyHandlerBase
+	public sealed class QueryAppKeyHandler : AppKeyHandlerBase
 	{
 		internal const string AppKeySegmentName = "appKey";
 
 		private readonly Guid _appKey;
 
-		public AppKeyQueryHandler(Guid appKey)
+		public QueryAppKeyHandler(Guid appKey)
 		{
 			_appKey = appKey;
 		}

@@ -47,9 +47,13 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(new ContainerControlledLifetimeManager());
 
 			// Web
+			container.RegisterType<IFactory<AppKeyHandlerBase>, AppKeyHandlerFactory>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IEnvironmentProvider)));
+
 			container.RegisterType<AppKeyHandlerBase>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionFactory(c => new AppKeyHandlerFactory(c.Resolve<IEnvironmentProvider>()).Create()));
+				new InjectionFactory(c => c.Resolve<IFactory<AppKeyHandlerBase>>().Create()));
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
 

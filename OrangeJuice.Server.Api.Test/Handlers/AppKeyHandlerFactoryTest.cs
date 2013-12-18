@@ -44,7 +44,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_Null_When_Environment_Is_Local()
+		public void Create_Should_Return_EmptyAppKeyHandler_When_Environment_Is_Local()
 		{
 			// Arrange
 			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.Local);
@@ -54,27 +54,47 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			AppKeyHandlerBase handler = factory.Create();
 
 			// Assert
-			handler.Should().BeNull();
-
+			handler.Should().BeOfType<EmptyAppKeyHandler>();
 		}
 
 		[TestMethod]
-		public void Create_Should_Not_Return_Null_When_Environment_Is_Not_Development()
+		public void Create_Should_Return_QueryAppKeyHandler_When_Environment_Is_Development_Staging()
+		{
+			foreach (string environment in new[]
+										   {
+												Configuration.Environment.Development,
+												Configuration.Environment.Staging
+										   })
+			{
+				// Arrange
+				var environmentProviderMock = CreateEnvironmentProvider(environment);
+				var factory = new AppKeyHandlerFactory(environmentProviderMock.Object);
+
+				// Act
+				AppKeyHandlerBase handler = factory.Create();
+
+				// Assert
+				handler.Should().BeOfType<QueryAppKeyHandler>();
+			}
+		}
+
+		[TestMethod]
+		public void Create_Should_Return_HeaderAppKeyHandler_When_Environment_Is_Production()
 		{
 			// Arrange
-			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.AzureProduction);
+			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.Production);
 			var factory = new AppKeyHandlerFactory(environmentProviderMock.Object);
 
 			// Act
 			AppKeyHandlerBase handler = factory.Create();
 
 			// Assert
-			handler.Should().NotBeNull();
+			handler.Should().BeOfType<HeaderAppKeyHandler>();
 		}
 		#endregion
 
 		#region Helper methods
-		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider(string environment = Configuration.Environment.Test)
+		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider(string environment = Configuration.Environment.Testing)
 		{
 			var environmentProviderMock = new Mock<IEnvironmentProvider>(MockBehavior.Strict);
 			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
