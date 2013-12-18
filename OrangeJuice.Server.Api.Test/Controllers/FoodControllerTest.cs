@@ -37,20 +37,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetDescription
 		[TestMethod]
-		public async Task GetDescription_Should_Return_BadRequest_When_SearchCriteria_Is_Null()
-		{
-			// Arrange
-			FoodController controller = CreateController();
-			const FoodSearchCriteria searchCriteria = null;
-
-			// Act
-			IHttpActionResult result = await controller.GetDescription(searchCriteria);
-
-			// Assert
-			result.Should().BeOfType<BadRequestErrorMessageResult>();
-		}
-
-		[TestMethod]
 		public async Task GetDescription_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange

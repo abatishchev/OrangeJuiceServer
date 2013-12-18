@@ -29,8 +29,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <url>GET /api/food/</url>
 		public async Task<IHttpActionResult> GetDescription([FromUri]FoodSearchCriteria searchCriteria)
 		{
-			if (searchCriteria == null)
-				return BadRequest("SearchCriteria is null");
 			if (!ModelState.IsValid)
 				return BadRequest("Model is not valid");
 

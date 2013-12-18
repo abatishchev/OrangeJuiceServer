@@ -32,8 +32,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <url>GET /api/user/</url>
 		public async Task<IHttpActionResult> GetUserInformation([FromUri]UserSearchCriteria searchCriteria)
 		{
-			if (searchCriteria == null)
-				return BadRequest("SearchCriteria is null");
 			if (!ModelState.IsValid)
 				return BadRequest("Model is not valid");
 
@@ -52,8 +50,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <url>PUT /api/user/</url>
 		public async Task<IHttpActionResult> PutUserRegistration([FromBody]UserRegistration userRegistration)
 		{
-			if (userRegistration == null)
-				return BadRequest("UserRegistration is null");
 			if (!ModelState.IsValid)
 				return BadRequest("Model is not valid");
 

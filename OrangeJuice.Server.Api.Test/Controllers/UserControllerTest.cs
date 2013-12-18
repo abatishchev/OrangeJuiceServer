@@ -37,20 +37,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetUser
 		[TestMethod]
-		public async Task GetUser_Should_Return_BadRequest_When_SearchCriteria_Is_Null()
-		{
-			// Arrange
-			UserController controller = CreateController();
-			const UserSearchCriteria searchCriteria = null;
-
-			// Act
-			IHttpActionResult result = await controller.GetUserInformation(searchCriteria);
-
-			// Assert
-			result.Should().BeOfType<BadRequestErrorMessageResult>();
-		}
-
-		[TestMethod]
 		public async Task GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
 			// Arrange
@@ -142,20 +128,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region PutUser
-		[TestMethod]
-		public async Task PutUser_Should_Return_BadRequest_When_UserRegistration_Is_Null()
-		{
-			// Arrange
-			UserController controller = CreateController();
-			const UserRegistration userRegistration = null;
-
-			// Act
-			IHttpActionResult result = await controller.PutUserRegistration(userRegistration);
-
-			// Assert
-			result.Should().BeOfType<BadRequestErrorMessageResult>();
-		}
-
 		[TestMethod]
 		public async Task PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
 		{
