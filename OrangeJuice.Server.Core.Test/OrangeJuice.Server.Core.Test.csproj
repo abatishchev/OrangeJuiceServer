@@ -83,7 +83,6 @@
     <Compile Include="Data\ApiVersionFactoryTest.cs" />
     <Compile Include="Data\XmlFoodDescriptionFactoryTest.cs" />
     <Compile Include="Filters\ValidImageFoodDescriptionFilterTest.cs" />
-    <Compile Include="MoqExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AwsProviderTest.cs" />
     <Compile Include="ProxyFactoryTest.cs" />

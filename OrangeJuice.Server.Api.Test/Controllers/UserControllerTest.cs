@@ -12,7 +12,6 @@ using Moq;
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Test;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
