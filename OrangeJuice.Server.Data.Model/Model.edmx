@@ -13,7 +13,7 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="UserGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserGuid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="Email" Type="varchar" Nullable="false" MaxLength="25" />
         </EntityType>
       </Schema></edmx:StorageModels>
@@ -28,7 +28,7 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" cg:GetterAccess="Private" cg:SetterAccess="Private" />
-          <Property Type="Guid" Name="UserGuid" Nullable="false" cg:SetterAccess="Private" />
+          <Property Type="Guid" Name="UserGuid" Nullable="false" cg:SetterAccess="Private" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" cg:SetterAccess="Internal" />
         </EntityType>
       </Schema>

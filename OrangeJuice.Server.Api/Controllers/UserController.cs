@@ -55,7 +55,7 @@ namespace OrangeJuice.Server.Api.Controllers
 
 			IUser user = await _userRepository.Register(userRegistration.Email);
 			if (user == null)
-				return InternalServerError(new InvalidOperationException("User is null"));
+				return InternalServerError();
 
 			return Ok(user.UserGuid);
 		}

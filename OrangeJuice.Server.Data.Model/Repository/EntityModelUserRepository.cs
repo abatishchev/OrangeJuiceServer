@@ -1,34 +1,36 @@
 ﻿using System;
 using System.Data;
-using System.Linq;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Model.Repository
 {
 	public sealed class EntityModelUserRepository : IUserRepository
 	{
-		public Task<IUser> Register(string email)
+		public async Task<IUser> Register(string email)
 		{
 			using (var db = new ModelContainer())
 			{
-				User user = User.CreateNew(email);
-				if (user.UserGuid == Guid.Empty)
-					throw new DataException("User guid can't be empty");
+				User user = new User
+				{
+					Email = email
+				};
 
 				user = db.Users.Add(user);
-				int i = db.SaveChanges();
-				if (i != 1)
+
+				int r = await db.SaveChangesAsync();
+				if (r != 1)
 					throw new DataException("Error saving user");
 
-				return Task.FromResult<IUser>(user);
+				return user;
 			}
 		}
 
-		public Task<IUser> SearchByGuid(Guid userGuid)
+		public async Task<IUser> SearchByGuid(Guid userGuid)
 		{
 			using (var db = new ModelContainer())
 			{
-				return Task.FromResult<IUser>(db.Users.SingleOrDefault(u => u.UserGuid == userGuid));
+				return await db.Users.SingleOrDefaultAsync(u => u.UserGuid == userGuid);
 			}
 		}
 	}
