@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OrangeJuice.Server.Web
+﻿namespace OrangeJuice.Server.Web
 {
 	public interface IUrlEncoder
 	{

@@ -127,7 +127,7 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task LookupAttributes_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
-			string[] ids = new[] { "id1", "id2" };
+			string[] ids = { "id1", "id2" };
 
 			Action<IStringDictionary> callback = d => d.Should()
 													   .Contain("Operation", "ItemLookup")
@@ -182,7 +182,7 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task LookupImages_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
-			string[] ids = new[] { "id1", "id2" };
+			string[] ids = { "id1", "id2" };
 
 			Action<IStringDictionary> callback = d => d.Should()
 													   .Contain("Operation", "ItemLookup")

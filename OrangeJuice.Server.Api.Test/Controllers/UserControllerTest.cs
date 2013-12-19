@@ -155,7 +155,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.PutUserRegistration(userRegistration);
 
 			// Assert
-			result.Should().BeOfType<ExceptionResult>();
+			result.Should().BeOfType<InternalServerErrorResult>();
 		}
 
 		[TestMethod]

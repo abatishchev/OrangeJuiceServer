@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OrangeJuice.Server.Configuration
+﻿namespace OrangeJuice.Server.Configuration
 {
 	public sealed class AppSettingsConfigurationProvider : IConfigurationProvider
 	{
