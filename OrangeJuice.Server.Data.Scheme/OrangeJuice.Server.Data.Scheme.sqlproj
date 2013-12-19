@@ -20,6 +20,9 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <ReadCommittedSnapshot>True</ReadCommittedSnapshot>
+    <AllowSnapshotIsolation>True</AllowSnapshotIsolation>
+    <DefaultFilegroup>DATA</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -69,9 +72,11 @@
     <Folder Include="Schemas\dbo\Views\Indexes" />
     <Folder Include="Scripts" />
     <Folder Include="Security" />
-    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Schemas\dbo\Tables\Constraints\Unique" />
     <Folder Include="Schemas\dbo\Tables\Constraints\Default" />
+    <Folder Include="Storage" />
+    <Folder Include="Storage\Filegroups" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -95,18 +100,20 @@
     <None Include="Properties\PublishProfiles\Stg.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Schemas\dbo\Tables\Users.sql" />
-    <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_UserGuid.sql" />
-    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_Users.sql" />
-    <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_Email.sql" />
-    <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
-    <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
-    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_ELMAH_Error.sql" />
-    <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_ELMAH_Error_ErrorId.sql" />
-    <Build Include="Schemas\dbo\Tables\Indexes\IX_ELMAH_Error_App_Time_Seq.sql" />
+    <Build Include="Storage\Filegroups\DATA.sql" />
     <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_GetErrorXml.sql" />
     <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_GetErrorsXml.sql" />
     <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_LogError.sql" />
     <Build Include="Schemas\dbo\Tables\ELMAH_Error.sql" />
+    <Build Include="Schemas\dbo\Tables\Users.sql" />
+    <Build Include="Schemas\dbo\Tables\Indexes\IX_ELMAH_Error_App_Time_Seq.sql" />
+    <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_Email.sql" />
+    <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_UserGuid.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_ELMAH_Error_ErrorId.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_Users_UserGuid.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
+    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_ELMAH_Error.sql" />
+    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_Users.sql" />
   </ItemGroup>
 </Project>
