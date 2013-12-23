@@ -38,7 +38,7 @@
     </Request>
   </Items>
   <DataSources>
-    <DataSource Name="OrangeJuiceDev" Provider="System.Data.SqlClient" Connection="Data Source=server.godfather.home\OrangeJuiceDev;Initial Catalog=OrangeJuice;Integrated Security=True;MultipleActiveResultSets=True;Application Name=OrangeJuiceApi">
+    <DataSource Name="OrangeJuiceDev" Provider="System.Data.SqlClient" Connection="Data Source=sql.godfather.home\OrangeJuiceDev;Initial Catalog=OrangeJuice;Integrated Security=True;MultipleActiveResultSets=True;Application Name=OrangeJuiceApi">
       <Tables>
         <DataSourceTable Name="Users" SelectColumns="SelectOnlyBoundColumns" AccessMethod="Sequential" />
       </Tables>
