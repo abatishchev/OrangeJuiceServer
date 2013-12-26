@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Test.Data
 	{
 		#region Ctor
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_AwsClientFactory_Is_Null()
+		public void Ctor_Should_Throw_Exception_When_AwsProviderFactory_Is_Null()
 		{
 			// Arrange
 			const IFactory<IAwsProvider> providerFactory = null;
@@ -74,7 +74,7 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			// Arrange
 			const string title = null;
-			var repository = CreateRepository();
+			IFoodRepository repository = CreateRepository();
 
 			// Act
 			Func<Task> action = () => repository.SearchByTitle(title);
@@ -89,7 +89,7 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			// Arrange
 			const string title = "";
-			var repository = CreateRepository();
+			IFoodRepository repository = CreateRepository();
 
 			// Act
 			Func<Task> action = () => repository.SearchByTitle(title);
@@ -100,23 +100,45 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_Title_To_AwsClient_SearhItems()
+		public async Task SearchByTitle_Should_Call_ProviderFactory_Create()
 		{
-			// Arrange
 			const string title = "anyTitle";
 
-			var providerMock = new Mock<IAwsProvider>();
-			providerMock.Setup(c => c.SearchItems(title)).ReturnsAsync(new XElement[0]);
-			providerMock.Setup(c => c.LookupAttributes(It.IsAny<IEnumerable<string>>())).ReturnsAsync(new XElement[0]);
-			providerMock.Setup(c => c.LookupImages(It.IsAny<IEnumerable<string>>())).ReturnsAsync(new XElement[0]);
+			var providerMock = CreateProvider();
 
-			IFoodRepository repository = CreateRepository(providerMock.Object);
+			var providerFactoryMock = new Mock<IFactory<IAwsProvider>>();
+			providerFactoryMock.Setup(f => f.Create()).Returns(providerMock.Object);
+
+			IFoodRepository repository = CreateRepository(providerFactoryMock.Object);
 
 			// Act
 			await repository.SearchByTitle(title);
 
 			// Assert
-			providerMock.Verify(c => c.SearchItems(title), Times.Once());
+			providerFactoryMock.Verify(f => f.Create(), Times.Once);
+		}
+
+		[TestMethod]
+		public async Task SearchByTitle_Should_Pass_Title_To_AwsProvider_SearhItems()
+		{
+			// Arrange
+			const string title = "anyTitle";
+
+			var providerMock = CreateProvider();
+			providerMock.Setup(c => c.SearchItems(title)).ReturnsAsync(new XElement[0]);
+			providerMock.Setup(c => c.LookupAttributes(It.IsAny<IEnumerable<string>>())).ReturnsAsync(new XElement[0]);
+			providerMock.Setup(c => c.LookupImages(It.IsAny<IEnumerable<string>>())).ReturnsAsync(new XElement[0]);
+
+			var providerFactoryMock = new Mock<IFactory<IAwsProvider>>();
+			providerFactoryMock.Setup(f => f.Create()).Returns(providerMock.Object);
+
+			IFoodRepository repository = CreateRepository(providerFactoryMock.Object);
+
+			// Act
+			await repository.SearchByTitle(title);
+
+			// Assert
+			providerMock.Verify(c => c.SearchItems(title), Times.Once);
 		}
 
 		[TestMethod]
@@ -127,20 +149,18 @@ namespace OrangeJuice.Server.Test.Data
 			XElement attributesElement = new XElement("attributes");
 			XElement imagesElement = new XElement("images");
 
-			var providerMock = new Mock<IAwsProvider>();
-			providerMock.Setup(c => c.SearchItems(It.IsAny<string>())).ReturnsAsync(new[] { itemElement });
-			providerMock.Setup(c => c.LookupAttributes(It.IsAny<IEnumerable<string>>())).ReturnsAsync(new[] { attributesElement });
-			providerMock.Setup(c => c.LookupImages(It.IsAny<IEnumerable<string>>())).ReturnsAsync(new[] { imagesElement });
+			var provider = CreateProvider(itemElement, attributesElement, imagesElement);
+			var providerFactory = CreateProviderFactory(provider.Object);
 
-			var factoryMock = new Mock<IFoodDescriptionFactory>();
+			var foodDescriptionFactory = new Mock<IFoodDescriptionFactory>();
 
-			AwsFoodRepository repository = CreateRepository(providerMock.Object, factoryMock.Object);
+			AwsFoodRepository repository = CreateRepository(providerFactory, foodDescriptionFactory.Object);
 
 			// Act
 			await repository.SearchByTitle("anyTitle");
 
 			// Assert
-			factoryMock.Verify(f => f.GetId(itemElement), Times.Once());
+			foodDescriptionFactory.Verify(f => f.GetId(itemElement), Times.Once);
 		}
 
 		[TestMethod]
@@ -151,36 +171,51 @@ namespace OrangeJuice.Server.Test.Data
 			XElement attributesElement = new XElement("attributes");
 			XElement imagesElement = new XElement("images");
 
-			var providerMock = new Mock<IAwsProvider>();
-			providerMock.Setup(c => c.SearchItems(It.IsAny<string>())).ReturnsAsync(new[] { itemElement });
-			providerMock.Setup(c => c.LookupAttributes(It.IsAny<IEnumerable<string>>())).ReturnsAsync(new[] { attributesElement });
-			providerMock.Setup(c => c.LookupImages(It.IsAny<IEnumerable<string>>())).ReturnsAsync(new[] { imagesElement });
+			var provider = CreateProvider(itemElement, attributesElement, imagesElement);
+			var providerFactory = CreateProviderFactory(provider.Object);
 
 			var factoryMock = new Mock<IFoodDescriptionFactory>();
 
-			AwsFoodRepository repository = CreateRepository(providerMock.Object, factoryMock.Object);
+			AwsFoodRepository repository = CreateRepository(providerFactory, factoryMock.Object);
 
 			// Act
 			await repository.SearchByTitle("anyTitle");
 
 			// Assert
-			factoryMock.Verify(f => f.Create(attributesElement, imagesElement), Times.Once());
+			factoryMock.Verify(f => f.Create(attributesElement, imagesElement), Times.Once);
 		}
 		#endregion
 
 		#region Helper methods
 		private static AwsFoodRepository CreateRepository(
-			IAwsProvider awsProvider = null,
+			IFactory<IAwsProvider> providerFactory = null,
 			IFoodDescriptionFactory foodDescriptionFactory = null,
 			IFilter<FoodDescription> foodDescriptionFilter = null)
 		{
-			var providerFactoryMock = new Mock<IFactory<IAwsProvider>>();
-			providerFactoryMock.Setup(c => c.Create()).Returns(awsProvider ?? new Mock<IAwsProvider>().Object);
-
 			return new AwsFoodRepository(
-				providerFactoryMock.Object,
+				providerFactory ?? CreateProviderFactory(),
 				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>().Object,
 				foodDescriptionFilter ?? new Mock<IFilter<FoodDescription>>().Object);
+		}
+
+		private static IFactory<IAwsProvider> CreateProviderFactory(IAwsProvider provider = null)
+		{
+			var providerFactoryMock = new Mock<IFactory<IAwsProvider>>();
+
+			providerFactoryMock.Setup(f => f.Create()).Returns(provider ?? CreateProvider().Object);
+
+			return providerFactoryMock.Object;
+		}
+
+		private static Mock<IAwsProvider> CreateProvider(XElement itemElement = null, XElement attributesElement = null, XElement imagesElement = null)
+		{
+			var providerMock = new Mock<IAwsProvider>();
+
+			providerMock.Setup(c => c.SearchItems(It.IsAny<string>())).ReturnsAsync(itemElement != null ? new[] { itemElement } : new XElement[0]);
+			providerMock.Setup(c => c.LookupAttributes(It.IsAny<IEnumerable<string>>())).ReturnsAsync(attributesElement != null ? new[] { attributesElement } : new XElement[0]);
+			providerMock.Setup(c => c.LookupImages(It.IsAny<IEnumerable<string>>())).ReturnsAsync(imagesElement != null ? new[] { imagesElement } : new XElement[0]);
+
+			return providerMock;
 		}
 		#endregion
 	}
