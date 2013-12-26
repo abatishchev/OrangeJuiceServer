@@ -102,6 +102,7 @@ namespace OrangeJuice.Server.Test.Data
 		[TestMethod]
 		public async Task SearchByTitle_Should_Call_ProviderFactory_Create()
 		{
+			// Arrange
 			const string title = "anyTitle";
 
 			var providerMock = CreateProvider();

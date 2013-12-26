@@ -117,6 +117,22 @@ namespace OrangeJuice.Server.Test.Data
 				apiVersion.Key.Should().NotHaveValue();
 			}
 		}
+
+		[TestMethod]
+		public void Create_Should_Should_Throw_Exception_When_EnvironmentProvider_GetCurrentEnvironment_Returns_Unsupported_Environment()
+		{
+			// Arrange
+			const string environment = "anyEnvironment";
+
+			var environmentProviderMock = CreateEnvironmentProvider(environment);
+			var factory = CreateFactory(environmentProviderMock.Object);
+
+			// Act
+			Action action = () => factory.Create();
+
+			// Assert
+			action.ShouldThrow<NotSupportedException>();
+		}
 		#endregion
 
 		#region Helper methods
