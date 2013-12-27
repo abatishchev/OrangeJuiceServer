@@ -9,6 +9,8 @@ using Moq;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 
+using Environment = OrangeJuice.Server.Configuration.Environment;
+
 namespace OrangeJuice.Server.Test.Data
 {
 	[TestClass]
@@ -76,14 +78,9 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_ApiVersion_Having_Key_When_Environment_Is_Local_Testing_Development()
+		public void Create_Should_Return_ApiVersion_Having_Key_When_Environment_Is_Local_Testing()
 		{
-			foreach (string environment in new[]
-										   {
-												Server.Configuration.Environment.Local,
-												Server.Configuration.Environment.Testing,
-												Server.Configuration.Environment.Development
-										   })
+			foreach (string environment in new[] { Environment.Local, Environment.Testing })
 			{
 				// Arrange
 				var environmentProviderMock = CreateEnvironmentProvider(environment);
@@ -98,13 +95,9 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_ApiVersion_Not_Having_Key_When_Environment_Is_Staging_Production()
+		public void Create_Should_Return_ApiVersion_Not_Having_Key_When_Environment_Is_Development_Staging_Production()
 		{
-			foreach (string environment in new[]
-										   {
-												Server.Configuration.Environment.Staging,
-												Server.Configuration.Environment.Production
-										   })
+			foreach (string environment in new[] { Environment.Development, Environment.Staging, Environment.Production })
 			{
 				// Arrange
 				var environmentProviderMock = CreateEnvironmentProvider(environment);
@@ -153,7 +146,7 @@ namespace OrangeJuice.Server.Test.Data
 		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider(string environment = null)
 		{
 			var providerMock = new Mock<IEnvironmentProvider>();
-			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment ?? Server.Configuration.Environment.Testing);
+			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment ?? Environment.Testing);
 			return providerMock;
 		}
 		#endregion

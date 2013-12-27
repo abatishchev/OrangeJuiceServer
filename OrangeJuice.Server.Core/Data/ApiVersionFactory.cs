@@ -51,8 +51,8 @@ namespace OrangeJuice.Server.Data
 			{
 				case Environment.Local:
 				case Environment.Testing:
-				case Environment.Development:
 					return AppKey.Version0;
+				case Environment.Development:
 				case Environment.Staging:
 				case Environment.Production:
 					return null;
