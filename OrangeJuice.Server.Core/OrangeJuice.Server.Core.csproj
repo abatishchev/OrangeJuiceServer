@@ -71,6 +71,8 @@
     <Compile Include="UtcDateTimeProvider.cs" />
     <Compile Include="Web\HttpDocumentLoader.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
+    <Compile Include="IPipeline.cs" />
+    <Compile Include="Web\PercentUrlEncodingPipeline.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
