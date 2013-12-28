@@ -22,9 +22,6 @@ namespace OrangeJuice.Server.Api.Policies
 
 		internal ErrorDetailPolicyResolver(IEnvironmentProvider environmentProvider, IDictionary<string, IncludeErrorDetailPolicy> policies)
 		{
-			if (environmentProvider == null)
-				throw new ArgumentNullException("environmentProvider");
-
 			_environmentProvider = environmentProvider;
 			_policies = policies;
 		}

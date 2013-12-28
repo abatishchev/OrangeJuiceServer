@@ -20,73 +20,7 @@ namespace OrangeJuice.Server.Test.Services
 	[TestClass]
 	public class AwsClientTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_QueryBuilder_Is_Null()
-		{
-			// Arrange
-			const IQueryBuilder queryBuilder = null;
-			const IDocumentLoader documentLoader = null;
-			const IItemSelector itemProvider = null;
-
-			// Act
-			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("queryBuilder");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_DocumentLoader_Is_Null()
-		{
-			// Arrange
-			IQueryBuilder queryBuilder = CreateUrlBuilder();
-			const IDocumentLoader documentLoader = null;
-			const IItemSelector itemProvider = null;
-
-			// Act
-			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("documentLoader");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_ItemProvider_Is_Null()
-		{
-			// Arrange
-			IQueryBuilder queryBuilder = CreateUrlBuilder();
-			IDocumentLoader documentLoader = CreateDocumentLoader();
-			const IItemSelector itemProvider = null;
-
-			// Act
-			Action action = () => new AwsClient(queryBuilder, documentLoader, itemProvider);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("itemSelector");
-		}
-		#endregion
-
 		#region SelectItems
-		[TestMethod]
-		public void GetItems_Should_Throw_Exception_When_Args_Is_Null()
-		{
-			// Arrange
-			const IStringDictionary args = null;
-
-			IAwsClient client = CreateClient();
-
-			// Act
-			Func<Task> action = () => client.GetItems(args);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("args");
-		}
-
 		[TestMethod]
 		public async Task GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_DocumentLoader_Load()
 		{

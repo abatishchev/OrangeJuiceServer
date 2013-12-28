@@ -12,15 +12,11 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 
 		public UnityValidatorFactory(IUnityContainer container)
 		{
-			if (container == null)
-				throw new ArgumentNullException("container");
 			_container = container;
 		}
 
 		public override IValidator CreateInstance(Type type)
 		{
-			if (type == null)
-				throw new ArgumentNullException("type");
 			return (IValidator)_container.Resolve(type);
 		}
 	}

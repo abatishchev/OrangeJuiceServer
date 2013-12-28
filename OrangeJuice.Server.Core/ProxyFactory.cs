@@ -8,8 +8,6 @@ namespace OrangeJuice.Server
 
 		public ProxyFactory(Func<T> func)
 		{
-			if (func == null)
-				throw new ArgumentNullException("func");
 			_func = func;
 		}
 

@@ -14,13 +14,6 @@ namespace OrangeJuice.Server.Services
 		#region Constructors
 		public AwsArgumentBuilder(string accessKey, string associateTag, IDateTimeProvider dateTimeProvider)
 		{
-			if (String.IsNullOrEmpty(accessKey))
-				throw new ArgumentNullException("accessKey");
-			if (String.IsNullOrEmpty(associateTag))
-				throw new ArgumentNullException("associateTag");
-			if (dateTimeProvider == null)
-				throw new ArgumentNullException("dateTimeProvider");
-
 			_accessKey = accessKey;
 			_associateTag = associateTag;
 			_dateTimeProvider = dateTimeProvider;

@@ -16,20 +16,6 @@ namespace OrangeJuice.Server.Test.Web
 	{
 		#region Test methods
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_UrlEncoder_Is_Null()
-		{
-			// Arange
-			const IUrlEncoder urlEncoder = null;
-
-			// Act
-			Action action = () => new FlattenArgumentFormatter(urlEncoder);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("urlEncoder");
-		}
-
-		[TestMethod]
 		public void BuildQuery_Should_Join_Dictionary_Pairs_By_Ampersand()
 		{
 			// Arrange

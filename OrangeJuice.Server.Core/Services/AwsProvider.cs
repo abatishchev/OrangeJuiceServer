@@ -14,8 +14,6 @@ namespace OrangeJuice.Server.Services
 		#region Ctor
 		public AwsProvider(IAwsClient client)
 		{
-			if (client == null)
-				throw new ArgumentNullException("client");
 			_client = client;
 		}
 		#endregion
@@ -23,9 +21,6 @@ namespace OrangeJuice.Server.Services
 		#region IAwsProvider Members
 		public async Task<ICollection<XElement>> SearchItems(string title)
 		{
-			if (String.IsNullOrEmpty(title))
-				throw new ArgumentNullException("title");
-
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemSearch" },
@@ -39,9 +34,6 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<ICollection<XElement>> LookupAttributes(IEnumerable<string> ids)
 		{
-			if (ids == null)
-				throw new ArgumentNullException("ids");
-
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },
@@ -54,9 +46,6 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<ICollection<XElement>> LookupImages(IEnumerable<string> ids)
 		{
-			if (ids == null)
-				throw new ArgumentNullException("ids");
-
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },

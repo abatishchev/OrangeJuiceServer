@@ -18,22 +18,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	[TestClass]
 	public class UserControllerTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_UserRepository_Is_Null()
-		{
-			//Arrange
-			const IUserRepository userRepository = null;
-
-			// Act
-			Action action = () => new UserController(userRepository);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("userRepository");
-		}
-		#endregion
-
 		#region GetUser
 		[TestMethod]
 		public async Task GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()

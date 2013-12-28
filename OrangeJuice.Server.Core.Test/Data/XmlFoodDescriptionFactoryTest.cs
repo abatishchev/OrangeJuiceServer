@@ -14,22 +14,6 @@ namespace OrangeJuice.Server.Test.Data
 	{
 		#region Test methods
 		[TestMethod]
-		public void GetId_Should_Throw_Exception_When_Element_Is_Null()
-		{
-			// Arrange
-			const XElement element = null;
-
-			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
-
-			// Act
-			Action action = () => factory.GetId(element);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("element");
-		}
-
-		[TestMethod]
 		public void GetId_Should_Return_Asin_From_Element()
 		{
 			// Arrange
@@ -47,40 +31,6 @@ namespace OrangeJuice.Server.Test.Data
 
 			// Assert
 			actual.Should().Be(expected);
-		}
-
-		[TestMethod]
-		public void Create_Should_Throw_Exception_When_AttributesElement_Is_Null()
-		{
-			// Arrange
-			const XElement attributesElement = null;
-			const XElement imagesElement = null;
-
-			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
-
-			// Act
-			Action action = () => factory.Create(attributesElement, imagesElement);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("attributesElement");
-		}
-
-		[TestMethod]
-		public void Create_Should_Throw_Exception_When_ImagesElement_Is_Null()
-		{
-			// Arrange
-			XElement attributesElement = new XElement("attributesElement");
-			const XElement imagesElement = null;
-
-			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
-
-			// Act
-			Action action = () => factory.Create(attributesElement, imagesElement);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("imagesElement");
 		}
 
 		[TestMethod]

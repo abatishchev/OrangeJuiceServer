@@ -20,73 +20,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 	[TestClass]
 	public class FluentModelValidatorProviderTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_ValidatorFactory_Is_Null()
-		{
-			// Arrange
-			const ValidatorFactoryBase validatorFactory = null;
-			const IModelValidatorFactory modelValidatorFactory = null;
-
-			// Act
-			Action action = () => new FluentModelValidatorProvider(validatorFactory, modelValidatorFactory);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("validatorFactory");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_ModelalidatorFactory_Is_Null()
-		{
-			// Arrange
-			ValidatorFactoryBase validatorFactory = new Mock<ValidatorFactoryBase>().Object;
-			const IModelValidatorFactory modelValidatorFactory = null;
-
-			// Act
-			Action action = () => new FluentModelValidatorProvider(validatorFactory, modelValidatorFactory);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("modelValidatorFactory");
-		}
-		#endregion
-
 		#region GetValidators
-		[TestMethod]
-		public void GetValidators_Should_Throw_Exception_When_Metadata_Is_Null()
-		{
-			// Arrange
-			ModelValidatorProvider provider = CreateProvider();
-
-			const ModelMetadata metadata = null;
-			const IEnumerable<ModelValidatorProvider> validatorProviders = null;
-
-			// Act
-			Action action = () => provider.GetValidators(metadata, validatorProviders).ToArray();
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("metadata");
-		}
-
-		[TestMethod]
-		public void GetValidators_Should_Throw_Exception_When_ValidatorProviders_Is_Null()
-		{
-			// Arrange
-			ModelValidatorProvider provider = CreateProvider();
-
-			ModelMetadata metadata = CreateMetadata();
-			const IEnumerable<ModelValidatorProvider> validatorProviders = null;
-
-			// Act
-			Action action = () => provider.GetValidators(metadata, validatorProviders).ToArray();
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("validatorProviders");
-		}
-
 		[TestMethod]
 		public void GetValidators_Should_Pass_IValidator_Of_MetaData_ContainerType_UnderlyingSystemType_To_IValidatorFactory_GetValidator()
 		{

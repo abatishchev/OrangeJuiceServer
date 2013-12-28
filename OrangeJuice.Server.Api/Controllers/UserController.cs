@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
@@ -16,9 +15,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		#region Constructors
 		public UserController(IUserRepository userRepository)
 		{
-			if (userRepository == null)
-				throw new ArgumentNullException("userRepository");
-
 			_userRepository = userRepository;
 		}
 		#endregion

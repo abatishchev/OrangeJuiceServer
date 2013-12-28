@@ -17,53 +17,7 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Test Methods
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_ItemValidator_Is_Null()
-		{
-			// Arrange
-			const IValidator<XElement> validator = null;
-
-			// Act
-			Action action = () => new XmlItemSelector(validator);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("itemValidator");
-		}
-
-		[TestMethod]
-		public void GetItems_Should_Throw_Exception_When_Doc_Is_Null()
-		{
-			// Arrange
-			const XDocument doc = null;
-
-			IItemSelector selector = CreateSelector();
-
-			// Act
-			Action action = () => selector.SelectItems(doc);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("doc");
-		}
-
-		[TestMethod]
-		public void GetItems_Should_Throw_Exception_When_Doc_Has_No_Root()
-		{
-			// Arrange
-			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"));
-
-			IItemSelector selector = CreateSelector();
-
-			// Act
-			Action action = () => selector.SelectItems(doc);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("doc");
-		}
-
-		[TestMethod]
-		public void GetItems_Should_Throw_Exception_When_Doc_Has_No_Items()
+		public void SelectItemsShould_Throw_Exception_When_Doc_Has_No_Items()
 		{
 			// Arrange
 			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"),
@@ -79,7 +33,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void GetItems_Should_Throw_Exception_When_ItemValidator_Returns_False()
+		public void SelectItemsShould_Throw_Exception_When_ItemValidator_Returns_False()
 		{
 			// Arrange
 			XNamespace ns = "test";
@@ -97,7 +51,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void GetItems_Should_Return_Items_From_Document()
+		public void SelectItemsShould_Return_Items_From_Document()
 		{
 			// Arrange
 			XNamespace ns = "test";

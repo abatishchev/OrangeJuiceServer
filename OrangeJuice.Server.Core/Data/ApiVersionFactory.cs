@@ -17,11 +17,6 @@ namespace OrangeJuice.Server.Data
 		#region Ctor
 		public ApiVersionFactory(IAssemblyProvider assemblyProvider, IEnvironmentProvider environmentProvider)
 		{
-			if (assemblyProvider == null)
-				throw new ArgumentNullException("assemblyProvider");
-			if (environmentProvider == null)
-				throw new ArgumentNullException("environmentProvider");
-
 			_environmentProvider = environmentProvider;
 			_assemblyProvider = assemblyProvider;
 		}

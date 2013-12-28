@@ -1,6 +1,4 @@
-﻿using System;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,21 +10,6 @@ namespace OrangeJuice.Server.Test.Filters
 	[TestClass]
 	public class ValidImageFoodDescriptionFilterTest
 	{
-		[TestMethod]
-		public void Filter_Should_Throw_Exception_When_FoodDescription_Is_Null()
-		{
-			// Arrange
-			const FoodDescription foodDescription = null;
-			IFilter<FoodDescription> filter = new ValidImageFoodDescriptionFilter();
-
-			// Act
-			Action action = () => filter.Filter(foodDescription);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("foodDescription");
-		}
-
 		[TestMethod]
 		public void Filter_Should_Return_True_When_All_ImageUrls_Are_Not_Null()
 		{

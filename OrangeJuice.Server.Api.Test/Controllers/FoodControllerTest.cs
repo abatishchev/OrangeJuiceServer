@@ -18,22 +18,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	[TestClass]
 	public class FoodControllerTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_AwsFoodRepository_Is_Null()
-		{
-			// Arrange
-			const AwsFoodRepository foodRepository = null;
-
-			// Act
-			Action action = () => new FoodController(foodRepository);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("foodRepository");
-		}
-		#endregion
-
 		#region GetDescription
 		[TestMethod]
 		public async Task GetDescription_Should_Return_BadRequest_When_Model_Not_IsValid()

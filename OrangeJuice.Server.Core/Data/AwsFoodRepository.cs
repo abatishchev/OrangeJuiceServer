@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -17,13 +16,6 @@ namespace OrangeJuice.Server.Data
 
 		public AwsFoodRepository(IFactory<IAwsProvider> providerFactory, IFoodDescriptionFactory foodDescriptionFactory, IFilter<FoodDescription> foodDescriptionFilter)
 		{
-			if (providerFactory == null)
-				throw new ArgumentNullException("providerFactory");
-			if (foodDescriptionFactory == null)
-				throw new ArgumentNullException("foodDescriptionFactory");
-			if (foodDescriptionFilter == null)
-				throw new ArgumentNullException("foodDescriptionFilter");
-
 			_providerFactory = providerFactory;
 			_foodDescriptionFactory = foodDescriptionFactory;
 			_foodDescriptionFilter = foodDescriptionFilter;
@@ -31,9 +23,6 @@ namespace OrangeJuice.Server.Data
 
 		public async Task<ICollection<FoodDescription>> SearchByTitle(string title)
 		{
-			if (String.IsNullOrEmpty(title))
-				throw new ArgumentNullException("title");
-
 			IAwsProvider provider = _providerFactory.Create();
 
 			ICollection<XElement> items = await provider.SearchItems(title);

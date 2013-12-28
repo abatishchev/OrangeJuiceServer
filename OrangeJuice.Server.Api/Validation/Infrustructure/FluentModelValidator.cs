@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http.Metadata;
@@ -16,18 +15,11 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 		public FluentModelValidator(IEnumerable<ModelValidatorProvider> validatorProviders, IValidator validator)
 			: base(validatorProviders)
 		{
-			if (validator == null)
-				throw new ArgumentNullException("validator");
 			_validator = validator;
 		}
 
 		public override IEnumerable<ModelValidationResult> Validate(ModelMetadata metadata, object container)
 		{
-			if (metadata == null)
-				throw new ArgumentNullException("metadata");
-			if (container == null)
-				throw new ArgumentNullException("container");
-
 			// TODO: why is called twice?
 
 			ValidationResult result = _validator.Validate(container);

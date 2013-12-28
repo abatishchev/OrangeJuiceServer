@@ -16,38 +16,6 @@ namespace OrangeJuice.Server.Test.Data
 	[TestClass]
 	public class ApiVersionFactoryTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_AssemblyProvider_Is_Null()
-		{
-			// Arange
-			const IAssemblyProvider assemblyProvider = null;
-			const IEnvironmentProvider environmentProvider = null;
-
-			// Act
-			Action action = () => new ApiVersionFactory(assemblyProvider, environmentProvider);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("assemblyProvider");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_EnvironmentProvider_Is_Null()
-		{
-			// Arange
-			IAssemblyProvider assemblyProvider = CreateAssemblyProvider().Object;
-			const IEnvironmentProvider environmentProvider = null;
-
-			// Act
-			Action action = () => new ApiVersionFactory(assemblyProvider, environmentProvider);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("environmentProvider");
-		}
-		#endregion
-
 		#region Create
 		[TestMethod]
 		public void Create_Should_Call_AssemblyProvider_GetExecutingAssembly()

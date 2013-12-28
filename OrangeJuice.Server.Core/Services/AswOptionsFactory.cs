@@ -1,6 +1,4 @@
-﻿using System;
-
-using OrangeJuice.Server.Configuration;
+﻿using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Services
 {
@@ -14,8 +12,6 @@ namespace OrangeJuice.Server.Services
 
 		public AswOptionsFactory(IConfigurationProvider configurationProvider)
 		{
-			if (configurationProvider == null)
-				throw new ArgumentNullException("configurationProvider");
 			_configurationProvider = configurationProvider;
 		}
 

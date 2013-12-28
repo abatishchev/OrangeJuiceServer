@@ -10,9 +10,6 @@ namespace OrangeJuice.Server.Web
 
 		public FlattenArgumentFormatter(IUrlEncoder urlEncoder)
 		{
-			if (urlEncoder == null)
-				throw new ArgumentNullException("urlEncoder");
-
 			_urlEncoder = urlEncoder;
 		}
 

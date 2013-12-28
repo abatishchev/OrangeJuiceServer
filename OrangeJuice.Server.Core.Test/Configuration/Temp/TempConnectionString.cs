@@ -18,9 +18,6 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 
 		public TempConnectionString(params KeyValuePair<string, string>[] pairs)
 		{
-			if (pairs == null)
-				throw new ArgumentNullException("pairs");
-
 			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 			foreach (var pair in pairs)
 			{

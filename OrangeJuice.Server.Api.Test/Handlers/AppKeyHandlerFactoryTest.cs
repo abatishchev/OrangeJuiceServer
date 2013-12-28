@@ -1,6 +1,4 @@
-﻿using System;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,20 +13,6 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 	public class AppKeyHandlerFactoryTest
 	{
 		#region Test methods
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_EnvironmentProvider_Is_Null()
-		{
-			// Arrange
-			const IEnvironmentProvider environmentProvider = null;
-
-			// Act
-			Action action = () => new AppKeyHandlerFactory(environmentProvider);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("environmentProvider");
-		}
-
 		[TestMethod]
 		public void Create_Should_Call_EnvironmentProvider_GetCurrentEnvironment()
 		{

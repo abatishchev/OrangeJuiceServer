@@ -1,5 +1,3 @@
-using System;
-
 using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Api.Handlers
@@ -10,8 +8,6 @@ namespace OrangeJuice.Server.Api.Handlers
 
 		public AppKeyHandlerFactory(IEnvironmentProvider environmentProvider)
 		{
-			if (environmentProvider == null)
-				throw new ArgumentNullException("environmentProvider");
 			_environmentProvider = environmentProvider;
 		}
 
@@ -20,9 +16,9 @@ namespace OrangeJuice.Server.Api.Handlers
 			string environment = _environmentProvider.GetCurrentEnvironment();
 			switch (environment)
 			{
-				case Configuration.Environment.Local:
+				case Environment.Local:
 					return new EmptyAppKeyHandler();
-				case Configuration.Environment.Production:
+				case Environment.Production:
 					return new HeaderAppKeyHandler(AppKey.Version0);
 				default:
 					return new QueryAppKeyHandler(AppKey.Version0);

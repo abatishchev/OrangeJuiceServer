@@ -1,4 +1,3 @@
-using System;
 using System.Web.Http.Results;
 
 using FluentAssertions;
@@ -13,20 +12,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	[TestClass]
 	public class VersionControllerTest
 	{
-		[TestMethod]
-		public void Ctor_Should_Throw_When_ApiVersion_Is_Null()
-		{
-			// Arange
-			const ApiVersion apiVersion = null;
-
-			// Act
-			Action action = () => new VersionController(apiVersion);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("apiVersion");
-		}
-
 		[TestMethod]
 		public void GetVersion_Should_Return_ApiVersion()
 		{

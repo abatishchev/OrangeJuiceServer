@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -9,9 +8,6 @@ namespace OrangeJuice.Server.Services
 	{
 		public bool IsValid(XElement item)
 		{
-			if (item == null)
-				throw new ArgumentNullException("item");
-
 			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
 			nm.AddNamespace("x", item.Name.Namespace.ToString());
 

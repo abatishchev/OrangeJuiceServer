@@ -10,18 +10,11 @@ namespace OrangeJuice.Server.Services
 
 		public XmlItemSelector(IValidator<XElement> itemValidator)
 		{
-			if (itemValidator == null)
-				throw new ArgumentNullException("itemValidator");
 			_itemValidator = itemValidator;
 		}
 
 		public IEnumerable<XElement> SelectItems(XDocument doc)
 		{
-			if (doc == null)
-				throw new ArgumentNullException("doc");
-			if (doc.Root == null)
-				throw new ArgumentNullException("doc");
-
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			XElement items = doc.Root.Element(ns + "Items");

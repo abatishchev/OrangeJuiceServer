@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using OrangeJuice.Server.Web;
 
@@ -13,13 +12,6 @@ namespace OrangeJuice.Server.Services
 
 		public AwsQueryBuilder(IArgumentBuilder argumentBuilder, IArgumentFormatter argumentFormatter, IQuerySigner querySigner)
 		{
-			if (argumentBuilder == null)
-				throw new ArgumentNullException("argumentBuilder");
-			if (argumentFormatter == null)
-				throw new ArgumentNullException("argumentFormatter");
-			if (querySigner == null)
-				throw new ArgumentNullException("querySigner");
-
 			_argumentBuilder = argumentBuilder;
 			_argumentFormatter = argumentFormatter;
 			_querySigner = querySigner;

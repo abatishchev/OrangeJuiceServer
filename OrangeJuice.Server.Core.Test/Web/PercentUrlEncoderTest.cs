@@ -14,20 +14,6 @@ namespace OrangeJuice.Server.Test.Web
 	public class PercentUrlEncoderTest
 	{
 		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_EncodingPipeline_Is_Null()
-		{
-			// Arange
-			const IPipeline<string> encodingPipeline = null;
-
-			// Act
-			Action action = () => new PercentUrlEncoder(encodingPipeline);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("encodingPipeline");
-		}
-
-		[TestMethod]
 		public void Encode_Should_Execute_EncodingPipeline()
 		{
 			// Arrange

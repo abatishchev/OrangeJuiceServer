@@ -19,58 +19,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 	[TestClass]
 	public class FluentModelValidatorTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_Validator_Is_Null()
-		{
-			// Arrange
-			var validatorProviders = Enumerable.Empty<ModelValidatorProvider>();
-			const IValidator validator = null;
-
-			// Act
-			Action action = () => new FluentModelValidator(validatorProviders, validator);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("validator");
-		}
-		#endregion
-
 		#region Validate
-		[TestMethod]
-		public void Validate_Should_Throw_Exception_When_Metadata_Is_Null()
-		{
-			// Arrange
-			const ModelMetadata metadata = null;
-			const object container = null;
-
-			ModelValidator validator = CreateModelValidator();
-
-			// Act
-			Action action = () => validator.Validate(metadata, container);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("metadata");
-		}
-
-		[TestMethod]
-		public void Validate_Should_Throw_Exception_When_Container_Is_Null()
-		{
-			// Arrange
-			ModelMetadata metadata = CreateMetadata();
-			const object container = null;
-
-			ModelValidator validator = CreateModelValidator();
-
-			// Act
-			Action action = () => validator.Validate(metadata, container);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-			      .And.ParamName.Should().Be("container");
-		}
-
 		[TestMethod]
 		public void Validate_Should_Return_Empty_Sequence_When_Underlying_Validator_Validate_Returned_No_Errors()
 		{

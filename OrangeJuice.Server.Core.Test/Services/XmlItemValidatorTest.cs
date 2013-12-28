@@ -13,22 +13,6 @@ namespace OrangeJuice.Server.Test.Services
 	public class XmlItemValidatorTest
 	{
 		[TestMethod]
-		public void IsValid_Should_Throw_Exception()
-		{
-			// Arange
-			const XElement item = null;
-
-			IValidator<XElement> validator = new XmlItemValidator();
-
-			// Act
-			Action action = () => validator.IsValid(item);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("item");
-		}
-
-		[TestMethod]
 		public void IsValid_Should_Return_Request_IsValid_Element_Value()
 		{
 			// Arange

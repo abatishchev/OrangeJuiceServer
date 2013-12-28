@@ -18,55 +18,7 @@ namespace OrangeJuice.Server.Test.Services
 	[TestClass]
 	public class AwsProviderTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_Client_Is_Null()
-		{
-			// Arrange
-			const IAwsClient client = null;
-
-			// Act
-			Action action = () => new AwsProvider(client);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("client");
-		}
-		#endregion
-
 		#region SearchItems
-		[TestMethod]
-		public void SearchItems_Should_Throw_Exception_When_Title_Is_Null()
-		{
-			// Arrange
-			const string title = null;
-
-			IAwsProvider provider = CreateProvider();
-
-			// Act
-			Func<Task> action = () => provider.SearchItems(title);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("title");
-		}
-
-		[TestMethod]
-		public void SearchItems_Should_Throw_Exception_When_Title_Is_Empty()
-		{
-			// Arrange
-			const string title = "";
-
-			IAwsProvider provider = CreateProvider();
-
-			// Act
-			Func<Task> action = () => provider.SearchItems(title);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("title");
-		}
-
 		[TestMethod]
 		public async Task SearchItems_Should_Pass_Arguments_To_Client()
 		{
@@ -108,22 +60,6 @@ namespace OrangeJuice.Server.Test.Services
 
 		#region LookupAttributes
 		[TestMethod]
-		public void LookupAttributes_Should_Throw_Exception_When_Ids_Is_Null()
-		{
-			// Arrange
-			const string[] ids = null;
-
-			IAwsProvider provider = CreateProvider();
-
-			// Act
-			Func<Task> action = () => provider.LookupAttributes(ids);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("ids");
-		}
-
-		[TestMethod]
 		public async Task LookupAttributes_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
@@ -162,22 +98,6 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region LookupImages
-		[TestMethod]
-		public void LookupImages_Should_Throw_Exception_When_Ids_Is_Null()
-		{
-			// Arrange
-			const string[] ids = null;
-
-			IAwsProvider provider = CreateProvider();
-
-			// Act
-			Func<Task> action = () => provider.LookupImages(ids);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("ids");
-		}
-
 		[TestMethod]
 		public async Task LookupImages_Should_Pass_Arguments_To_Client()
 		{

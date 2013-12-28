@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -16,8 +13,6 @@ namespace OrangeJuice.Server.Api.Controllers
 
 		public FoodController(IFoodRepository foodRepository)
 		{
-			if (foodRepository == null)
-				throw new ArgumentNullException("foodRepository");
 			_foodRepository = foodRepository;
 		}
 

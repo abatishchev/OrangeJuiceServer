@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OrangeJuice.Server.Web
+﻿namespace OrangeJuice.Server.Web
 {
 	public sealed class PercentUrlEncoder : IUrlEncoder
 	{
@@ -12,9 +10,6 @@ namespace OrangeJuice.Server.Web
 		#region Ctor
 		public PercentUrlEncoder(IPipeline<string> encodingPipeline)
 		{
-			if (encodingPipeline == null)
-				throw new ArgumentNullException("encodingPipeline");
-
 			_encodingPipeline = encodingPipeline;
 		}
 		#endregion

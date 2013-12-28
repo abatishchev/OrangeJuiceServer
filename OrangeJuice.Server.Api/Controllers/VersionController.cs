@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Http;
+﻿using System.Web.Http;
 
 using OrangeJuice.Server.Data;
 
@@ -11,8 +10,6 @@ namespace OrangeJuice.Server.Api.Controllers
 
 		public VersionController(ApiVersion apiVersion)
 		{
-			if (apiVersion == null)
-				throw new ArgumentNullException("apiVersion");
 			_apiVersion = apiVersion;
 		}
 

@@ -17,11 +17,6 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 		#region Ctor
 		public FluentModelValidatorProvider(IValidatorFactory validatorFactory, IModelValidatorFactory modelValidatorFactory)
 		{
-			if (validatorFactory == null)
-				throw new ArgumentNullException("validatorFactory");
-			if (modelValidatorFactory == null)
-				throw new ArgumentNullException("modelValidatorFactory");
-
 			_validatorFactory = validatorFactory;
 			_modelValidatorFactory = modelValidatorFactory;
 		}
@@ -30,11 +25,6 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 		#region Methods
 		public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, IEnumerable<ModelValidatorProvider> validatorProviders)
 		{
-			if (metadata == null)
-				throw new ArgumentNullException("metadata");
-			if (validatorProviders == null)
-				throw new ArgumentNullException("validatorProviders");
-
 			Type type = GeType(metadata);
 			if (type != null)
 			{

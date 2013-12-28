@@ -10,9 +10,6 @@ namespace OrangeJuice.Server.Configuration
 
 		public ConfigurationEnvironmentProvider(IConfigurationProvider configurationProvider)
 		{
-			if (configurationProvider == null)
-				throw new ArgumentNullException("configurationProvider");
-
 			_configurationProvider = configurationProvider;
 		}
 

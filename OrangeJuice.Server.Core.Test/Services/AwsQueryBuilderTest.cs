@@ -1,8 +1,4 @@
-﻿using System;
-
-using FluentAssertions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
@@ -17,56 +13,6 @@ namespace OrangeJuice.Server.Test.Services
 	[TestClass]
 	public class AwsQueryBuilderTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_ArgumentBuilder_Is_Null()
-		{
-			// Arrange
-			const IArgumentBuilder argumentBuilder = null;
-			const IArgumentFormatter argumentFormatter = null;
-			const IQuerySigner signatureBuilder = null;
-
-			// Act
-			Action action = () => new AwsQueryBuilder(argumentBuilder, argumentFormatter, signatureBuilder);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("argumentBuilder");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_ArgumentFormatter_Is_Null()
-		{
-			// Arrange
-			IArgumentBuilder argumentBuilder = CreateArgumentBuilder();
-			const IArgumentFormatter argumentFormatter = null;
-			const IQuerySigner signatureBuilder = null;
-
-			// Act
-			Action action = () => new AwsQueryBuilder(argumentBuilder, argumentFormatter, signatureBuilder);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("argumentFormatter");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_QuerySigner_Is_Null()
-		{
-			// Arrange
-			IArgumentBuilder argumentBuilder = CreateArgumentBuilder();
-			IArgumentFormatter argumentFormatter = CreateArgumentFormatter();
-			const IQuerySigner querySigner = null;
-
-			// Act
-			Action action = () => new AwsQueryBuilder(argumentBuilder, argumentFormatter, querySigner);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("querySigner");
-		}
-		#endregion
-
 		#region BuildUrl
 		[TestMethod]
 		public void BuildUrl_Should_Pass_Arguments_To_ArgumentBuilder()

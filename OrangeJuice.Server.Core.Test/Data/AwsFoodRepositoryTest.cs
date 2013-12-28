@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-
-using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,87 +15,7 @@ namespace OrangeJuice.Server.Test.Data
 	[TestClass]
 	public class AwsFoodRepositoryTest
 	{
-		#region Ctor
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_AwsProviderFactory_Is_Null()
-		{
-			// Arrange
-			const IFactory<IAwsProvider> providerFactory = null;
-			const IFoodDescriptionFactory foodDescriptionFactory = null;
-			const IFilter<FoodDescription> foodDescriptionFilter = null;
-
-			// Act
-			Action action = () => new AwsFoodRepository(providerFactory, foodDescriptionFactory, foodDescriptionFilter);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("providerFactory");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_FoodDescriptionFactorys_Is_Null()
-		{
-			// Arrange
-			IFactory<IAwsProvider> providerFactory = new Mock<IFactory<IAwsProvider>>().Object;
-			const IFoodDescriptionFactory foodDescriptionFactory = null;
-			const IFilter<FoodDescription> foodDescriptionFilter = null;
-
-			// Act
-			Action action = () => new AwsFoodRepository(providerFactory, foodDescriptionFactory, foodDescriptionFilter);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("foodDescriptionFactory");
-		}
-
-		[TestMethod]
-		public void Ctor_Should_Throw_Exception_When_FoodDescriptionFilter_Is_Null()
-		{
-			// Arrange
-			IFactory<IAwsProvider> providerFactory = new Mock<IFactory<IAwsProvider>>().Object;
-			IFoodDescriptionFactory foodDescriptionFactory = new Mock<IFoodDescriptionFactory>().Object;
-			const IFilter<FoodDescription> foodDescriptionFilter = null;
-
-			// Act
-			Action action = () => new AwsFoodRepository(providerFactory, foodDescriptionFactory, foodDescriptionFilter);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("foodDescriptionFilter");
-		}
-		#endregion
-
 		#region SearchByTitle
-		[TestMethod]
-		public void SearchByTitle_Should_Throw_Exception_When_Title_Is_Null()
-		{
-			// Arrange
-			const string title = null;
-			IFoodRepository repository = CreateRepository();
-
-			// Act
-			Func<Task> action = () => repository.SearchByTitle(title);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("title");
-		}
-
-		[TestMethod]
-		public void SearchByTitle_Should_Throw_Exception_When_Title_Is_Empty()
-		{
-			// Arrange
-			const string title = "";
-			IFoodRepository repository = CreateRepository();
-
-			// Act
-			Func<Task> action = () => repository.SearchByTitle(title);
-
-			// Assert
-			action.ShouldThrow<ArgumentNullException>()
-				  .And.ParamName.Should().Be("title");
-		}
-
 		[TestMethod]
 		public async Task SearchByTitle_Should_Call_ProviderFactory_Create()
 		{

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,9 +9,6 @@ namespace OrangeJuice.Server.Filters
 	{
 		public bool Filter(FoodDescription foodDescription)
 		{
-			if (foodDescription == null)
-				throw new ArgumentNullException("foodDescription");
-
 			var urls = GetUrls(foodDescription);
 			return urls.All(u => u != null);
 		}

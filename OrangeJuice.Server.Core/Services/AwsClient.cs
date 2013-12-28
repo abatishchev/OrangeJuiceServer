@@ -19,13 +19,6 @@ namespace OrangeJuice.Server.Services
 		#region Ctor
 		public AwsClient(IQueryBuilder queryBuilder, IDocumentLoader documentLoader, IItemSelector itemSelector)
 		{
-			if (queryBuilder == null)
-				throw new ArgumentNullException("queryBuilder");
-			if (documentLoader == null)
-				throw new ArgumentNullException("documentLoader");
-			if (itemSelector == null)
-				throw new ArgumentNullException("itemSelector");
-
 			_queryBuilder = queryBuilder;
 			_documentLoader = documentLoader;
 			_itemSelector = itemSelector;
@@ -35,9 +28,6 @@ namespace OrangeJuice.Server.Services
 		#region IAwsClient Members
 		public async Task<ICollection<XElement>> GetItems(IDictionary<string, string> args)
 		{
-			if (args == null)
-				throw new ArgumentNullException("args");
-
 			string url = _queryBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
 			return _itemSelector.SelectItems(doc).ToArray();

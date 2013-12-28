@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -10,9 +9,6 @@ namespace OrangeJuice.Server.Data
 		#region IFoodDescriptionFactory Members
 		public string GetId(XElement element)
 		{
-			if (element == null)
-				throw new ArgumentNullException("element");
-
 			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
 			nm.AddNamespace("x", element.Name.Namespace.ToString());
 
@@ -21,11 +17,6 @@ namespace OrangeJuice.Server.Data
 
 		public FoodDescription Create(XElement attributesElement, XElement imagesElement)
 		{
-			if (attributesElement == null)
-				throw new ArgumentNullException("attributesElement");
-			if (imagesElement == null)
-				throw new ArgumentNullException("imagesElement");
-
 			FoodDescription description = new FoodDescription();
 			AssignAttributes(description, attributesElement);
 			AssignImages(description, imagesElement);
