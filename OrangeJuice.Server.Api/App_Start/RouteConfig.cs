@@ -3,7 +3,7 @@
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
-	internal class RouteConfig
+	internal static class RouteConfig
 	{
 		public static void RegisterRoutes(HttpRouteCollection routes)
 		{

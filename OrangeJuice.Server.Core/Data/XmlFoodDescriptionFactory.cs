@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -28,30 +26,24 @@ namespace OrangeJuice.Server.Data
 			if (imagesElement == null)
 				throw new ArgumentNullException("imagesElement");
 
-			return GetSteps(attributesElement, imagesElement).Aggregate(new FoodDescription(), (d, func) => func(d));
+			FoodDescription description = new FoodDescription();
+			AssignAttributes(description, attributesElement);
+			AssignImages(description, imagesElement);
+			return description;
 		}
-
 		#endregion
 
 		#region Methods
-		private static IEnumerable<Func<FoodDescription, FoodDescription>> GetSteps(XElement attributesElement, XElement imagesElement)
-		{
-			yield return d => AssignAttributes(d, attributesElement);
-			yield return d => AssignImages(d, imagesElement);
-		}
-
-		internal static FoodDescription AssignAttributes(FoodDescription description, XElement element)
+		internal static void AssignAttributes(FoodDescription description, XElement element)
 		{
 			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
 			nm.AddNamespace("x", element.Name.Namespace.ToString());
 
 			description.Title = (string)element.XPathSelectElement("x:ItemAttributes/x:Title", nm);
 			description.Brand = (string)element.XPathSelectElement("x:ItemAttributes/x:Brand", nm);
-
-			return description;
 		}
 
-		internal static FoodDescription AssignImages(FoodDescription description, XElement element)
+		internal static void AssignImages(FoodDescription description, XElement element)
 		{
 			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
 			nm.AddNamespace("x", element.Name.Namespace.ToString());
@@ -59,8 +51,6 @@ namespace OrangeJuice.Server.Data
 			description.SmallImageUrl = (string)element.XPathSelectElement("x:SmallImage/x:URL", nm);
 			description.MediumImageUrl = (string)element.XPathSelectElement("x:MediumImage/x:URL", nm);
 			description.LargeImageUrl = (string)element.XPathSelectElement("x:LargeImage/x:URL", nm);
-
-			return description;
 		}
 		#endregion
 	}

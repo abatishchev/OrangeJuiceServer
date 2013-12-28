@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using OrangeJuice.Server.Filters;
 using OrangeJuice.Server.Services;
@@ -35,11 +36,11 @@ namespace OrangeJuice.Server.Data
 
 			IAwsProvider provider = _providerFactory.Create();
 
-			var items = await provider.SearchItems(title);
-			var ids = items.Select(_foodDescriptionFactory.GetId).ToArray(); // TODO: move GetId inside provider?
+			ICollection<XElement> items = await provider.SearchItems(title);
+			ICollection<string> ids = items.Select(_foodDescriptionFactory.GetId).ToArray(); // TODO: move GetId inside provider?
 
-			var attributes = provider.LookupAttributes(ids);
-			var images = provider.LookupImages(ids);
+			Task<ICollection<XElement>> attributes = provider.LookupAttributes(ids);
+			Task<ICollection<XElement>> images = provider.LookupImages(ids);
 
 			return await Task.WhenAll(attributes, images)
 							 .ContinueWith(t => Enumerable.Zip(t.Result[0], t.Result[1], _foodDescriptionFactory.Create)

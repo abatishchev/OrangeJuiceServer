@@ -3,7 +3,7 @@
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
-	static class FilterConfig
+	internal static class FilterConfig
 	{
 		public static void RegisterFilters(HttpFilterCollection filters)
 		{

@@ -84,10 +84,13 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_GroceryDescription_Having_Properies_Populated_From_XElement()
+		public void Create_Should_Return_GroceryDescription_Having_Properies_Assigned_From_AttributesElement()
 		{
 			// Arrange
-			XElement attributesTask = CreateAttributes();
+			const string title = "title";
+			const string brand = "brand";
+
+			XElement attributesTask = CreateAttributes(title, brand);
 			XElement imagesTask = CreateImages();
 
 			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
@@ -96,45 +99,25 @@ namespace OrangeJuice.Server.Test.Data
 			FoodDescription description = factory.Create(attributesTask, imagesTask);
 
 			// Assert
-			description.Title.Should().NotBeNull();
-			description.Brand.Should().NotBeNull();
-
-			description.SmallImageUrl.Should().NotBeNull();
-			description.MediumImageUrl.Should().NotBeNull();
-			description.LargeImageUrl.Should().NotBeNull();
-		}
-
-		[TestMethod]
-		public void AssignAttributes_Should_Assign_Attributes()
-		{
-			// Arrange
-			const string title = "title";
-			const string brand = "brand";
-
-			FoodDescription description = new FoodDescription();
-			XElement attributesElement = CreateAttributes(title, brand);
-
-			// Act
-			XmlFoodDescriptionFactory.AssignAttributes(description, attributesElement);
-
-			// Assert
 			description.Title.Should().Be(title);
 			description.Brand.Should().Be(brand);
 		}
 
 		[TestMethod]
-		public void AssignImages_Should_Assign_Images()
+		public void Create_Should_Return_GroceryDescription_Having_Properies_Assigned_From_ImagesElement()
 		{
 			// Arrange
 			const string smallImageUrl = "smallImageUrl";
 			const string mediumImageUrl = "mediumImageUrl";
 			const string largeImageUrl = "largeImageUrl";
 
-			FoodDescription description = new FoodDescription();
-			XElement imagesElement = CreateImages(smallImageUrl, mediumImageUrl, largeImageUrl);
+			XElement attributesTask = CreateAttributes();
+			XElement imagesTask = CreateImages(smallImageUrl, mediumImageUrl, largeImageUrl);
+
+			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
-			XmlFoodDescriptionFactory.AssignImages(description, imagesElement);
+			FoodDescription description = factory.Create(attributesTask, imagesTask);
 
 			// Assert
 			description.SmallImageUrl.Should().Be(smallImageUrl);
@@ -147,7 +130,7 @@ namespace OrangeJuice.Server.Test.Data
 		private static XElement CreateAttributes(string title = "", string brand = "")
 		{
 			return XElement.Parse(String.Format(
-				@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
+@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
 	<ItemAttributes>
 		<Title>{0}</Title>
 		<Brand>{1}</Brand>
@@ -158,7 +141,7 @@ namespace OrangeJuice.Server.Test.Data
 		private static XElement CreateImages(string smallImageUrl = "", string mediumImageUrl = "", string largeImageUrl = "")
 		{
 			return XElement.Parse(String.Format(
-				@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
+@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
 	<SmallImage>
 		<URL>{0}</URL>
 	</SmallImage>
