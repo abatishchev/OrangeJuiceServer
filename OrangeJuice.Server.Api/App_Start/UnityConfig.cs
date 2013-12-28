@@ -55,7 +55,9 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => c.Resolve<IFactory<AppKeyHandlerBase>>().Create()));
 
-			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(new PercentUrlEncodingPipeline()));
 
 			// Validation
 			container.RegisterType<IValidatorFactory, FluentValidation.Attributes.AttributedValidatorFactory>(new ContainerControlledLifetimeManager());
