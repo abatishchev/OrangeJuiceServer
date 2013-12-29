@@ -60,25 +60,23 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_ItemElement_To_FoodDescriptionFactory_GetId_For_Each_ItemElement_Returned_By_AwsProvider_SearchItems()
+		public async Task SearchByTitle_Should_Pass_ItemElement_To_IdSelector_GetId_For_Each_ItemElement_Returned_By_AwsProvider_SearchItems()
 		{
 			// Arrange
 			XElement itemElement = new XElement("Item");
-			XElement attributesElement = new XElement("attributes");
-			XElement imagesElement = new XElement("images");
 
-			var provider = CreateProvider(itemElement, attributesElement, imagesElement);
+			var provider = CreateProvider(itemElement);
 			var providerFactory = CreateProviderFactory(provider.Object);
 
-			var foodDescriptionFactory = new Mock<IFoodDescriptionFactory>();
+			var idSelectorMock = new Mock<IIdSelector>();
 
-			AwsFoodRepository repository = CreateRepository(providerFactory, foodDescriptionFactory.Object);
+			AwsFoodRepository repository = CreateRepository(providerFactory, idSelector: idSelectorMock.Object);
 
 			// Act
 			await repository.SearchByTitle("anyTitle");
 
 			// Assert
-			foodDescriptionFactory.Verify(f => f.GetId(itemElement), Times.Once);
+			idSelectorMock.Verify(f => f.GetId(itemElement), Times.Once);
 		}
 
 		[TestMethod]
@@ -93,6 +91,7 @@ namespace OrangeJuice.Server.Test.Data
 			var providerFactory = CreateProviderFactory(provider.Object);
 
 			var factoryMock = new Mock<IFoodDescriptionFactory>();
+			factoryMock.Setup(f => f.Create(It.IsAny<string>(), attributesElement, imagesElement));
 
 			AwsFoodRepository repository = CreateRepository(providerFactory, factoryMock.Object);
 
@@ -100,7 +99,7 @@ namespace OrangeJuice.Server.Test.Data
 			await repository.SearchByTitle("anyTitle");
 
 			// Assert
-			factoryMock.Verify(f => f.Create(attributesElement, imagesElement), Times.Once);
+			factoryMock.Verify(f => f.Create(It.IsAny<string>(), attributesElement, imagesElement), Times.Once);
 		}
 		#endregion
 
@@ -108,21 +107,21 @@ namespace OrangeJuice.Server.Test.Data
 		private static AwsFoodRepository CreateRepository(
 			IFactory<IAwsProvider> providerFactory = null,
 			IFoodDescriptionFactory foodDescriptionFactory = null,
-			IFilter<FoodDescription> foodDescriptionFilter = null)
+			IFilter<FoodDescription> foodDescriptionFilter = null,
+			IIdSelector idSelector = null)
 		{
 			return new AwsFoodRepository(
 				providerFactory ?? CreateProviderFactory(),
 				foodDescriptionFactory ?? new Mock<IFoodDescriptionFactory>().Object,
-				foodDescriptionFilter ?? new Mock<IFilter<FoodDescription>>().Object);
+				foodDescriptionFilter ?? new Mock<IFilter<FoodDescription>>().Object,
+				idSelector ?? CreateSelector());
 		}
 
 		private static IFactory<IAwsProvider> CreateProviderFactory(IAwsProvider provider = null)
 		{
-			var providerFactoryMock = new Mock<IFactory<IAwsProvider>>();
-
-			providerFactoryMock.Setup(f => f.Create()).Returns(provider ?? CreateProvider().Object);
-
-			return providerFactoryMock.Object;
+			var factoryMock = new Mock<IFactory<IAwsProvider>>();
+			factoryMock.Setup(f => f.Create()).Returns(provider ?? CreateProvider().Object);
+			return factoryMock.Object;
 		}
 
 		private static Mock<IAwsProvider> CreateProvider(XElement itemElement = null, XElement attributesElement = null, XElement imagesElement = null)
@@ -135,6 +134,14 @@ namespace OrangeJuice.Server.Test.Data
 
 			return providerMock;
 		}
+
+		private static IIdSelector CreateSelector(string id = null, XElement element = null)
+		{
+			var idSelectorMock = new Mock<IIdSelector>();
+			idSelectorMock.Setup(s => s.GetId(element ?? It.IsAny<XElement>())).Returns(id ?? "anyId");
+			return idSelectorMock.Object;
+		}
+
 		#endregion
 	}
 }

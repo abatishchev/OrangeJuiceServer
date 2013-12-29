@@ -4,8 +4,6 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IFoodDescriptionFactory
 	{
-		string GetId(XElement element);
-
-		FoodDescription Create(XElement attributesElement, XElement imagesElement);
+		FoodDescription Create(string id, XElement attributesElement, XElement imagesElement);
 	}
 }

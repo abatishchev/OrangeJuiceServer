@@ -14,29 +14,28 @@ namespace OrangeJuice.Server.Test.Data
 	{
 		#region Test methods
 		[TestMethod]
-		public void GetId_Should_Return_Asin_From_Element()
+		public void Create_Should_Return_GroceryDescription_Having_Id_Assigned_From_Id()
 		{
 			// Arrange
-			const string expected = "ASIN";
-			const string ns = "ns";
+			const string id = "id";
 
-			XElement element = new XElement(XName.Get("anyElement", ns),
-				new XElement(XName.Get("ASIN", ns),
-					expected));
+			XElement attributesTask = CreateAttributes();
+			XElement imagesTask = CreateImages();
 
 			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
-			string actual = factory.GetId(element);
+			FoodDescription description = factory.Create(id, attributesTask, imagesTask);
 
 			// Assert
-			actual.Should().Be(expected);
+			description.Id.Should().Be(id);
 		}
 
 		[TestMethod]
 		public void Create_Should_Return_GroceryDescription_Having_Properies_Assigned_From_AttributesElement()
 		{
 			// Arrange
+			const string id = "id";
 			const string title = "title";
 			const string brand = "brand";
 
@@ -46,7 +45,7 @@ namespace OrangeJuice.Server.Test.Data
 			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
-			FoodDescription description = factory.Create(attributesTask, imagesTask);
+			FoodDescription description = factory.Create(id, attributesTask, imagesTask);
 
 			// Assert
 			description.Title.Should().Be(title);
@@ -57,6 +56,7 @@ namespace OrangeJuice.Server.Test.Data
 		public void Create_Should_Return_GroceryDescription_Having_Properies_Assigned_From_ImagesElement()
 		{
 			// Arrange
+			const string id = "id";
 			const string smallImageUrl = "smallImageUrl";
 			const string mediumImageUrl = "mediumImageUrl";
 			const string largeImageUrl = "largeImageUrl";
@@ -67,7 +67,7 @@ namespace OrangeJuice.Server.Test.Data
 			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
-			FoodDescription description = factory.Create(attributesTask, imagesTask);
+			FoodDescription description = factory.Create(id, attributesTask, imagesTask);
 
 			// Assert
 			description.SmallImageUrl.Should().Be(smallImageUrl);

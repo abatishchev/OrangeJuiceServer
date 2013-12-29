@@ -125,9 +125,12 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IFilter<FoodDescription>, ValidImageFoodDescriptionFilter>(new ContainerControlledLifetimeManager());
 
+			container.RegisterType<IIdSelector, XmlIdSelector>(
+				new ContainerControlledLifetimeManager());
+
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IFactory<IAwsProvider>), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>)));
+				new InjectionConstructor(typeof(IFactory<IAwsProvider>), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
 		}
 	}
 }

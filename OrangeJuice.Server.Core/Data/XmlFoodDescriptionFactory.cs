@@ -7,19 +7,16 @@ namespace OrangeJuice.Server.Data
 	public sealed class XmlFoodDescriptionFactory : IFoodDescriptionFactory
 	{
 		#region IFoodDescriptionFactory Members
-		public string GetId(XElement element)
+		public FoodDescription Create(string id, XElement attributesElement, XElement imagesElement)
 		{
-			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
-			nm.AddNamespace("x", element.Name.Namespace.ToString());
+			FoodDescription description = new FoodDescription
+			{
+				Id = id
+			};
 
-			return (string)element.XPathSelectElement("x:ASIN", nm);
-		}
-
-		public FoodDescription Create(XElement attributesElement, XElement imagesElement)
-		{
-			FoodDescription description = new FoodDescription();
 			AssignAttributes(description, attributesElement);
 			AssignImages(description, imagesElement);
+
 			return description;
 		}
 		#endregion
