@@ -71,7 +71,7 @@ namespace OrangeJuice.Server.Api
 			// VersionController
 			container.RegisterType<IFactory<ApiVersion>, ApiVersionFactory>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IAssemblyProvider), typeof(IEnvironmentProvider)));
+				new InjectionConstructor(typeof(IAssemblyProvider)));
 
 			container.RegisterType<ApiVersion>(
 				new ContainerControlledLifetimeManager(),

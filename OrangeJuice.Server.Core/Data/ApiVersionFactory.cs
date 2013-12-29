@@ -1,9 +1,4 @@
-﻿using System;
-using System.Reflection;
-
-using OrangeJuice.Server.Configuration;
-
-using Environment = OrangeJuice.Server.Configuration.Environment;
+﻿using System.Reflection;
 
 namespace OrangeJuice.Server.Data
 {
@@ -11,13 +6,11 @@ namespace OrangeJuice.Server.Data
 	{
 		#region Fields
 		private readonly IAssemblyProvider _assemblyProvider;
-		private readonly IEnvironmentProvider _environmentProvider;
 		#endregion
 
 		#region Ctor
-		public ApiVersionFactory(IAssemblyProvider assemblyProvider, IEnvironmentProvider environmentProvider)
+		public ApiVersionFactory(IAssemblyProvider assemblyProvider)
 		{
-			_environmentProvider = environmentProvider;
 			_assemblyProvider = assemblyProvider;
 		}
 		#endregion
@@ -27,8 +20,7 @@ namespace OrangeJuice.Server.Data
 		{
 			return new ApiVersion
 			{
-				Version = GetVersion(),
-				Key = GetKey()
+				Version = GetVersion()
 			};
 		}
 		#endregion
@@ -36,24 +28,8 @@ namespace OrangeJuice.Server.Data
 		#region Methods
 		private string GetVersion()
 		{
-			return _assemblyProvider.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
-		}
-
-		private Guid? GetKey()
-		{
-			string environment = _environmentProvider.GetCurrentEnvironment();
-			switch (environment)
-			{
-				case Environment.Local:
-				case Environment.Testing:
-					return AppKey.Version0;
-				case Environment.Development:
-				case Environment.Staging:
-				case Environment.Production:
-					return null;
-				default:
-					throw new NotSupportedException(String.Format("Environment '{0}' is not supported", environment));
-			}
+			return _assemblyProvider.GetExecutingAssembly()
+			                        .GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
 		}
 		#endregion
 	}
