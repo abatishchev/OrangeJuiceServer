@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
-	public class FoodController : ApiController
+	public sealed class FoodController : ApiController
 	{
 		private readonly IFoodRepository _foodRepository;
 
@@ -22,6 +23,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <returns>Brief description of food found</returns>
 		/// <param name="searchCriteria">Food search criteria</param>
 		/// <url>GET /api/food/</url>
+		[ResponseType(typeof(FoodDescription))]
 		public async Task<IHttpActionResult> GetDescription([FromUri]FoodSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)

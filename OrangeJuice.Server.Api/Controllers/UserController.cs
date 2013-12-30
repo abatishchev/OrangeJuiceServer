@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Model;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
@@ -25,7 +28,8 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <param name="searchCriteria">User search criteria</param>
 		/// <returns>User entity</returns>
-		/// <url>GET /api/user/</url>
+		/// <url>GET /api/user</url>
+		[ResponseType(typeof(User))]
 		public async Task<IHttpActionResult> GetUserInformation([FromUri]UserSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
@@ -43,7 +47,8 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <param name="userRegistration">User userRegistration information</param>
 		/// <returns>Guid representing the user</returns>
-		/// <url>PUT /api/user/</url>
+		/// <url>PUT /api/user</url>
+		[ResponseType(typeof(Guid))]
 		public async Task<IHttpActionResult> PutUserRegistration([FromBody]UserRegistration userRegistration)
 		{
 			if (!ModelState.IsValid)
