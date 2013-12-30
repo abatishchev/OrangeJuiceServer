@@ -115,5 +115,8 @@
     <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
     <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_ELMAH_Error.sql" />
     <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_Users.sql" />
+    <Build Include="Schemas\dbo\Tables\Ratings.sql" />
+    <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_Ratings.sql" />
+    <Build Include="Schemas\dbo\Tables\Keys\Foregin\FK_Ratings_Users.sql" />
   </ItemGroup>
 </Project>
