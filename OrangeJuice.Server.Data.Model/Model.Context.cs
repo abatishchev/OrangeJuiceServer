@@ -26,5 +26,6 @@ namespace OrangeJuice.Server.Data.Model
         }
     
         public DbSet<User> Users { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
     }
 }

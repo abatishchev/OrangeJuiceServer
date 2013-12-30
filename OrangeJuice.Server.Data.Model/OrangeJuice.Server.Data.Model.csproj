@@ -71,6 +71,9 @@
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rating.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EntityModelUserRepository.cs" />
     <Compile Include="User.cs">
       <DependentUpon>Model.tt</DependentUpon>
