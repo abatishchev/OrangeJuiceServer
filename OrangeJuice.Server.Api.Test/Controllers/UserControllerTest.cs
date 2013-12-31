@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetUser
 		[TestMethod]
-		public async Task GetUser_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public async Task GetUser_Should_Return_InvalidModelState_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController(exception: new ArgumentNullException());
@@ -30,7 +30,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetUserInformation(searchCriteria);
 
 			// Assert
-			result.Should().BeOfType<BadRequestErrorMessageResult>();
+			result.Should().BeOfType<InvalidModelStateResult>();
 		}
 
 		[TestMethod]
@@ -112,7 +112,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region PutUser
 		[TestMethod]
-		public async Task PutUser_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public async Task PutUser_Should_Return_InvalidModelState_When_Model_Not_IsValid()
 		{
 			// Arrange
 			UserController controller = CreateController(exception: new ArgumentNullException());
@@ -122,7 +122,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.PutUserRegistration(userRegistration);
 
 			// Assert
-			result.Should().BeOfType<BadRequestErrorMessageResult>();
+			result.Should().BeOfType<InvalidModelStateResult>();
 		}
 
 		[TestMethod]

@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		public async Task<IHttpActionResult> GetDescription([FromUri]FoodSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
-				return BadRequest("Model is not valid");
+				return BadRequest(ModelState);
 
 			var description = await _foodRepository.SearchByTitle(searchCriteria.Title);
 			return Ok(description.ToArray());

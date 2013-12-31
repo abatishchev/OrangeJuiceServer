@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetDescription
 		[TestMethod]
-		public async Task GetDescription_Should_Return_BadRequest_When_Model_Not_IsValid()
+		public async Task GetDescription_Should_Return_InvalidModelState_When_Model_Not_IsValid()
 		{
 			// Arrange
 			FoodController controller = CreateController(exception: new ArgumentNullException());
@@ -30,7 +30,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetDescription(searchCriteria);
 
 			// Assert
-			result.Should().BeOfType<BadRequestErrorMessageResult>();
+			result.Should().BeOfType<InvalidModelStateResult>();
 		}
 
 		[TestMethod]

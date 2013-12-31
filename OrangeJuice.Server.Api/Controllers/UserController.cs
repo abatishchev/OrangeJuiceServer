@@ -5,7 +5,6 @@ using System.Web.Http.Description;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Model;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
@@ -29,13 +28,13 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <param name="searchCriteria">User search criteria</param>
 		/// <returns>User entity</returns>
 		/// <url>GET /api/user</url>
-		[ResponseType(typeof(User))]
+		[ResponseType(typeof(IUser))]
 		public async Task<IHttpActionResult> GetUserInformation([FromUri]UserSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
-				return BadRequest("Model is not valid");
+				return BadRequest(ModelState);
 
-			IUser user = await _userRepository.SearchByGuid(searchCriteria.UserGuid.GetValueOrDefault());
+			IUser user = await _userRepository.SearchByGuid(searchCriteria.UserGuid);
 			if (user == null)
 				return NotFound();
 
@@ -52,7 +51,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		public async Task<IHttpActionResult> PutUserRegistration([FromBody]UserRegistration userRegistration)
 		{
 			if (!ModelState.IsValid)
-				return BadRequest("Model is not valid");
+				return BadRequest(ModelState);
 
 			IUser user = await _userRepository.Register(userRegistration.Email);
 			if (user == null)
