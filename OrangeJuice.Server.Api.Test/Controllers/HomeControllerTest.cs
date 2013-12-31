@@ -1,5 +1,6 @@
 using System.Net;
-using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Results;
 
 using FluentAssertions;
 
@@ -16,16 +17,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public void Get_Should_Return_Status_403_Forbidden()
 		{
 			// Assign
-			const HttpStatusCode expected = HttpStatusCode.Forbidden;
-
 			HomeController controller = new HomeController();
 
 			// Act
-			HttpResponseMessage message = controller.Get();
-			HttpStatusCode actual = message.StatusCode;
+			IHttpActionResult result = controller.Get();
 
 			// Assert
-			actual.Should().Be(expected);
+			result.Should().BeOfType<StatusCodeResult>();
+			result.As<StatusCodeResult>().StatusCode.Should().Be(HttpStatusCode.Forbidden);
 		}
 	}
 }

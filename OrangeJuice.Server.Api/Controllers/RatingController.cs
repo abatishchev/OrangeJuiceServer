@@ -9,16 +9,21 @@ namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class RatingController : ApiController
 	{
+		#region Fields
 		private readonly IRatingRepository _ratingRepository;
+		#endregion
 
+		#region Ctor
 		public RatingController(IRatingRepository ratingRepository)
 		{
 			_ratingRepository = ratingRepository;
 		}
+		#endregion
 
+		#region Methods
 		/// <url>GET /api/rating</url>
 		[ResponseType(typeof(IRating))]
-		public async Task<IHttpActionResult> GetRating([FromUri]RatingSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetRating([FromUri] RatingSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -31,7 +36,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		/// <url>POST /api/rating</url>
-		public async Task<IHttpActionResult> PostRating([FromUri]RatingInformation ratingInformation)
+		public async Task<IHttpActionResult> PostRating([FromUri] RatingInformation ratingInformation)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -42,7 +47,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		/// <url>DELETE /api/rating</url>
-		public async Task<IHttpActionResult> DeleteRating([FromUri]RatingSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> DeleteRating([FromUri] RatingSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -51,5 +56,6 @@ namespace OrangeJuice.Server.Api.Controllers
 
 			return Ok();
 		}
+		#endregion
 	}
 }

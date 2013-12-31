@@ -1,14 +1,13 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class HomeController : ApiController
 	{
-		public HttpResponseMessage Get()
+		public IHttpActionResult Get()
 		{
-			return new HttpResponseMessage(HttpStatusCode.Forbidden);
+			return StatusCode(HttpStatusCode.Forbidden);
 		}
 	}
 }
