@@ -111,6 +111,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="Handlers\AppKeyHandlerFactory.cs" />
     <Compile Include="Handlers\AppKeyHandlerBase.cs" />
@@ -128,6 +129,8 @@
     </Compile>
     <Compile Include="Handlers\HeaderAppKeyHandler.cs" />
     <Compile Include="Handlers\QueryAppKeyHandler.cs" />
+    <Compile Include="Models\RatingInformation.cs" />
+    <Compile Include="Models\RatingSearchCriteria.cs" />
     <Compile Include="Models\UserSearchCriteria.cs" />
     <Compile Include="Models\UserRegistration.cs">
       <SubType>Code</SubType>
@@ -143,6 +146,8 @@
     <Compile Include="Validation\Infrustructure\UnityValidatorFactory.cs" />
     <Compile Include="Validation\FoodSearchCriteriaValidator.cs" />
     <Compile Include="Validation\Infrustructure\FluentModelValidatorFactory.cs" />
+    <Compile Include="Validation\RatingInformationValidator.cs" />
+    <Compile Include="Validation\RatingSearchCriteriaValidator.cs" />
     <Compile Include="Validation\UserRegistrationValidator.cs" />
     <Compile Include="Validation\UserSearchCriteriaValidator.cs" />
   </ItemGroup>

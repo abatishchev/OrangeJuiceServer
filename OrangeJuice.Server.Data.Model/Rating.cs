@@ -14,10 +14,10 @@ namespace OrangeJuice.Server.Data.Model
     
     public partial class Rating
     {
-        public int UserId { get; set; }
-        public string ProductId { get; set; }
+        internal int UserId { get; private set; }
+        public string ProductId { get; internal set; }
         public byte Value { get; set; }
     
-        public virtual User User { get; set; }
+        public virtual User User { get; internal set; }
     }
 }

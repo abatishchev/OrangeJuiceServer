@@ -131,6 +131,9 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IFactory<IAwsProvider>), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
+
+			// RatingController
+			container.RegisterType<IRatingRepository, EntityModelRatingRepository>(new ContainerControlledLifetimeManager());
 		}
 	}
 }

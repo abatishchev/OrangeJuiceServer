@@ -47,31 +47,31 @@
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true" cg:TypeAccess="Internal">
-          <EntitySet Name="Users" EntityType="Model.User" />
-          <EntitySet Name="Ratings" EntityType="Model.Rating" />
+          <EntitySet Name="Users" EntityType="Model.User" cg:GetterAccess="Internal" />
+          <EntitySet Name="Ratings" EntityType="Model.Rating" cg:GetterAccess="Internal" />
           <AssociationSet Name="FK_Ratings_Users" Association="Model.FK_Ratings_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Rating" EntitySet="Ratings" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="User">
+        <EntityType Name="User" cg:TypeAccess="Public">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" cg:GetterAccess="Private" cg:SetterAccess="Private" />
+          <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" cg:GetterAccess="Internal" cg:SetterAccess="Private" />
           <Property Type="Guid" Name="UserGuid" Nullable="false" cg:SetterAccess="Private" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="254" FixedLength="false" Unicode="false" cg:SetterAccess="Internal" />
-          <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" />
+          <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" cg:SetterAccess="Internal" />
         </EntityType>
-        <EntityType Name="Rating">
+        <EntityType Name="Rating" cg:TypeAccess="Public">
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="ProductId" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" cg:GetterAccess="Internal" cg:SetterAccess="Private" />
+          <Property Name="ProductId" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" cg:SetterAccess="Internal" />
           <Property Name="Value" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Model.FK_Ratings_Users" FromRole="Rating" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Model.FK_Ratings_Users" FromRole="Rating" ToRole="User" cg:SetterAccess="Internal" />
         </EntityType>
         <Association Name="FK_Ratings_Users">
           <End Type="Model.User" Role="User" Multiplicity="1" />

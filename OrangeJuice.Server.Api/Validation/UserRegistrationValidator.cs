@@ -8,9 +8,9 @@ namespace OrangeJuice.Server.Api.Validation
 	{
 		public UserRegistrationValidator()
 		{
-			RuleFor(x => x.Email).NotNull();
-			RuleFor(x => x.Email).Length(6, 254);
-			RuleFor(x => x.Email).EmailAddress();
+			RuleFor(x => x.Email).NotNull()
+			                     .Length(6, 254)
+			                     .EmailAddress();
 		}
 	}
 }

@@ -96,6 +96,7 @@
     <Compile Include="Controllers\ControllerFactory.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\FoodControllerTest.cs" />
+    <Compile Include="Controllers\RatingControllerTest.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
     <Compile Include="Controllers\VersionControllerTest.cs" />
     <Compile Include="Diagnostics\EntityErrorLogTest.cs" />
