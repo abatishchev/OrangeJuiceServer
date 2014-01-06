@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.Core;
+using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Model.Repository
@@ -33,24 +34,15 @@ namespace OrangeJuice.Server.Data.Model.Repository
 				if (user == null)
 					throw new ObjectNotFoundException();
 
-				Rating rating = await db.Ratings.FindAsync(user.UserId, productId);
-				if (rating == null)
-				{
-					rating = new Rating
-					{
-						User = user,
-						ProductId = productId,
-						Value = value
-					};
+				Rating rating = await db.Ratings.FindAsync(user.UserId, productId) ??
+								new Rating
+								{
+									User = user,
+									ProductId = productId,
+								};
+				rating.Value = value;
 
-					db.Ratings.Add(rating);
-				}
-				else
-				{
-					rating.Value = value;
-
-					db.Entry(rating).State = EntityState.Modified;
-				}
+				db.Ratings.AddOrUpdate(rating);
 
 				await db.SaveChangesAsync();
 			}
