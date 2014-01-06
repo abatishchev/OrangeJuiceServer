@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 
 using FluentAssertions;
 
@@ -20,7 +19,7 @@ namespace OrangeJuice.Server.Test
 			string output = dateTimeProvider.FormatToUniversal(DateTime.UtcNow);
 
 			// Assert
-			Regex.IsMatch(output, @"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$").Should().BeTrue(); // TODO: update with recent FA
+			output.Should().MatchRegex(@"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$");
 		}
 	}
 }
