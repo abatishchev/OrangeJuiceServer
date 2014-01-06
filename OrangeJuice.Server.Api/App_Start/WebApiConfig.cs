@@ -54,12 +54,11 @@ namespace OrangeJuice.Server.Api
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
 		{
 			formatters.Remove(formatters.XmlFormatter);
-
-			var jsonSerializerSettings = formatters.JsonFormatter.SerializerSettings;
-			jsonSerializerSettings.Formatting = Formatting.Indented;
-			jsonSerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-
 			formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+
+			var settings = formatters.JsonFormatter.SerializerSettings;
+			settings.Formatting = Formatting.Indented;
+			settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
 		}
 	}
 }

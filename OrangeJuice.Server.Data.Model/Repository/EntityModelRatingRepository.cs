@@ -52,8 +52,8 @@ namespace OrangeJuice.Server.Data.Model.Repository
 		{
 			using (IModelContainer db = CreateContainer())
 			{
-				Rating rating = await db.Ratings
-										.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid && r.ProductId == productId);
+				Rating rating = await db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &&
+																		   r.ProductId == productId);
 				if (rating == null)
 					throw new ObjectNotFoundException();
 
@@ -67,9 +67,8 @@ namespace OrangeJuice.Server.Data.Model.Repository
 		{
 			using (IModelContainer db = CreateContainer())
 			{
-				return await db.Ratings
-							   .Include(r => r.User)
-							   .SingleOrDefaultAsync(r => r.User.UserGuid == userGuid && r.ProductId == productId);
+				return await db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &&
+																  r.ProductId == productId);
 			}
 		}
 		#endregion
