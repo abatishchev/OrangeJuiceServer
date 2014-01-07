@@ -13,6 +13,7 @@ using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Configuration;
 
 // ReSharper disable CheckNamespace
+
 namespace OrangeJuice.Server.Api
 {
 	internal static class WebApiConfig
@@ -59,6 +60,8 @@ namespace OrangeJuice.Server.Api
 			var settings = formatters.JsonFormatter.SerializerSettings;
 			settings.Formatting = Formatting.Indented;
 			settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+			settings.PreserveReferencesHandling = PreserveReferencesHandling.Arrays;
+			settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 		}
 	}
 }

@@ -21,6 +21,9 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region Methods
+		/// <summary>
+		/// Searches for food rating by product id and user guid
+		/// </summary>
 		/// <url>GET /api/rating</url>
 		[ResponseType(typeof(IRating))]
 		public async Task<IHttpActionResult> GetRating([FromUri] RatingSearchCriteria searchCriteria)
@@ -35,6 +38,10 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(rating);
 		}
 
+		/// <summary>
+		/// Adds or updates rating basing on its existence by product id and user guid
+		/// </summary>
+		/// <returns>200 OK</returns>
 		/// <url>POST /api/rating</url>
 		public async Task<IHttpActionResult> PostRating([FromUri] RatingInformation ratingInformation)
 		{
@@ -46,6 +53,10 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok();
 		}
 
+		/// <summary>
+		/// Deletes rating by product id and user guid
+		/// </summary>
+		/// <returns>200 OK</returns>
 		/// <url>DELETE /api/rating</url>
 		public async Task<IHttpActionResult> DeleteRating([FromUri] RatingSearchCriteria searchCriteria)
 		{
