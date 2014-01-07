@@ -107,12 +107,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
-    <Compile Include="Handlers\AppKeyHandlerFactory.cs" />
-    <Compile Include="Handlers\AppKeyHandlerBase.cs" />
+    <Compile Include="Handlers\AppVersionHandlerFactory.cs" />
+    <Compile Include="Handlers\AppVersionHandler.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="Handlers\EmptyAppKeyHandler.cs" />
+    <Compile Include="Handlers\EmptyAppVersionHandler.cs" />
     <Compile Include="Models\FoodSearchCriteria.cs" />
     <Compile Include="Controllers\FoodController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -121,8 +121,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\HeaderAppKeyHandler.cs" />
-    <Compile Include="Handlers\QueryAppKeyHandler.cs" />
+    <Compile Include="Handlers\HeaderAppVersionHandler.cs" />
+    <Compile Include="Handlers\QueryAppVersionHandler.cs" />
     <Compile Include="Models\RatingInformation.cs" />
     <Compile Include="Models\RatingSearchCriteria.cs" />
     <Compile Include="Models\UserSearchCriteria.cs" />

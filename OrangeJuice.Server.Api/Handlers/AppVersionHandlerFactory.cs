@@ -2,26 +2,26 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public sealed class AppKeyHandlerFactory : IFactory<AppKeyHandlerBase>
+	public sealed class AppVersionHandlerFactory : IFactory<AppVersionHandler>
 	{
 		private readonly IEnvironmentProvider _environmentProvider;
 
-		public AppKeyHandlerFactory(IEnvironmentProvider environmentProvider)
+		public AppVersionHandlerFactory(IEnvironmentProvider environmentProvider)
 		{
 			_environmentProvider = environmentProvider;
 		}
 
-		public AppKeyHandlerBase Create()
+		public AppVersionHandler Create()
 		{
 			string environment = _environmentProvider.GetCurrentEnvironment();
 			switch (environment)
 			{
 				case Environment.Local:
-					return new EmptyAppKeyHandler();
+					return new EmptyAppVersionHandler();
 				case Environment.Production:
-					return new HeaderAppKeyHandler(AppKey.Version0);
+					return new HeaderAppVersionHandler(AppVersion.Version0);
 				default:
-					return new QueryAppKeyHandler(AppKey.Version0);
+					return new QueryAppVersionHandler(AppVersion.Version0);
 			}
 		}
 	}

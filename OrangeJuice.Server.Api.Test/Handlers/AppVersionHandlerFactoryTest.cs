@@ -10,7 +10,7 @@ using OrangeJuice.Server.Configuration;
 namespace OrangeJuice.Server.Api.Test.Handlers
 {
 	[TestClass]
-	public class AppKeyHandlerFactoryTest
+	public class AppVersionHandlerFactoryTest
 	{
 		#region Test methods
 		[TestMethod]
@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		{
 			// Arrange
 			var environmentProviderMock = CreateEnvironmentProvider();
-			var factory = new AppKeyHandlerFactory(environmentProviderMock.Object);
+			var factory = new AppVersionHandlerFactory(environmentProviderMock.Object);
 
 			// Act
 			factory.Create();
@@ -32,13 +32,13 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		{
 			// Arrange
 			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.Local);
-			var factory = new AppKeyHandlerFactory(environmentProviderMock.Object);
+			var factory = new AppVersionHandlerFactory(environmentProviderMock.Object);
 
 			// Act
-			AppKeyHandlerBase handler = factory.Create();
+			AppVersionHandler handler = factory.Create();
 
 			// Assert
-			handler.Should().BeOfType<EmptyAppKeyHandler>();
+			handler.Should().BeOfType<EmptyAppVersionHandler>();
 		}
 
 		[TestMethod]
@@ -52,13 +52,13 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			{
 				// Arrange
 				var environmentProviderMock = CreateEnvironmentProvider(environment);
-				var factory = new AppKeyHandlerFactory(environmentProviderMock.Object);
+				var factory = new AppVersionHandlerFactory(environmentProviderMock.Object);
 
 				// Act
-				AppKeyHandlerBase handler = factory.Create();
+				AppVersionHandler handler = factory.Create();
 
 				// Assert
-				handler.Should().BeOfType<QueryAppKeyHandler>();
+				handler.Should().BeOfType<QueryAppVersionHandler>();
 			}
 		}
 
@@ -67,13 +67,13 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		{
 			// Arrange
 			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.Production);
-			var factory = new AppKeyHandlerFactory(environmentProviderMock.Object);
+			var factory = new AppVersionHandlerFactory(environmentProviderMock.Object);
 
 			// Act
-			AppKeyHandlerBase handler = factory.Create();
+			AppVersionHandler handler = factory.Create();
 
 			// Assert
-			handler.Should().BeOfType<HeaderAppKeyHandler>();
+			handler.Should().BeOfType<HeaderAppVersionHandler>();
 		}
 		#endregion
 

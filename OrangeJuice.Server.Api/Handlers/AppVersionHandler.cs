@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public abstract class AppKeyHandlerBase : DelegatingHandler
+	public abstract class AppVersionHandler : DelegatingHandler
 	{
 		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{

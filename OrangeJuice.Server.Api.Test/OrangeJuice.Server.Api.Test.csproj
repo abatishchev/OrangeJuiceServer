@@ -100,10 +100,10 @@
     <Compile Include="Controllers\UserControllerTest.cs" />
     <Compile Include="Controllers\VersionControllerTest.cs" />
     <Compile Include="Diagnostics\EntityErrorLogTest.cs" />
-    <Compile Include="Handlers\AppKeyQueryHandlerTest.cs" />
-    <Compile Include="Handlers\AppKeyHeaderHandlerTest.cs" />
-    <Compile Include="Handlers\AppKeyHandlerFactoryTest.cs" />
-    <Compile Include="Handlers\AppKeyHandlerBaseTest.cs" />
+    <Compile Include="Handlers\QueryAppVersionHandlerTest.cs" />
+    <Compile Include="Handlers\HeaderAppVersionHandlerTest.cs" />
+    <Compile Include="Handlers\AppVersionHandlerFactoryTest.cs" />
+    <Compile Include="Handlers\AppVersionHandlerTest.cs" />
     <Compile Include="Policies\ErrorDetailPolicyResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\Infrustructure\FluentModelValidatorTest.cs" />

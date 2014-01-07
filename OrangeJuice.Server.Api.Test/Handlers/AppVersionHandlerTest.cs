@@ -7,14 +7,12 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
-
 using OrangeJuice.Server.Api.Handlers;
 
 namespace OrangeJuice.Server.Api.Test.Handlers
 {
 	[TestClass]
-	public class AppKeyHandlerBaseTest
+	public class AppVersionHandlerTest
 	{
 		#region Test methods
 		[TestMethod]
@@ -35,7 +33,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		#endregion
 
 		#region Helper classes
-		private class HandlerStub : AppKeyHandlerBase
+		private class HandlerStub : AppVersionHandler
 		{
 			private readonly bool _isValid;
 

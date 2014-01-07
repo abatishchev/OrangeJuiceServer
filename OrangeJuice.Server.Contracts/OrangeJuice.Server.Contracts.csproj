@@ -45,7 +45,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AppKey.cs" />
+    <Compile Include="AppVersion.cs" />
     <Compile Include="Data\IRating.cs" />
     <Compile Include="Data\IRatingRepository.cs" />
     <Compile Include="IAssemblyProvider.cs" />
