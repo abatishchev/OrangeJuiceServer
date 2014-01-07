@@ -12,12 +12,12 @@ namespace OrangeJuice.Server.Data.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Rating
+    internal partial class Rating
     {
         internal int UserId { get; private set; }
         public string ProductId { get; internal set; }
         public byte Value { get; set; }
     
-        public virtual User User { get; internal set; }
+        internal virtual User User { get; set; }
     }
 }

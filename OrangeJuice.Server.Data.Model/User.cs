@@ -12,7 +12,7 @@ namespace OrangeJuice.Server.Data.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    internal partial class User
     {
         public User()
         {
@@ -23,6 +23,6 @@ namespace OrangeJuice.Server.Data.Model
         public System.Guid UserGuid { get; private set; }
         public string Email { get; internal set; }
     
-        public virtual ICollection<Rating> Ratings { get; internal set; }
+        internal virtual ICollection<Rating> Ratings { get; set; }
     }
 }

@@ -54,16 +54,16 @@
             <End Role="Rating" EntitySet="Ratings" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="User" cg:TypeAccess="Public">
+        <EntityType Name="User" cg:TypeAccess="Internal">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" cg:GetterAccess="Internal" cg:SetterAccess="Private" />
           <Property Type="Guid" Name="UserGuid" Nullable="false" cg:SetterAccess="Private" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="254" FixedLength="false" Unicode="false" cg:SetterAccess="Internal" />
-          <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" cg:SetterAccess="Internal" />
+          <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" cg:SetterAccess="Internal" cg:GetterAccess="Internal" />
         </EntityType>
-        <EntityType Name="Rating" cg:TypeAccess="Public">
+        <EntityType Name="Rating" cg:TypeAccess="Internal">
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="ProductId" />
@@ -71,7 +71,7 @@
           <Property Name="UserId" Type="Int32" Nullable="false" cg:GetterAccess="Internal" cg:SetterAccess="Private" />
           <Property Name="ProductId" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" cg:SetterAccess="Internal" />
           <Property Name="Value" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Model.FK_Ratings_Users" FromRole="Rating" ToRole="User" cg:SetterAccess="Internal" />
+          <NavigationProperty Name="User" Relationship="Model.FK_Ratings_Users" FromRole="Rating" ToRole="User" cg:SetterAccess="Internal" cg:GetterAccess="Internal" />
         </EntityType>
         <Association Name="FK_Ratings_Users">
           <End Type="Model.User" Role="User" Multiplicity="1" />

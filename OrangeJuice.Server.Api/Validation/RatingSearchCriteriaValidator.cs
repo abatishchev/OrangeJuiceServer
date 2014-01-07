@@ -8,10 +8,10 @@ namespace OrangeJuice.Server.Api.Validation
 	{
 		public RatingSearchCriteriaValidator()
 		{
-			RuleFor(x => x.UserGuid).NotEmpty();
-
 			RuleFor(x => x.Productid).NotNull()
 									 .Length(10); // ASIN
+
+			RuleFor(x => x.UserGuid).NotEmpty();
 		}
 	}
 }
