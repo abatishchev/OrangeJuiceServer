@@ -7,7 +7,7 @@ namespace OrangeJuice.Server.Api.Handlers
 {
 	public sealed class QueryAppVersionHandler : AppVersionHandler
 	{
-		internal const string SegmentName = "appVersion";
+		internal const string SegmentName = "appVer";
 
 		private readonly Version _appVersion;
 
