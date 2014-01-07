@@ -58,6 +58,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Controllers\RatingControllerWebTest.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Controllers\VersionControllerWebTest.webtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

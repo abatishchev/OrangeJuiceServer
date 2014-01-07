@@ -15,6 +15,6 @@
   </Items>
   <ContextParameters>
     <ContextParameter Name="host" Value="http://dev.api.orangejuice.mobi" />
-    <ContextParameter Name="appKey" Value="00000000-0000-0002-0000-000000000000" />
+    <ContextParameter Name="appKey" Value="00000000-0000-0003-0000-000000000000" />
   </ContextParameters>
 </WebTest>
