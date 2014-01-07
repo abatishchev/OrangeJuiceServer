@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Test.Configuration
 		{
 			// Arrange
 			const string environment = "SomeEnvironment";
-			var configurationProviderMock = new Mock<IConfigurationProvider>(MockBehavior.Strict);
+			var configurationProviderMock = new Mock<IConfigurationProvider>();
 			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName)).Returns(environment);
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
@@ -32,7 +32,7 @@ namespace OrangeJuice.Server.Test.Configuration
 		{
 			// Arrange
 			const string expected = "SomeEnvironment";
-			var configurationProviderMock = new Mock<IConfigurationProvider>(MockBehavior.Strict);
+			var configurationProviderMock = new Mock<IConfigurationProvider>();
 			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName)).Returns(expected);
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 

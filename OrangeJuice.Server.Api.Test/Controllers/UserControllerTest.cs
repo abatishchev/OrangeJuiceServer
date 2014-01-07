@@ -23,7 +23,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetUser_Should_Return_InvalidModelState_When_Model_Not_IsValid()
 		{
 			// Arrange
-			UserController controller = CreateController(exception: new ArgumentNullException());
+			UserController controller = CreateController();
+			controller.ModelState.AddModelError("", "");
+
 			UserSearchCriteria searchCriteria = new UserSearchCriteria();
 
 			// Act
@@ -37,7 +39,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetUser_Should_Return_NotFound_When_User_By_Specified_Guid_Does_Not_Exist()
 		{
 			//Arrange
-			var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+			var userRepositoryMock = new Mock<IUserRepository>();
 			userRepositoryMock.Setup(r => r.SearchByGuid(It.IsAny<Guid>())).ReturnsAsync(null);
 
 			UserController controller = CreateController(userRepositoryMock.Object);
@@ -115,7 +117,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task PutUser_Should_Return_InvalidModelState_When_Model_Not_IsValid()
 		{
 			// Arrange
-			UserController controller = CreateController(exception: new ArgumentNullException());
+			UserController controller = CreateController();
+			controller.ModelState.AddModelError("", "");
+
 			UserRegistration userRegistration = new UserRegistration();
 
 			// Act
@@ -201,12 +205,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static UserController CreateController(IUserRepository userRepository = null, Exception exception = null)
+		private static UserController CreateController(IUserRepository userRepository = null)
 		{
-			var controller = ControllerFactory.Create<UserController>(userRepository ?? new Mock<IUserRepository>(MockBehavior.Strict).Object);
-			if (exception != null)
-				controller.ModelState.AddModelError("", exception);
-			return controller;
+			return ControllerFactory.Create<UserController>(userRepository ?? new Mock<IUserRepository>().Object);
 		}
 
 		private static IUser CreateUser(Guid? userGuid = null)

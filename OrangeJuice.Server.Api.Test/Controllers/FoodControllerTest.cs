@@ -76,7 +76,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#region Helper methods
 		private static FoodController CreateController(IFoodRepository repository = null, Exception exception = null)
 		{
-			var controller = ControllerFactory.Create<FoodController>(repository ?? new Mock<IFoodRepository>(MockBehavior.Strict).Object);
+			var controller = ControllerFactory.Create<FoodController>(repository ?? new Mock<IFoodRepository>().Object);
 			if (exception != null)
 				controller.ModelState.AddModelError("", exception);
 			return controller;

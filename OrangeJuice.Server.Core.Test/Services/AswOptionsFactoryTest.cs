@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Test.Services
 		public void Create_Should_Return_Options_With_Populated_Properties()
 		{
 			// Arrange
-			var configurationProviderMock = new Mock<IConfigurationProvider>(MockBehavior.Strict);
+			var configurationProviderMock = new Mock<IConfigurationProvider>();
 			configurationProviderMock.Setup(p => p.GetValue(It.IsAny<string>())).Returns("non-empty-string");
 			var factory = new AswOptionsFactory(configurationProviderMock.Object);
 

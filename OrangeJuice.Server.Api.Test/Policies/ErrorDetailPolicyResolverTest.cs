@@ -22,8 +22,9 @@ namespace OrangeJuice.Server.Api.Test.Policies
 			const string environment = "Test";
 			const IncludeErrorDetailPolicy expected = IncludeErrorDetailPolicy.Default;
 
-			var environmentProviderMock = new Mock<IEnvironmentProvider>(MockBehavior.Strict);
+			var environmentProviderMock = new Mock<IEnvironmentProvider>();
 			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
+
 			var resolver = new ErrorDetailPolicyResolver(
 				environmentProviderMock.Object,
 				new Dictionary<string, IncludeErrorDetailPolicy> { { environment, expected } });

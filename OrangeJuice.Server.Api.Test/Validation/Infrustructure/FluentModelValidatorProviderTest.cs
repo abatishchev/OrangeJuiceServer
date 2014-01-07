@@ -103,7 +103,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 
 		private static Mock<IModelValidatorFactory> CreateModelValidatorFactory()
 		{
-			var factoryMock = new Mock<IModelValidatorFactory>(MockBehavior.Strict);
+			var factoryMock = new Mock<IModelValidatorFactory>();
 			factoryMock.Setup(f => f.Create(It.IsAny<IEnumerable<ModelValidatorProvider>>(), It.IsAny<IValidator>()))
 					   .Returns<IEnumerable<ModelValidatorProvider>, IValidator>((p, v) => new FluentModelValidator(p, v));
 			return factoryMock;

@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		public void Create_Should_Return_EmptyAppKeyHandler_When_Environment_Is_Local()
 		{
 			// Arrange
-			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.Local);
+			var environmentProviderMock = CreateEnvironmentProvider(Environment.Local);
 			var factory = new AppVersionHandlerFactory(environmentProviderMock.Object);
 
 			// Act
@@ -46,8 +46,8 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		{
 			foreach (string environment in new[]
 										   {
-												Configuration.Environment.Development,
-												Configuration.Environment.Staging
+												Environment.Development,
+												Environment.Staging
 										   })
 			{
 				// Arrange
@@ -66,7 +66,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		public void Create_Should_Return_HeaderAppKeyHandler_When_Environment_Is_Production()
 		{
 			// Arrange
-			var environmentProviderMock = CreateEnvironmentProvider(Configuration.Environment.Production);
+			var environmentProviderMock = CreateEnvironmentProvider(Environment.Production);
 			var factory = new AppVersionHandlerFactory(environmentProviderMock.Object);
 
 			// Act
@@ -78,9 +78,9 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		#endregion
 
 		#region Helper methods
-		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider(string environment = Configuration.Environment.Testing)
+		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider(string environment = Environment.Testing)
 		{
-			var environmentProviderMock = new Mock<IEnvironmentProvider>(MockBehavior.Strict);
+			var environmentProviderMock = new Mock<IEnvironmentProvider>();
 			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
 			return environmentProviderMock;
 		}
