@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Data
 			_idSelector = idSelector;
 		}
 
-		public async Task<ICollection<FoodDescription>> SearchByTitle(string title)
+		public async Task<ICollection<FoodDescription>> Search(string title)
 		{
 			IAwsProvider provider = _providerFactory.Create();
 

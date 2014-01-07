@@ -7,6 +7,6 @@ namespace OrangeJuice.Server.Data
 	{
 		Task<IUser> Register(string email);
 
-		Task<IUser> SearchByGuid(Guid userGuid);
+		Task<IUser> Search(Guid userGuid);
 	}
 }

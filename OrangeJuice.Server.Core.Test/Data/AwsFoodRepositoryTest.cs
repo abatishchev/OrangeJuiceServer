@@ -15,9 +15,9 @@ namespace OrangeJuice.Server.Test.Data
 	[TestClass]
 	public class AwsFoodRepositoryTest
 	{
-		#region SearchByTitle
+		#region Search
 		[TestMethod]
-		public async Task SearchByTitle_Should_Call_ProviderFactory_Create()
+		public async Task Search_Should_Call_ProviderFactory_Create()
 		{
 			// Arrange
 			const string title = "anyTitle";
@@ -30,14 +30,14 @@ namespace OrangeJuice.Server.Test.Data
 			IFoodRepository repository = CreateRepository(providerFactoryMock.Object);
 
 			// Act
-			await repository.SearchByTitle(title);
+			await repository.Search(title);
 
 			// Assert
 			providerFactoryMock.Verify(f => f.Create(), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_Title_To_AwsProvider_SearhItems()
+		public async Task Search_Should_Pass_Title_To_AwsProvider_SearhItems()
 		{
 			// Arrange
 			const string title = "anyTitle";
@@ -53,14 +53,14 @@ namespace OrangeJuice.Server.Test.Data
 			IFoodRepository repository = CreateRepository(providerFactoryMock.Object);
 
 			// Act
-			await repository.SearchByTitle(title);
+			await repository.Search(title);
 
 			// Assert
 			providerMock.Verify(c => c.SearchItems(title), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_ItemElement_To_IdSelector_GetId_For_Each_ItemElement_Returned_By_AwsProvider_SearchItems()
+		public async Task Search_Should_Pass_ItemElement_To_IdSelector_GetId_For_Each_ItemElement_Returned_By_AwsProvider_SearchItems()
 		{
 			// Arrange
 			XElement itemElement = new XElement("Item");
@@ -73,14 +73,14 @@ namespace OrangeJuice.Server.Test.Data
 			AwsFoodRepository repository = CreateRepository(providerFactory, idSelector: idSelectorMock.Object);
 
 			// Act
-			await repository.SearchByTitle("anyTitle");
+			await repository.Search("anyTitle");
 
 			// Assert
 			idSelectorMock.Verify(f => f.GetId(itemElement), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_AttributesElement_ImagesElement_To_FoodDescriptionFactory_Returned_By_AwsProvider_SearchItems()
+		public async Task Search_Should_Pass_AttributesElement_ImagesElement_To_FoodDescriptionFactory_Returned_By_AwsProvider_SearchItems()
 		{
 			// Arrange
 			XElement itemElement = new XElement("Item");
@@ -96,7 +96,7 @@ namespace OrangeJuice.Server.Test.Data
 			AwsFoodRepository repository = CreateRepository(providerFactory, factoryMock.Object);
 
 			// Act
-			await repository.SearchByTitle("anyTitle");
+			await repository.Search("anyTitle");
 
 			// Assert
 			factoryMock.Verify(f => f.Create(It.IsAny<string>(), attributesElement, imagesElement), Times.Once);

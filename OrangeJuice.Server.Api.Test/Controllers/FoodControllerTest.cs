@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const string title = "title";
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
-			foodRepositoryMock.Setup(r => r.SearchByTitle(title)).ReturnsAsync(new[] { new FoodDescription() });
+			foodRepositoryMock.Setup(r => r.Search(title)).ReturnsAsync(new[] { new FoodDescription() });
 
 			FoodController controller = CreateController(foodRepositoryMock.Object);
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria { Title = title };
@@ -49,7 +49,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.GetDescription(searchCriteria);
 
 			// Assert
-			foodRepositoryMock.Verify(r => r.SearchByTitle(title), Times.Once());
+			foodRepositoryMock.Verify(r => r.Search(title), Times.Once());
 		}
 
 		[TestMethod]
@@ -59,7 +59,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodDescription[] expected = { new FoodDescription() };
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
-			foodRepositoryMock.Setup(r => r.SearchByTitle(It.IsAny<string>())).ReturnsAsync(expected);
+			foodRepositoryMock.Setup(r => r.Search(It.IsAny<string>())).ReturnsAsync(expected);
 
 			FoodController controller = CreateController(foodRepositoryMock.Object);
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();

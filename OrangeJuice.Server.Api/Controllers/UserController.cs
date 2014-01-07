@@ -34,7 +34,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			IUser user = await _userRepository.SearchByGuid(searchCriteria.UserGuid);
+			IUser user = await _userRepository.Search(searchCriteria.UserGuid);
 			if (user == null)
 				return NotFound();
 

@@ -29,7 +29,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.SearchByTitle(searchCriteria.Title);
+			var description = await _foodRepository.Search(searchCriteria.Title);
 			return Ok(description.ToArray());
 		}
 	}

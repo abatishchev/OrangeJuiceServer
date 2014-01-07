@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 			}
 		}
 
-		public async Task<IUser> SearchByGuid(Guid userGuid)
+		public async Task<IUser> Search(Guid userGuid)
 		{
 			using (IModelContainer db = CreateContainer())
 			{
