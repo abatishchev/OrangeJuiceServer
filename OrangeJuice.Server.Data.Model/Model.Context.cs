@@ -19,7 +19,6 @@ namespace OrangeJuice.Server.Data.Model
         public ModelContainer()
             : base("name=ModelContainer")
         {
-            this.Configuration.LazyLoadingEnabled = false;
             Users = Set<User>();
             Ratings = Set<Rating>();
         }
