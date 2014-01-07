@@ -25,11 +25,10 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Retrieves a user
 		/// </summary>
-		/// <param name="searchCriteria">User search criteria</param>
 		/// <returns>User entity</returns>
 		/// <url>GET /api/user</url>
 		[ResponseType(typeof(IUser))]
-		public async Task<IHttpActionResult> GetUserInformation([FromUri]UserSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetUser([FromUri]UserSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -44,11 +43,10 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Registers a user
 		/// </summary>
-		/// <param name="userRegistration">User userRegistration information</param>
 		/// <returns>Guid representing the user</returns>
 		/// <url>PUT /api/user</url>
 		[ResponseType(typeof(Guid))]
-		public async Task<IHttpActionResult> PutUserRegistration([FromBody]UserRegistration userRegistration)
+		public async Task<IHttpActionResult> PutUser([FromBody]UserRegistration userRegistration)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);

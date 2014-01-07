@@ -24,6 +24,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Searches for food rating by product id and user guid
 		/// </summary>
+		/// <returns>Rating entity</returns>
 		/// <url>GET /api/rating</url>
 		[ResponseType(typeof(IRating))]
 		public async Task<IHttpActionResult> GetRating([FromUri] RatingSearchCriteria searchCriteria)

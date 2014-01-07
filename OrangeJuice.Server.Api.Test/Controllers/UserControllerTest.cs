@@ -29,7 +29,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserSearchCriteria searchCriteria = new UserSearchCriteria();
 
 			// Act
-			IHttpActionResult result = await controller.GetUserInformation(searchCriteria);
+			IHttpActionResult result = await controller.GetUser(searchCriteria);
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -45,7 +45,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetUserInformation(new UserSearchCriteria());
+			IHttpActionResult result = await controller.GetUser(new UserSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<NotFoundResult>();
@@ -65,7 +65,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = userGuid };
 
 			// Act
-			await controller.GetUserInformation(searchCriteria);
+			await controller.GetUser(searchCriteria);
 
 			// Assert
 			repositoryMock.Verify(r => r.Search(userGuid), Times.Once());
@@ -85,7 +85,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = userGuid };
 
 			// Act
-			var result = (OkNegotiatedContentResult<IUser>)await controller.GetUserInformation(searchCriteria);
+			var result = (OkNegotiatedContentResult<IUser>)await controller.GetUser(searchCriteria);
 			IUser actual = result.Content;
 
 			// Assert
@@ -104,7 +104,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserSearchCriteria searchCriteria = new UserSearchCriteria();
 
 			// Act
-			IHttpActionResult result = await controller.GetUserInformation(searchCriteria);
+			IHttpActionResult result = await controller.GetUser(searchCriteria);
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<IUser>>();
@@ -120,7 +120,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.PutUserRegistration(new UserRegistration());
+			IHttpActionResult result = await controller.PutUser(new UserRegistration());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -136,7 +136,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PutUserRegistration(new UserRegistration());
+			IHttpActionResult result = await controller.PutUser(new UserRegistration());
 
 			// Assert
 			result.Should().BeOfType<InternalServerErrorResult>();
@@ -154,7 +154,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserRegistration userRegistration = new UserRegistration { Email = email };
 
 			// Act
-			await controller.PutUserRegistration(userRegistration);
+			await controller.PutUser(userRegistration);
 
 			// Assert
 			repositoryMock.Verify(r => r.Register(email), Times.Once());
@@ -173,7 +173,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			var result = (OkNegotiatedContentResult<Guid>)await controller.PutUserRegistration(new UserRegistration());
+			var result = (OkNegotiatedContentResult<Guid>)await controller.PutUser(new UserRegistration());
 			Guid actual = result.Content;
 
 			// Assert
@@ -191,7 +191,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PutUserRegistration(new UserRegistration());
+			IHttpActionResult result = await controller.PutUser(new UserRegistration());
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<Guid>>();
