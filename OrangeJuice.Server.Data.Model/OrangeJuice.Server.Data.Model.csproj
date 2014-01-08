@@ -107,6 +107,10 @@
       <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Name>OrangeJuice.Server.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrangeJuice.Server.Core\OrangeJuice.Server.Core.csproj">
+      <Project>{1A416347-6B6C-4551-BFDB-FBE19B121D74}</Project>
+      <Name>OrangeJuice.Server.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

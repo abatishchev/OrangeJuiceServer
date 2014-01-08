@@ -4,6 +4,7 @@ using System.Web.Http.Validation;
 using System.Xml.Linq;
 
 using FluentValidation;
+using FluentValidation.Attributes;
 
 using Microsoft.Practices.Unity;
 
@@ -36,7 +37,7 @@ namespace OrangeJuice.Server.Api
 
 		private static void RegisterTypes(IUnityContainer container)
 		{
-			// Providers
+			#region Providers
 			container.RegisterType<IConfigurationProvider, AppSettingsConfigurationProvider>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
@@ -46,8 +47,9 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(new ContainerControlledLifetimeManager());
+			#endregion
 
-			// Web
+			#region Web
 			container.RegisterType<IFactory<AppVersionHandler>, AppVersionHandlerFactory>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IEnvironmentProvider)));
@@ -59,17 +61,19 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(new PercentUrlEncodingPipeline()));
+			#endregion
 
-			// Validation
-			container.RegisterType<IValidatorFactory, FluentValidation.Attributes.AttributedValidatorFactory>(new ContainerControlledLifetimeManager());
+			#region Validation
+			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IModelValidatorFactory, FluentModelValidatorFactory>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IValidatorFactory), typeof(IModelValidatorFactory)));
+			#endregion
 
-			// VersionController
+			#region VersionController
 			container.RegisterType<IFactory<ApiVersion>, ApiVersionFactory>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IAssemblyProvider)));
@@ -77,13 +81,21 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<ApiVersion>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => c.Resolve<IFactory<ApiVersion>>().Create()));
+			#endregion
 
-			// UserController
+			#region Data
+			container.RegisterType<IFactory<IModelContainer>, ProxyFactory<IModelContainer>>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(new Func<IModelContainer>(() => new ModelContainer())));
+			#endregion
+
+			#region UserController
 			container.RegisterType<IUserRepository, EntityModelUserRepository>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
+			#endregion
 
-			// FoodController
+			#region FoodController
 			container.RegisterType<AwsOptions>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionFactory(c => new AswOptionsFactory(c.Resolve<IConfigurationProvider>()).Create()));
@@ -130,17 +142,13 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IAwsProvider), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
+			#endregion
 
-			// RatingController
-			container.RegisterType<IModelContainer, ModelContainer>(new TransientLifetimeManager());
-
-			container.RegisterType<IFactory<IModelContainer>, ProxyFactory<IModelContainer>>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(new Func<IModelContainer>(() => container.Resolve<IModelContainer>())));
-
+			#region RatingController
 			container.RegisterType<IRatingRepository, EntityModelRatingRepository>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
+			#endregion
 		}
 	}
 }
