@@ -10,14 +10,14 @@ namespace OrangeJuice.Server.Data
 {
 	public sealed class AwsFoodRepository : IFoodRepository
 	{
-		private readonly IFactory<IAwsProvider> _providerFactory;
+		private readonly IAwsProvider _provider;
 		private readonly IFoodDescriptionFactory _foodDescriptionFactory;
 		private readonly IFilter<FoodDescription> _foodDescriptionFilter;
 		private readonly IIdSelector _idSelector;
 
-		public AwsFoodRepository(IFactory<IAwsProvider> providerFactory, IFoodDescriptionFactory foodDescriptionFactory, IFilter<FoodDescription> foodDescriptionFilter, IIdSelector idSelector)
+		public AwsFoodRepository(IAwsProvider provider, IFoodDescriptionFactory foodDescriptionFactory, IFilter<FoodDescription> foodDescriptionFilter, IIdSelector idSelector)
 		{
-			_providerFactory = providerFactory;
+			_provider = provider;
 			_foodDescriptionFactory = foodDescriptionFactory;
 			_foodDescriptionFilter = foodDescriptionFilter;
 			_idSelector = idSelector;
@@ -25,13 +25,11 @@ namespace OrangeJuice.Server.Data
 
 		public async Task<ICollection<FoodDescription>> Search(string title)
 		{
-			IAwsProvider provider = _providerFactory.Create();
-
-			ICollection<XElement> items = await provider.SearchItems(title);
+			ICollection<XElement> items = await _provider.SearchItems(title);
 			ICollection<string> ids = items.Select(_idSelector.GetId).ToArray();
 
-			Task<ICollection<XElement>> attributes = provider.LookupAttributes(ids);
-			Task<ICollection<XElement>> images = provider.LookupImages(ids);
+			Task<ICollection<XElement>> attributes = _provider.LookupAttributes(ids);
+			Task<ICollection<XElement>> images = _provider.LookupImages(ids);
 
 			return await Task.WhenAll(attributes, images)
 							 .ContinueWith(t => CreateFoodDescriptions(ids, t.Result[0], t.Result[1]));

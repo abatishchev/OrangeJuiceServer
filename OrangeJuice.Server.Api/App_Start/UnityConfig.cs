@@ -101,7 +101,7 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IArgumentFormatter), typeof(IQuerySigner)));
 
-			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new TransientLifetimeManager());
+			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IValidator<XElement>, XmlItemValidator>(new ContainerControlledLifetimeManager());
 
@@ -110,16 +110,12 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IValidator<XElement>)));
 
 			container.RegisterType<IAwsClient, AwsClient>(
-				new TransientLifetimeManager(),
+				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IQueryBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
 
 			container.RegisterType<IAwsProvider, AwsProvider>(
-				new TransientLifetimeManager(),
-				new InjectionConstructor(typeof(IAwsClient)));
-
-			container.RegisterType<IFactory<IAwsProvider>, ProxyFactory<IAwsProvider>>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(new Func<IAwsProvider>(() => container.Resolve<IAwsProvider>())));
+				new InjectionConstructor(typeof(IAwsClient)));
 
 			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());
 
@@ -130,7 +126,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IFactory<IAwsProvider>), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
+				new InjectionConstructor(typeof(IAwsProvider), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
 
 			// RatingController
 			container.RegisterType<IRatingRepository, EntityModelRatingRepository>(new ContainerControlledLifetimeManager());

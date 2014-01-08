@@ -7,11 +7,10 @@ namespace OrangeJuice.Server.Web
 {
 	public sealed class HttpDocumentLoader : IDocumentLoader
 	{
-		private readonly HttpClient _httpClient = new HttpClient();
-
 		public async Task<XDocument> Load(string url)
 		{
-			using (Stream stream = await _httpClient.GetStreamAsync(url))
+			using (HttpClient client = HttpClientFactory.Create())
+			using (Stream stream = await client.GetStreamAsync(url))
 			{
 				return XDocument.Load(stream);
 			}
