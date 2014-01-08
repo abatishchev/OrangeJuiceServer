@@ -46,7 +46,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
-        <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true" cg:TypeAccess="Internal">
+        <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true" cg:TypeAccess="Public">
           <EntitySet Name="Users" EntityType="Model.User" cg:GetterAccess="Internal" />
           <EntitySet Name="Ratings" EntityType="Model.Rating" cg:GetterAccess="Internal" />
           <AssociationSet Name="FK_Ratings_Users" Association="Model.FK_Ratings_Users">
@@ -54,7 +54,7 @@
             <End Role="Rating" EntitySet="Ratings" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="User" cg:TypeAccess="Internal">
+        <EntityType Name="User" cg:TypeAccess="Public">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
@@ -63,7 +63,7 @@
           <Property Type="String" Name="Email" Nullable="false" MaxLength="254" FixedLength="false" Unicode="false" cg:SetterAccess="Internal" />
           <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" cg:SetterAccess="Internal" cg:GetterAccess="Internal" />
         </EntityType>
-        <EntityType Name="Rating" cg:TypeAccess="Internal">
+        <EntityType Name="Rating" cg:TypeAccess="Public">
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="ProductId" />

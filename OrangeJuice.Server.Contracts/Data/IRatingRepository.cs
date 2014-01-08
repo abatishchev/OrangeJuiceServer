@@ -5,7 +5,7 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IRatingRepository
 	{
-		Task AddOrUpdate(Guid userGuid, string productId, byte value);
+		Task AddOrUpdate(Guid userGuid, string productId, byte ratingValue);
 
 		Task Delete(Guid userGuid, string productId);
 

@@ -3,7 +3,7 @@
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Data.Model
 {
-	internal partial class Rating : IRating
+	public partial class Rating : IRating
 	{
 		public Guid UserGuid
 		{

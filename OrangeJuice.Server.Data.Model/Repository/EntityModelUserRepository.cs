@@ -7,26 +7,20 @@ namespace OrangeJuice.Server.Data.Model.Repository
 	public sealed class EntityModelUserRepository : IUserRepository
 	{
 		#region Fields
-		// ReSharper disable once InconsistentNaming
-		private readonly Func<IModelContainer> CreateContainer;
+		private readonly IFactory<IModelContainer> _containerFactory;
 		#endregion
 
 		#region Ctor
-		public EntityModelUserRepository()
-			: this(() => new ModelContainer())
+		public EntityModelUserRepository(IFactory<IModelContainer> containerFactory)
 		{
-		}
-
-		internal EntityModelUserRepository(Func<IModelContainer> createContainer)
-		{
-			CreateContainer = createContainer;
+			_containerFactory = containerFactory;
 		}
 		#endregion
 
 		#region IUserRepository members
 		public async Task<IUser> Register(string email)
 		{
-			using (IModelContainer db = CreateContainer())
+			using (IModelContainer db = _containerFactory.Create())
 			{
 				User user = new User
 				{
@@ -42,11 +36,11 @@ namespace OrangeJuice.Server.Data.Model.Repository
 
 		public async Task<IUser> Search(Guid userGuid)
 		{
-			using (IModelContainer db = CreateContainer())
+			using (IModelContainer db = _containerFactory.Create())
 			{
 				return await db.Users
-				               .Include(u => u.Ratings)
-				               .SingleOrDefaultAsync(u => u.UserGuid == userGuid);
+							   .Include(u => u.Ratings)
+							   .SingleOrDefaultAsync(u => u.UserGuid == userGuid);
 			}
 		}
 		#endregion

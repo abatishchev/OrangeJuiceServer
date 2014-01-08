@@ -12,7 +12,7 @@ namespace OrangeJuice.Server.Data.Model
     using System;
     using System.Collections.Generic;
     
-    internal partial class User
+    public partial class User
     {
         public User()
         {

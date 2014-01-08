@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Data.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    internal partial class ModelContainer : DbContext
+    public partial class ModelContainer : DbContext
     {
         public ModelContainer()
             : base("name=ModelContainer")

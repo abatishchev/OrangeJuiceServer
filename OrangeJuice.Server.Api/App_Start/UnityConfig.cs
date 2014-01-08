@@ -11,6 +11,7 @@ using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Validation.Infrustructure;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Model;
 using OrangeJuice.Server.Data.Model.Repository;
 using OrangeJuice.Server.Filters;
 using OrangeJuice.Server.Services;
@@ -78,7 +79,9 @@ namespace OrangeJuice.Server.Api
 				new InjectionFactory(c => c.Resolve<IFactory<ApiVersion>>().Create()));
 
 			// UserController
-			container.RegisterType<IUserRepository, EntityModelUserRepository>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IUserRepository, EntityModelUserRepository>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
 
 			// FoodController
 			container.RegisterType<AwsOptions>(
@@ -129,7 +132,15 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IAwsProvider), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
 
 			// RatingController
-			container.RegisterType<IRatingRepository, EntityModelRatingRepository>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IModelContainer, ModelContainer>(new TransientLifetimeManager());
+
+			container.RegisterType<IFactory<IModelContainer>, ProxyFactory<IModelContainer>>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(new Func<IModelContainer>(() => container.Resolve<IModelContainer>())));
+
+			container.RegisterType<IRatingRepository, EntityModelRatingRepository>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
 		}
 	}
 }

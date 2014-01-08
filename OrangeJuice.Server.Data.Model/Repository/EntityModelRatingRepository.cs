@@ -9,26 +9,20 @@ namespace OrangeJuice.Server.Data.Model.Repository
 	public sealed class EntityModelRatingRepository : IRatingRepository
 	{
 		#region Fields
-		// ReSharper disable once InconsistentNaming
-		private readonly Func<IModelContainer> CreateContainer;
+		private readonly IFactory<IModelContainer> _containerFactory;
 		#endregion
 
 		#region Ctor
-		public EntityModelRatingRepository()
-			: this(() => new ModelContainer())
+		public EntityModelRatingRepository(IFactory<IModelContainer> containerFactory)
 		{
-		}
-
-		internal EntityModelRatingRepository(Func<IModelContainer> createContainer)
-		{
-			CreateContainer = createContainer;
+			_containerFactory = containerFactory;
 		}
 		#endregion
 
 		#region IRatingRepository members
-		public async Task AddOrUpdate(Guid userGuid, string productId, byte value)
+		public async Task AddOrUpdate(Guid userGuid, string productId, byte ratingValue)
 		{
-			using (IModelContainer db = CreateContainer())
+			using (IModelContainer db = _containerFactory.Create())
 			{
 				User user = await db.Users.SingleOrDefaultAsync(u => u.UserGuid == userGuid);
 				if (user == null)
@@ -40,7 +34,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 									User = user,
 									ProductId = productId,
 								};
-				rating.Value = value;
+				rating.Value = ratingValue;
 
 				db.Ratings.AddOrUpdate(rating);
 
@@ -50,7 +44,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 
 		public async Task Delete(Guid userGuid, string productId)
 		{
-			using (IModelContainer db = CreateContainer())
+			using (IModelContainer db = _containerFactory.Create())
 			{
 				Rating rating = await db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &&
 																		   r.ProductId == productId);
@@ -65,7 +59,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 
 		public async Task<IRating> Search(Guid userGuid, string productId)
 		{
-			using (IModelContainer db = CreateContainer())
+			using (IModelContainer db = _containerFactory.Create())
 			{
 				return await db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &&
 																  r.ProductId == productId);

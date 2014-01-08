@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 // ReSharper disable once CheckNamespace
 namespace OrangeJuice.Server.Data.Model
 {
-	internal interface IModelContainer : IDisposable
+	public interface IModelContainer : IDisposable
 	{
 		#region Properties
 		DbSet<User> Users { get; set; }
