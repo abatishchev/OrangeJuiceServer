@@ -45,9 +45,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah.Contrib.WebApi, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Elmah.Contrib.WebApi, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Elmah.Contrib.WebApi.1.0.7.0\lib\net45\Elmah.Contrib.WebApi.dll</HintPath>
+      <HintPath>..\packages\Elmah.Contrib.WebApi.1.0.8.0\lib\net45\Elmah.Contrib.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
