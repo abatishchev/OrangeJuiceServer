@@ -74,8 +74,7 @@ namespace OrangeJuice.Server.Test.Services
 			XElement[] expected = { new XElement(ns + "Item") };
 			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"),
 				new XElement(ns + "Root",
-					new XElement(ns + "Items",
-						expected)));
+					new XElement(ns + "Items", expected)));
 
 			IItemSelector selector = CreateSelector();
 

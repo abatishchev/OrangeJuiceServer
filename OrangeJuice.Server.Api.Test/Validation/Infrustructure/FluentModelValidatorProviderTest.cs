@@ -89,7 +89,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 				modelValidatorFactory ?? new Mock<IModelValidatorFactory>().Object);
 		}
 
-		private static ModelMetadata CreateMetadata(Type contrainerType = null)
+		private static ModelMetadata CreateMetadata(Type contrainerType)
 		{
 			return new ModelMetadata(new Mock<ModelMetadataProvider>().Object, contrainerType, () => null, typeof(object), "AnyPropertyName");
 		}
