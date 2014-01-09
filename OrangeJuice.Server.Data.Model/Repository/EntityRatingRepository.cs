@@ -65,5 +65,13 @@ namespace OrangeJuice.Server.Data.Repository
 			return await _ratingUnit.GetRating(userGuid, productId);
 		}
 		#endregion
+
+		#region IDisposable members
+		public void Dispose()
+		{
+			_ratingUnit.Dispose();
+			_userUnit.Dispose();
+		}
+		#endregion
 	}
 }

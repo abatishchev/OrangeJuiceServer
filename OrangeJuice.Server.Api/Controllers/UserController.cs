@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 		#endregion
 
-		#region Methods
+		#region HTTP methods
 		/// <summary>
 		/// Retrieves a user
 		/// </summary>
@@ -57,6 +57,15 @@ namespace OrangeJuice.Server.Api.Controllers
 				return InternalServerError();
 
 			return Ok(user.UserGuid);
+		}
+		#endregion
+
+		#region Methods
+		protected override void Dispose(bool disposing)
+		{
+			_userRepository.Dispose();
+
+			base.Dispose(disposing);
 		}
 		#endregion
 	}

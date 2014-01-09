@@ -10,51 +10,47 @@ namespace OrangeJuice.Server.Data.Unit
 	public sealed class EntityRatingUnit : IRatingUnit
 	{
 		#region Fields
-		private readonly IFactory<IModelContainer> _containerFactory;
+		private readonly IModelContainer _db;
 		#endregion
 
 		#region Ctor
-		public EntityRatingUnit(IFactory<IModelContainer> containerFactory)
+		public EntityRatingUnit(IModelContainer db)
 		{
-			_containerFactory = containerFactory;
+			_db = db;
 		}
 		#endregion
 
 		#region IRatingUnit members
 		public Task<int> AddOrUpdate(Rating rating)
 		{
-			using (IModelContainer db = _containerFactory.Create())
-			{
-				db.Ratings.AddOrUpdate(rating);
-				return db.SaveChangesAsync();
-			}
+			_db.Ratings.AddOrUpdate(rating);
+
+			return _db.SaveChangesAsync();
 		}
 
 		public Task<Rating> GetRating(int userId, string productId)
 		{
-			using (IModelContainer db = _containerFactory.Create())
-			{
-				return db.Ratings.FindAsync(userId, productId);
-			}
+			return _db.Ratings.FindAsync(userId, productId);
 		}
 
 		public Task<Rating> GetRating(Guid userGuid, string productId)
 		{
-			using (IModelContainer db = _containerFactory.Create())
-			{
-				return db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &&
-															r.ProductId == productId);
-			}
+			return _db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &
+			                                             r.ProductId == productId);
 		}
 
 		public Task<int> Remove(Rating rating)
 		{
-			using (IModelContainer db = _containerFactory.Create())
-			{
-				db.Ratings.Remove(rating);
+			_db.Ratings.Remove(rating);
 
-				return db.SaveChangesAsync();
-			}
+			return _db.SaveChangesAsync();
+		}
+		#endregion
+
+		#region IDisposable members
+		public void Dispose()
+		{
+			_db.Dispose();
 		}
 		#endregion
 	}

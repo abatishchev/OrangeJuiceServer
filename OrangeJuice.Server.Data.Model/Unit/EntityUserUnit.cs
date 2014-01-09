@@ -9,33 +9,34 @@ namespace OrangeJuice.Server.Data.Unit
 	public sealed class EntityUserUnit : IUserUnit
 	{
 		#region Fields
-		private readonly IFactory<IModelContainer> _containerFactory;
+		private readonly IModelContainer _container;
 		#endregion
 
 		#region Ctor
-		public EntityUserUnit(IFactory<IModelContainer> containerFactory)
+		public EntityUserUnit(IModelContainer container)
 		{
-			_containerFactory = containerFactory;
+			_container = container;
 		}
 		#endregion
 
 		#region IUserUnit members
 		public Task<int> Add(User user)
 		{
-			using (IModelContainer db = _containerFactory.Create())
-			{
-				db.Users.Add(user);
+			_container.Users.Add(user);
 
-				return db.SaveChangesAsync();
-			}
+			return _container.SaveChangesAsync();
 		}
 
 		public Task<User> GetUser(Guid userGuid)
 		{
-			using (IModelContainer db = _containerFactory.Create())
-			{
-				return db.Users.SingleOrDefaultAsync(u => u.UserGuid == userGuid);
-			}
+			return _container.Users.SingleOrDefaultAsync(u => u.UserGuid == userGuid);
+		}
+		#endregion
+
+		#region IDisposable members
+		public void Dispose()
+		{
+			_container.Dispose();
 		}
 		#endregion
 	}

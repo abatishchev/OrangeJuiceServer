@@ -18,14 +18,12 @@ namespace OrangeJuice.Server.Data.Test.Repository
 	{
 		#region Test methods
 		[TestMethod]
-		public void AddOrUpdate_Should_Throw_ObjectNotFoundException_When_Users_Does_Not_Contain_User_With_UserGuid()
+		public void AddOrUpdate_Should_Throw_Exception_When_Users_Does_Not_Contain_User_With_UserGuid()
 		{
 			// Arrange
 			Guid userGuid = Guid.NewGuid();
 			const string productId = "productid";
 			const byte value = 5;
-
-			var users = new[] { new User() };
 
 			IRatingRepository repository = CreateRepository();
 

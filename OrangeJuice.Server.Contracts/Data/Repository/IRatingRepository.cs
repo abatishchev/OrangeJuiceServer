@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Repository
 {
-	public interface IRatingRepository
+	public interface IRatingRepository : IDisposable
 	{
 		Task AddOrUpdate(Guid userGuid, string productId, byte ratingValue);
 

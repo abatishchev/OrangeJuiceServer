@@ -8,13 +8,13 @@ namespace OrangeJuice.Server.Data.Repository
 	public sealed class EntityUserRepository : IUserRepository
 	{
 		#region Fields
-		private readonly IUserUnit _userUnit;
+		private readonly IUserUnit _db;
 		#endregion
 
 		#region Ctor
-		public EntityUserRepository(IUserUnit userUnit)
+		public EntityUserRepository(IUserUnit db)
 		{
-			_userUnit = userUnit;
+			_db = db;
 		}
 		#endregion
 
@@ -26,15 +26,23 @@ namespace OrangeJuice.Server.Data.Repository
 				Email = email
 			};
 
-			await _userUnit.Add(user);
+			await _db.Add(user);
 
 			return user;
 		}
 
 		public async Task<IUser> Search(Guid userGuid)
 		{
-			return await _userUnit.GetUser(userGuid);
+			return await _db.GetUser(userGuid);
 		}
 		#endregion
+
+		#region IDisposable members
+		public void Dispose()
+		{
+			_db.Dispose();
+		}
+		#endregion
+
 	}
 }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Repository
 {
-	public interface IUserRepository
+	public interface IUserRepository : IDisposable
 	{
 		Task<IUser> Register(string email);
 

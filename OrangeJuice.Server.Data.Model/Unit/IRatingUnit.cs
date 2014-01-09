@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Unit
 {
-	public interface IRatingUnit
+	public interface IRatingUnit : IDisposable
 	{
 		Task<int> AddOrUpdate(Rating rating);
 

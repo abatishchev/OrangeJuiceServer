@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 		#endregion
 
-		#region Methods
+		#region HTTP methods
 		/// <summary>
 		/// Searches for food rating by product id and user guid
 		/// </summary>
@@ -68,6 +68,15 @@ namespace OrangeJuice.Server.Api.Controllers
 			await _ratingRepository.Delete(searchCriteria.UserGuid, searchCriteria.Productid);
 
 			return Ok();
+		}
+		#endregion
+
+		#region Methods
+		protected override void Dispose(bool disposing)
+		{
+			_ratingRepository.Dispose();
+
+			base.Dispose(disposing);
 		}
 		#endregion
 	}

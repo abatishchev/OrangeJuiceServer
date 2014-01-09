@@ -39,123 +39,121 @@ namespace OrangeJuice.Server.Api
 		private static void RegisterTypes(IUnityContainer container)
 		{
 			#region Providers
-			container.RegisterType<IConfigurationProvider, AppSettingsConfigurationProvider>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IConfigurationProvider, AppSettingsConfigurationProvider>(new HierarchicalLifetimeManager());
 
 			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IConfigurationProvider)));
 
-			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(new HierarchicalLifetimeManager());
 
-			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(new HierarchicalLifetimeManager());
 			#endregion
 
 			#region Web
 			container.RegisterType<IFactory<AppVersionHandler>, AppVersionHandlerFactory>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IEnvironmentProvider)));
 
 			container.RegisterType<AppVersionHandler>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionFactory(c => c.Resolve<IFactory<AppVersionHandler>>().Create()));
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(new PercentUrlEncodingPipeline()));
 			#endregion
 
 			#region Validation
-			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(new HierarchicalLifetimeManager());
 
-			container.RegisterType<IModelValidatorFactory, FluentModelValidatorFactory>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IModelValidatorFactory, FluentModelValidatorFactory>(new HierarchicalLifetimeManager());
 
 			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IValidatorFactory), typeof(IModelValidatorFactory)));
 			#endregion
 
 			#region VersionController
 			container.RegisterType<IFactory<ApiVersion>, ApiVersionFactory>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IAssemblyProvider)));
 
 			container.RegisterType<ApiVersion>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionFactory(c => c.Resolve<IFactory<ApiVersion>>().Create()));
 			#endregion
 
 			#region Data
-			container.RegisterType<IFactory<IModelContainer>, ProxyFactory<IModelContainer>>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(new Func<IModelContainer>(() => new ModelContainer())));
+			container.RegisterType<IModelContainer, ModelContainer>(new HierarchicalLifetimeManager());
 			#endregion
 
 			#region FoodController
 			container.RegisterType<AwsOptions>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionFactory(c => new AswOptionsFactory(c.Resolve<IConfigurationProvider>()).Create()));
 
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(container.Resolve<AwsOptions>().AccessKey, container.Resolve<AwsOptions>().AssociateTag, typeof(IDateTimeProvider)));
 
 			container.RegisterType<IArgumentFormatter, FlattenArgumentFormatter>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IUrlEncoder)));
 
 			container.RegisterType<IQuerySigner, AwsQuerySigner>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey, typeof(IUrlEncoder)));
 
 			container.RegisterType<IQueryBuilder, AwsQueryBuilder>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IArgumentFormatter), typeof(IQuerySigner)));
 
-			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new HierarchicalLifetimeManager());
 
-			container.RegisterType<IValidator<XElement>, XmlItemValidator>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IValidator<XElement>, XmlItemValidator>(new HierarchicalLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IValidator<XElement>)));
 
 			container.RegisterType<IAwsClient, AwsClient>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IQueryBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
 
 			container.RegisterType<IAwsProvider, AwsProvider>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IAwsClient)));
 
-			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new HierarchicalLifetimeManager());
 
-			container.RegisterType<IFilter<FoodDescription>, ValidImageFoodDescriptionFilter>(new ContainerControlledLifetimeManager());
+			container.RegisterType<IFilter<FoodDescription>, ValidImageFoodDescriptionFilter>(new HierarchicalLifetimeManager());
 
 			container.RegisterType<IIdSelector, XmlIdSelector>(
-				new ContainerControlledLifetimeManager());
+				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IAwsProvider), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
 			#endregion
 
 			#region UserController
 			container.RegisterType<IUserUnit, EntityUserUnit>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(typeof(IModelContainer)));
 
 			container.RegisterType<IUserRepository, EntityUserRepository>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IUserUnit)));
 			#endregion
 
 			#region RatingController
 			container.RegisterType<IRatingUnit, EntityRatingUnit>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(typeof(IModelContainer)));
 
 			container.RegisterType<IRatingRepository, EntityRatingRepository>(
-				new ContainerControlledLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IRatingUnit), typeof(IUserUnit)));
 			#endregion
 		}
