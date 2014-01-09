@@ -15,7 +15,7 @@ namespace OrangeJuice.Server.Data
 		}
 		#endregion
 
-		#region IApiVersionFactory Members
+		#region IApiVersionFactory members
 		public ApiVersion Create()
 		{
 			return new ApiVersion

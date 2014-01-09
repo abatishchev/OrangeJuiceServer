@@ -24,7 +24,7 @@ namespace OrangeJuice.Server.Services
 		}
 		#endregion
 
-		#region IAwsClient Members
+		#region IAwsClient members
 		public async Task<ICollection<XElement>> GetItems(IDictionary<string, string> args)
 		{
 			string url = _queryBuilder.BuildUrl(args);

@@ -6,7 +6,7 @@ namespace OrangeJuice.Server.Data
 {
 	public sealed class XmlFoodDescriptionFactory : IFoodDescriptionFactory
 	{
-		#region IFoodDescriptionFactory Members
+		#region IFoodDescriptionFactory members
 		public FoodDescription Create(string id, XElement attributesElement, XElement imagesElement)
 		{
 			FoodDescription description = new FoodDescription
