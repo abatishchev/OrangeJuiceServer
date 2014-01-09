@@ -1,22 +1,23 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Data.Entity.Core;
-using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
+using System.Transactions;
 
-namespace OrangeJuice.Server.Data.Model.Repository
+using OrangeJuice.Server.Data.Unit;
+
+namespace OrangeJuice.Server.Data.Repository
 {
 	public sealed class EntityRatingRepository : IRatingRepository
 	{
 		#region Fields
-		private readonly IFactory<IModelContainer> _containerFactory;
+		private readonly IRatingUnit _ratingUnit;
 		private readonly IUserUnit _userUnit;
 		#endregion
 
 		#region Ctor
-		public EntityRatingRepository(IFactory<IModelContainer> containerFactory, IUserUnit userUnit)
+		public EntityRatingRepository(IRatingUnit ratingUnit, IUserUnit userUnit)
 		{
-			_containerFactory = containerFactory;
+			_ratingUnit = ratingUnit;
 			_userUnit = userUnit;
 		}
 		#endregion
@@ -24,13 +25,13 @@ namespace OrangeJuice.Server.Data.Model.Repository
 		#region IRatingRepository members
 		public async Task AddOrUpdate(Guid userGuid, string productId, byte ratingValue)
 		{
-			using (IModelContainer db = _containerFactory.Create())
+			using (var scope = new TransactionScope())
 			{
 				User user = await _userUnit.GetUser(userGuid);
 				if (user == null)
 					throw new ObjectNotFoundException();
 
-				Rating rating = await db.Ratings.FindAsync(user.UserId, productId) ??
+				Rating rating = await _ratingUnit.GetRating(user.UserId, productId) ??
 								new Rating
 								{
 									User = user,
@@ -38,55 +39,31 @@ namespace OrangeJuice.Server.Data.Model.Repository
 								};
 				rating.Value = ratingValue;
 
-				db.Ratings.AddOrUpdate(rating);
+				await _ratingUnit.AddOrUpdate(rating);
 
-				await db.SaveChangesAsync();
+				scope.Complete();
 			}
 		}
 
 		public async Task Delete(Guid userGuid, string productId)
 		{
-			using (IModelContainer db = _containerFactory.Create())
+			using (var scope = new TransactionScope())
 			{
-				Rating rating = await db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &&
-																		   r.ProductId == productId);
+				Rating rating = await _ratingUnit.GetRating(userGuid, productId);
+
 				if (rating == null)
 					throw new ObjectNotFoundException();
 
-				db.Ratings.Remove(rating);
+				await _ratingUnit.Remove(rating);
 
-				await db.SaveChangesAsync();
+				scope.Complete();
 			}
 		}
 
 		public async Task<IRating> Search(Guid userGuid, string productId)
 		{
-			using (IModelContainer db = _containerFactory.Create())
-			{
-				return await db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &&
-																  r.ProductId == productId);
-			}
+			return await _ratingUnit.GetRating(userGuid, productId);
 		}
 		#endregion
-	}
-
-	public interface IUserUnit
-	{
-		Task<User> GetUser(Guid userGuid);
-	}
-
-	public sealed class EntityUserUnit : IUserUnit
-	{
-		private readonly IFactory<IModelContainer> _containerFactory;
-
-		public EntityUserUnit(IFactory<IModelContainer> containerFactory)
-		{
-			_containerFactory = containerFactory;
-		}
-
-		public Task<User> GetUser(Guid userGuid)
-		{
-			IFactory<IModelContainer> containerFactory
-		}
 	}
 }

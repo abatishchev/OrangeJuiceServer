@@ -18,8 +18,8 @@ namespace OrangeJuice.Server.Services
 		}
 		#endregion
 
-		#region IAwsProvider Members
-		public async Task<ICollection<XElement>> SearchItems(string title)
+		#region IAwsProvider members
+		public Task<ICollection<XElement>> SearchItems(string title)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -29,10 +29,10 @@ namespace OrangeJuice.Server.Services
 				{ "Title", title }
 			};
 
-			return await _client.GetItems(args);
+			return _client.GetItems(args);
 		}
 
-		public async Task<ICollection<XElement>> LookupAttributes(IEnumerable<string> ids)
+		public Task<ICollection<XElement>> LookupAttributes(IEnumerable<string> ids)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -41,10 +41,10 @@ namespace OrangeJuice.Server.Services
 				{ "ItemId", String.Join(",", ids) }
 			};
 
-			return await _client.GetItems(args);
+			return _client.GetItems(args);
 		}
 
-		public async Task<ICollection<XElement>> LookupImages(IEnumerable<string> ids)
+		public Task<ICollection<XElement>> LookupImages(IEnumerable<string> ids)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -53,7 +53,7 @@ namespace OrangeJuice.Server.Services
 				{ "ItemId", String.Join(",", ids) }
 			};
 
-			return await _client.GetItems(args);
+			return _client.GetItems(args);
 		}
 		#endregion
 	}

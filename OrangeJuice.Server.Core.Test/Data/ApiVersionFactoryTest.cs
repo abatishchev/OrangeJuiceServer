@@ -15,7 +15,7 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			// Arrange
 			var assemblyProviderMock = CreateAssemblyProvider();
-			var factory = CreateFactory(assemblyProvider: assemblyProviderMock.Object);
+			var factory = CreateFactory(assemblyProviderMock.Object);
 
 			// Act
 			factory.Create();

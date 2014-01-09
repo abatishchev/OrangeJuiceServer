@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.Entity.Core.EntityClient;
 
 namespace OrangeJuice.Server.Api.Diagnostics

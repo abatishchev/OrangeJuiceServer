@@ -7,8 +7,8 @@
     <ProjectGuid>{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OrangeJuice.Server.Data.Model</RootNamespace>
-    <AssemblyName>OrangeJuice.Server.Data.Model</AssemblyName>
+    <RootNamespace>OrangeJuice.Server.Data</RootNamespace>
+    <AssemblyName>OrangeJuice.Server.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -72,6 +73,10 @@
     </Compile>
     <Compile Include="Repository\EntityRatingRepository.cs" />
     <Compile Include="Repository\EntityUserRepository.cs" />
+    <Compile Include="Unit\EntityUserUnit.cs" />
+    <Compile Include="Unit\EntityRatingUnit.cs" />
+    <Compile Include="Unit\IRatingUnit.cs" />
+    <Compile Include="Unit\IUserUnit.cs" />
     <Compile Include="User.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -83,7 +88,7 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.Config" />
     <None Include="Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model.Context.cs</LastGenOutput>

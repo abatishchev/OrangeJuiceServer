@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Moq;
 
-namespace OrangeJuice.Server.Data.Model.Test.Repository
+namespace OrangeJuice.Server.Data.Test.Repository
 {
 	internal static class DbSetFactory
 	{

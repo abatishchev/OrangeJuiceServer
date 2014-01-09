@@ -1,47 +1,39 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Threading.Tasks;
 
-namespace OrangeJuice.Server.Data.Model.Repository
+using OrangeJuice.Server.Data.Unit;
+
+namespace OrangeJuice.Server.Data.Repository
 {
 	public sealed class EntityUserRepository : IUserRepository
 	{
 		#region Fields
-		private readonly IFactory<IModelContainer> _containerFactory;
+		private readonly IUserUnit _userUnit;
 		#endregion
 
 		#region Ctor
-		public EntityUserRepository(IFactory<IModelContainer> containerFactory)
+		public EntityUserRepository(IUserUnit userUnit)
 		{
-			_containerFactory = containerFactory;
+			_userUnit = userUnit;
 		}
 		#endregion
 
 		#region IUserRepository members
 		public async Task<IUser> Register(string email)
 		{
-			using (IModelContainer db = _containerFactory.Create())
+			User user = new User
 			{
-				User user = new User
-				{
-					Email = email
-				};
+				Email = email
+			};
 
-				user = db.Users.Add(user);
+			await _userUnit.Add(user);
 
-				await db.SaveChangesAsync();
-				return user;
-			}
+			return user;
 		}
 
 		public async Task<IUser> Search(Guid userGuid)
 		{
-			using (IModelContainer db = _containerFactory.Create())
-			{
-				return await db.Users
-							   .Include(u => u.Ratings)
-							   .SingleOrDefaultAsync(u => u.UserGuid == userGuid);
-			}
+			return await _userUnit.GetUser(userGuid);
 		}
 		#endregion
 	}

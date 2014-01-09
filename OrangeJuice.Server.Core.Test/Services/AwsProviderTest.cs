@@ -137,7 +137,7 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IAwsProvider CreateProvider(IAwsClient client = null, IIdSelector idSelector = null)
+		private static IAwsProvider CreateProvider(IAwsClient client = null)
 		{
 			return new AwsProvider(
 				client ?? new Mock<IAwsClient>().Object);

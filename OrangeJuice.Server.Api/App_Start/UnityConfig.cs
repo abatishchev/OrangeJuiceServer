@@ -12,8 +12,9 @@ using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Validation.Infrustructure;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Model;
-using OrangeJuice.Server.Data.Model.Repository;
+using OrangeJuice.Server.Data.Container;
+using OrangeJuice.Server.Data.Repository;
+using OrangeJuice.Server.Data.Unit;
 using OrangeJuice.Server.Filters;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
@@ -89,12 +90,6 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(new Func<IModelContainer>(() => new ModelContainer())));
 			#endregion
 
-			#region UserController
-			container.RegisterType<IUserRepository, EntityUserRepository>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
-			#endregion
-
 			#region FoodController
 			container.RegisterType<AwsOptions>(
 				new ContainerControlledLifetimeManager(),
@@ -144,10 +139,24 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IAwsProvider), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
 			#endregion
 
-			#region RatingController
-			container.RegisterType<IRatingRepository, EntityRatingRepository>(
+			#region UserController
+			container.RegisterType<IUserUnit, EntityUserUnit>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
+
+			container.RegisterType<IUserRepository, EntityUserRepository>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IRatingUnit)));
+			#endregion
+
+			#region RatingController
+			container.RegisterType<IRatingUnit, EntityRatingUnit>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
+
+			container.RegisterType<IRatingRepository, EntityRatingRepository>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IRatingUnit), typeof(IUserUnit)));
 			#endregion
 		}
 	}

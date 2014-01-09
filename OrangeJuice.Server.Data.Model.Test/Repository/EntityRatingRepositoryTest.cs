@@ -8,9 +8,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using OrangeJuice.Server.Data.Model.Repository;
+using OrangeJuice.Server.Data.Repository;
+using OrangeJuice.Server.Data.Unit;
 
-namespace OrangeJuice.Server.Data.Model.Test.Repository
+namespace OrangeJuice.Server.Data.Test.Repository
 {
 	[TestClass]
 	public class EntityRatingRepositoryTest
@@ -26,12 +27,7 @@ namespace OrangeJuice.Server.Data.Model.Test.Repository
 
 			var users = new[] { new User() };
 
-			var setMock = DbSetFactory.Create(users);
-
-			var containerMock = new Mock<ModelContainer>();
-			containerMock.Setup(c => c.Users).Returns(setMock);
-
-			IRatingRepository repository = CreateRepository(containerMock);
+			IRatingRepository repository = CreateRepository();
 
 			// Act
 			Func<Task> func = () => repository.AddOrUpdate(userGuid, productId, value);
@@ -42,9 +38,11 @@ namespace OrangeJuice.Server.Data.Model.Test.Repository
 		#endregion
 
 		#region Helper methods
-		private static EntityRatingRepository CreateRepository(IMock<ModelContainer> containerMock)
+		private static EntityRatingRepository CreateRepository(IRatingUnit ratingUnit = null, IUserUnit userUnit = null)
 		{
-			return new EntityRatingRepository(new ProxyFactory<ModelContainer>(() => containerMock.Object));
+			return new EntityRatingRepository(
+				ratingUnit ?? new Mock<IRatingUnit>().Object,
+				userUnit ?? new Mock<IUserUnit>().Object);
 		}
 		#endregion
 	}

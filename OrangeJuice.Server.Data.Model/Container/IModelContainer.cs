@@ -3,8 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 
-// ReSharper disable once CheckNamespace
-namespace OrangeJuice.Server.Data.Model
+namespace OrangeJuice.Server.Data.Container
 {
 	public interface IModelContainer : IDisposable
 	{

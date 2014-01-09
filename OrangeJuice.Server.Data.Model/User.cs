@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OrangeJuice.Server.Data.Model
+namespace OrangeJuice.Server.Data
 {
     using System;
     using System.Collections.Generic;

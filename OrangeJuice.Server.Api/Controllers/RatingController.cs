@@ -4,6 +4,7 @@ using System.Web.Http.Description;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Repository;
 
 namespace OrangeJuice.Server.Api.Controllers
 {

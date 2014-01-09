@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace OrangeJuice.Server.Data
+namespace OrangeJuice.Server.Data.Repository
 {
 	public interface IUserRepository
 	{

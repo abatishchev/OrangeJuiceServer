@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Services
@@ -15,11 +15,14 @@ namespace OrangeJuice.Server.Services
 
 		public IEnumerable<XElement> SelectItems(XDocument doc)
 		{
+			if (doc.Root == null)
+				throw new HttpRequestException();
+
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			XElement items = doc.Root.Element(ns + "Items");
 			if (items == null || !_itemValidator.IsValid(items))
-				throw new InvalidOperationException("Response is not valid");
+				throw new HttpRequestException();
 
 			return items.Elements(ns + "Item");
 		}
