@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Model.Repository
 {
-	public sealed class EntityModelUserRepository : IUserRepository
+	public sealed class EntityUserRepository : IUserRepository
 	{
 		#region Fields
 		private readonly IFactory<IModelContainer> _containerFactory;
 		#endregion
 
 		#region Ctor
-		public EntityModelUserRepository(IFactory<IModelContainer> containerFactory)
+		public EntityUserRepository(IFactory<IModelContainer> containerFactory)
 		{
 			_containerFactory = containerFactory;
 		}

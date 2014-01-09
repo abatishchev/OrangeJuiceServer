@@ -71,7 +71,7 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\EntityRatingRepository.cs" />
-    <Compile Include="Repository\EntityModelUserRepository.cs" />
+    <Compile Include="Repository\EntityUserRepository.cs" />
     <Compile Include="User.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

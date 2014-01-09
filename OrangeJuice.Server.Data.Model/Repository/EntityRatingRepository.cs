@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Model.Repository
 {
-	public sealed class EntityModelRatingRepository : IRatingRepository
+	public sealed class EntityRatingRepository : IRatingRepository
 	{
 		#region Fields
 		private readonly IFactory<IModelContainer> _containerFactory;
+		private readonly IUserUnit _userUnit;
 		#endregion
 
 		#region Ctor
-		public EntityModelRatingRepository(IFactory<IModelContainer> containerFactory)
+		public EntityRatingRepository(IFactory<IModelContainer> containerFactory, IUserUnit userUnit)
 		{
 			_containerFactory = containerFactory;
+			_userUnit = userUnit;
 		}
 		#endregion
 
@@ -24,7 +26,7 @@ namespace OrangeJuice.Server.Data.Model.Repository
 		{
 			using (IModelContainer db = _containerFactory.Create())
 			{
-				User user = await db.Users.SingleOrDefaultAsync(u => u.UserGuid == userGuid);
+				User user = await _userUnit.GetUser(userGuid);
 				if (user == null)
 					throw new ObjectNotFoundException();
 
@@ -66,5 +68,25 @@ namespace OrangeJuice.Server.Data.Model.Repository
 			}
 		}
 		#endregion
+	}
+
+	public interface IUserUnit
+	{
+		Task<User> GetUser(Guid userGuid);
+	}
+
+	public sealed class EntityUserUnit : IUserUnit
+	{
+		private readonly IFactory<IModelContainer> _containerFactory;
+
+		public EntityUserUnit(IFactory<IModelContainer> containerFactory)
+		{
+			_containerFactory = containerFactory;
+		}
+
+		public Task<User> GetUser(Guid userGuid)
+		{
+			IFactory<IModelContainer> containerFactory
+		}
 	}
 }

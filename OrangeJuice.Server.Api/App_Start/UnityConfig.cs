@@ -90,7 +90,7 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region UserController
-			container.RegisterType<IUserRepository, EntityModelUserRepository>(
+			container.RegisterType<IUserRepository, EntityUserRepository>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
 			#endregion

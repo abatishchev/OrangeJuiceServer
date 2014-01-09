@@ -3,7 +3,7 @@
 namespace OrangeJuice.Server.Data.Model.Test.Repository
 {
 	[TestClass]
-	public class EntityModelUserRepositoryTest
+	public class EntityUserRepositoryTest
 	{
 	}
 }
