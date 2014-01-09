@@ -21,7 +21,9 @@ namespace OrangeJuice.Server.Services
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			XElement items = doc.Root.Element(ns + "Items");
-			if (items == null || !_itemValidator.IsValid(items))
+			if (items == null)
+				throw new HttpRequestException();
+			if (!_itemValidator.IsValid(items))
 				throw new HttpRequestException();
 
 			return items.Elements(ns + "Item");
