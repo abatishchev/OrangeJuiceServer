@@ -70,7 +70,7 @@
     <Compile Include="Rating.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EntityModelRatingRepository.cs" />
+    <Compile Include="Repository\EntityRatingRepository.cs" />
     <Compile Include="Repository\EntityModelUserRepository.cs" />
     <Compile Include="User.cs">
       <DependentUpon>Model.tt</DependentUpon>

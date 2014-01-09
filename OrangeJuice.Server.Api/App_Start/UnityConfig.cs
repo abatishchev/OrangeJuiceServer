@@ -145,7 +145,7 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region RatingController
-			container.RegisterType<IRatingRepository, EntityModelRatingRepository>(
+			container.RegisterType<IRatingRepository, EntityRatingRepository>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IFactory<IModelContainer>)));
 			#endregion
