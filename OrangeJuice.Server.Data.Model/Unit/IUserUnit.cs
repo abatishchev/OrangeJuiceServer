@@ -7,6 +7,6 @@ namespace OrangeJuice.Server.Data.Unit
 	{
 		Task<int> Add(User user);
 
-		Task<User> GetUser(Guid userGuid);
+		Task<User> Get(Guid userGuid);
 	}
 }

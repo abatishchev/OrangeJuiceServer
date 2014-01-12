@@ -27,11 +27,11 @@ namespace OrangeJuice.Server.Data.Repository
 		{
 			using (var scope = new TransactionScope())
 			{
-				User user = await _userUnit.GetUser(userGuid);
+				User user = await _userUnit.Get(userGuid);
 				if (user == null)
 					throw new ObjectNotFoundException();
 
-				Rating rating = await _ratingUnit.GetRating(user.UserId, productId) ??
+				Rating rating = await _ratingUnit.Get(user.UserId, productId) ??
 								new Rating
 								{
 									User = user,
@@ -49,7 +49,7 @@ namespace OrangeJuice.Server.Data.Repository
 		{
 			using (var scope = new TransactionScope())
 			{
-				Rating rating = await _ratingUnit.GetRating(userGuid, productId);
+				Rating rating = await _ratingUnit.Get(userGuid, productId);
 
 				if (rating == null)
 					throw new ObjectNotFoundException();
@@ -62,7 +62,7 @@ namespace OrangeJuice.Server.Data.Repository
 
 		public async Task<IRating> Search(Guid userGuid, string productId)
 		{
-			return await _ratingUnit.GetRating(userGuid, productId);
+			return await _ratingUnit.Get(userGuid, productId);
 		}
 		#endregion
 

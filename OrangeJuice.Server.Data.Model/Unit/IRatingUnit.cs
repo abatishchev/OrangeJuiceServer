@@ -7,9 +7,9 @@ namespace OrangeJuice.Server.Data.Unit
 	{
 		Task<int> AddOrUpdate(Rating rating);
 
-		Task<Rating> GetRating(int userId, string productId);
+		Task<Rating> Get(int userId, string productId);
 
-		Task<Rating> GetRating(Guid userGuid, string productId);
+		Task<Rating> Get(Guid userGuid, string productId);
 
 		Task<int> Remove(Rating rating);
 	}

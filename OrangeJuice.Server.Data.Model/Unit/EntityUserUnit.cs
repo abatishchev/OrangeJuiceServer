@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Data.Unit
 			return _container.SaveChangesAsync();
 		}
 
-		public Task<User> GetUser(Guid userGuid)
+		public Task<User> Get(Guid userGuid)
 		{
 			return _container.Users.SingleOrDefaultAsync(u => u.UserGuid == userGuid);
 		}

@@ -28,12 +28,12 @@ namespace OrangeJuice.Server.Data.Unit
 			return _db.SaveChangesAsync();
 		}
 
-		public Task<Rating> GetRating(int userId, string productId)
+		public Task<Rating> Get(int userId, string productId)
 		{
 			return _db.Ratings.FindAsync(userId, productId);
 		}
 
-		public Task<Rating> GetRating(Guid userGuid, string productId)
+		public Task<Rating> Get(Guid userGuid, string productId)
 		{
 			return _db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &
 			                                             r.ProductId == productId);
