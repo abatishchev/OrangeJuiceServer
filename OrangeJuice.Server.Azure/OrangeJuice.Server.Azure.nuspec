@@ -7,6 +7,6 @@
 		<authors>OrangeJuice</authors>
 	</metadata>
 	<files>
-		<file src="bin\Release\app.publish\*.*" target="" />
+		<file src="bin\$Configuration$\app.publish\*.*" target="" />
 	</files>
 </package>
