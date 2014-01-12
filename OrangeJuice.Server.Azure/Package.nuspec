@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>OrangeJuice.Server.Api</id>
+	</metadata>
 	<files>
 		<file src="bin\Release\app.publish\*.*" target="" />
 	</files>
