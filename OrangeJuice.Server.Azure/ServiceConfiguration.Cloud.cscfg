@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="OrangeJuice.Server.Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2013-10.2.2">
 	<Role name="OrangeJuice.Server.Api">
-		<Instances count="1" />
+		<Instances count="2" />
 		<ConfigurationSettings>
-			<Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+			<Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=orangejuice;AccountKey=6cndzBCyOcjIpLxt2zvOkhjB2640o733UDgA2k1yDqhAZyEsB92HOtJFR7kf+p+jjWDmxeAju+lZaJ3JO+JE3A==" />
 		</ConfigurationSettings>
 		<Certificates>
 		</Certificates>
