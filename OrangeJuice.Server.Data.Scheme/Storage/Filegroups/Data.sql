@@ -1,2 +1,0 @@
-﻿ALTER DATABASE [$(DatabaseName)] ADD FILEGROUP [DATA]
-GO

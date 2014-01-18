@@ -76,4 +76,3 @@ BEGIN
     FOR
         XML AUTO
 END
-GO

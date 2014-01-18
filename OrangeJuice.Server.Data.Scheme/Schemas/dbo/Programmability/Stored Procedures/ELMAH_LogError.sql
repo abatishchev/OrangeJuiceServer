@@ -44,4 +44,4 @@ BEGIN
             @TimeUtc
         )
 END
-GO
+

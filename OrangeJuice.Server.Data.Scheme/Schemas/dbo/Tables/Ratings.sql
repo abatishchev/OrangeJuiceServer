@@ -4,4 +4,4 @@
 	[ProductId] Char(10) NOT NULL, -- ASIN
 	[Value] TinyInt NOT NULL
 )
-GO
+

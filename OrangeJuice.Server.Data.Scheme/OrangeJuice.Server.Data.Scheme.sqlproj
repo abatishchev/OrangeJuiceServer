@@ -7,7 +7,7 @@
     <Name>OrangeJuice.Server.Data.Scheme</Name>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{411163bb-6edc-4f9f-9618-f39d5df46527}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureDatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootNamespace>OrangeJuice.Server.Data.Scheme</RootNamespace>
     <AssemblyName>OrangeJuice.Server.Data.Scheme</AssemblyName>
@@ -22,7 +22,8 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <ReadCommittedSnapshot>True</ReadCommittedSnapshot>
     <AllowSnapshotIsolation>True</AllowSnapshotIsolation>
-    <DefaultFilegroup>DATA</DefaultFilegroup>
+    <DefaultFilegroup>
+    </DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -74,8 +75,6 @@
     <Folder Include="Security" />
     <Folder Include="Schemas\dbo\Tables\Constraints\Unique" />
     <Folder Include="Schemas\dbo\Tables\Constraints\Default" />
-    <Folder Include="Storage" />
-    <Folder Include="Storage\Filegroups" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
@@ -97,17 +96,14 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Dev.publish.xml" />
     <None Include="Properties\PublishProfiles\Prod.publish.xml" />
-    <None Include="Properties\PublishProfiles\Stg.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Storage\Filegroups\DATA.sql" />
     <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_GetErrorXml.sql" />
     <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_GetErrorsXml.sql" />
     <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_LogError.sql" />
     <Build Include="Schemas\dbo\Tables\ELMAH_Error.sql" />
     <Build Include="Schemas\dbo\Tables\Users.sql" />
     <Build Include="Schemas\dbo\Tables\Indexes\IX_ELMAH_Error_App_Time_Seq.sql" />
-    <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_Email.sql" />
     <Build Include="Schemas\dbo\Tables\Indexes\IX_Users_UserGuid.sql" />
     <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_ELMAH_Error_ErrorId.sql" />
     <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_Users_UserGuid.sql" />
@@ -118,5 +114,6 @@
     <Build Include="Schemas\dbo\Tables\Ratings.sql" />
     <Build Include="Schemas\dbo\Tables\Keys\Primary\PK_Ratings.sql" />
     <Build Include="Schemas\dbo\Tables\Keys\Foregin\FK_Ratings_Users.sql" />
+    <Build Include="Schemas\dbo\Tables\Indexes\IX_ELMAH_Error_ErrorId.sql" />
   </ItemGroup>
 </Project>

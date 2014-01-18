@@ -16,4 +16,3 @@ BEGIN
     AND
         [Application] = @Application
 END
-GO

@@ -44,5 +44,3 @@ CREATE TABLE dbo.[ELMAH_Error]
     [Sequence]    INT IDENTITY (1, 1) NOT NULL,
     [AllXml]      NTEXT COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
 ) 
-ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
