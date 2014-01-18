@@ -185,9 +185,6 @@
     <Content Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Web.Stg.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Web.Prod.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
