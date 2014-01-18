@@ -38,6 +38,9 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="OrangeJuice.Server.Azure.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Api\OrangeJuice.Server.Api.csproj">
       <Name>OrangeJuice.Server.Api</Name>
       <Project>{caa123b5-a379-493e-a964-8286c3c90ec7}</Project>

@@ -169,7 +169,6 @@
     <Compile Include="Validation\UserSearchCriteriaValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\Dev.pubxml.user" />
     <None Include="Properties\PublishProfiles\Prod.pubxml.user" />
