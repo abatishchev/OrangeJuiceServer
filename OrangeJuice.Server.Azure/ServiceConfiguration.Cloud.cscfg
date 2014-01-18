@@ -3,7 +3,7 @@
 	<Role name="OrangeJuice.Server.Api">
 		<Instances count="2" />
 		<ConfigurationSettings>
-			<Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=orangejuice;AccountKey=6cndzBCyOcjIpLxt2zvOkhjB2640o733UDgA2k1yDqhAZyEsB92HOtJFR7kf+p+jjWDmxeAju+lZaJ3JO+JE3A==" />
+			<Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=orangejuicelogs;AccountKey=JVW5bPDsiOv0VCBnqJcSfw+aSewuI7W+/fHSeDaMaNPnsBjd6F5oDMZdZAw+wAcZONL5OXUELR6SfV4CqKT24Q==" />
 		</ConfigurationSettings>
 		<Certificates>
 		</Certificates>
