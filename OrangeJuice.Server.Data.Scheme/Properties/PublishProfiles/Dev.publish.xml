@@ -4,7 +4,10 @@
 		<IncludeCompositeObjects>True</IncludeCompositeObjects>
 		<TargetDatabaseName>OrangeJuice</TargetDatabaseName>
 		<DeployScriptFileName>OrangeJuice.Server.Data.Scheme.sql</DeployScriptFileName>
-		<TargetConnectionString>Data Source=sql.godfather.home\OrangeJuiceDev;Integrated Security=True;Pooling=False</TargetConnectionString>
+		<TargetConnectionString>Data Source=tgqcn5cgi6.database.windows.net;Persist Security Info=True;User ID=OrangeJuiceDev;Pooling=False</TargetConnectionString>
 		<ProfileVersionNumber>1</ProfileVersionNumber>
+		<ScriptDatabaseOptions>True</ScriptDatabaseOptions>
+		<BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+		<DropObjectsNotInSource>True</DropObjectsNotInSource>
 	</PropertyGroup>
 </Project>

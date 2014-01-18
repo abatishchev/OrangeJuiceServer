@@ -1,10 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <IncludeCompositeObjects>True</IncludeCompositeObjects>
-    <TargetDatabaseName>OrangeJuice</TargetDatabaseName>
-    <DeployScriptFileName>OrangeJuice.Server.Data.Scheme.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=orangejuiceprod.cloudapp.net,14330;Persist Security Info=True;User ID=sa;Pooling=False</TargetConnectionString>
-    <ProfileVersionNumber>1</ProfileVersionNumber>
-  </PropertyGroup>
+	<PropertyGroup>
+		<IncludeCompositeObjects>True</IncludeCompositeObjects>
+		<TargetDatabaseName>OrangeJuice</TargetDatabaseName>
+		<DeployScriptFileName>OrangeJuice.Server.Data.Scheme.sql</DeployScriptFileName>
+		<TargetConnectionString>Data Source=tgqcn5cgi6.database.windows.net;Persist Security Info=True;User ID=OrangeJuiceDev;Pooling=False</TargetConnectionString>
+		<ProfileVersionNumber>1</ProfileVersionNumber>
+		<ScriptDatabaseOptions>True</ScriptDatabaseOptions>
+		<BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+		<DropObjectsNotInSource>True</DropObjectsNotInSource>
+	</PropertyGroup>
 </Project>
