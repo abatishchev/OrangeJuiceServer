@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WebTest Name="RatingControllerWebTest" Id="b94fbd35-70c1-4026-a324-c6a0022efbae" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
   <DataSources>
-    <DataSource Name="OrangeJuiceDev" Provider="System.Data.SqlClient" Connection="Data Source=sql.godfather.home\OrangeJuiceDev;Initial Catalog=OrangeJuice;Integrated Security=True;MultipleActiveResultSets=True;Application Name=OrangeJuiceApi">
+    <DataSource Name="OrangeJuiceDev" Provider="System.Data.SqlClient" Connection="LAs4ogoKlDcWGj2pc9vP1l7tE+YoUKhZ5LbSY20NKOPFO48jvu7yNWF8PA0pGEyXXIlV+LGOcNyHgoahz7zZ53jta5f57/zqRSUGIBJmlx3fsV+N60g4MoAleTSuFG6BrT+rGkHGbEz9SibhLKyO95oWF2ECqejS0bZxHVd1c54KSX+VUQP62TAsCyaPFCHwx2dM4ppkub3Tw6/899R+FF5fm8YlFqq65erf9CMP1saHyqIwW5rtPfoyqnuFgYAwEvhyVyvFk4iG43sgz6ZUJw==" ConnectionDisplayValue="Data Source=tcp:tgqcn5cgi6.database.windows.net,1433;Initial Catalog=OrangeJuiceDev;Integrated Security=False;User ID=OrangeJuiceDev@tgqcn5cgi6;Connect Timeout=30;Encrypt=True">
       <Tables>
         <DataSourceTable Name="Users" SelectColumns="SelectOnlyBoundColumns" AccessMethod="Sequential" />
       </Tables>
