@@ -175,9 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <None Include="Properties\PublishProfiles\Dev.pubxml.user" />
-    <None Include="Properties\PublishProfiles\Prod.pubxml.user" />
-    <None Include="Properties\PublishProfiles\Stg.pubxml.user" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -198,11 +195,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\PublishProfiles\Dev.pubxml" />
-    <None Include="Properties\PublishProfiles\Prod.pubxml" />
-    <None Include="Properties\PublishProfiles\Stg.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
