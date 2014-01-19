@@ -25,7 +25,7 @@ namespace OrangeJuice.Server.Data.Repository
 		#region IRatingRepository members
 		public async Task AddOrUpdate(Guid userGuid, string productId, byte ratingValue)
 		{
-			using (var scope = new TransactionScope())
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
 				User user = await _userUnit.Get(userGuid);
 				if (user == null)
