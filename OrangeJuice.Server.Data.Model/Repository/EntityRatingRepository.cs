@@ -47,7 +47,7 @@ namespace OrangeJuice.Server.Data.Repository
 
 		public async Task Delete(Guid userGuid, string productId)
 		{
-			using (var scope = new TransactionScope())
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
 				Rating rating = await _ratingUnit.Get(userGuid, productId);
 
