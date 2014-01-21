@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace OrangeJuice.Server.Web
 {
@@ -13,12 +12,14 @@ namespace OrangeJuice.Server.Web
 			_urlEncoder = urlEncoder;
 		}
 
-		public string FormatArgs(IDictionary<string, string> args)
+		public NameValueCollection FormatArgs(IDictionary<string, string> args)
 		{
-			return String.Join("&",
-				args.Select(p => String.Format("{0}={1}",
-					_urlEncoder.Encode(p.Key),
-					_urlEncoder.Encode(p.Value))));
+			NameValueCollection collection = new NameValueCollection(args.Count);
+			foreach (var p in args)
+			{
+				collection.Add(p.Key, _urlEncoder.Encode(p.Value));
+			}
+			return collection;
 		}
 	}
 }
