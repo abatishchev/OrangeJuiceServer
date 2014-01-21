@@ -98,7 +98,6 @@
     <Compile Include="ProxyFactoryTest.cs" />
     <Compile Include="Services\XmlIdSelectorTest.cs" />
     <Compile Include="Services\XmlItemValidatorTest.cs" />
-    <Compile Include="Web\FlattenArgumentFormatterTest.cs" />
     <Compile Include="Services\AwsArgumentBuilderTest.cs" />
     <Compile Include="Services\AwsQueryBuilderTest.cs" />
     <Compile Include="Services\AwsQuerySignerTest.cs" />

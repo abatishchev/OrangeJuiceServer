@@ -10,7 +10,7 @@ namespace OrangeJuice.Server.Test.Configuration.Temp
 		private readonly IDictionary<string, string> _originalValues = new Dictionary<string, string>();
 		#endregion
 
-		#region Constructors
+		#region Ctor
 		public TempAppSettings(string key, string value)
 			: this(new KeyValuePair<string, string>(key, value))
 		{

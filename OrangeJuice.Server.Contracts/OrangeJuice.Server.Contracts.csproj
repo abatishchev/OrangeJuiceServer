@@ -69,7 +69,6 @@
     <Compile Include="Services\IItemSelector.cs" />
     <Compile Include="Services\IQueryBuilder.cs" />
     <Compile Include="Services\IQuerySigner.cs" />
-    <Compile Include="Web\IArgumentFormatter.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
   </ItemGroup>

@@ -2,6 +2,6 @@
 {
 	public interface IQuerySigner
 	{
-		string SignQuery(string query);
+		string SignQuery(string host, string path, string query);
 	}
 }

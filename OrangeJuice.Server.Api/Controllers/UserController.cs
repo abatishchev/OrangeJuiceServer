@@ -15,7 +15,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		private readonly IUserRepository _userRepository;
 		#endregion
 
-		#region Constructors
+		#region Ctor
 		public UserController(IUserRepository userRepository)
 		{
 			_userRepository = userRepository;
