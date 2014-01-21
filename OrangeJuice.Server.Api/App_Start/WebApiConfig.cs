@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Validation;
 
 using Microsoft.Practices.Unity;
@@ -13,7 +14,6 @@ using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Configuration;
 
 // ReSharper disable CheckNamespace
-
 namespace OrangeJuice.Server.Api
 {
 	internal static class WebApiConfig
@@ -38,6 +38,8 @@ namespace OrangeJuice.Server.Api
 		private static void ConfigureServices(ServicesContainer services, IUnityContainer container)
 		{
 			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
+
+			services.Add(typeof(IExceptionLogger), new Services.ElmahExceptionLogger());
 		}
 
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)

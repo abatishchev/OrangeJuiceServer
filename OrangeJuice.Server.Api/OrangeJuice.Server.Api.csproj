@@ -136,6 +136,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Services\ElmahExceptionLogger.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
