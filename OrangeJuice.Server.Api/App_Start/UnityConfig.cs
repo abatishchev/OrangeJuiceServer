@@ -1,4 +1,3 @@
-using System;
 using System.Web.Http;
 using System.Web.Http.Validation;
 using System.Xml.Linq;
@@ -9,6 +8,7 @@ using FluentValidation.Attributes;
 using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Policies;
 using OrangeJuice.Server.Api.Validation.Infrustructure;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
@@ -48,6 +48,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(new HierarchicalLifetimeManager());
 
 			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(new HierarchicalLifetimeManager());
+
+			container.RegisterType<IErrorDetailPolicyProvider, EnvironmentErrorDetailPolicyProvider>(new HierarchicalLifetimeManager());
 			#endregion
 
 			#region Web

@@ -11,6 +11,7 @@ using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 
 using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Policies;
 using OrangeJuice.Server.Configuration;
 
 // ReSharper disable CheckNamespace
@@ -50,8 +51,9 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)
 		{
+			IErrorDetailPolicyProvider errorDetailPolicyProvider = container.Resolve<IErrorDetailPolicyProvider>();
 			IEnvironmentProvider environmentProvider = container.Resolve<IEnvironmentProvider>();
-			config.IncludeErrorDetailPolicy = new Policies.ErrorDetailPolicyResolver(environmentProvider).Resolve();
+			config.IncludeErrorDetailPolicy = new ErrorDetailPolicyResolver(errorDetailPolicyProvider, environmentProvider).Resolve();
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)

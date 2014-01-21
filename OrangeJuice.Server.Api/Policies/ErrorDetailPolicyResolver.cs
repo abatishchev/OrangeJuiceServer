@@ -1,53 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Http;
 
 using OrangeJuice.Server.Configuration;
-
-using Environment = OrangeJuice.Server.Configuration.Environment;
 
 namespace OrangeJuice.Server.Api.Policies
 {
 	public sealed class ErrorDetailPolicyResolver
 	{
-		private static readonly Lazy<IDictionary<string, IncludeErrorDetailPolicy>> _defaultPolicies = new Lazy<IDictionary<string, IncludeErrorDetailPolicy>>(GetDefaultPolicies);
-
+		#region Fields
+		private readonly IErrorDetailPolicyProvider _detailPolicyProvider;
 		private readonly IEnvironmentProvider _environmentProvider;
-		private readonly IDictionary<string, IncludeErrorDetailPolicy> _policies;
+		#endregion
 
-		public ErrorDetailPolicyResolver(IEnvironmentProvider environmentProvider)
-			: this(environmentProvider, _defaultPolicies.Value)
+		#region Ctor
+		public ErrorDetailPolicyResolver(IErrorDetailPolicyProvider detailPolicyProvider, IEnvironmentProvider environmentProvider)
 		{
-		}
-
-		internal ErrorDetailPolicyResolver(IEnvironmentProvider environmentProvider, IDictionary<string, IncludeErrorDetailPolicy> policies)
-		{
+			_detailPolicyProvider = detailPolicyProvider;
 			_environmentProvider = environmentProvider;
-			_policies = policies;
 		}
+		#endregion
 
-		private static IDictionary<string, IncludeErrorDetailPolicy> GetDefaultPolicies()
-		{
-			return new Dictionary<string, IncludeErrorDetailPolicy>
-			{
-				{ Environment.Local, IncludeErrorDetailPolicy.Always },
-				{ Environment.Development, IncludeErrorDetailPolicy.Always },
-				{ Environment.Staging, IncludeErrorDetailPolicy.Always },
-				{ Environment.Production, IncludeErrorDetailPolicy.LocalOnly },
-			};
-		}
-
+		#region ErrorDetailPolicyResolver members
 		public IncludeErrorDetailPolicy Resolve()
 		{
+			var policies = _detailPolicyProvider.GetPolicies();
 			string environment = _environmentProvider.GetCurrentEnvironment();
-			try
-			{
-				return _policies[environment];
-			}
-			catch (KeyNotFoundException ex)
-			{
-				throw new InvalidOperationException("Current environment is not supported", ex);
-			}
+
+			IncludeErrorDetailPolicy policy;
+			if (!policies.TryGetValue(environment, out policy))
+				throw new InvalidOperationException(String.Format("Evironment {0} is not supported", environment));
+
+			return policy;
 		}
+		#endregion
+
 	}
 }
