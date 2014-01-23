@@ -31,7 +31,9 @@ namespace OrangeJuice.Server.Web
 					SplitNameValue("Signature", signature)
 				});
 		}
+		#endregion
 
+		#region Methods
 		private string SplitNameValue(string name, string value)
 		{
 			return String.Format("{0}={1}", name, _urlEncoder.Encode(value));
