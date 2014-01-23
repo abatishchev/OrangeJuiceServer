@@ -15,11 +15,6 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public AwsQuerySigner(string secretKey)
-			: this(CreateHashAlgorithm(secretKey))
-		{
-		}
-
 		public AwsQuerySigner(HashAlgorithm hashAlgorithm)
 		{
 			_hashAlgorithm = hashAlgorithm;
@@ -41,12 +36,6 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Methods
-		internal static HashAlgorithm CreateHashAlgorithm(string secretKey)
-		{
-			byte[] secret = Encoding.UTF8.GetBytes(secretKey);
-			return new HMACSHA256(secret);
-		}
-
 		private static string PrepareQuery(string host, string path, string query)
 		{
 			StringBuilder sb = new StringBuilder();

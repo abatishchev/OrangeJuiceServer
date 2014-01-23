@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Web.Http;
 using System.Web.Http.Validation;
 using System.Xml.Linq;
@@ -105,9 +106,13 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(container.Resolve<AwsOptions>().AccessKey, container.Resolve<AwsOptions>().AssociateTag, typeof(IDateTimeProvider)));
 
-			container.RegisterType<IQuerySigner, AwsQuerySigner>(
+			container.RegisterType<IFactory<HashAlgorithm>, AwsAlgorithmFactory>(
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey));
+
+			container.RegisterType<IQuerySigner, AwsQuerySigner>(
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(container.Resolve<IFactory<HashAlgorithm>>().Create()));
 
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new HierarchicalLifetimeManager(),
