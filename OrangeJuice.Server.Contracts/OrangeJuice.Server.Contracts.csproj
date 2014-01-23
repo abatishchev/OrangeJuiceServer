@@ -70,6 +70,7 @@
     <Compile Include="Services\IUrlBuilder.cs" />
     <Compile Include="Services\IQuerySigner.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
+    <Compile Include="Web\IQueryBuilder.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
   </ItemGroup>
   <PropertyGroup>

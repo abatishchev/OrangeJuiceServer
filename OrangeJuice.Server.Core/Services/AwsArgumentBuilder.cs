@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OrangeJuice.Server.Services
 {
@@ -35,7 +36,8 @@ namespace OrangeJuice.Server.Services
 				{ "Timestamp", timestamp }
 			};
 
-			return new SortedDictionary<string, string>(args);
+			return args.OrderBy(p => p.Key)
+					   .ToDictionary(p => p.Key, p => p.Value);
 		}
 		#endregion
 	}

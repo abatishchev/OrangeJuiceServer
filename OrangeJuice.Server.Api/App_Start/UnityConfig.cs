@@ -64,6 +64,14 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(new PercentUrlEncodingPipeline()));
+
+			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(typeof(IUrlEncoder)));
+			#endregion
+
+			#region Data
+			container.RegisterType<IModelContainer, ModelContainer>(new HierarchicalLifetimeManager());
 			#endregion
 
 			#region Validation
@@ -86,10 +94,6 @@ namespace OrangeJuice.Server.Api
 				new InjectionFactory(c => c.Resolve<IFactory<ApiVersion>>().Create()));
 			#endregion
 
-			#region Data
-			container.RegisterType<IModelContainer, ModelContainer>(new HierarchicalLifetimeManager());
-			#endregion
-
 			#region FoodController
 			container.RegisterType<AwsOptions>(
 				new HierarchicalLifetimeManager(),
@@ -105,7 +109,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IQuerySigner), typeof(IUrlEncoder)));
+				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IQueryBuilder), typeof(IQuerySigner)));
 
 			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new HierarchicalLifetimeManager());
 

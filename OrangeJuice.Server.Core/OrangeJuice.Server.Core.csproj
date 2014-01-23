@@ -79,6 +79,7 @@
     <Compile Include="Services\AwsClient.cs" />
     <Compile Include="Services\AwsOptions.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
+    <Compile Include="Web\EncodedQueryBuilder.cs" />
     <Compile Include="Web\HttpDocumentLoader.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
     <Compile Include="IPipeline.cs" />

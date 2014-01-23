@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.Net.Http;
 
 using FluentAssertions;
 
@@ -24,9 +26,10 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			IStringDictionary args = new StringDictionary();
 
-			var argumentBuilderMock = CreateArgumentBuilder();
+			var argumentBuilderMock = new Mock<IArgumentBuilder>();
+			argumentBuilderMock.Setup(b => b.BuildArgs(It.IsAny<IStringDictionary>())).Returns(args);
 
-			IUrlBuilder urlBuilder = CreateQueryBuilder(argumentBuilderMock.Object);
+			IUrlBuilder urlBuilder = CreateUrlBuilder(argumentBuilderMock.Object);
 
 			// Act
 			urlBuilder.BuildUrl(args);
@@ -36,13 +39,30 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void BuildUrl_Should_Append_Signature()
+		public void BuildUrl_Should_Return_Url_Having_Arguments()
+		{
+			// Arrange
+			const string key = "key";
+			const string value = "value";
+
+			IUrlBuilder urlBuilder = CreateUrlBuilder();
+
+			// Act
+			Uri url = urlBuilder.BuildUrl(new StringDictionary { { key, value } });
+
+			// Assert
+			NameValueCollection collection = url.ParseQueryString();
+			collection[key].Should().Be(value);
+		}
+
+		[TestMethod]
+		public void BuildUrl_Should_Return_Url_Having_Signature()
 		{
 			// Arrange
 			const string signature = "signature";
 
 			IQuerySigner querySigner = CreateQuerySigner(signature);
-			IUrlBuilder urlBuilder = CreateQueryBuilder(querySigner: querySigner);
+			IUrlBuilder urlBuilder = CreateUrlBuilder(querySigner: querySigner);
 
 			// Act
 			Uri url = urlBuilder.BuildUrl(new StringDictionary());
@@ -50,39 +70,15 @@ namespace OrangeJuice.Server.Test.Services
 			// Assert
 			url.Query.Should().EndWith(String.Format("Signature={0}", signature));
 		}
-
-		[TestMethod]
-		public void BuildUrl_Should_Call_UrlEncoder_Encode_For_Each_Argument()
-		{
-			// Arrange
-			var urlEncoderMock = CreateUrlEncoder();
-
-			IUrlBuilder urlBuilder = CreateQueryBuilder(urlEncoder: urlEncoderMock.Object);
-
-			IStringDictionary args = new StringDictionary { { "key", "value" } };
-
-			// Act
-			urlBuilder.BuildUrl(args);
-
-			// Assert
-			urlEncoderMock.Verify(e => e.Encode(It.IsAny<string>()), Times.Exactly(args.Count));
-		}
 		#endregion
 
 		#region Helper methods
-		private static IUrlBuilder CreateQueryBuilder(IArgumentBuilder argumentBuilder = null, IQuerySigner querySigner = null, IUrlEncoder urlEncoder = null)
+		private static IUrlBuilder CreateUrlBuilder(IArgumentBuilder argumentBuilder = null, IQueryBuilder queryBuilder = null, IQuerySigner querySigner = null)
 		{
 			return new AwsUrlBuilder(
-				argumentBuilder ?? CreateArgumentBuilder().Object,
-				querySigner ?? CreateQuerySigner(),
-				urlEncoder ?? CreateUrlEncoder().Object);
-		}
-
-		private static Mock<IArgumentBuilder> CreateArgumentBuilder(IStringDictionary args = null)
-		{
-			var builderMock = new Mock<IArgumentBuilder>();
-			builderMock.Setup(b => b.BuildArgs(It.IsAny<IStringDictionary>())).Returns(args ?? new StringDictionary());
-			return builderMock;
+				argumentBuilder ?? new AwsArgumentBuilder("", "", new UtcDateTimeProvider()),
+				queryBuilder ?? new EncodedQueryBuilder(new PercentUrlEncoder(new PercentUrlEncodingPipeline())),
+				querySigner ?? CreateQuerySigner());
 		}
 
 		private static IQuerySigner CreateQuerySigner(string signature = null)
@@ -91,13 +87,6 @@ namespace OrangeJuice.Server.Test.Services
 			builderMock.Setup(b => b.SignQuery(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
 					   .Returns<string, string, string>((h, p, s) => signature ?? s);
 			return builderMock.Object;
-		}
-
-		private static Mock<IUrlEncoder> CreateUrlEncoder()
-		{
-			var encoderMock = new Mock<IUrlEncoder>();
-			encoderMock.Setup(e => e.Encode(It.IsAny<string>())).Returns<string>(s => s);
-			return encoderMock;
 		}
 		#endregion
 	}
