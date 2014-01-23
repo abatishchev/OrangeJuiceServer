@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OrangeJuice.Server.Services
 {
@@ -27,7 +26,8 @@ namespace OrangeJuice.Server.Services
 			DateTime now = _dateTimeProvider.GetNow();
 			string timestamp = _dateTimeProvider.FormatToUniversal(now);
 
-			args = new Dictionary<string, string>(args)
+			// Ordering parameters in naturual byte order as required by AWS
+			return new SortedDictionary<string, string>(args, StringComparer.Ordinal)
 			{
 				{ "AWSAccessKeyId", _accessKey },
 				{ "AssociateTag", _associateTag },
@@ -35,10 +35,6 @@ namespace OrangeJuice.Server.Services
 				{ "Condition", "All" },
 				{ "Timestamp", timestamp }
 			};
-
-			// Ordering parameters in naturual byte order as required by AWS
-			return args.OrderBy(p => p.Key, StringComparer.Ordinal)
-					   .ToDictionary(p => p.Key, p => p.Value);
 		}
 		#endregion
 	}

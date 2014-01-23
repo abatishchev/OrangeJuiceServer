@@ -69,7 +69,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.GetUser(searchCriteria);
 
 			// Assert
-			repositoryMock.Verify(r => r.Search(userGuid), Times.Once());
+			repositoryMock.Verify(r => r.Search(userGuid), Times.Once);
 		}
 
 		[TestMethod]
@@ -158,7 +158,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.PutUser(userRegistration);
 
 			// Assert
-			repositoryMock.Verify(r => r.Register(email), Times.Once());
+			repositoryMock.Verify(r => r.Register(email), Times.Once);
 		}
 
 		[TestMethod]
@@ -174,8 +174,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			var result = (OkNegotiatedContentResult<Guid>)await controller.PutUser(new UserRegistration());
-			Guid actual = result.Content;
+			IHttpActionResult result = await controller.PutUser(new UserRegistration());
+			Guid actual = ((OkNegotiatedContentResult<Guid>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);

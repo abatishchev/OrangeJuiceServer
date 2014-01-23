@@ -38,7 +38,7 @@ namespace OrangeJuice.Server.Test.Services
 			await client.GetItems(new StringDictionary());
 
 			// Assert
-			loaderMock.Verify(l => l.Load(url), Times.Once());
+			loaderMock.Verify(l => l.Load(url), Times.Once);
 		}
 
 		[TestMethod]
@@ -58,7 +58,7 @@ namespace OrangeJuice.Server.Test.Services
 			await client.GetItems(new StringDictionary());
 
 			// Assert
-			selectorMock.Verify(s => s.SelectItems(doc), Times.Once());
+			selectorMock.Verify(s => s.SelectItems(doc), Times.Once);
 		}
 
 		[TestMethod]

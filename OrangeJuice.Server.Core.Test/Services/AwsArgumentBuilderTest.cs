@@ -42,20 +42,19 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void BuildArgs_Should_Add_Each_Argument_Into_Collection()
+		public void BuildArgs_Should_Add_Arguments()
 		{
 			// Arange
 			const string key = "anyKey";
 			const string value = "anyValue";
 
 			var queryBuilder = CreateArgumentBuilder();
-			IStringDictionary args = new StringDictionary { { key, value } };
 
 			// Act
-			var collection = queryBuilder.BuildArgs(args);
+			var args = queryBuilder.BuildArgs(new StringDictionary { { key, value } });
 
 			// Assert
-			collection.Should().Contain(key, value);
+			args.Should().Contain(key, value);
 		}
 
 		[TestMethod]
@@ -71,7 +70,7 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildArgs(args);
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once());
+			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once);
 		}
 
 		[TestMethod]
@@ -86,7 +85,7 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildArgs(new StringDictionary());
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once());
+			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once);
 		}
 
 		[TestMethod]
@@ -102,7 +101,7 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildArgs(new StringDictionary());
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once());
+			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once);
 		}
 		#endregion
 

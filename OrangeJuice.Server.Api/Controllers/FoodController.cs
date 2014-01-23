@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -30,7 +29,7 @@ namespace OrangeJuice.Server.Api.Controllers
 				return BadRequest(ModelState);
 
 			var description = await _foodRepository.Search(searchCriteria.Title);
-			return Ok(description.ToArray());
+			return Ok(description);
 		}
 	}
 }

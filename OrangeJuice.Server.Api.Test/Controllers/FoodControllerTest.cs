@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -49,7 +50,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.GetDescription(searchCriteria);
 
 			// Assert
-			foodRepositoryMock.Verify(r => r.Search(title), Times.Once());
+			foodRepositoryMock.Verify(r => r.Search(title), Times.Once);
 		}
 
 		[TestMethod]
@@ -65,8 +66,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 
 			// Act
-			var result = (OkNegotiatedContentResult<FoodDescription[]>)await controller.GetDescription(searchCriteria);
-			FoodDescription[] actual = result.Content;
+			IHttpActionResult result = await controller.GetDescription(searchCriteria);
+			var actual = ((OkNegotiatedContentResult<ICollection<FoodDescription>>)result).Content;
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);

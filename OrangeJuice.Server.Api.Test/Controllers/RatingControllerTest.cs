@@ -67,7 +67,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.GetRating(searchCriteria);
 
 			// Assert
-			repositoryMock.Verify(r => r.Search(userGuid, productid), Times.Once());
+			repositoryMock.Verify(r => r.Search(userGuid, productid), Times.Once);
 		}
 
 		[TestMethod]
@@ -85,8 +85,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { UserGuid = userGuid, Productid = productid };
 
 			// Act
-			var result = (OkNegotiatedContentResult<IRating>)await controller.GetRating(searchCriteria);
-			IRating actual = result.Content;
+			IHttpActionResult result = await controller.GetRating(searchCriteria);
+			IRating actual = ((OkNegotiatedContentResult<IRating>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -143,7 +143,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.PostRating(ratingInformation);
 
 			// Assert
-			repositoryMock.Verify(r => r.AddOrUpdate(userGuid, productid, value), Times.Once());
+			repositoryMock.Verify(r => r.AddOrUpdate(userGuid, productid, value), Times.Once);
 		}
 
 		[TestMethod]
@@ -195,7 +195,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.DeleteRating(searchCriteria);
 
 			// Assert
-			repositoryMock.Verify(r => r.Delete(userGuid, productid), Times.Once());
+			repositoryMock.Verify(r => r.Delete(userGuid, productid), Times.Once);
 		}
 
 		[TestMethod]

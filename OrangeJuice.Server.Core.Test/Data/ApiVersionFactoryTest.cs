@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Test.Data
 			factory.Create();
 
 			// Assert
-			assemblyProviderMock.Verify(p => p.GetExecutingAssembly(), Times.Once());
+			assemblyProviderMock.Verify(p => p.GetExecutingAssembly(), Times.Once);
 		}
 		#endregion
 

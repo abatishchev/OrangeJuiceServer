@@ -24,7 +24,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			factory.Create();
 
 			// Assert
-			environmentProviderMock.Verify(p => p.GetCurrentEnvironment(), Times.Once());
+			environmentProviderMock.Verify(p => p.GetCurrentEnvironment(), Times.Once);
 		}
 
 		[TestMethod]

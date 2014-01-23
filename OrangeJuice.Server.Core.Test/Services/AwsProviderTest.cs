@@ -38,7 +38,7 @@ namespace OrangeJuice.Server.Test.Services
 			await provider.SearchItems(title);
 
 			// Assert
-			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once());
+			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once);
 		}
 
 		[TestMethod]
