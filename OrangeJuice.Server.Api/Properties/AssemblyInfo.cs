@@ -11,3 +11,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("0.0.0.0")]
 
 [assembly: InternalsVisibleTo("OrangeJuice.Server.Api.Test")]
+[assembly: InternalsVisibleTo("OrangeJuice.Server.Api.Test.Integration")]
