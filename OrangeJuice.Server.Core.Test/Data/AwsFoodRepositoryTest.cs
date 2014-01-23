@@ -88,8 +88,7 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			return new AwsFoodRepository(
 				provider ?? CreateProvider(),
-				factory ?? new Mock<IFoodDescriptionFactory>().Object,
-				filter ?? new Mock<IFilter<FoodDescription>>().Object);
+				factory ?? new Mock<IFoodDescriptionFactory>().Object);
 		}
 
 		private static IAwsProvider CreateProvider()
