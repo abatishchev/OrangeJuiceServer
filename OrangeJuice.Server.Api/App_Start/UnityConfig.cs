@@ -40,17 +40,21 @@ namespace OrangeJuice.Server.Api
 		private static void RegisterTypes(IUnityContainer container)
 		{
 			#region Providers
-			container.RegisterType<IConfigurationProvider, AppSettingsConfigurationProvider>(new HierarchicalLifetimeManager());
+			container.RegisterType<IConfigurationProvider, AppSettingsConfigurationProvider>(
+				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IConfigurationProvider)));
 
-			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(new HierarchicalLifetimeManager());
+			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(
+				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(new HierarchicalLifetimeManager());
+			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(
+				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IErrorDetailPolicyProvider, EnvironmentErrorDetailPolicyProvider>(new HierarchicalLifetimeManager());
+			container.RegisterType<IErrorDetailPolicyProvider, EnvironmentErrorDetailPolicyProvider>(
+				new HierarchicalLifetimeManager());
 			#endregion
 
 			#region Web
@@ -64,21 +68,28 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(new PercentUrlEncodingPipeline()));
+				new InjectionConstructor(
+					new PercentUrlEncodingPipeline()));
 
 			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IUrlEncoder)));
+
+			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(
+				new HierarchicalLifetimeManager());
 			#endregion
 
 			#region Data
-			container.RegisterType<IModelContainer, ModelContainer>(new HierarchicalLifetimeManager());
+			container.RegisterType<IModelContainer, ModelContainer>(
+				new HierarchicalLifetimeManager());
 			#endregion
 
 			#region Validation
-			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(new HierarchicalLifetimeManager());
+			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(
+				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IModelValidatorFactory, FluentModelValidatorFactory>(new HierarchicalLifetimeManager());
+			container.RegisterType<IModelValidatorFactory, FluentModelValidatorFactory>(
+				new HierarchicalLifetimeManager());
 
 			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
 				new HierarchicalLifetimeManager(),
@@ -96,7 +107,8 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region FoodController
-			container.RegisterType<IFactory<AwsOptions>, AwsOptionsFactory>(new HierarchicalLifetimeManager());
+			container.RegisterType<IFactory<AwsOptions>, AwsOptionsFactory>(
+				new HierarchicalLifetimeManager());
 
 			container.RegisterType<AwsOptions>(
 				new HierarchicalLifetimeManager(),
@@ -118,9 +130,8 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IQueryBuilder), typeof(IQuerySigner)));
 
-			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new HierarchicalLifetimeManager());
-
-			container.RegisterType<IValidator<XElement>, XmlItemValidator>(new HierarchicalLifetimeManager());
+			container.RegisterType<IValidator<XElement>, XmlItemValidator>(
+				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
 				new HierarchicalLifetimeManager(),
@@ -134,9 +145,11 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IAwsClient)));
 
-			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(new HierarchicalLifetimeManager());
+			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(
+				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IFilter<FoodDescription>, ValidImageFoodDescriptionFilter>(new HierarchicalLifetimeManager());
+			container.RegisterType<IFilter<FoodDescription>, ValidImageFoodDescriptionFilter>(
+				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IIdSelector, XmlIdSelector>(
 				new HierarchicalLifetimeManager());

@@ -25,11 +25,7 @@ namespace OrangeJuice.Server.Web
 
 		public string SignQuery(string query, string signature)
 		{
-			return SpltParameters(new[]
-				{
-					query,
-					SplitNameValue("Signature", signature)
-				});
+			return SpltParameters(query, SplitNameValue("Signature", signature));
 		}
 		#endregion
 
@@ -37,6 +33,11 @@ namespace OrangeJuice.Server.Web
 		private string SplitNameValue(string name, string value)
 		{
 			return String.Format("{0}={1}", name, _urlEncoder.Encode(value));
+		}
+
+		private static string SpltParameters(params string[] parameters)
+		{
+			return SpltParameters((IEnumerable<string>)parameters);
 		}
 
 		private static string SpltParameters(IEnumerable<string> parameters)
