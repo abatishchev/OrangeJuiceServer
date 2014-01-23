@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -24,7 +25,7 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_DocumentLoader_Load()
 		{
 			// Arrange
-			const string url = "anyUrl";
+			Uri url = CreateUrl();
 
 			var builderMock = CreateUrlBuilder(url);
 
@@ -47,7 +48,7 @@ namespace OrangeJuice.Server.Test.Services
 			XDocument doc = new XDocument();
 
 			var loaderMock = new Mock<IDocumentLoader>();
-			loaderMock.Setup(l => l.Load(It.IsAny<string>())).ReturnsAsync(doc);
+			loaderMock.Setup(l => l.Load(It.IsAny<Uri>())).ReturnsAsync(doc);
 
 			var selectorMock = new Mock<IItemSelector>();
 
@@ -78,6 +79,11 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
+		private static Uri CreateUrl()
+		{
+			return new Uri("http://example.com");
+		}
+
 		private static IAwsClient CreateClient(IQueryBuilder queryBuilder = null, IDocumentLoader documentLoader = null, IItemSelector itemSelector = null)
 		{
 			return new AwsClient(
@@ -86,17 +92,17 @@ namespace OrangeJuice.Server.Test.Services
 				itemSelector ?? CreateItemSelector());
 		}
 
-		private static IQueryBuilder CreateUrlBuilder(string query = null)
+		private static IQueryBuilder CreateUrlBuilder(Uri url = null)
 		{
 			var builderMock = new Mock<IQueryBuilder>();
-			builderMock.Setup(b => b.BuildUrl(It.IsAny<IStringDictionary>())).Returns(query ?? "query");
+			builderMock.Setup(b => b.BuildUrl(It.IsAny<IStringDictionary>())).Returns(url ?? CreateUrl());
 			return builderMock.Object;
 		}
 
 		private static IDocumentLoader CreateDocumentLoader(XDocument doc = null)
 		{
 			var loaderMock = new Mock<IDocumentLoader>();
-			loaderMock.Setup(l => l.Load(It.IsAny<string>())).ReturnsAsync(doc ?? new XDocument());
+			loaderMock.Setup(l => l.Load(It.IsAny<Uri>())).ReturnsAsync(doc ?? new XDocument());
 			return loaderMock.Object;
 		}
 

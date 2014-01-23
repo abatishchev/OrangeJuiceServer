@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -27,7 +28,7 @@ namespace OrangeJuice.Server.Services
 		#region IAwsClient members
 		public async Task<ICollection<XElement>> GetItems(IDictionary<string, string> args)
 		{
-			string url = _queryBuilder.BuildUrl(args);
+			Uri url = _queryBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
 			return _itemSelector.SelectItems(doc).ToArray();
 		}

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Linq;
+
+using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
 {
@@ -14,25 +16,39 @@ namespace OrangeJuice.Server.Services
 		#region Fields
 		private readonly IArgumentBuilder _argumentBuilder;
 		private readonly IQuerySigner _querySigner;
+		private readonly IUrlEncoder _urlEncoder;
 		#endregion
 
 		#region Ctor
-		public AwsQueryBuilder(IArgumentBuilder argumentBuilder, IQuerySigner querySigner)
+		public AwsQueryBuilder(IArgumentBuilder argumentBuilder, IQuerySigner querySigner, IUrlEncoder urlEncoder)
 		{
 			_argumentBuilder = argumentBuilder;
 			_querySigner = querySigner;
+			_urlEncoder = urlEncoder;
 		}
 		#endregion
 
-		#region IquerBuilder members
-		public string BuildUrl(IDictionary<string, string> args)
+		#region IQueryBuilder members
+		public Uri BuildUrl(IDictionary<string, string> args)
 		{
-			NameValueCollection collection = _argumentBuilder.BuildArgs(args);
+			args = _argumentBuilder.BuildArgs(args);
 
-			string signature = _querySigner.SignQuery(RequestHost, RequestPath, collection.ToString());
-			collection.Add("Signature", signature);
+			string query = BuildQuery(args);
 
-			return new UriBuilder(Uri.UriSchemeHttp, RequestHost, 80, RequestPath, "?" + collection).Uri.ToString();
+			string signature = _querySigner.SignQuery(RequestHost, RequestPath, query);
+			args.Add("Signature", signature);
+
+			query = BuildQuery(args);
+
+			return new UriBuilder(Uri.UriSchemeHttp, RequestHost, 80, RequestPath, '?' + query).Uri;
+		}
+
+		private string BuildQuery(IEnumerable<KeyValuePair<string, string>> args)
+		{
+			return String.Join("=",
+				args.Select(p => String.Format("{0}={1}",
+					p.Key,
+					_urlEncoder.Encode(p.Value))));
 		}
 		#endregion
 	}

@@ -97,7 +97,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(container.Resolve<AwsOptions>().AccessKey, container.Resolve<AwsOptions>().AssociateTag, typeof(IDateTimeProvider), typeof(IUrlEncoder)));
+				new InjectionConstructor(container.Resolve<AwsOptions>().AccessKey, container.Resolve<AwsOptions>().AssociateTag, typeof(IDateTimeProvider)));
 
 			container.RegisterType<IQuerySigner, AwsQuerySigner>(
 				new HierarchicalLifetimeManager(),
@@ -105,7 +105,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IQueryBuilder, AwsQueryBuilder>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IQuerySigner)));
+				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IQuerySigner), typeof(IUrlEncoder)));
 
 			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(new HierarchicalLifetimeManager());
 

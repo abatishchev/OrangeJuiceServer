@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OrangeJuice.Server.Services
 {
 	public interface IQueryBuilder
 	{
-		string BuildUrl(IDictionary<string, string> args);
+		Uri BuildUrl(IDictionary<string, string> args);
 	}
 }
