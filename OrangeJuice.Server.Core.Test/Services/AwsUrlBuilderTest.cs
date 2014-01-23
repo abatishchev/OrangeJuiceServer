@@ -85,7 +85,7 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			var builderMock = new Mock<IQuerySigner>();
 			builderMock.Setup(b => b.SignQuery(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-					   .Returns<string, string, string>((h, p, s) => signature ?? s);
+					   .Returns<string, string, string>((h, p, s) => signature ?? Guid.NewGuid().ToString());
 			return builderMock.Object;
 		}
 		#endregion

@@ -95,9 +95,11 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region FoodController
+			container.RegisterType<IFactory<AwsOptions>, AwsOptionsFactory>(new HierarchicalLifetimeManager());
+
 			container.RegisterType<AwsOptions>(
 				new HierarchicalLifetimeManager(),
-				new InjectionFactory(c => new AswOptionsFactory(c.Resolve<IConfigurationProvider>()).Create()));
+				new InjectionFactory(c => c.Resolve<IFactory<AwsOptions>>().Create()));
 
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new HierarchicalLifetimeManager(),

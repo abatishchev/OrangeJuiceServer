@@ -68,7 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyFactory.cs" />
     <Compile Include="ReflectionAssemblyProvider.cs" />
-    <Compile Include="Services\AswOptionsFactory.cs" />
+    <Compile Include="Services\AwsOptionsFactory.cs" />
     <Compile Include="Services\AwsArgumentBuilder.cs" />
     <Compile Include="Services\AwsClient.cs" />
     <Compile Include="Services\AwsOptions.cs" />

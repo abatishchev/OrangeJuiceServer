@@ -101,7 +101,7 @@
     <Compile Include="Services\AwsArgumentBuilderTest.cs" />
     <Compile Include="Services\AwsUrlBuilderTest.cs" />
     <Compile Include="Services\AwsQuerySignerTest.cs" />
-    <Compile Include="Services\AswOptionsFactoryTest.cs" />
+    <Compile Include="Services\AwsOptionsFactoryTest.cs" />
     <Compile Include="Services\XmlItemSelectorTest.cs" />
     <Compile Include="Services\AwsClientTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
