@@ -63,8 +63,7 @@ namespace OrangeJuice.Server.Services
 		{
 			byte[] bytes = Encoding.UTF8.GetBytes(sb.ToString());
 			byte[] hash = _hashAlgorithm.ComputeHash(bytes);
-			string signature = Convert.ToBase64String(hash);
-			return signature;
+			return Convert.ToBase64String(hash);
 		}
 		#endregion
 	}

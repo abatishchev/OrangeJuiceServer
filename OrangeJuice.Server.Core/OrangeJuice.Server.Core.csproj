@@ -57,32 +57,32 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ReflectionAssemblyProvider.cs" />
-    <Compile Include="Services\AwsArgumentBuilder.cs" />
-    <Compile Include="Services\AwsProvider.cs" />
-    <Compile Include="ProxyFactory.cs" />
-    <Compile Include="Services\IIdSelector.cs" />
-    <Compile Include="Services\XmlIdSelector.cs" />
-    <Compile Include="Services\AwsQuerySigner.cs" />
-    <Compile Include="Services\AwsUrlBuilder.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
+    <Compile Include="Data\AwsFoodRepository.cs" />
     <Compile Include="Data\XmlFoodDescriptionFactory.cs" />
     <Compile Include="Filters\ValidImageFoodDescriptionFilter.cs" />
+    <Compile Include="IPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data\AwsFoodRepository.cs" />
+    <Compile Include="ProxyFactory.cs" />
+    <Compile Include="ReflectionAssemblyProvider.cs" />
     <Compile Include="Services\AswOptionsFactory.cs" />
-    <Compile Include="Services\XmlItemSelector.cs" />
-    <Compile Include="Services\XmlItemValidator.cs" />
+    <Compile Include="Services\AwsArgumentBuilder.cs" />
     <Compile Include="Services\AwsClient.cs" />
     <Compile Include="Services\AwsOptions.cs" />
+    <Compile Include="Services\AwsProvider.cs" />
+    <Compile Include="Services\AwsQuerySigner.cs" />
+    <Compile Include="Services\AwsUrlBuilder.cs" />
+    <Compile Include="Services\IIdSelector.cs" />
+    <Compile Include="Services\XmlIdSelector.cs" />
+    <Compile Include="Services\XmlItemSelector.cs" />
+    <Compile Include="Services\XmlItemValidator.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
     <Compile Include="Web\EncodedQueryBuilder.cs" />
     <Compile Include="Web\HttpDocumentLoader.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
-    <Compile Include="IPipeline.cs" />
     <Compile Include="Web\PercentUrlEncodingPipeline.cs" />
   </ItemGroup>
   <ItemGroup>

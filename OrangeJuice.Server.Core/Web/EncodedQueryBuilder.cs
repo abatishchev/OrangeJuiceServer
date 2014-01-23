@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Web
 		#endregion
 
 		#region IQueryBuilder members
-		public string BuildQuery(IDictionary<string, string> args)
+		public string BuildQuery(IEnumerable<KeyValuePair<string, string>> args)
 		{
 			return String.Join("&",
 				args.Select(p => String.Format("{0}={1}",

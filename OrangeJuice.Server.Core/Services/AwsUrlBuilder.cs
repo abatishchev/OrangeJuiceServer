@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 using OrangeJuice.Server.Web;
 
@@ -34,10 +35,18 @@ namespace OrangeJuice.Server.Services
 
 			string query = _queryBuilder.BuildQuery(args);
 			string signature = _querySigner.SignQuery(RequestHost, RequestPath, query);
-			args.Add("Signature", signature);
 
-			query = _queryBuilder.BuildQuery(args);
-			return new UriBuilder(Uri.UriSchemeHttp, RequestHost, 80, RequestPath, '?' + query).Uri;
+			StringBuilder sb = new StringBuilder();
+			sb.Append(Uri.UriSchemeHttp)
+			  .Append("://")
+			  .Append(RequestHost)
+			  .Append(RequestPath)
+			  .Append('?')
+			  .Append(query)
+			  .Append("&Signature=")
+			  .Append(signature);
+			string url = sb.ToString();
+			return new Uri(url);
 		}
 		#endregion
 	}

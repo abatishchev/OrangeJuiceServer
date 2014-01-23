@@ -4,6 +4,6 @@ namespace OrangeJuice.Server.Web
 {
 	public interface IQueryBuilder
 	{
-		string BuildQuery(IDictionary<string, string> args);
+		string BuildQuery(IEnumerable<KeyValuePair<string, string>> args);
 	}
 }

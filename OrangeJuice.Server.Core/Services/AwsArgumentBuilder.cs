@@ -36,7 +36,8 @@ namespace OrangeJuice.Server.Services
 				{ "Timestamp", timestamp }
 			};
 
-			return args.OrderBy(p => p.Key)
+			// Use a SortedDictionary to get the parameters in naturual byte order, as required by AWS
+			return args.OrderBy(p => p.Key, StringComparer.Ordinal)
 					   .ToDictionary(p => p.Key, p => p.Value);
 		}
 		#endregion
