@@ -91,21 +91,6 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void BuildArgs_Should_Call_UrlEncoder_Encode_For_Each_Argument_Value()
-		{
-			// Arrange
-			var urlEncoder = CreateUrlEncoder();
-			var queryBuilder = CreateArgumentBuilder(urlEncoder: urlEncoder.Object);
-			IStringDictionary args = new StringDictionary { { "key", "value" } };
-
-			// Act
-			queryBuilder.BuildArgs(args);
-
-			// Assert
-			urlEncoder.Verify(e => e.Encode(It.IsAny<string>()), Times.Exactly(5 + args.Count));
-		}
-
-		[TestMethod]
 		public void BuildArgs_Should_Pass_Result_Of_DateTimeProvider_GetNow_To_DateTimeProvider_FormatToUniversal()
 		{
 			// Arrange
@@ -123,13 +108,12 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static AwsArgumentBuilder CreateArgumentBuilder(string accessKey = null, string associateTag = null, IDateTimeProvider dateTimeProvider = null, IUrlEncoder urlEncoder = null)
+		private static AwsArgumentBuilder CreateArgumentBuilder(string accessKey = null, string associateTag = null, IDateTimeProvider dateTimeProvider = null)
 		{
 			return new AwsArgumentBuilder(
 				accessKey ?? "anyKey",
 				associateTag ?? "anyTag",
-				dateTimeProvider ?? CreateDateTimeProvider(DateTime.UtcNow).Object,
-				urlEncoder ?? new Mock<IUrlEncoder>().Object);
+				dateTimeProvider ?? CreateDateTimeProvider(DateTime.UtcNow).Object);
 		}
 
 		private static Mock<IDateTimeProvider> CreateDateTimeProvider(DateTime now)
@@ -138,13 +122,6 @@ namespace OrangeJuice.Server.Test.Services
 			dateTimeProviderMock.Setup(p => p.GetNow()).Returns(now);
 			dateTimeProviderMock.Setup(p => p.FormatToUniversal(It.IsAny<DateTime>())).Returns(Convert.ToString(now));
 			return dateTimeProviderMock;
-		}
-
-		private static Mock<IUrlEncoder> CreateUrlEncoder()
-		{
-			var urlEncoderMock = new Mock<IUrlEncoder>();
-			urlEncoderMock.Setup(e => e.Encode(It.IsAny<string>())).Returns<string>(s => s);
-			return urlEncoderMock;
 		}
 		#endregion
 	}
