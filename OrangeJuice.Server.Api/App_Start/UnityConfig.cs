@@ -103,7 +103,7 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey, typeof(IUrlEncoder)));
 
-			container.RegisterType<IQueryBuilder, AwsQueryBuilder>(
+			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IQuerySigner), typeof(IUrlEncoder)));
 
@@ -117,7 +117,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IAwsClient, AwsClient>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IQueryBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
+				new InjectionConstructor(typeof(IUrlBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
 
 			container.RegisterType<IAwsProvider, AwsProvider>(
 				new HierarchicalLifetimeManager(),

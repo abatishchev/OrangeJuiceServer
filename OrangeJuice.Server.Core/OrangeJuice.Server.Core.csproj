@@ -64,7 +64,7 @@
     <Compile Include="Services\IIdSelector.cs" />
     <Compile Include="Services\XmlIdSelector.cs" />
     <Compile Include="Services\AwsQuerySigner.cs" />
-    <Compile Include="Services\AwsQueryBuilder.cs" />
+    <Compile Include="Services\AwsUrlBuilder.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Configuration\Environment.cs" />

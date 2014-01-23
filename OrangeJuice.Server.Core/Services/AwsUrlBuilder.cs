@@ -6,7 +6,7 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
 {
-	public class AwsQueryBuilder : IQueryBuilder
+	public class AwsUrlBuilder : IUrlBuilder
 	{
 		#region Constants
 		private const string RequestHost = "webservices.amazon.com";
@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public AwsQueryBuilder(IArgumentBuilder argumentBuilder, IQuerySigner querySigner, IUrlEncoder urlEncoder)
+		public AwsUrlBuilder(IArgumentBuilder argumentBuilder, IQuerySigner querySigner, IUrlEncoder urlEncoder)
 		{
 			_argumentBuilder = argumentBuilder;
 			_querySigner = querySigner;
@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Services
 		}
 		#endregion
 
-		#region IQueryBuilder members
+		#region IUrlBuilder members
 		public Uri BuildUrl(IDictionary<string, string> args)
 		{
 			args = _argumentBuilder.BuildArgs(args);

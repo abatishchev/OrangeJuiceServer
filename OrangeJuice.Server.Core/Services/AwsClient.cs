@@ -11,15 +11,15 @@ namespace OrangeJuice.Server.Services
 	public sealed class AwsClient : IAwsClient
 	{
 		#region Fields
-		private readonly IQueryBuilder _queryBuilder;
+		private readonly IUrlBuilder _urlBuilder;
 		private readonly IDocumentLoader _documentLoader;
 		private readonly IItemSelector _itemSelector;
 		#endregion
 
 		#region Ctor
-		public AwsClient(IQueryBuilder queryBuilder, IDocumentLoader documentLoader, IItemSelector itemSelector)
+		public AwsClient(IUrlBuilder urlBuilder, IDocumentLoader documentLoader, IItemSelector itemSelector)
 		{
-			_queryBuilder = queryBuilder;
+			_urlBuilder = urlBuilder;
 			_documentLoader = documentLoader;
 			_itemSelector = itemSelector;
 		}
@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Services
 		#region IAwsClient members
 		public async Task<ICollection<XElement>> GetItems(IDictionary<string, string> args)
 		{
-			Uri url = _queryBuilder.BuildUrl(args);
+			Uri url = _urlBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
 			return _itemSelector.SelectItems(doc).ToArray();
 		}

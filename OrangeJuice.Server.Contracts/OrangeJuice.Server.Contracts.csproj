@@ -67,7 +67,7 @@
     <Compile Include="Services\IAwsClient.cs" />
     <Compile Include="Services\IAwsProvider.cs" />
     <Compile Include="Services\IItemSelector.cs" />
-    <Compile Include="Services\IQueryBuilder.cs" />
+    <Compile Include="Services\IUrlBuilder.cs" />
     <Compile Include="Services\IQuerySigner.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />

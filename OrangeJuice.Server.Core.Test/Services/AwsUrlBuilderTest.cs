@@ -15,7 +15,7 @@ using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class AwsQueryBuilderTest
+	public class AwsUrlBuilderTest
 	{
 		#region Test methods
 		[TestMethod]
@@ -26,10 +26,10 @@ namespace OrangeJuice.Server.Test.Services
 
 			var argumentBuilderMock = CreateArgumentBuilder();
 
-			IQueryBuilder queryBuilder = CreateQueryBuilder(argumentBuilderMock.Object);
+			IUrlBuilder urlBuilder = CreateQueryBuilder(argumentBuilderMock.Object);
 
 			// Act
-			queryBuilder.BuildUrl(args);
+			urlBuilder.BuildUrl(args);
 
 			// Assert
 			argumentBuilderMock.Verify(b => b.BuildArgs(args), Times.Once);
@@ -42,10 +42,10 @@ namespace OrangeJuice.Server.Test.Services
 			const string signature = "signature";
 
 			IQuerySigner querySigner = CreateQuerySigner(signature);
-			IQueryBuilder queryBuilder = CreateQueryBuilder(querySigner: querySigner);
+			IUrlBuilder urlBuilder = CreateQueryBuilder(querySigner: querySigner);
 
 			// Act
-			Uri url = queryBuilder.BuildUrl(new StringDictionary());
+			Uri url = urlBuilder.BuildUrl(new StringDictionary());
 
 			// Assert
 			url.Query.Should().EndWith(String.Format("Signature={0}", signature));
@@ -57,12 +57,12 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			var urlEncoderMock = CreateUrlEncoder();
 
-			IQueryBuilder queryBuilder = CreateQueryBuilder(urlEncoder: urlEncoderMock.Object);
+			IUrlBuilder urlBuilder = CreateQueryBuilder(urlEncoder: urlEncoderMock.Object);
 
 			IStringDictionary args = new StringDictionary { { "key", "value" } };
 
 			// Act
-			queryBuilder.BuildUrl(args);
+			urlBuilder.BuildUrl(args);
 
 			// Assert
 			urlEncoderMock.Verify(e => e.Encode(It.IsAny<string>()), Times.Exactly(args.Count));
@@ -70,9 +70,9 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IQueryBuilder CreateQueryBuilder(IArgumentBuilder argumentBuilder = null, IQuerySigner querySigner = null, IUrlEncoder urlEncoder = null)
+		private static IUrlBuilder CreateQueryBuilder(IArgumentBuilder argumentBuilder = null, IQuerySigner querySigner = null, IUrlEncoder urlEncoder = null)
 		{
-			return new AwsQueryBuilder(
+			return new AwsUrlBuilder(
 				argumentBuilder ?? CreateArgumentBuilder().Object,
 				querySigner ?? CreateQuerySigner(),
 				urlEncoder ?? CreateUrlEncoder().Object);

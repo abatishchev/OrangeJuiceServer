@@ -84,17 +84,17 @@ namespace OrangeJuice.Server.Test.Services
 			return new Uri("http://example.com");
 		}
 
-		private static IAwsClient CreateClient(IQueryBuilder queryBuilder = null, IDocumentLoader documentLoader = null, IItemSelector itemSelector = null)
+		private static IAwsClient CreateClient(IUrlBuilder urlBuilder = null, IDocumentLoader documentLoader = null, IItemSelector itemSelector = null)
 		{
 			return new AwsClient(
-				queryBuilder ?? CreateUrlBuilder(),
+				urlBuilder ?? CreateUrlBuilder(),
 				documentLoader ?? CreateDocumentLoader(),
 				itemSelector ?? CreateItemSelector());
 		}
 
-		private static IQueryBuilder CreateUrlBuilder(Uri url = null)
+		private static IUrlBuilder CreateUrlBuilder(Uri url = null)
 		{
-			var builderMock = new Mock<IQueryBuilder>();
+			var builderMock = new Mock<IUrlBuilder>();
 			builderMock.Setup(b => b.BuildUrl(It.IsAny<IStringDictionary>())).Returns(url ?? CreateUrl());
 			return builderMock.Object;
 		}
