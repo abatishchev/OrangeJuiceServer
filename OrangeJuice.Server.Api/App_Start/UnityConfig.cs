@@ -151,12 +151,9 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IFilter<FoodDescription>, ValidImageFoodDescriptionFilter>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IIdSelector, XmlIdSelector>(
-				new HierarchicalLifetimeManager());
-
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAwsProvider), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>), typeof(IIdSelector)));
+				new InjectionConstructor(typeof(IAwsProvider), typeof(IFoodDescriptionFactory), typeof(IFilter<FoodDescription>)));
 			#endregion
 
 			#region UserController

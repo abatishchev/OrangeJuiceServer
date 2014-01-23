@@ -76,8 +76,6 @@
     <Compile Include="Services\AwsProvider.cs" />
     <Compile Include="Services\AwsQuerySigner.cs" />
     <Compile Include="Services\AwsUrlBuilder.cs" />
-    <Compile Include="Services\IIdSelector.cs" />
-    <Compile Include="Services\XmlIdSelector.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
     <Compile Include="Services\XmlItemValidator.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
