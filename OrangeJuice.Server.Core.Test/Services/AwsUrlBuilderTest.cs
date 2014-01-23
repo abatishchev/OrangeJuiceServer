@@ -84,7 +84,7 @@ namespace OrangeJuice.Server.Test.Services
 		private static IQuerySigner CreateQuerySigner(string signature = null)
 		{
 			var builderMock = new Mock<IQuerySigner>();
-			builderMock.Setup(b => b.SignQuery(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+			builderMock.Setup(b => b.CreateSignature(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
 					   .Returns<string, string, string>((h, p, s) => signature ?? Guid.NewGuid().ToString());
 			return builderMock.Object;
 		}

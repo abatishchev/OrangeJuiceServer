@@ -2,8 +2,6 @@
 using System.Security.Cryptography;
 using System.Text;
 
-using OrangeJuice.Server.Web;
-
 namespace OrangeJuice.Server.Services
 {
 	public sealed class AwsQuerySigner : IQuerySigner
@@ -14,19 +12,17 @@ namespace OrangeJuice.Server.Services
 
 		#region Fields
 		private readonly HashAlgorithm _hashAlgorithm;
-		private readonly IUrlEncoder _urlEncoder;
 		#endregion
 
 		#region Ctor
-		public AwsQuerySigner(string secretKey, IUrlEncoder urlEncoder)
-			: this(CreateHashAlgorithm(secretKey), urlEncoder)
+		public AwsQuerySigner(string secretKey)
+			: this(CreateHashAlgorithm(secretKey))
 		{
 		}
 
-		public AwsQuerySigner(HashAlgorithm hashAlgorithm, IUrlEncoder urlEncoder)
+		public AwsQuerySigner(HashAlgorithm hashAlgorithm)
 		{
 			_hashAlgorithm = hashAlgorithm;
-			_urlEncoder = urlEncoder;
 		}
 		#endregion
 
@@ -36,19 +32,11 @@ namespace OrangeJuice.Server.Services
 		/// </summary>
 		/// <returns>Returns a complete URL to use</returns>
 		/// <remarks>Modifying the returned URL invalidates the signature and Amazon will reject a request</remarks>
-		public string SignQuery(string host, string path, string query)
+		public string CreateSignature(string host, string path, string query)
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append(RequestMethod)
-			  .Append('\n')
-			  .Append(host)
-			  .Append('\n')
-			  .Append(path)
-			  .Append('\n')
-			  .Append(query);
+			query = PrepareQuery(host, path, query);
 
-			string signature = CreateSignature(sb);
-			return _urlEncoder.Encode(signature);
+			return CreateSignature(query);
 		}
 		#endregion
 
@@ -59,9 +47,22 @@ namespace OrangeJuice.Server.Services
 			return new HMACSHA256(secret);
 		}
 
-		private string CreateSignature(StringBuilder sb)
+		private static string PrepareQuery(string host, string path, string query)
 		{
-			byte[] bytes = Encoding.UTF8.GetBytes(sb.ToString());
+			StringBuilder sb = new StringBuilder();
+			sb.Append(RequestMethod)
+			  .Append('\n')
+			  .Append(host)
+			  .Append('\n')
+			  .Append(path)
+			  .Append('\n')
+			  .Append(query);
+			return sb.ToString();
+		}
+
+		private string CreateSignature(string value)
+		{
+			byte[] bytes = Encoding.UTF8.GetBytes(value);
 			byte[] hash = _hashAlgorithm.ComputeHash(bytes);
 			return Convert.ToBase64String(hash);
 		}

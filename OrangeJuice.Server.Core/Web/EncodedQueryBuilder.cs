@@ -20,10 +20,26 @@ namespace OrangeJuice.Server.Web
 		#region IQueryBuilder members
 		public string BuildQuery(IEnumerable<KeyValuePair<string, string>> args)
 		{
-			return String.Join("&",
-				args.Select(p => String.Format("{0}={1}",
-					p.Key,
-					_urlEncoder.Encode(p.Value))));
+			return SpltParameters(args.Select(a => SplitNameValue(a.Key, a.Value)));
+		}
+
+		public string SignQuery(string query, string signature)
+		{
+			return SpltParameters(new[]
+				{
+					query,
+					SplitNameValue("Signature", signature)
+				});
+		}
+
+		private string SplitNameValue(string name, string value)
+		{
+			return String.Format("{0}={1}", name, _urlEncoder.Encode(value));
+		}
+
+		private static string SpltParameters(IEnumerable<string> parameters)
+		{
+			return String.Join("&", parameters);
 		}
 		#endregion
 	}

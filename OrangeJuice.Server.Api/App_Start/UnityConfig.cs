@@ -107,7 +107,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IQuerySigner, AwsQuerySigner>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey, typeof(IUrlEncoder)));
+				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey));
 
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new HierarchicalLifetimeManager(),
