@@ -14,38 +14,35 @@ namespace OrangeJuice.Server.Test.Data
 	{
 		#region Test methods
 		[TestMethod]
-		public void Create_Should_Return_GroceryDescription_Having_Id_Assigned_From_Id()
+		public void Create_Should_Return_FoodDescription_Having_Id()
 		{
 			// Arrange
 			const string id = "id";
 
-			XElement attributesTask = CreateAttributes();
-			XElement imagesTask = CreateImages();
+			XElement element = CreateElement(id);
 
-			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
+			IFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
-			FoodDescription description = factory.Create(id, attributesTask, imagesTask);
+			FoodDescription description = factory.Create(element);
 
 			// Assert
 			description.Id.Should().Be(id);
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_GroceryDescription_Having_Properies_Assigned_From_AttributesElement()
+		public void Create_Should_Return_FoodDescription_Having_Attributes()
 		{
 			// Arrange
-			const string id = "id";
 			const string title = "title";
 			const string brand = "brand";
 
-			XElement attributesTask = CreateAttributes(title, brand);
-			XElement imagesTask = CreateImages();
+			XElement element = CreateElement(title: title, brand: brand);
 
-			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
+			IFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
-			FoodDescription description = factory.Create(id, attributesTask, imagesTask);
+			FoodDescription description = factory.Create(element);
 
 			// Assert
 			description.Title.Should().Be(title);
@@ -53,21 +50,19 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_GroceryDescription_Having_Properies_Assigned_From_ImagesElement()
+		public void Create_Should_Return_FoodDescription_Having_Images()
 		{
 			// Arrange
-			const string id = "id";
 			const string smallImageUrl = "smallImageUrl";
 			const string mediumImageUrl = "mediumImageUrl";
 			const string largeImageUrl = "largeImageUrl";
 
-			XElement attributesTask = CreateAttributes();
-			XElement imagesTask = CreateImages(smallImageUrl, mediumImageUrl, largeImageUrl);
+			XElement element = CreateElement(smallImageUrl: smallImageUrl, mediumImageUrl: mediumImageUrl, largeImageUrl: largeImageUrl);
 
-			XmlFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
+			IFoodDescriptionFactory factory = new XmlFoodDescriptionFactory();
 
 			// Act
-			FoodDescription description = factory.Create(id, attributesTask, imagesTask);
+			FoodDescription description = factory.Create(element);
 
 			// Assert
 			description.SmallImageUrl.Should().Be(smallImageUrl);
@@ -77,31 +72,28 @@ namespace OrangeJuice.Server.Test.Data
 		#endregion
 
 		#region Helper methods
-		private static XElement CreateAttributes(string title = "", string brand = "")
+		private static XElement CreateElement(string id = "", string smallImageUrl = "", string mediumImageUrl = "", string largeImageUrl = "", string title = "", string brand = "")
 		{
 			return XElement.Parse(String.Format(
 @"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
-	<ItemAttributes>
-		<Title>{0}</Title>
-		<Brand>{1}</Brand>
-	</ItemAttributes>
-</Item>", title, brand));
-		}
-
-		private static XElement CreateImages(string smallImageUrl = "", string mediumImageUrl = "", string largeImageUrl = "")
-		{
-			return XElement.Parse(String.Format(
-@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
+	<ASIN>{0}</ASIN>
 	<SmallImage>
-		<URL>{0}</URL>
+		<URL>{1}</URL>
 	</SmallImage>
 	<MediumImage>
-		<URL>{1}</URL>
+		<URL>{2}</URL>
 	</MediumImage>
 	<LargeImage>
-		<URL>{2}</URL>
+		<URL>{3}</URL>
 	</LargeImage>
-</Item>", smallImageUrl, mediumImageUrl, largeImageUrl));
+	<ItemAttributes>
+		<Title>{4}</Title>
+		<Brand>{5}</Brand>
+	</ItemAttributes>
+</Item>",
+		id,
+		smallImageUrl, mediumImageUrl, largeImageUrl,
+		title, brand));
 		}
 		#endregion
 	}

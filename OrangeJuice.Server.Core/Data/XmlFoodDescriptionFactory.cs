@@ -7,38 +7,22 @@ namespace OrangeJuice.Server.Data
 	public sealed class XmlFoodDescriptionFactory : IFoodDescriptionFactory
 	{
 		#region IFoodDescriptionFactory members
-		public FoodDescription Create(string id, XElement attributesElement, XElement imagesElement)
+		public FoodDescription Create(XElement element)
 		{
-			FoodDescription description = new FoodDescription
+			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
+			nm.AddNamespace("x", element.Name.Namespace.ToString());
+
+			return new FoodDescription
 			{
-				Id = id
+				Id = (string)element.XPathSelectElement("x:ASIN", nm),
+
+				Title = (string)element.XPathSelectElement("x:ItemAttributes/x:Title", nm),
+				Brand = (string)element.XPathSelectElement("x:ItemAttributes/x:Brand", nm),
+
+				SmallImageUrl = (string)element.XPathSelectElement("x:SmallImage/x:URL", nm),
+				MediumImageUrl = (string)element.XPathSelectElement("x:MediumImage/x:URL", nm),
+				LargeImageUrl = (string)element.XPathSelectElement("x:LargeImage/x:URL", nm),
 			};
-
-			AssignAttributes(description, attributesElement);
-			AssignImages(description, imagesElement);
-
-			return description;
-		}
-		#endregion
-
-		#region Methods
-		internal static void AssignAttributes(FoodDescription description, XElement element)
-		{
-			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
-			nm.AddNamespace("x", element.Name.Namespace.ToString());
-
-			description.Title = (string)element.XPathSelectElement("x:ItemAttributes/x:Title", nm);
-			description.Brand = (string)element.XPathSelectElement("x:ItemAttributes/x:Brand", nm);
-		}
-
-		internal static void AssignImages(FoodDescription description, XElement element)
-		{
-			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
-			nm.AddNamespace("x", element.Name.Namespace.ToString());
-
-			description.SmallImageUrl = (string)element.XPathSelectElement("x:SmallImage/x:URL", nm);
-			description.MediumImageUrl = (string)element.XPathSelectElement("x:MediumImage/x:URL", nm);
-			description.LargeImageUrl = (string)element.XPathSelectElement("x:LargeImage/x:URL", nm);
 		}
 		#endregion
 	}

@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Services;
-using OrangeJuice.Server.Web;
 
 using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
 using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
