@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task SearchItems_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
-			const string title = "anyTitle";
+			const string title = "titlle";
 
 			Action<IStringDictionary> callback = d => d.Should()
 													   .Contain("Operation", "ItemSearch")
@@ -51,7 +51,48 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			var actual = await provider.SearchItems("anyTitle");
+			var actual = await provider.SearchItems("titlle");
+
+			// Assert
+			actual.ShouldBeEquivalentTo(expected);
+		}
+		#endregion
+
+		#region ItemLookup
+		[TestMethod]
+		public async Task ItemLookup_Should_Pass_Arguments_To_Client()
+		{
+			// Arrange
+			const string barcode = "barcode";
+
+			Action<IStringDictionary> callback = d => d.Should()
+													   .Contain("Operation", "ItemLookup")
+													   .And.Contain("SearchIndex", "Grocery")
+													   .And.Contain("ResponseGroup", "Images,ItemAttributes")
+													   .And.Contain("IdType", "EAN")
+													   .And.Contain("ItemId", barcode);
+			var clientMock = CreateClient(callback: callback);
+
+			IAwsProvider provider = CreateProvider(clientMock.Object);
+
+			// Act
+			await provider.ItemLookup(barcode);
+
+			// Assert
+			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once);
+		}
+
+		[TestMethod]
+		public async Task ItemLookup_Should_Return_Elements_Returned_By_Client_GetItems()
+		{
+			// Arrange
+			var expected = new[] { new XElement("Items") };
+			var clientMock = CreateClient(expected);
+
+			IAwsProvider provider = CreateProvider(clientMock.Object);
+
+			// Act
+			var actual = await provider.ItemLookup("barcode");
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);

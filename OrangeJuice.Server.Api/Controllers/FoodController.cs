@@ -17,9 +17,8 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Searches for food by text
 		/// </summary>
-		/// <returns>Brief description of food found</returns>
-		/// <param name="title">Food title</param>
-		/// <url>GET /api/food/</url>
+		/// <returns>Collection of food description</returns>
+		/// <url>GET /api/food/?title={title}</url>
 		public async Task<IHttpActionResult> GetByTitle([FromUri]string title)
 		{
 			if (!ModelState.IsValid)
@@ -29,6 +28,11 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(description);
 		}
 
+		/// <summary>
+		/// Searches for food by barcode
+		/// </summary>
+		/// <returns>Single food description</returns>
+		/// <url>GET /api/food/?barcode={barcode}</url>
 		public async Task<IHttpActionResult> GetByBarcode([FromUri]string barcode)
 		{
 			if (!ModelState.IsValid)

@@ -30,9 +30,11 @@ namespace OrangeJuice.Server.Data
 						.ToArray();
 		}
 
-		public async Task<FoodDescription> SearchByBarcode(string barcode)
+		public async Task<ICollection<FoodDescription>> SearchByBarcode(string barcode)
 		{
-			throw new System.NotImplementedException();
+			ICollection<XElement> items = await _provider.ItemLookup(barcode);
+			return items.Select(i => _factory.Create(i))
+						.ToArray();
 		}
 		#endregion
 
