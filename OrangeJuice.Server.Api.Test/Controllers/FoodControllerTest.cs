@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
-using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
@@ -25,10 +24,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			FoodController controller = CreateController(exception: new ArgumentNullException());
-			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 
 			// Act
-			IHttpActionResult result = await controller.GetDescription(searchCriteria);
+			IHttpActionResult result = await controller.GetByTitle("title");
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -41,16 +39,15 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const string title = "title";
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
-			foodRepositoryMock.Setup(r => r.Search(title)).ReturnsAsync(new[] { new FoodDescription() });
+			foodRepositoryMock.Setup(r => r.SearchByTitle(title)).ReturnsAsync(new[] { new FoodDescription() });
 
 			FoodController controller = CreateController(foodRepositoryMock.Object);
-			FoodSearchCriteria searchCriteria = new FoodSearchCriteria { Title = title };
 
 			// Act
-			await controller.GetDescription(searchCriteria);
+			await controller.GetByTitle(title);
 
 			// Assert
-			foodRepositoryMock.Verify(r => r.Search(title), Times.Once);
+			foodRepositoryMock.Verify(r => r.SearchByTitle(title), Times.Once);
 		}
 
 		[TestMethod]
@@ -60,13 +57,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodDescription[] expected = { new FoodDescription() };
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
-			foodRepositoryMock.Setup(r => r.Search(It.IsAny<string>())).ReturnsAsync(expected);
+			foodRepositoryMock.Setup(r => r.SearchByTitle(It.IsAny<string>())).ReturnsAsync(expected);
 
 			FoodController controller = CreateController(foodRepositoryMock.Object);
-			FoodSearchCriteria searchCriteria = new FoodSearchCriteria();
 
 			// Act
-			IHttpActionResult result = await controller.GetDescription(searchCriteria);
+			IHttpActionResult result = await controller.GetByTitle("title");
 			var actual = ((OkNegotiatedContentResult<ICollection<FoodDescription>>)result).Content;
 
 			// Assert

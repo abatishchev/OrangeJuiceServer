@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 
-using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
@@ -19,14 +18,23 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// Searches for food by text
 		/// </summary>
 		/// <returns>Brief description of food found</returns>
-		/// <param name="searchCriteria">Food search criteria</param>
+		/// <param name="title">Food title</param>
 		/// <url>GET /api/food/</url>
-		public async Task<IHttpActionResult> GetDescription([FromUri]FoodSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetByTitle([FromUri]string title)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.Search(searchCriteria.Title);
+			var description = await _foodRepository.SearchByTitle(title);
+			return Ok(description);
+		}
+
+		public async Task<IHttpActionResult> GetByBarcode([FromUri]string barcode)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+
+			var description = await _foodRepository.SearchByBarcode(barcode);
 			return Ok(description);
 		}
 	}
