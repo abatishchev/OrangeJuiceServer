@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
@@ -27,7 +26,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>Rating entity</returns>
 		/// <url>GET /api/rating</url>
-		[ResponseType(typeof(IRating))]
 		public async Task<IHttpActionResult> GetRating([FromUri] RatingSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)

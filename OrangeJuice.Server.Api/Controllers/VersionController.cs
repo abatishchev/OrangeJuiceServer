@@ -1,5 +1,4 @@
 ﻿using System.Web.Http;
-using System.Web.Http.Description;
 
 using OrangeJuice.Server.Data;
 
@@ -15,7 +14,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		/// <url>PUT /api/version</url>
-		[ResponseType(typeof(ApiVersion))]
 		public IHttpActionResult GetVersion()
 		{
 			return Ok(_apiVersion);
