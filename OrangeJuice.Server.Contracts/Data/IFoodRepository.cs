@@ -7,6 +7,6 @@ namespace OrangeJuice.Server.Data
 	{
 		Task<ICollection<FoodDescription>> SearchByTitle(string title);
 
-		Task<ICollection<FoodDescription>> SearchByBarcode(string barcode);
+		Task<ICollection<FoodDescription>> SearchByBarcode(string barcode, BarcodeType barcodeType);
 	}
 }

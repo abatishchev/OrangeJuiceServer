@@ -8,6 +8,6 @@ namespace OrangeJuice.Server.Services
 	{
 		Task<ICollection<XElement>> SearchItems(string title);
 
-		Task<ICollection<XElement>> ItemLookup(string barcode);
+		Task<ICollection<XElement>> ItemLookup(string barcode, string barcodeType);
 	}
 }

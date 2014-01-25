@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{297041D9-4186-49F5-BB79-37653390A91F}"
 EndProject
@@ -111,6 +111,7 @@ Global
 		{411163BB-6EDC-4F9F-9618-F39D5DF46527} = {B06AAC9D-66F7-4462-AEBB-7871A683C823}
 		{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A} = {B06AAC9D-66F7-4462-AEBB-7871A683C823}
 		{B6E19574-801F-4B75-B4D8-D79BAC8AE6E3} = {B06AAC9D-66F7-4462-AEBB-7871A683C823}
+		{B06AAC9D-66F7-4462-AEBB-7871A683C823} = {1CBFC1FA-2DAA-4690-8C34-4574B0A02D6D}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = OrangeJuice.Server.vsmdi

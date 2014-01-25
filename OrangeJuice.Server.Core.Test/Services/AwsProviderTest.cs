@@ -64,19 +64,20 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			// Arrange
 			const string barcode = "barcode";
+			const string barcodeType = "barcodeType";
 
 			Action<IStringDictionary> callback = d => d.Should()
 													   .Contain("Operation", "ItemLookup")
 													   .And.Contain("SearchIndex", "Grocery")
 													   .And.Contain("ResponseGroup", "Images,ItemAttributes")
-													   .And.Contain("IdType", "EAN")
+													   .And.Contain("IdType", barcodeType)
 													   .And.Contain("ItemId", barcode);
 			var clientMock = CreateClient(callback: callback);
 
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			await provider.ItemLookup(barcode);
+			await provider.ItemLookup(barcode, barcodeType);
 
 			// Assert
 			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once);
@@ -92,7 +93,7 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			var actual = await provider.ItemLookup("barcode");
+			var actual = await provider.ItemLookup("barcode", "barcodeType");
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);

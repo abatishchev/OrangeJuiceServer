@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 
+using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Controllers
@@ -18,13 +19,14 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// Searches for food by text
 		/// </summary>
 		/// <returns>Collection of food description</returns>
-		/// <url>GET /api/food/?title={title}</url>
-		public async Task<IHttpActionResult> GetByTitle([FromUri]string title)
+		/// <url>POST /api/food</url>
+		[ActionName("title")]
+		public async Task<IHttpActionResult> PostTitle([FromBody]TitleSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.SearchByTitle(title);
+			var description = await _foodRepository.SearchByTitle(searchCriteria.Title);
 			return Ok(description);
 		}
 
@@ -32,13 +34,14 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// Searches for food by barcode
 		/// </summary>
 		/// <returns>Single food description</returns>
-		/// <url>GET /api/food/?barcode={barcode}</url>
-		public async Task<IHttpActionResult> GetByBarcode([FromUri]string barcode)
+		/// <url>POST /api/food</url>
+		[ActionName("barcode")]
+		public async Task<IHttpActionResult> PostBarcode([FromBody]BarcodeSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.SearchByBarcode(barcode);
+			var description = await _foodRepository.SearchByBarcode(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			return Ok(description);
 		}
 	}

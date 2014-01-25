@@ -4,9 +4,9 @@ using OrangeJuice.Server.Api.Models;
 
 namespace OrangeJuice.Server.Api.Validation
 {
-	public sealed class FoodSearchCriteriaValidator : AbstractValidator<FoodSearchCriteria>
+	public sealed class TitleSearchCriteriaValidator : AbstractValidator<TitleSearchCriteria>
 	{
-		public FoodSearchCriteriaValidator()
+		public TitleSearchCriteriaValidator()
 		{
 			RuleFor(x => x.Title).NotNull();
 			RuleFor(x => x.Title).Length(3, 56);

@@ -31,14 +31,14 @@ namespace OrangeJuice.Server.Services
 			return _client.GetItems(args);
 		}
 
-		public Task<ICollection<XElement>> ItemLookup(string barcode)
+		public Task<ICollection<XElement>> ItemLookup(string barcode, string barcodeType)
 		{
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },
 				{ "SearchIndex", "Grocery" },
 				{ "ResponseGroup", "Images,ItemAttributes" },
-				{ "IdType", "EAN" },
+				{ "IdType", barcodeType },
 				{ "ItemId", barcode }
 			};
 

@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
+using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
@@ -26,7 +27,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.GetByTitle("title");
+			IHttpActionResult result = await controller.GetByTitle(new TitleSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -37,6 +38,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			const string title = "title";
+			TitleSearchCriteria searchCriteria = new TitleSearchCriteria { Title = title };
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
 			foodRepositoryMock.Setup(r => r.SearchByTitle(title)).ReturnsAsync(new[] { new FoodDescription() });
@@ -44,7 +46,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodController controller = CreateController(foodRepositoryMock.Object);
 
 			// Act
-			await controller.GetByTitle(title);
+			await controller.GetByTitle(searchCriteria);
 
 			// Assert
 			foodRepositoryMock.Verify(r => r.SearchByTitle(title), Times.Once);
@@ -62,7 +64,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodController controller = CreateController(foodRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetByTitle("title");
+			IHttpActionResult result = await controller.GetByTitle(new TitleSearchCriteria());
 			var actual = ((OkNegotiatedContentResult<ICollection<FoodDescription>>)result).Content;
 
 			// Assert
@@ -79,7 +81,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.GetByBarcode("barcode");
+			IHttpActionResult result = await controller.GetByBarcode(new BarcodeSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -90,17 +92,18 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			const string barcode = "barcode";
+			const BarcodeType barcodeType = BarcodeType.EAN;
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
-			foodRepositoryMock.Setup(r => r.SearchByBarcode(barcode)).ReturnsAsync(new[] { new FoodDescription() });
+			foodRepositoryMock.Setup(r => r.SearchByBarcode(barcode, barcodeType)).ReturnsAsync(new[] { new FoodDescription() });
 
 			FoodController controller = CreateController(foodRepositoryMock.Object);
 
 			// Act
-			await controller.GetByBarcode(barcode);
+			await controller.GetByBarcode(new BarcodeSearchCriteria { Barcode = barcode, BarcodeType = barcodeType });
 
 			// Assert
-			foodRepositoryMock.Verify(r => r.SearchByBarcode(barcode), Times.Once);
+			foodRepositoryMock.Verify(r => r.SearchByBarcode(barcode, barcodeType), Times.Once);
 		}
 
 		[TestMethod]
@@ -110,12 +113,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			FoodDescription[] expected = { new FoodDescription() };
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
-			foodRepositoryMock.Setup(r => r.SearchByBarcode(It.IsAny<string>())).ReturnsAsync(expected);
+			foodRepositoryMock.Setup(r => r.SearchByBarcode(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
 
 			FoodController controller = CreateController(foodRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetByBarcode("barcode");
+			IHttpActionResult result = await controller.GetByBarcode(new BarcodeSearchCriteria());
 			var actual = ((OkNegotiatedContentResult<ICollection<FoodDescription>>)result).Content;
 
 			// Assert
