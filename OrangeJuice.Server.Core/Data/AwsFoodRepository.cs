@@ -23,14 +23,14 @@ namespace OrangeJuice.Server.Data
 		#endregion
 
 		#region IFoodRepository members
-		public async Task<ICollection<FoodDescription>> SearchByTitle(string title)
+		public async Task<ICollection<FoodDescription>> SearchTitle(string title)
 		{
 			ICollection<XElement> items = await _provider.SearchItems(title);
 			return items.Select(i => _factory.Create(i))
 						.ToArray();
 		}
 
-		public async Task<ICollection<FoodDescription>> SearchByBarcode(string barcode, BarcodeType barcodeType)
+		public async Task<ICollection<FoodDescription>> SearchBarcode(string barcode, BarcodeType barcodeType)
 		{
 			ICollection<XElement> items = await _provider.ItemLookup(barcode, barcodeType.ToString());
 			return items.Select(i => _factory.Create(i))

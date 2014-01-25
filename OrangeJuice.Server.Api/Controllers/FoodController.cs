@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
@@ -26,7 +27,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.SearchByTitle(searchCriteria.Title);
+			var description = await _foodRepository.SearchTitle(searchCriteria.Title);
 			return Ok(description);
 		}
 
@@ -41,8 +42,8 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.SearchByBarcode(searchCriteria.Barcode, searchCriteria.BarcodeType);
-			return Ok(description);
+			var description = await _foodRepository.SearchBarcode(searchCriteria.Barcode, searchCriteria.BarcodeType);
+			return Ok(description.FirstOrDefault());
 		}
 	}
 }

@@ -5,8 +5,8 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IFoodRepository
 	{
-		Task<ICollection<FoodDescription>> SearchByTitle(string title);
+		Task<ICollection<FoodDescription>> SearchTitle(string title);
 
-		Task<ICollection<FoodDescription>> SearchByBarcode(string barcode, BarcodeType barcodeType);
+		Task<ICollection<FoodDescription>> SearchBarcode(string barcode, BarcodeType barcodeType);
 	}
 }

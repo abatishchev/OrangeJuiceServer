@@ -13,9 +13,9 @@ namespace OrangeJuice.Server.Test.Data
 	[TestClass]
 	public class AwsFoodRepositoryTest
 	{
-		#region SearchByTitle
+		#region SearchTitle
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_Title_To_AwsProvider_SearhItems()
+		public async Task SearchTitle_Should_Pass_Title_To_AwsProvider_SearhItems()
 		{
 			// Arrange
 			const string title = "anyTitle";
@@ -26,14 +26,14 @@ namespace OrangeJuice.Server.Test.Data
 			IFoodRepository repository = CreateRepository(providerMock.Object);
 
 			// Act
-			await repository.SearchByTitle(title);
+			await repository.SearchTitle(title);
 
 			// Assert
 			providerMock.Verify(c => c.SearchItems(title), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task SearchByTitle_Should_Pass_Each_Item_Returned_By_AwsProvider_SearhItems_To_FoodDescriptionFactory_Create()
+		public async Task SearchTitle_Should_Pass_Each_Item_Returned_By_AwsProvider_SearhItems_To_FoodDescriptionFactory_Create()
 		{
 			// Arrange
 			const string title = "anyTitle";
@@ -47,7 +47,7 @@ namespace OrangeJuice.Server.Test.Data
 			IFoodRepository repository = CreateRepository(providerMock.Object, factoryMock.Object);
 
 			// Act
-			await repository.SearchByTitle(title);
+			await repository.SearchTitle(title);
 
 			// Assert
 			factoryMock.Verify(f => f.Create(element), Times.Once);
