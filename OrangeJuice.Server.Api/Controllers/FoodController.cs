@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.SearchTitle(searchCriteria.Title);
+			var description = await _foodRepository.Search(searchCriteria.Title);
 			return Ok(description.ToArray());
 		}
 
@@ -42,8 +42,8 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.SearchBarcode(searchCriteria.Barcode, searchCriteria.BarcodeType);
-			return Ok(description.FirstOrDefault());
+			var description = await _foodRepository.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
+			return Ok(description);
 		}
 	}
 }

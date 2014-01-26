@@ -16,7 +16,6 @@ using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Container;
 using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Data.Unit;
-using OrangeJuice.Server.Filters;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
@@ -141,16 +140,21 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IUrlBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
 
-			container.RegisterType<IAwsProvider, AwsProvider>(
-				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAwsClient)));
-
 			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(
+				new HierarchicalLifetimeManager());
+
+			container.RegisterType<IFoodProvider, AwsFoodProvider>(
+				"Aws",
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(typeof(IAwsClient), typeof(IFoodDescriptionFactory)));
+
+			container.RegisterType<IFoodProvider, AzureFoodProvider>(
+				"Azure",
 				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IFoodRepository, AwsFoodRepository>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAwsProvider), typeof(IFoodDescriptionFactory)));
+				new InjectionConstructor(container.ResolveAll<IFoodProvider>()));
 			#endregion
 
 			#region UserController

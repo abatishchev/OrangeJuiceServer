@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 
 using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
@@ -16,11 +17,11 @@ using IStringDictionary = System.Collections.Generic.IDictionary<string, string>
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class AwsProviderTest
+	public class AwsFoodProviderTest
 	{
-		#region SearchItems
+		#region Search
 		[TestMethod]
-		public async Task SearchItems_Should_Pass_Arguments_To_Client()
+		public async Task Search_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
 			const string title = "titlle";
@@ -32,35 +33,35 @@ namespace OrangeJuice.Server.Test.Services
 													   .And.Contain("Keywords", title);
 			var clientMock = CreateClient(callback: callback);
 
-			IAwsProvider provider = CreateProvider(clientMock.Object);
+			IFoodProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			await provider.SearchItems(title);
+			await provider.Search(title);
 
 			// Assert
 			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task SearchItems_Should_Return_Elements_Returned_By_Client_GetItems()
+		public async Task Search_Should_Return_Elements_Returned_By_Client_GetItems()
 		{
 			// Arrange
 			var expected = new[] { new XElement("Items") };
 			var clientMock = CreateClient(expected);
 
-			IAwsProvider provider = CreateProvider(clientMock.Object);
+			IFoodProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			var actual = await provider.SearchItems("titlle");
+			var actual = await provider.Search("titlle");
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);
 		}
 		#endregion
 
-		#region ItemLookup
+		#region Lookup
 		[TestMethod]
-		public async Task ItemLookup_Should_Pass_Arguments_To_Client()
+		public async Task Lookup_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -74,37 +75,39 @@ namespace OrangeJuice.Server.Test.Services
 													   .And.Contain("ItemId", barcode);
 			var clientMock = CreateClient(callback: callback);
 
-			IAwsProvider provider = CreateProvider(clientMock.Object);
+			IFoodProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			await provider.ItemLookup(barcode, barcodeType);
+			await provider.Lookup(barcode, barcodeType);
 
 			// Assert
 			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task ItemLookup_Should_Return_Elements_Returned_By_Client_GetItems()
+		public async Task Lookup_Should_Return_Elements_Returned_By_Client_GetItems()
 		{
 			// Arrange
-			var expected = new[] { new XElement("Items") };
-			var clientMock = CreateClient(expected);
+			var expected = new FoodDescription();
 
-			IAwsProvider provider = CreateProvider(clientMock.Object);
+			var factoryMock = CreateFactory(description: expected);
+
+			IFoodProvider provider = CreateProvider(factory: factoryMock.Object);
 
 			// Act
-			var actual = await provider.ItemLookup("barcode", "barcodeType");
+			FoodDescription actual = await provider.Lookup("barcode", "barcodeType");
 
 			// Assert
-			actual.ShouldBeEquivalentTo(expected);
+			actual.Should().Be(expected);
 		}
 		#endregion
 
 		#region Helper methods
-		private static IAwsProvider CreateProvider(IAwsClient client = null)
+		private static IFoodProvider CreateProvider(IAwsClient client = null, IFoodDescriptionFactory factory = null)
 		{
-			return new AwsProvider(
-				client ?? new Mock<IAwsClient>().Object);
+			return new AwsFoodProvider(
+				client ?? CreateClient().Object,
+				factory ?? CreateFactory().Object);
 		}
 
 		private static Mock<IAwsClient> CreateClient(ICollection<XElement> items = null, Action<IStringDictionary> callback = null)
@@ -114,6 +117,13 @@ namespace OrangeJuice.Server.Test.Services
 					  .ReturnsAsync(items ?? new[] { new XElement("Items") })
 					  .Callback(callback ?? (d => { }));
 			return clientMock;
+		}
+
+		private static Mock<IFoodDescriptionFactory> CreateFactory(XElement element = null, FoodDescription description = null)
+		{
+			var factoryMock = new Mock<IFoodDescriptionFactory>();
+			factoryMock.Setup(f => f.Create(element ?? It.IsAny<XElement>())).Returns(description ?? new FoodDescription());
+			return factoryMock;
 		}
 		#endregion
 	}
