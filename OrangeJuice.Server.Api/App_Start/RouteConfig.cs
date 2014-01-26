@@ -10,14 +10,14 @@ namespace OrangeJuice.Server.Api
 			// TODO: why ignored?
 			routes.MapHttpRoute(
 				name: "WithAction",
-				routeTemplate: "api/{controller}/{action}",
-				defaults: new { controller = "Home", action = RouteParameter.Optional }
+				routeTemplate: "api/{controller}/{action}/{id}",
+				defaults: new { controller = "Home", id = RouteParameter.Optional }
 			);
 
-			//routes.MapHttpRoute(
-			//	name: "DefaultApi",
-			//	routeTemplate: "api/{controller}",
-			//	defaults: new { controller = "Home" });
+			routes.MapHttpRoute(
+				name: "DefaultApi",
+				routeTemplate: "api/{controller}/{id}",
+				defaults: new { controller = "Home", id = RouteParameter.Optional });
 		}
 	}
 }
