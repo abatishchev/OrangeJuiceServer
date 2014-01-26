@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Api.Controllers
 				return BadRequest(ModelState);
 
 			var description = await _foodRepository.SearchTitle(searchCriteria.Title);
-			return Ok(description);
+			return Ok(description.ToArray());
 		}
 
 		/// <summary>

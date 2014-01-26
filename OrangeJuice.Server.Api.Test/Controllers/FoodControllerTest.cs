@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -66,7 +65,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.PostTitle(new TitleSearchCriteria());
-			var actual = ((OkNegotiatedContentResult<ICollection<FoodDescription>>)result).Content;
+			var actual = ((OkNegotiatedContentResult<FoodDescription[]>)result).Content;
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);
