@@ -26,11 +26,11 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsClient members
-		public async Task<ICollection<XElement>> GetItems(IDictionary<string, string> args)
+		public async Task<IEnumerable<XElement>> GetItems(IDictionary<string, string> args)
 		{
 			Uri url = _urlBuilder.BuildUrl(args);
 			XDocument doc = await _documentLoader.Load(url);
-			return _itemSelector.SelectItems(doc).ToArray();
+			return _itemSelector.SelectItems(doc);
 		}
 		#endregion
 	}

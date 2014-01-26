@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using OrangeJuice.Server.Services;
 
@@ -23,18 +22,16 @@ namespace OrangeJuice.Server.Data
 		#endregion
 
 		#region IFoodRepository members
-		public async Task<ICollection<FoodDescription>> SearchTitle(string title)
+		public async Task<IEnumerable<FoodDescription>> SearchTitle(string title)
 		{
-			ICollection<XElement> items = await _provider.SearchItems(title);
-			return items.Select(i => _factory.Create(i))
-						.ToArray();
+			var items = await _provider.SearchItems(title);
+			return items.Select(i => _factory.Create(i));
 		}
 
-		public async Task<ICollection<FoodDescription>> SearchBarcode(string barcode, BarcodeType barcodeType)
+		public async Task<IEnumerable<FoodDescription>> SearchBarcode(string barcode, BarcodeType barcodeType)
 		{
-			ICollection<XElement> items = await _provider.ItemLookup(barcode, barcodeType.ToString());
-			return items.Select(i => _factory.Create(i))
-						.ToArray();
+			var items = await _provider.ItemLookup(barcode, barcodeType.ToString());
+			return items.Select(i => _factory.Create(i));
 		}
 		#endregion
 

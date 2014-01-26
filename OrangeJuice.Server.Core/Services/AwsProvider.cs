@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsProvider members
-		public Task<ICollection<XElement>> SearchItems(string title)
+		public Task<IEnumerable<XElement>> SearchItems(string title)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Services
 			return _client.GetItems(args);
 		}
 
-		public Task<ICollection<XElement>> ItemLookup(string barcode, string barcodeType)
+		public Task<IEnumerable<XElement>> ItemLookup(string barcode, string barcodeType)
 		{
 			var args = new Dictionary<string, string>
 			{
