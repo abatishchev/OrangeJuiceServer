@@ -51,8 +51,8 @@
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\ApiVersion.cs" />
     <Compile Include="Data\BarcodeType.cs" />
-    <Compile Include="Data\FoodDescription.cs" />
-    <Compile Include="Data\IFoodDescriptionFactory.cs" />
+    <Compile Include="Data\FoodDescriptor.cs" />
+    <Compile Include="Data\IFoodDescriptorFactory.cs" />
     <Compile Include="Data\IFoodRepository.cs" />
     <Compile Include="Data\IRating.cs" />
     <Compile Include="Data\Repository\IRatingRepository.cs" />

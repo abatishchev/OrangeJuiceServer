@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			TitleSearchCriteria searchCriteria = new TitleSearchCriteria { Title = title };
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
-			foodRepositoryMock.Setup(r => r.Search(title)).ReturnsAsync(new[] { new FoodDescription() });
+			foodRepositoryMock.Setup(r => r.Search(title)).ReturnsAsync(new[] { new FoodDescriptor() });
 
 			FoodController controller = CreateController(foodRepositoryMock.Object);
 
@@ -52,10 +52,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PostTitle_Should_Return_Collection_Of_FoodDescription_Returned_By_FoodRepository_SearchTitle()
+		public async Task PostTitle_Should_Return_Collection_Of_FoodDescriptors_Returned_By_FoodRepository_SearchTitle()
 		{
 			// Arrange
-			FoodDescription[] expected = { new FoodDescription() };
+			FoodDescriptor[] expected = { new FoodDescriptor() };
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
 			foodRepositoryMock.Setup(r => r.Search(It.IsAny<string>())).ReturnsAsync(expected);
@@ -64,7 +64,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.PostTitle(new TitleSearchCriteria());
-			var actual = ((OkNegotiatedContentResult<FoodDescription[]>)result).Content;
+			var actual = ((OkNegotiatedContentResult<FoodDescriptor[]>)result).Content;
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);
@@ -87,14 +87,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PostBarcode_Should_Pass_Title_To_FoodRepository_SearchBarcode()
+		public async Task PostBarcode_Should_Pass_Title_To_FoodRepository_Lookup()
 		{
 			// Arrange
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
-			foodRepositoryMock.Setup(r => r.Lookup(barcode, barcodeType)).ReturnsAsync(new FoodDescription());
+			foodRepositoryMock.Setup(r => r.Lookup(barcode, barcodeType)).ReturnsAsync(new FoodDescriptor());
 
 			FoodController controller = CreateController(foodRepositoryMock.Object);
 
@@ -106,10 +106,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PostBarcode_Should_Return_First_FoodDescription_Returned_By_FoodRepository_SearchBarcode()
+		public async Task PostBarcode_Should_Return_FoodDescriptor_Returned_By_FoodRepository_Lookup()
 		{
 			// Arrange
-			FoodDescription expected = new FoodDescription();
+			FoodDescriptor expected = new FoodDescriptor();
 
 			var foodRepositoryMock = new Mock<IFoodRepository>();
 			foodRepositoryMock.Setup(r => r.Lookup(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
@@ -118,14 +118,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.PostBarcode(new BarcodeSearchCriteria());
-			FoodDescription actual = ((OkNegotiatedContentResult<FoodDescription>)result).Content;
+			FoodDescriptor actual = ((OkNegotiatedContentResult<FoodDescriptor>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public async Task PostBarcode_Should_Return_Null_When_FoodRepository_SearchBarcode_Returned_Null()
+		public async Task PostBarcode_Should_Return_Null_When_FoodRepository_Lookup_Returned_Null()
 		{
 			// Arrange
 			var foodRepositoryMock = new Mock<IFoodRepository>();
@@ -135,7 +135,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.PostBarcode(new BarcodeSearchCriteria());
-			FoodDescription actual = ((OkNegotiatedContentResult<FoodDescription>)result).Content;
+			FoodDescriptor actual = ((OkNegotiatedContentResult<FoodDescriptor>)result).Content;
 
 			// Assert
 			actual.Should().BeNull();

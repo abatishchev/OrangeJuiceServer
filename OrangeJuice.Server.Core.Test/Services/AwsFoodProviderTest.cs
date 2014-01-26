@@ -88,14 +88,14 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task Lookup_Should_Return_Elements_Returned_By_Client_GetItems()
 		{
 			// Arrange
-			var expected = new FoodDescription();
+			var expected = new FoodDescriptor();
 
-			var factoryMock = CreateFactory(description: expected);
+			var factoryMock = CreateFactory(descriptor: expected);
 
 			IFoodProvider provider = CreateProvider(factory: factoryMock.Object);
 
 			// Act
-			FoodDescription actual = await provider.Lookup("barcode", "barcodeType");
+			FoodDescriptor actual = await provider.Lookup("barcode", "barcodeType");
 
 			// Assert
 			actual.Should().Be(expected);
@@ -103,7 +103,7 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IFoodProvider CreateProvider(IAwsClient client = null, IFoodDescriptionFactory factory = null)
+		private static IFoodProvider CreateProvider(IAwsClient client = null, IFoodDescriptorFactory factory = null)
 		{
 			return new AwsFoodProvider(
 				client ?? CreateClient().Object,
@@ -119,10 +119,10 @@ namespace OrangeJuice.Server.Test.Services
 			return clientMock;
 		}
 
-		private static Mock<IFoodDescriptionFactory> CreateFactory(XElement element = null, FoodDescription description = null)
+		private static Mock<IFoodDescriptorFactory> CreateFactory(XElement element = null, FoodDescriptor descriptor = null)
 		{
-			var factoryMock = new Mock<IFoodDescriptionFactory>();
-			factoryMock.Setup(f => f.Create(element ?? It.IsAny<XElement>())).Returns(description ?? new FoodDescription());
+			var factoryMock = new Mock<IFoodDescriptorFactory>();
+			factoryMock.Setup(f => f.Create(element ?? It.IsAny<XElement>())).Returns(descriptor ?? new FoodDescriptor());
 			return factoryMock;
 		}
 		#endregion

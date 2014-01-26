@@ -20,13 +20,13 @@ namespace OrangeJuice.Server.Data
 		#endregion
 
 		#region IFoodRepository members
-		public async Task<IEnumerable<FoodDescription>> Search(string title)
+		public async Task<IEnumerable<FoodDescriptor>> Search(string title)
 		{
 			var sources = _foodProviders.Select(p => p.Search(title));
 			return await ReadProvider(sources);
 		}
 
-		public async Task<FoodDescription> Lookup(string barcode, BarcodeType barcodeType)
+		public async Task<FoodDescriptor> Lookup(string barcode, BarcodeType barcodeType)
 		{
 			var sources = _foodProviders.Select(p => p.Lookup(barcode, barcodeType.ToString()));
 			return await ReadProvider(sources);

@@ -4,15 +4,15 @@ using System.Xml.XPath;
 
 namespace OrangeJuice.Server.Data
 {
-	public sealed class XmlFoodDescriptionFactory : IFoodDescriptionFactory
+	public sealed class XmlFoodDescriptorFactory : IFoodDescriptorFactory
 	{
-		#region IFoodDescriptionFactory members
-		public FoodDescription Create(XElement element)
+		#region IFoodDescriptorFactory members
+		public FoodDescriptor Create(XElement element)
 		{
 			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
 			nm.AddNamespace("x", element.Name.Namespace.ToString());
 
-			return new FoodDescription
+			return new FoodDescriptor
 			{
 				Id = (string)element.XPathSelectElement("x:ASIN", nm),
 

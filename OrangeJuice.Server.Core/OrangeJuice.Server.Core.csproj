@@ -62,7 +62,7 @@
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
     <Compile Include="Data\AwsFoodRepository.cs" />
-    <Compile Include="Data\XmlFoodDescriptionFactory.cs" />
+    <Compile Include="Data\XmlFoodDescriptorFactory.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="IPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

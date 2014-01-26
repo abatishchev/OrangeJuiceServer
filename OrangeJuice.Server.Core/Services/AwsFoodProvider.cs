@@ -10,11 +10,11 @@ namespace OrangeJuice.Server.Services
 	{
 		#region Fields
 		private readonly IAwsClient _client;
-		private readonly IFoodDescriptionFactory _factory;
+		private readonly IFoodDescriptorFactory _factory;
 		#endregion
 
 		#region Ctor
-		public AwsFoodProvider(IAwsClient client, IFoodDescriptionFactory factory)
+		public AwsFoodProvider(IAwsClient client, IFoodDescriptorFactory factory)
 		{
 			_client = client;
 			_factory = factory;
@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IFoodProvider members
-		public async Task<IEnumerable<FoodDescription>> Search(string title)
+		public async Task<IEnumerable<FoodDescriptor>> Search(string title)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -36,7 +36,7 @@ namespace OrangeJuice.Server.Services
 			return items.Select(i => _factory.Create(i));
 		}
 
-		public async Task<FoodDescription> Lookup(string barcode, string barcodeType)
+		public async Task<FoodDescriptor> Lookup(string barcode, string barcodeType)
 		{
 			var args = new Dictionary<string, string>
 			{

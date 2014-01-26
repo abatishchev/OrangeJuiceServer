@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <summary>
 		/// Searches for food by text
 		/// </summary>
-		/// <returns>Collection of food description</returns>
+		/// <returns>Collection of food descriptors</returns>
 		/// <url>POST /api/food</url>
 		[ActionName("title")]
 		public async Task<IHttpActionResult> PostTitle(TitleSearchCriteria searchCriteria)
@@ -27,14 +27,14 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.Search(searchCriteria.Title);
-			return Ok(description.ToArray());
+			var descriptors = await _foodRepository.Search(searchCriteria.Title);
+			return Ok(descriptors.ToArray());
 		}
 
 		/// <summary>
 		/// Searches for food by barcode
 		/// </summary>
-		/// <returns>Single food description</returns>
+		/// <returns>Single food descriptor</returns>
 		/// <url>POST /api/food</url>
 		[ActionName("barcode")]
 		public async Task<IHttpActionResult> PostBarcode(BarcodeSearchCriteria searchCriteria)
@@ -42,8 +42,8 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var description = await _foodRepository.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
-			return Ok(description);
+			var descriptor = await _foodRepository.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
+			return Ok(descriptor);
 		}
 	}
 }

@@ -140,13 +140,13 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IUrlBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
 
-			container.RegisterType<IFoodDescriptionFactory, XmlFoodDescriptionFactory>(
+			container.RegisterType<IFoodDescriptorFactory, XmlFoodDescriptorFactory>(
 				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IFoodProvider, AwsFoodProvider>(
 				"Aws",
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAwsClient), typeof(IFoodDescriptionFactory)));
+				new InjectionConstructor(typeof(IAwsClient), typeof(IFoodDescriptorFactory)));
 
 			container.RegisterType<IFoodProvider, AzureFoodProvider>(
 				"Azure",
