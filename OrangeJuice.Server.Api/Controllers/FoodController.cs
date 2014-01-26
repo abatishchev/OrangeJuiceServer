@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <returns>Collection of food description</returns>
 		/// <url>POST /api/food</url>
 		[ActionName("title")]
-		public async Task<IHttpActionResult> PostTitle([FromBody]TitleSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> PostTitle(TitleSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -37,7 +37,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <returns>Single food description</returns>
 		/// <url>POST /api/food</url>
 		[ActionName("barcode")]
-		public async Task<IHttpActionResult> PostBarcode([FromBody]BarcodeSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> PostBarcode(BarcodeSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);

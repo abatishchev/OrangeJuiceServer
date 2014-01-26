@@ -43,7 +43,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>Guid representing the user</returns>
 		/// <url>PUT /api/user</url>
-		public async Task<IHttpActionResult> PutUser([FromBody]UserRegistration userRegistration)
+		public async Task<IHttpActionResult> PutUser(UserRegistration userRegistration)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
