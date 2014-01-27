@@ -90,7 +90,6 @@
     <Compile Include="Configuration\Temp\TempConnectionString.cs" />
     <Compile Include="Configuration\Temp\TempConnectionStringTest.cs" />
     <Compile Include="Data\ApiVersionFactoryTest.cs" />
-    <Compile Include="Data\CompositeFoodRepositoryTest.cs" />
     <Compile Include="Data\XmlFoodDescriptorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyFactoryTest.cs" />
@@ -102,6 +101,7 @@
     <Compile Include="Services\AwsQuerySignerTest.cs" />
     <Compile Include="Services\AwsUrlBuilderTest.cs" />
     <Compile Include="Services\AzureClientTest.cs" />
+    <Compile Include="Services\CompositeFoodRepositoryTest.cs" />
     <Compile Include="Services\JsonBlobNameResolverTest.cs" />
     <Compile Include="Services\XmlItemSelectorTest.cs" />
     <Compile Include="Services\XmlItemValidatorTest.cs" />

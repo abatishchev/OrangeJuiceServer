@@ -82,7 +82,7 @@
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
-    <Compile Include="Data\CompositeFoodRepository.cs" />
+    <Compile Include="Services\CompositeFoodRepository.cs" />
     <Compile Include="Data\XmlFoodDescriptorFactory.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="IPipeline.cs" />

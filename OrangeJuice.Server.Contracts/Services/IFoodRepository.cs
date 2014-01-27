@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OrangeJuice.Server.Data
+using OrangeJuice.Server.Data;
+
+namespace OrangeJuice.Server.Services
 {
 	public interface IFoodRepository
 	{

@@ -3,19 +3,24 @@ using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
 	public sealed class FoodController : ApiController
 	{
+		#region Fields
 		private readonly IFoodRepository _foodRepository;
+		#endregion
 
+		#region Ctor
 		public FoodController(IFoodRepository foodRepository)
 		{
 			_foodRepository = foodRepository;
 		}
+		#endregion
 
+		#region HTTP methods
 		/// <summary>
 		/// Searches for food by text
 		/// </summary>
@@ -45,5 +50,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			var descriptor = await _foodRepository.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			return Ok(descriptor);
 		}
+		#endregion
 	}
 }

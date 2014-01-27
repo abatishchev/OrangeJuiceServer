@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using OrangeJuice.Server.Services;
+using OrangeJuice.Server.Data;
 
-namespace OrangeJuice.Server.Data
+namespace OrangeJuice.Server.Services
 {
 	public sealed class CompositeFoodRepository : IFoodRepository
 	{

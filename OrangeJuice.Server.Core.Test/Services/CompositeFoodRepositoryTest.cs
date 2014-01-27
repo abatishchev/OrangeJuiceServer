@@ -10,7 +10,7 @@ using Moq;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 
-namespace OrangeJuice.Server.Test.Data
+namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
 	public class CompositeFoodRepositoryTest
