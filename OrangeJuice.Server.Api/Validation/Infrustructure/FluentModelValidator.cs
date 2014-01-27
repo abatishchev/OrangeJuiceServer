@@ -20,8 +20,6 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 
 		public override IEnumerable<ModelValidationResult> Validate(ModelMetadata metadata, object container)
 		{
-			// TODO: why is called twice?
-
 			ValidationResult result = _validator.Validate(container);
 			return from error in result.Errors
 				   select new ModelValidationResult

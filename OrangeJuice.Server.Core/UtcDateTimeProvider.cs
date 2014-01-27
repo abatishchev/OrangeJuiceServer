@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Globalization;
 
 namespace OrangeJuice.Server
 {
 	public sealed class UtcDateTimeProvider : IDateTimeProvider
 	{
-		internal const string UniversalDateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
+		#region Constants
+		private const string UniversalDateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
+		#endregion
 
+		#region IDateTimeProvider members
 		public DateTime GetNow()
 		{
 			return DateTime.UtcNow;
@@ -16,7 +20,8 @@ namespace OrangeJuice.Server
 		/// </summary>
 		public string FormatToUniversal(DateTime dateTime)
 		{
-			return dateTime.ToString(UniversalDateTimeFormat, System.Globalization.CultureInfo.InvariantCulture);
+			return dateTime.ToString(UniversalDateTimeFormat, CultureInfo.InvariantCulture);
 		}
+		#endregion
 	}
 }
