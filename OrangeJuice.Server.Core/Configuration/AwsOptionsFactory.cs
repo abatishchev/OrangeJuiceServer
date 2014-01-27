@@ -1,4 +1,4 @@
-﻿namespace OrangeJuice.Server.Services
+﻿namespace OrangeJuice.Server.Configuration
 {
 	public class AwsOptionsFactory : IFactory<AwsOptions>
 	{

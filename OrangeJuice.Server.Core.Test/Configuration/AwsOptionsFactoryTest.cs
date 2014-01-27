@@ -2,16 +2,15 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using OrangeJuice.Server.Configuration;
 
-using OrangeJuice.Server.Services;
-
-namespace OrangeJuice.Server.Test.Services
+namespace OrangeJuice.Server.Test.Configuration
 {
 	[TestClass]
 	public class AwsOptionsFactoryTest
 	{
 		[TestMethod]
-		public void Create_Should_Return_Options_Having_All_Properties()
+		public void Create_Should_Return_AwsOptions_Having_All_Properties()
 		{
 			// Arrange
 			IFactory<AwsOptions> factory = new AwsOptionsFactory();

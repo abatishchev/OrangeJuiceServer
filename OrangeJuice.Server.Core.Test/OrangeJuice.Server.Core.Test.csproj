@@ -84,6 +84,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Configuration\AppSettingsConfigurationProviderTest.cs" />
+    <Compile Include="Configuration\AwsOptionsFactoryTest.cs" />
+    <Compile Include="Configuration\AzureOptionsFactoryTest.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProviderTest.cs" />
     <Compile Include="Configuration\Temp\TempAppSettings.cs" />
     <Compile Include="Configuration\Temp\TempAppSettingsTest.cs" />
@@ -97,7 +99,6 @@
     <Compile Include="Services\AwsArgumentBuilderTest.cs" />
     <Compile Include="Services\AwsClientTest.cs" />
     <Compile Include="Services\AwsFoodProviderTest.cs" />
-    <Compile Include="Services\AwsOptionsFactoryTest.cs" />
     <Compile Include="Services\AwsQuerySignerTest.cs" />
     <Compile Include="Services\AwsUrlBuilderTest.cs" />
     <Compile Include="Services\AzureClientTest.cs" />
