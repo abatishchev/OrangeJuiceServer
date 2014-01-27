@@ -17,6 +17,7 @@ using OrangeJuice.Server.Data.Container;
 using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Data.Unit;
 using OrangeJuice.Server.Services;
+using OrangeJuice.Server.Validation;
 using OrangeJuice.Server.Web;
 
 // ReSharper disable CheckNamespace
@@ -153,7 +154,7 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IQueryBuilder), typeof(IQuerySigner)));
 
-			container.RegisterType<IValidator<XElement>, XmlItemValidator>(
+			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(
 				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
@@ -173,9 +174,12 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IAwsClient), typeof(IFoodDescriptorFactory)));
 			#endregion
 
+			container.RegisterType<IValidator<FoodDescriptor>, NullFoodDescriptorValidator>(
+				new HierarchicalLifetimeManager());
+
 			container.RegisterType<IFoodRepository, CompositeFoodRepository>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(container.ResolveAll<IFoodProvider>()));
+				new InjectionConstructor(container.ResolveAll<IFoodProvider>(), typeof(IValidator<FoodDescriptor>)));
 			#endregion
 
 			#region UserController

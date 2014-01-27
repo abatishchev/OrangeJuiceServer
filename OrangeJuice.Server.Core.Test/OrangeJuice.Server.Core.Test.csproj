@@ -105,8 +105,9 @@
     <Compile Include="Services\CompositeFoodRepositoryTest.cs" />
     <Compile Include="Services\JsonBlobNameResolverTest.cs" />
     <Compile Include="Services\XmlItemSelectorTest.cs" />
-    <Compile Include="Services\XmlItemValidatorTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
+    <Compile Include="Validation\NullFoodDescriptorValidatorTest.cs" />
+    <Compile Include="Validation\XmlRequestValidatorTest.cs" />
     <Compile Include="Web\EncodedQueryBuilderTest.cs" />
     <Compile Include="Web\PercentUrlEncoderTest.cs" />
     <Compile Include="Web\PercentUrlEncodingPipelineTest.cs" />

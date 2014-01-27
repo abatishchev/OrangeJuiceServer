@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json.Linq;
 
 using OrangeJuice.Server.Data;
 
@@ -21,7 +22,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IFoodProvider members
-		public async Task<IEnumerable<FoodDescriptor>> Search(string title)
+		public Task<IEnumerable<FoodDescriptor>> Search(string title)
 		{
 			throw new NotImplementedException();
 		}
@@ -31,17 +32,14 @@ namespace OrangeJuice.Server.Services
 			try
 			{
 				string blobContent = await _azureClient.GetBlobFromContainer("products", barcode);
-
-				return blobContent != null ? new FoodDescriptor() : null;
+				JObject jobj = JObject.Parse(blobContent);
+				return jobj.ToObject<FoodDescriptor>();
 			}
 			catch (Microsoft.WindowsAzure.Storage.StorageException)
 			{
 				return null;
 			}
 		}
-		#endregion
-
-		#region Methods
 		#endregion
 	}
 }

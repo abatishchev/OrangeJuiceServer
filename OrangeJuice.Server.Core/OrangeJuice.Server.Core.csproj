@@ -82,7 +82,6 @@
     <Compile Include="Data\ApiVersionFactory.cs" />
     <Compile Include="Data\XmlFoodDescriptorFactory.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="IPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyFactory.cs" />
     <Compile Include="ReflectionAssemblyProvider.cs" />
@@ -98,8 +97,9 @@
     <Compile Include="Services\CompositeFoodRepository.cs" />
     <Compile Include="Services\JsonBlobNameResolver.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
-    <Compile Include="Services\XmlItemValidator.cs" />
+    <Compile Include="Validation\XmlRequestValidator.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
+    <Compile Include="Validation\NullFoodDescriptorValidator.cs" />
     <Compile Include="Web\EncodedQueryBuilder.cs" />
     <Compile Include="Web\HttpDocumentLoader.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />

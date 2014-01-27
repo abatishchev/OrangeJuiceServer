@@ -2,9 +2,9 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace OrangeJuice.Server.Services
+namespace OrangeJuice.Server.Validation
 {
-	public sealed class XmlItemValidator : IValidator<XElement>
+	public sealed class XmlRequestValidator : IValidator<XElement>
 	{
 		public bool IsValid(XElement item)
 		{

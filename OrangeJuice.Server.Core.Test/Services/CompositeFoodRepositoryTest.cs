@@ -114,7 +114,14 @@ namespace OrangeJuice.Server.Test.Services
 		#region Helper methods
 		private static IFoodRepository CreateRepository(params IFoodProvider[] providers)
 		{
-			return new CompositeFoodRepository(providers);
+			return new CompositeFoodRepository(providers, CreteValidator());
+		}
+
+		private static IValidator<FoodDescriptor> CreteValidator()
+		{
+			var validatorMock = new Mock<IValidator<FoodDescriptor>>();
+			validatorMock.Setup(v => v.IsValid(It.IsAny<FoodDescriptor>())).Returns<FoodDescriptor>(d => d != null);
+			return validatorMock.Object;
 		}
 		#endregion
 	}

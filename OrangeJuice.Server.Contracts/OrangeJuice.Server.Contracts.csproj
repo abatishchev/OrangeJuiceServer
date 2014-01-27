@@ -59,6 +59,7 @@
     <Compile Include="Data\BarcodeType.cs" />
     <Compile Include="Data\FoodDescriptor.cs" />
     <Compile Include="Data\IFoodDescriptorFactory.cs" />
+    <Compile Include="IPipeline.cs" />
     <Compile Include="Services\IFoodRepository.cs" />
     <Compile Include="Data\IRating.cs" />
     <Compile Include="Data\Repository\IRatingRepository.cs" />

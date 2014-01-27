@@ -10,11 +10,13 @@ namespace OrangeJuice.Server.Services
 	{
 		#region Fields
 		private readonly IFoodProvider[] _foodProviders;
+		private readonly IValidator<FoodDescriptor> _validator;
 		#endregion
 
 		#region Ctor
-		public CompositeFoodRepository(IEnumerable<IFoodProvider> foodProviders)
+		public CompositeFoodRepository(IEnumerable<IFoodProvider> foodProviders, IValidator<FoodDescriptor> validator)
 		{
+			_validator = validator;
 			_foodProviders = foodProviders.ToArray();
 		}
 		#endregion
@@ -22,28 +24,16 @@ namespace OrangeJuice.Server.Services
 		#region IFoodRepository members
 		public async Task<IEnumerable<FoodDescriptor>> Search(string title)
 		{
-			var sources = _foodProviders.Select(p => p.Search(title));
-			return await ReadProvider(sources);
+			return await _foodProviders.Select(p => p.Search(title))
+									   .FirstAsync(d => d != null);
 		}
 
 		public async Task<FoodDescriptor> Lookup(string barcode, BarcodeType barcodeType)
 		{
-			var sources = _foodProviders.Select(p => p.Lookup(barcode, barcodeType.ToString()));
-			return await ReadProvider(sources);
+			return await _foodProviders.Select(p => p.Lookup(barcode, barcodeType.ToString()))
+									   .FirstAsync(d => d != null && _validator.IsValid(d));
 		}
-		#endregion
 
-		#region Methods
-		private static async Task<T> ReadProvider<T>(IEnumerable<Task<T>> sources) where T : class
-		{
-			foreach (Task<T> s in sources)
-			{
-				T result = await s;
-				if (result != null)
-					return result;
-			}
-			return null;
-		}
 		#endregion
 	}
 }

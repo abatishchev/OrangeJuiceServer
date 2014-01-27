@@ -5,12 +5,12 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using OrangeJuice.Server.Services;
+using OrangeJuice.Server.Validation;
 
-namespace OrangeJuice.Server.Test.Services
+namespace OrangeJuice.Server.Test.Validation
 {
 	[TestClass]
-	public class XmlItemValidatorTest
+	public class XmlRequestValidatorTest
 	{
 		[TestMethod]
 		public void IsValid_Should_Return_Request_IsValid_Element_Value()
@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Test.Services
 					new XElement(ns + "IsValid",
 						new XText(Convert.ToString(expected)))));
 
-			IValidator<XElement> validator = new XmlItemValidator();
+			IValidator<XElement> validator = new XmlRequestValidator();
 
 			// Act
 			bool actual = validator.IsValid(item);
