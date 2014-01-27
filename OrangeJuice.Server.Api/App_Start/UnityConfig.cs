@@ -117,9 +117,12 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IBlobNameResolver, JsonBlobNameResolver>(
 				new HierarchicalLifetimeManager());
 
+			container.RegisterType<IBlobReader, AsyncStreamBlobReader>(
+				new HierarchicalLifetimeManager());
+
 			container.RegisterType<IAzureClient, AzureClient>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(AzureOptions), typeof(IBlobNameResolver)));
+				new InjectionConstructor(typeof(AzureOptions), typeof(IBlobNameResolver), typeof(IBlobReader)));
 
 			container.RegisterType<IFoodProvider, AzureFoodProvider>(
 				"Azure",

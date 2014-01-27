@@ -7,7 +7,6 @@ namespace OrangeJuice.Server.Api
 	{
 		public static void RegisterRoutes(HttpRouteCollection routes)
 		{
-			// TODO: why ignored?
 			routes.MapHttpRoute(
 				name: "WithAction",
 				routeTemplate: "api/{controller}/{action}/{id}",
