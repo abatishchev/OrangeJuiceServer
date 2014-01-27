@@ -29,27 +29,18 @@ namespace OrangeJuice.Server.Services
 		/// <remarks>Modifying the returned URL invalidates the signature and Amazon will reject a request</remarks>
 		public string CreateSignature(string host, string path, string query)
 		{
-			query = PrepareQuery(host, path, query);
-
-			return CreateSignature(query);
+			string envelop = CreateEnvelop(RequestMethod, host, path, query);
+			return SignEnvelop(envelop);
 		}
 		#endregion
 
 		#region Methods
-		private static string PrepareQuery(string host, string path, string query)
+		private static string CreateEnvelop(params string[] strings)
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append(RequestMethod)
-			  .Append('\n')
-			  .Append(host)
-			  .Append('\n')
-			  .Append(path)
-			  .Append('\n')
-			  .Append(query);
-			return sb.ToString();
+			return String.Join("\n", strings);
 		}
 
-		private string CreateSignature(string value)
+		private string SignEnvelop(string value)
 		{
 			byte[] bytes = Encoding.UTF8.GetBytes(value);
 			byte[] hash = _hashAlgorithm.ComputeHash(bytes);
