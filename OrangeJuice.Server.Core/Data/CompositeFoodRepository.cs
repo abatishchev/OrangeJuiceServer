@@ -6,14 +6,14 @@ using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Data
 {
-	public sealed class AwsFoodRepository : IFoodRepository
+	public sealed class CompositeFoodRepository : IFoodRepository
 	{
 		#region Fields
 		private readonly IFoodProvider[] _foodProviders;
 		#endregion
 
 		#region Ctor
-		public AwsFoodRepository(IEnumerable<IFoodProvider> foodProviders)
+		public CompositeFoodRepository(IEnumerable<IFoodProvider> foodProviders)
 		{
 			_foodProviders = foodProviders.ToArray();
 		}

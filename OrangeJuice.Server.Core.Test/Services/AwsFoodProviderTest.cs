@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -43,13 +44,40 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public async Task Search_Should_Return_Elements_Returned_By_Client_GetItems()
+		public async Task Search_Should_Pass_Items_To_FoodDescriptorFactory_Create()
 		{
 			// Arrange
-			var expected = new[] { new XElement("Items") };
-			var clientMock = CreateClient(expected);
+			XElement[] elements = { new XElement("Item"), new XElement("Item") };
 
-			IFoodProvider provider = CreateProvider(clientMock.Object);
+			var clientMock = CreateClient(elements);
+
+			var factoryMock = new Mock<IFoodDescriptorFactory>();
+			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new FoodDescriptor());
+
+			IFoodProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
+
+			// Act
+			(await provider.Search("titlle")).ToArray();
+
+			// Assert
+			factoryMock.Verify(f => f.Create(It.IsIn(elements)), Times.Exactly(elements.Length));
+		}
+
+		[TestMethod]
+		public async Task Search_Should_Return_Descriptors_Returned_By_FoodDescriptorFactory_Create()
+		{
+			// Arrange
+			XElement element1 = new XElement("Item1"), element2 = new XElement("Item2");
+			FoodDescriptor descriptor1 = new FoodDescriptor(), descriptor2 = new FoodDescriptor();
+			var expected = new[] { descriptor1, descriptor2 };
+
+			var clientMock = CreateClient(new[] { element1, element2 });
+
+			var factoryMock = new Mock<IFoodDescriptorFactory>();
+			factoryMock.Setup(f => f.Create(element1)).Returns(descriptor1);
+			factoryMock.Setup(f => f.Create(element2)).Returns(descriptor2);
+
+			IFoodProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
 
 			// Act
 			var actual = await provider.Search("titlle");
@@ -85,12 +113,32 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public async Task Lookup_Should_Return_Elements_Returned_By_Client_GetItems()
+		public async Task Lookup_Should_Pass_First_Item_To_FoodDescriptorFactory_Create()
 		{
 			// Arrange
-			var expected = new FoodDescriptor();
+			XElement[] elements = { new XElement("Item"), new XElement("Item") };
 
-			var factoryMock = CreateFactory(descriptor: expected);
+			var clientMock = CreateClient(elements);
+
+			var factoryMock = new Mock<IFoodDescriptorFactory>();
+			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new FoodDescriptor());
+
+			IFoodProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
+
+			// Act
+			await provider.Lookup("barcode", "barcodeType");
+
+			// Assert
+			factoryMock.Verify(f => f.Create(elements.First()), Times.Once);
+		}
+
+		[TestMethod]
+		public async Task Lookup_Should_Return_Descriptor_Returned_By_FoodDescriptorFactory_Create()
+		{
+			// Arrange
+			FoodDescriptor expected = new FoodDescriptor();
+
+			var factoryMock = CreateFactory(expected);
 
 			IFoodProvider provider = CreateProvider(factory: factoryMock.Object);
 
@@ -110,19 +158,19 @@ namespace OrangeJuice.Server.Test.Services
 				factory ?? CreateFactory().Object);
 		}
 
-		private static Mock<IAwsClient> CreateClient(ICollection<XElement> items = null, Action<IStringDictionary> callback = null)
+		private static Mock<IAwsClient> CreateClient(IEnumerable<XElement> elements = null, Action<IStringDictionary> callback = null)
 		{
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.IsAny<IStringDictionary>()))
-					  .ReturnsAsync(items ?? new[] { new XElement("Items") })
+					  .ReturnsAsync(elements ?? new[] { new XElement("Items") })
 					  .Callback(callback ?? (d => { }));
 			return clientMock;
 		}
 
-		private static Mock<IFoodDescriptorFactory> CreateFactory(XElement element = null, FoodDescriptor descriptor = null)
+		private static Mock<IFoodDescriptorFactory> CreateFactory(FoodDescriptor descriptor = null)
 		{
 			var factoryMock = new Mock<IFoodDescriptorFactory>();
-			factoryMock.Setup(f => f.Create(element ?? It.IsAny<XElement>())).Returns(descriptor ?? new FoodDescriptor());
+			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(descriptor ?? new FoodDescriptor());
 			return factoryMock;
 		}
 		#endregion

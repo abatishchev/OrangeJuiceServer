@@ -152,7 +152,7 @@ namespace OrangeJuice.Server.Api
 				"Azure",
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IFoodRepository, AwsFoodRepository>(
+			container.RegisterType<IFoodRepository, CompositeFoodRepository>(
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(container.ResolveAll<IFoodProvider>()));
 			#endregion

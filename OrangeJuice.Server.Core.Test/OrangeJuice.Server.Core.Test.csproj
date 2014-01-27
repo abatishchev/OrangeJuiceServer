@@ -90,7 +90,7 @@
     <Compile Include="Configuration\Temp\TempConnectionString.cs" />
     <Compile Include="Configuration\Temp\TempConnectionStringTest.cs" />
     <Compile Include="Data\ApiVersionFactoryTest.cs" />
-    <Compile Include="Data\AwsFoodRepositoryTest.cs" />
+    <Compile Include="Data\CompositeFoodRepositoryTest.cs" />
     <Compile Include="Data\XmlFoodDescriptorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyFactoryTest.cs" />
