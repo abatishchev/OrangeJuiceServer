@@ -106,6 +106,23 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region FoodController
+			#region Azure
+			container.RegisterType<IBlobNameResolver, JsonBlobNameResolver>(
+				new HierarchicalLifetimeManager());
+
+			container.RegisterType<IBlobReader, AsyncStreamBlobReader>(
+				new HierarchicalLifetimeManager());
+
+			container.RegisterType<IAzureClient, AzureClient>(
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(typeof(IBlobNameResolver), typeof(IBlobReader)));
+
+			container.RegisterType<IFoodProvider, AzureFoodProvider>(
+				"Azure",
+				new HierarchicalLifetimeManager());
+			#endregion
+
+			#region Aws
 			container.RegisterType<IFactory<AwsOptions>, AwsOptionsFactory>(
 				new HierarchicalLifetimeManager());
 
@@ -143,14 +160,11 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IFoodDescriptorFactory, XmlFoodDescriptorFactory>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IFoodProvider, AzureFoodProvider>(
-				"Azure",
-				new HierarchicalLifetimeManager());
-
 			container.RegisterType<IFoodProvider, AwsFoodProvider>(
 				"Aws",
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IAwsClient), typeof(IFoodDescriptorFactory)));
+			#endregion
 
 			container.RegisterType<IFoodRepository, CompositeFoodRepository>(
 				new HierarchicalLifetimeManager(),

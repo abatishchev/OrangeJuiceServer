@@ -66,6 +66,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IArgumentBuilder.cs" />
     <Compile Include="Services\IAwsClient.cs" />
+    <Compile Include="Services\IAzureClient.cs" />
+    <Compile Include="Services\IBlobNameResolver.cs" />
+    <Compile Include="Services\IBlobReader.cs" />
     <Compile Include="Services\IFoodProvider.cs" />
     <Compile Include="Services\IItemSelector.cs" />
     <Compile Include="Services\IUrlBuilder.cs" />
