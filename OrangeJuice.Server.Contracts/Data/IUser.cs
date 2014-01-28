@@ -4,8 +4,8 @@ namespace OrangeJuice.Server.Data
 {
 	public interface IUser
 	{
-		Guid UserGuid { get; }
+		Guid UserId { get; }
 
-		string Email { get; }
+		string Email { get; set; }
 	}
 }

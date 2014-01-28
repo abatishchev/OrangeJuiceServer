@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity.Core;
+﻿using System.Data.Entity.Core;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -23,19 +22,15 @@ namespace OrangeJuice.Server.Data.Repository
 		#endregion
 
 		#region IRatingRepository members
-		public async Task AddOrUpdate(Guid userGuid, string productId, byte ratingValue)
+		public async Task AddOrUpdate(RatingId ratingId, byte ratingValue, string comment)
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
-				User user = await _userUnit.Get(userGuid);
-				if (user == null)
-					throw new ObjectNotFoundException();
-
-				Rating rating = await _ratingUnit.Get(user.UserId, productId) ??
+				Rating rating = await _ratingUnit.Get(ratingId) ??
 								new Rating
 								{
-									User = user,
-									ProductId = productId,
+									User = await _userUnit.Get(ratingId.UserId),
+									ProductId = ratingId.ProductId,
 								};
 				rating.Value = ratingValue;
 
@@ -45,11 +40,11 @@ namespace OrangeJuice.Server.Data.Repository
 			}
 		}
 
-		public async Task Delete(Guid userGuid, string productId)
+		public async Task Delete(RatingId ratingId)
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
-				Rating rating = await _ratingUnit.Get(userGuid, productId);
+				Rating rating = await _ratingUnit.Get(ratingId);
 
 				if (rating == null)
 					throw new ObjectNotFoundException();
@@ -60,9 +55,9 @@ namespace OrangeJuice.Server.Data.Repository
 			}
 		}
 
-		public async Task<IRating> Search(Guid userGuid, string productId)
+		public async Task<IRating> Search(RatingId ratingId)
 		{
-			return await _ratingUnit.Get(userGuid, productId);
+			return await _ratingUnit.Get(ratingId);
 		}
 		#endregion
 

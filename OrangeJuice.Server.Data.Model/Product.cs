@@ -12,15 +12,16 @@ namespace OrangeJuice.Server.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Product
     {
-        public User()
+        public Product()
         {
             this.Ratings = new HashSet<Rating>();
         }
     
-        public System.Guid UserId { get; set; }
-        public string Email { get; set; }
+        public System.Guid ProductId { get; set; }
+        public string Barcode { get; set; }
+        public byte BarcodeType { get; set; }
     
         public virtual ICollection<Rating> Ratings { get; set; }
     }

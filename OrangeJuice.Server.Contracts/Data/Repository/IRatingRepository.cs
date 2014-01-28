@@ -5,10 +5,10 @@ namespace OrangeJuice.Server.Data.Repository
 {
 	public interface IRatingRepository : IDisposable
 	{
-		Task AddOrUpdate(Guid userGuid, string productId, byte ratingValue);
+		Task AddOrUpdate(RatingId ratingId, byte ratingValue, string comment);
 
-		Task Delete(Guid userGuid, string productId);
+		Task Delete(RatingId ratingId);
 
-		Task<IRating> Search(Guid userGuid, string productId);
+		Task<IRating> Search(RatingId ratingId);
 	}
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
 
@@ -28,15 +26,9 @@ namespace OrangeJuice.Server.Data.Unit
 			return _db.SaveChangesAsync();
 		}
 
-		public Task<Rating> Get(int userId, string productId)
+		public Task<Rating> Get(RatingId ratingId)
 		{
-			return _db.Ratings.FindAsync(userId, productId);
-		}
-
-		public Task<Rating> Get(Guid userGuid, string productId)
-		{
-			return _db.Ratings.SingleOrDefaultAsync(r => r.User.UserGuid == userGuid &
-			                                             r.ProductId == productId);
+			return _db.Ratings.FindAsync(ratingId.UserId, ratingId.ProductId);
 		}
 
 		public Task<int> Remove(Rating rating)

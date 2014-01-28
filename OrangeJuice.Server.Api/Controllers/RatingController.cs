@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			IRating rating = await _ratingRepository.Search(searchCriteria.UserGuid, searchCriteria.Productid);
+			IRating rating = await _ratingRepository.Search(searchCriteria.RatingId);
 			if (rating == null)
 				return NotFound();
 
@@ -43,12 +43,13 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>200 OK</returns>
 		/// <url>POST /api/rating</url>
-		public async Task<IHttpActionResult> PostRating([FromUri] RatingInformation ratingInformation)
+		public async Task<IHttpActionResult> PostRating([FromBody] RatingInformation ratingInformation)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			await _ratingRepository.AddOrUpdate(ratingInformation.UserGuid, ratingInformation.Productid, (byte)ratingInformation.Value);
+			// TODO: replace with just Rating?
+			await _ratingRepository.AddOrUpdate(ratingInformation.RatingId, (byte)ratingInformation.Value, ratingInformation.Comment);
 
 			return Ok();
 		}
@@ -63,7 +64,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			await _ratingRepository.Delete(searchCriteria.UserGuid, searchCriteria.Productid);
+			await _ratingRepository.Delete(searchCriteria.RatingId);
 
 			return Ok();
 		}

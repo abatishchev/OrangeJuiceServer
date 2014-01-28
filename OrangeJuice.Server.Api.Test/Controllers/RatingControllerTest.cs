@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 
@@ -39,7 +38,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			//Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Search(It.IsAny<Guid>(), It.IsAny<string>())).ReturnsAsync(null);
+			repositoryMock.Setup(r => r.Search(It.IsAny<RatingId>())).ReturnsAsync(null);
 
 			RatingController controller = CreateController();
 
@@ -51,38 +50,36 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetRating_Should_Pass_UserGuid_And_ProductId_To_RatingRepository_Search()
+		public async Task GetRating_Should_Pass_UserId_And_ProductId_To_RatingRepository_Search()
 		{
 			// Arrange
-			Guid userGuid = Guid.NewGuid();
-			const string productid = "NewProductId";
+			RatingId ratingId = new RatingId();
 
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Search(userGuid, productid)).ReturnsAsync(null);
+			repositoryMock.Setup(r => r.Search(ratingId)).ReturnsAsync(null);
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { UserGuid = userGuid, Productid = productid };
+			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { RatingId = ratingId };
 
 			// Act
 			await controller.GetRating(searchCriteria);
 
 			// Assert
-			repositoryMock.Verify(r => r.Search(userGuid, productid), Times.Once);
+			repositoryMock.Verify(r => r.Search(ratingId), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task GetRating_Should_Return_Rating_By_Specified_UserGuid_And_ProductId()
+		public async Task GetRating_Should_Return_Rating_By_Specified_UserId_And_ProductId()
 		{
 			// Arrange
-			Guid userGuid = Guid.NewGuid();
-			const string productid = "NewProductId";
-			IRating expected = CreateRating(userGuid, productid);
+			RatingId ratingId = new RatingId();
+			IRating expected = new Mock<IRating>().Object;
 
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Search(userGuid, productid)).ReturnsAsync(expected);
+			repositoryMock.Setup(r => r.Search(ratingId)).ReturnsAsync(expected);
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { UserGuid = userGuid, Productid = productid };
+			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { RatingId = ratingId };
 
 			// Act
 			IHttpActionResult result = await controller.GetRating(searchCriteria);
@@ -96,9 +93,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetRating_Should_Return_Ok()
 		{
 			// Arrange
-			IRating rating = CreateRating();
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Search(It.IsAny<Guid>(), It.IsAny<string>())).ReturnsAsync(rating);
+			repositoryMock.Setup(r => r.Search(It.IsAny<RatingId>())).ReturnsAsync(new Mock<IRating>().Object);
 
 			RatingController controller = CreateController(repositoryMock.Object);
 
@@ -126,24 +122,24 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PostRating_Should_Pass_UserGuid_And_ProductId_And_Value_To_RatingRepository_Delete()
+		public async Task PostRating_Should_Pass_UserId_And_ProductId_And_Value_To_RatingRepository_Delete()
 		{
 			// Arrange
-			Guid userGuid = Guid.NewGuid();
-			const string productid = "NewProductId";
+			RatingId ratingId = new RatingId();
 			const int value = 5;
+			const string comment = "comment";
 
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Delete(userGuid, productid)).Returns(Task.Delay(0));
+			repositoryMock.Setup(r => r.Delete(ratingId)).Returns(Task.Delay(0));
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingInformation ratingInformation = new RatingInformation { Productid = productid, UserGuid = userGuid, Value = value };
+			RatingInformation ratingInformation = new RatingInformation { RatingId = ratingId, Value = value, Comment = comment };
 
 			// Act
 			await controller.PostRating(ratingInformation);
 
 			// Assert
-			repositoryMock.Verify(r => r.AddOrUpdate(userGuid, productid, value), Times.Once);
+			repositoryMock.Verify(r => r.AddOrUpdate(ratingId, value, comment), Times.Once);
 		}
 
 		[TestMethod]
@@ -151,7 +147,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Delete(It.IsAny<Guid>(), It.IsAny<string>())).Returns(Task.Delay(0));
+			repositoryMock.Setup(r => r.Delete(It.IsAny<RatingId>())).Returns(Task.Delay(0));
 
 			RatingController controller = CreateController(repositoryMock.Object);
 
@@ -179,23 +175,22 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task DeleteRating_Should_Pass_UserGuid_And_ProductId_To_RatingRepository_Delete()
+		public async Task DeleteRating_Should_Pass_UserId_And_ProductId_To_RatingRepository_Delete()
 		{
 			// Arrange
-			Guid userGuid = Guid.NewGuid();
-			const string productid = "NewProductId";
+			RatingId ratingId = new RatingId();
 
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Delete(userGuid, productid)).Returns(Task.Delay(0));
+			repositoryMock.Setup(r => r.Delete(ratingId)).Returns(Task.Delay(0));
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { UserGuid = userGuid, Productid = productid };
+			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { RatingId = ratingId };
 
 			// Act
 			await controller.DeleteRating(searchCriteria);
 
 			// Assert
-			repositoryMock.Verify(r => r.Delete(userGuid, productid), Times.Once);
+			repositoryMock.Verify(r => r.Delete(ratingId), Times.Once);
 		}
 
 		[TestMethod]
@@ -203,7 +198,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Delete(It.IsAny<Guid>(), It.IsAny<string>())).Returns(Task.Delay(0));
+			repositoryMock.Setup(r => r.Delete(It.IsAny<RatingId>())).Returns(Task.Delay(0));
 
 			RatingController controller = CreateController(repositoryMock.Object);
 
@@ -219,14 +214,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		private static RatingController CreateController(IRatingRepository ratingRepository = null)
 		{
 			return ControllerFactory.Create<RatingController>(ratingRepository ?? new Mock<IRatingRepository>().Object);
-		}
-
-		private static IRating CreateRating(Guid? userGuid = null, string productId = null)
-		{
-			var ratingMock = new Mock<IRating>();
-			ratingMock.Setup(u => u.UserGuid).Returns(userGuid ?? Guid.NewGuid());
-			ratingMock.Setup(u => u.ProductId).Returns(productId ?? "NewProductId");
-			return ratingMock.Object;
 		}
 		#endregion
 	}

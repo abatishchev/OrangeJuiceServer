@@ -52,7 +52,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (user == null)
 				return InternalServerError();
 
-			return Ok(user.UserGuid);
+			return Ok(user.UserId);
 		}
 		#endregion
 

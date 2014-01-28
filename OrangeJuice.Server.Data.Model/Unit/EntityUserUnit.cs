@@ -1,5 +1,4 @@
 using System;
-using System.Data.Entity;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data.Container;
@@ -29,7 +28,7 @@ namespace OrangeJuice.Server.Data.Unit
 
 		public Task<User> Get(Guid userGuid)
 		{
-			return _container.Users.SingleOrDefaultAsync(u => u.UserGuid == userGuid);
+			return _container.Users.FindAsync(userGuid);
 		}
 		#endregion
 

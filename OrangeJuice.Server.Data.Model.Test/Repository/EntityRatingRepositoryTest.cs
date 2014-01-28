@@ -18,39 +18,63 @@ namespace OrangeJuice.Server.Data.Test.Repository
 	{
 		#region Test methods
 		[TestMethod]
-		public void AddOrUpdate_Should_Throw_Exception_When_UserUnit_Get_Returns_Null()
+		public async Task AddOrUpdate_Should_Call_UserUnit_Get_When_RatingUnit_Get_Returns_Null()
 		{
 			// Arrange
-			Guid userGuid = Guid.NewGuid();
-			const string productId = "productid";
-			const byte value = 5;
+			RatingId ratingId = new RatingId();
 
 			var ratingUnitMock = new Mock<IRatingUnit>();
-			ratingUnitMock.Setup(u => u.Get(userGuid, productId)).ReturnsAsync(null);
+			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(null);
 
-			IRatingRepository repository = CreateRepository();
+			var userUnitMock = new Mock<IUserUnit>();
+
+			IRatingRepository repository = CreateRepository(ratingUnitMock.Object, userUnitMock.Object);
 
 			// Act
-			Func<Task> func = () => repository.AddOrUpdate(userGuid, productId, value);
+			await repository.AddOrUpdate(ratingId, 5, "comment");
 
 			// Assert
-			func.ShouldThrow<ObjectNotFoundException>();
+			userUnitMock.Verify(u => u.Get(ratingId.UserId), Times.Once);
+		}
+
+		public async Task AddOrUpdate_Should_Not_Call_UserUnit_Get_When_RatingUnit_Get_Returns_Not_Null()
+		{
+			// Arrange
+			RatingId ratingId = new RatingId();
+
+			var ratingUnitMock = new Mock<IRatingUnit>();
+			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(new Rating());
+
+			var userUnitMock = new Mock<IUserUnit>();
+
+			IRatingRepository repository = CreateRepository(ratingUnitMock.Object, userUnitMock.Object);
+
+			// Act
+			await repository.AddOrUpdate(ratingId, 5, "comment");
+
+			// Assert
+			userUnitMock.Verify(u => u.Get(ratingId.UserId), Times.Never);
+		}
+
+		[TestMethod]
+		public async Task AddOrUpdate_Should_Pass_Result_Of_RatingUnit_Get_To_RatingUnit_AddOrUpdate()
+		{
+			Assert.Inconclusive();
 		}
 
 		[TestMethod]
 		public void Delete_Should_Throw_Exception_When_UserUnit_Get_Returns_Null()
 		{
 			// Arrange
-			Guid userGuid = Guid.NewGuid();
-			const string productId = "productid";
+			RatingId ratingId = new RatingId();
 
 			var ratingUnitMock = new Mock<IRatingUnit>();
-			ratingUnitMock.Setup(u => u.Get(userGuid, productId)).ReturnsAsync(null);
+			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(null);
 
 			IRatingRepository repository = CreateRepository(ratingUnitMock.Object);
 
 			// Act
-			Func<Task> func = () => repository.Delete(userGuid, productId);
+			Func<Task> func = () => repository.Delete(ratingId);
 
 			// Assert
 			func.ShouldThrow<ObjectNotFoundException>();

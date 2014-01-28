@@ -5,8 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="df65b1b5f2a04450a4c2c320efe2cf64" Name="Diagram1" >
-        <EntityTypeShape EntityType="Model.User" Width="1.5" PointX="0.5" PointY="0.5" />
-        <EntityTypeShape EntityType="Model.Rating" Width="1.5" PointX="2.625" PointY="0.5" />
+        <EntityTypeShape EntityType="Model.Product" Width="1.5" PointX="0.625" PointY="0.5" />
+        <EntityTypeShape EntityType="Model.Rating" Width="1.5" PointX="3" PointY="0.5" />
+        <EntityTypeShape EntityType="Model.User" Width="1.5" PointX="5.375" PointY="0.5" />
+        <AssociationConnector Association="Model.FK_Ratings_Products" />
         <AssociationConnector Association="Model.FK_Ratings_Users" />
       </Diagram>
     </edmx:Diagrams>

@@ -57,8 +57,10 @@
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\ApiVersion.cs" />
     <Compile Include="Data\BarcodeType.cs" />
+    <Compile Include="Data\RatingId.cs" />
     <Compile Include="Data\FoodDescriptor.cs" />
     <Compile Include="Data\IFoodDescriptorFactory.cs" />
+    <Compile Include="Data\IProduct.cs" />
     <Compile Include="IPipeline.cs" />
     <Compile Include="Services\IFoodRepository.cs" />
     <Compile Include="Data\IRating.cs" />

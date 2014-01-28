@@ -1,17 +1,17 @@
-﻿using System;
-
-// ReSharper disable CheckNamespace
+﻿// ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Data
 {
 	public partial class Rating : IRating
 	{
-		public Guid UserGuid
+		public RatingId RatingId
 		{
 			get
 			{
-				return User != null ?
-					User.UserGuid :
-					Guid.Empty;
+				return new RatingId
+				{
+					UserId = UserId,
+					ProductId = ProductId
+				};
 			}
 		}
 	}

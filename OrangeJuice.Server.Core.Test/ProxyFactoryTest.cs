@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Test
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_Object_Returned_By_Func()
+		public void Create_Should_Return_T_Returned_By_Func()
 		{
 			// Arrange
 			object expected = new object();

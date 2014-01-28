@@ -205,10 +205,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			return ControllerFactory.Create<UserController>(userRepository ?? new Mock<IUserRepository>().Object);
 		}
 
-		private static IUser CreateUser(Guid? userGuid = null)
+		private static IUser CreateUser(Guid? userId = null)
 		{
 			var userMock = new Mock<IUser>();
-			userMock.Setup(u => u.UserGuid).Returns(userGuid ?? Guid.NewGuid());
+			userMock.Setup(u => u.UserId).Returns(userId ?? Guid.NewGuid());
 			return userMock.Object;
 		}
 		#endregion

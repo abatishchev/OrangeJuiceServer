@@ -19,8 +19,6 @@ namespace OrangeJuice.Server.Data
         public ModelContainer()
             : base("name=ModelContainer")
         {
-            Users = Set<User>();
-            Ratings = Set<Rating>();
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -28,7 +26,8 @@ namespace OrangeJuice.Server.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }
