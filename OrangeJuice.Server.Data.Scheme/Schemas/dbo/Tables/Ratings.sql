@@ -1,7 +1,7 @@
 ﻿CREATE TABLE dbo.[Ratings]
 (
-	[UserId] Int NOT NULL,
-	[ProductId] Char(10) NOT NULL, -- ASIN
-	[Value] TinyInt NOT NULL
+	[UserId] UniqueIdentifier NOT NULL,
+	[ProductId] UniqueIdentifier NOT NULL,
+	[Value] TinyInt NOT NULL,
+	[Comment] NVarChar(255) NULL
 )
-
