@@ -15,22 +15,25 @@ namespace OrangeJuice.Server.Data.Test.Repository
 	[TestClass]
 	public class EntityUserRepositoryTest
 	{
-		#region Test methods
+		#region Register
 		[TestMethod]
-		public async Task Register_Should_Return_User_Having_Email()
+		public async Task Register_Should_Return_User_Having_Properties()
 		{
 			// Arrange
 			const string email = "email";
+			const string name = "name";
 
 			var userUnitMock = new Mock<IUserUnit>();
+			userUnitMock.Setup(u => u.Add(It.IsAny<User>())).Returns<User>(Task.FromResult);
 
 			IUserRepository repository = CreateRepository(userUnitMock.Object);
 
 			// Act
-			IUser user = await repository.Register(email);
+			IUser user = await repository.Register(email, name);
 
 			// Assert
-			user.Email.Should().Be(email);
+			user.Email.Should().NotBeEmpty();
+			user.Name.Should().NotBeEmpty();
 		}
 
 		[TestMethod]
@@ -38,16 +41,19 @@ namespace OrangeJuice.Server.Data.Test.Repository
 		{
 			// Arrange
 			var userUnitMock = new Mock<IUserUnit>();
+			userUnitMock.Setup(u => u.Add(It.IsAny<User>())).Returns<User>(Task.FromResult);
 
 			IUserRepository repository = CreateRepository(userUnitMock.Object);
 
 			// Act
-			User user = (User)(await repository.Register("email"));
+			User user = (User)(await repository.Register("email", "name"));
 
 			// Assert
 			userUnitMock.Verify(u => u.Add(user), Times.Once);
 		}
+		#endregion
 
+		#region Search
 		[TestMethod]
 		public async Task Search_Should_Pass_UserGuid_To_UserUnit_Get()
 		{
@@ -83,7 +89,9 @@ namespace OrangeJuice.Server.Data.Test.Repository
 			// Assert
 			actual.Should().Be(expected);
 		}
+		#endregion
 
+		#region Dispose
 		[TestMethod]
 		public void Dispose_Should_Call_UserUnit_Dispose()
 		{

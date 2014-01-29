@@ -43,14 +43,14 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>Rating id</returns>
 		/// <url>POST /api/rating</url>
-		public async Task<IHttpActionResult> PostRating(RatingInformation ratingInformation)
+		public async Task<IHttpActionResult> PostRating(RatingModel ratingModel)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			RatingId ratingId = new RatingId { UserId = ratingInformation.UserId, ProductId = ratingInformation.ProductId };
+			RatingId ratingId = new RatingId { UserId = ratingModel.UserId, ProductId = ratingModel.ProductId };
 
-			await _ratingRepository.AddOrUpdate(ratingId, ratingInformation.Value, ratingInformation.Comment);
+			await _ratingRepository.AddOrUpdate(ratingId, ratingModel.Value, ratingModel.Comment);
 
 			return Ok(ratingId);
 		}

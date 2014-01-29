@@ -2,8 +2,8 @@
 
 namespace OrangeJuice.Server.Api.Models
 {
-	[FluentValidation.Attributes.Validator(typeof(Validation.RatingInformationValidator))]
-	public class RatingInformation
+	[FluentValidation.Attributes.Validator(typeof(Validation.RatingModel))]
+	public class RatingModel
 	{
 		public Guid UserId { get; set; }
 

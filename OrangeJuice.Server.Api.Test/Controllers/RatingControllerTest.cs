@@ -113,7 +113,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.PostRating(new RatingInformation());
+			IHttpActionResult result = await controller.PostRating(new RatingModel());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -131,10 +131,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Delete(ratingId)).Returns(Task.Delay(0));
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingInformation ratingInformation = new RatingInformation { Value = value, Comment = comment };
+			RatingModel ratingModel = new RatingModel { Value = value, Comment = comment };
 
 			// Act
-			await controller.PostRating(ratingInformation);
+			await controller.PostRating(ratingModel);
 
 			// Assert
 			repositoryMock.Verify(r => r.AddOrUpdate(ratingId, value, comment), Times.Once);
@@ -150,7 +150,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PostRating(new RatingInformation());
+			IHttpActionResult result = await controller.PostRating(new RatingModel());
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<RatingId>>();

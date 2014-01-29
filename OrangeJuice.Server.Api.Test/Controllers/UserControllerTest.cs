@@ -56,34 +56,34 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetUser_Should_Pass_UserGuid_To_UserRepository_Search()
 		{
 			// Arrange
-			Guid userGuid = Guid.NewGuid();
-			IUser user = CreateUser(userGuid);
+			Guid userId = Guid.NewGuid();
+			IUser user = CreateUser(userId);
 
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Search(userGuid)).ReturnsAsync(user);
+			repositoryMock.Setup(r => r.Search(userId)).ReturnsAsync(user);
 
 			UserController controller = CreateController(repositoryMock.Object);
-			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = userGuid };
+			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserId = userId };
 
 			// Act
 			await controller.GetUser(searchCriteria);
 
 			// Assert
-			repositoryMock.Verify(r => r.Search(userGuid), Times.Once);
+			repositoryMock.Verify(r => r.Search(userId), Times.Once);
 		}
 
 		[TestMethod]
 		public async Task GetUser_Should_Return_User_By_Specified_UserGuid()
 		{
 			// Arrange
-			Guid userGuid = Guid.NewGuid();
-			IUser expected = CreateUser(userGuid);
+			Guid userId = Guid.NewGuid();
+			IUser expected = CreateUser(userId);
 
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Search(userGuid)).ReturnsAsync(expected);
+			repositoryMock.Setup(r => r.Search(userId)).ReturnsAsync(expected);
 
 			UserController controller = CreateController(repositoryMock.Object);
-			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserGuid = userGuid };
+			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserId = userId };
 
 			// Act
 			var result = (OkNegotiatedContentResult<IUser>)await controller.GetUser(searchCriteria);
@@ -121,7 +121,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.PutUser(new UserRegistration());
+			IHttpActionResult result = await controller.PutUser(new UserModel());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -132,33 +132,35 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(null);
+			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(null);
 
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PutUser(new UserRegistration());
+			IHttpActionResult result = await controller.PutUser(new UserModel());
 
 			// Assert
 			result.Should().BeOfType<InternalServerErrorResult>();
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Pass_Email_To_UserRepository_Register()
+		public async Task PutUser_Should_Pass_Email_Name_To_UserRepository_Register()
 		{
 			// Arrange
-			const string email = "test@example.com";
+			const string email = "email";
+			const string name = "name";
+
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(email)).ReturnsAsync(new Mock<IUser>().Object);
+			repositoryMock.Setup(r => r.Register(email, name)).ReturnsAsync(new Mock<IUser>().Object);
 
 			UserController controller = CreateController(repositoryMock.Object);
-			UserRegistration userRegistration = new UserRegistration { Email = email };
+			UserModel userModel = new UserModel { Email = email, Name = name };
 
 			// Act
-			await controller.PutUser(userRegistration);
+			await controller.PutUser(userModel);
 
 			// Assert
-			repositoryMock.Verify(r => r.Register(email), Times.Once);
+			repositoryMock.Verify(r => r.Register(email, name), Times.Once);
 		}
 
 		[TestMethod]
@@ -169,12 +171,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IUser user = CreateUser(expected);
 
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(user);
+			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(user);
 
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PutUser(new UserRegistration());
+			IHttpActionResult result = await controller.PutUser(new UserModel());
 			Guid actual = ((OkNegotiatedContentResult<Guid>)result).Content;
 
 			// Assert
@@ -182,17 +184,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Ok()
+		public async Task PutUser_Should_Return_UserId()
 		{
 			// Arrange
 			IUser user = CreateUser();
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(It.IsAny<string>())).ReturnsAsync(user);
+			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(user);
 
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PutUser(new UserRegistration());
+			IHttpActionResult result = await controller.PutUser(new UserModel());
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<Guid>>();

@@ -4,9 +4,9 @@ using OrangeJuice.Server.Api.Models;
 
 namespace OrangeJuice.Server.Api.Validation
 {
-	public sealed class RatingInformationValidator : AbstractValidator<RatingInformation>
+	public sealed class RatingModel : AbstractValidator<Models.RatingModel>
 	{
-		public RatingInformationValidator()
+		public RatingModel()
 		{
 			RuleFor(x => x.UserId).NotEmpty();
 

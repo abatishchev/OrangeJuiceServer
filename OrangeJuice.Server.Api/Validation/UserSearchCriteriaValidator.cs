@@ -8,7 +8,7 @@ namespace OrangeJuice.Server.Api.Validation
 	{
 		public UserSearchCriteriaValidator()
 		{
-			RuleFor(x => x.UserGuid).NotEmpty();
+			RuleFor(x => x.UserId).NotEmpty();
 		}
 	}
 }

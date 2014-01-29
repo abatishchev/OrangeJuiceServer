@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			IUser user = await _userRepository.Search(searchCriteria.UserGuid);
+			IUser user = await _userRepository.Search(searchCriteria.UserId);
 			if (user == null)
 				return NotFound();
 
@@ -43,12 +43,12 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>Guid representing the user</returns>
 		/// <url>PUT /api/user</url>
-		public async Task<IHttpActionResult> PutUser(UserRegistration userRegistration)
+		public async Task<IHttpActionResult> PutUser(UserModel userModel)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			IUser user = await _userRepository.Register(userRegistration.Email);
+			IUser user = await _userRepository.Register(userModel.Email, userModel.Name);
 			if (user == null)
 				return InternalServerError();
 

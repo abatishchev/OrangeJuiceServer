@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Data.Test.Repository
 	[TestClass]
 	public class EntityRatingRepositoryTest
 	{
-		#region Test methods
+		#region AddOrUpdate
 		[TestMethod]
 		public async Task AddOrUpdate_Should_Call_UserUnit_Get_When_RatingUnit_Get_Returns_Null()
 		{
@@ -103,7 +103,9 @@ namespace OrangeJuice.Server.Data.Test.Repository
 			// Assert
 			ratingUnitMock.Verify(u => u.AddOrUpdate(It.Is<Rating>(r => r.User == user)), Times.Once);
 		}
+		#endregion
 
+		#region Delete
 		[TestMethod]
 		public void Delete_Should_Throw_Exception_When_UserUnit_Get_Returns_Null()
 		{
@@ -121,7 +123,9 @@ namespace OrangeJuice.Server.Data.Test.Repository
 			// Assert
 			func.ShouldThrow<ObjectNotFoundException>();
 		}
+		#endregion
 
+		#region Dispose
 		[TestMethod]
 		public void Dispose_Should_Call_RatingUnit_Dispose()
 		{
