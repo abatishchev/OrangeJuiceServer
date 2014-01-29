@@ -10,4 +10,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("0.0.0.0")]
 [assembly: AssemblyFileVersion("0.0.0.0")]
 
-[assembly: InternalsVisibleTo("OrangeJuice.Server.Data.Model.Test")]
+[assembly: InternalsVisibleTo("OrangeJuice.Server.Data.Test")]

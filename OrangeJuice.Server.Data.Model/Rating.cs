@@ -14,12 +14,12 @@ namespace OrangeJuice.Server.Data
     
     public partial class Rating
     {
-        public System.Guid UserId { get; set; }
-        public System.Guid ProductId { get; set; }
+        public System.Guid UserId { get; internal set; }
+        public System.Guid ProductId { get; internal set; }
         public byte Value { get; set; }
         public string Comment { get; set; }
     
-        public virtual Product Product { get; set; }
-        public virtual User User { get; set; }
+        public virtual Product Product { get; internal set; }
+        public virtual User User { get; internal set; }
     }
 }

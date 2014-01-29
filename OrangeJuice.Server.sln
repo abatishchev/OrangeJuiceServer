@@ -38,9 +38,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Contract
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OrangeJuice.Server.Data.Scheme", "OrangeJuice.Server.Data.Scheme\OrangeJuice.Server.Data.Scheme.sqlproj", "{411163BB-6EDC-4F9F-9618-F39D5DF46527}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Data.Model", "OrangeJuice.Server.Data.Model\OrangeJuice.Server.Data.Model.csproj", "{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Data", "OrangeJuice.Server.Data.Model\OrangeJuice.Server.Data.csproj", "{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Data.Model.Test", "OrangeJuice.Server.Data.Model.Test\OrangeJuice.Server.Data.Model.Test.csproj", "{B6E19574-801F-4B75-B4D8-D79BAC8AE6E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Data.Test", "OrangeJuice.Server.Data.Model.Test\OrangeJuice.Server.Data.Test.csproj", "{B6E19574-801F-4B75-B4D8-D79BAC8AE6E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Core", "OrangeJuice.Server.Core\OrangeJuice.Server.Core.csproj", "{1A416347-6B6C-4551-BFDB-FBE19B121D74}"
 EndProject

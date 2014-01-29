@@ -88,30 +88,30 @@
           <Key>
             <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="ProductId" Type="Guid" Nullable="false" />
+          <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
           <Property Name="Barcode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="BarcodeType" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Products" FromRole="Product" ToRole="Rating" />
+          <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Products" FromRole="Product" ToRole="Rating" cg:SetterAccess="Internal" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="ProductId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
+          <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
           <Property Name="Value" Type="Byte" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Product" Relationship="Model.FK_Ratings_Products" FromRole="Rating" ToRole="Product" />
-          <NavigationProperty Name="User" Relationship="Model.FK_Ratings_Users" FromRole="Rating" ToRole="User" />
+          <NavigationProperty Name="Product" Relationship="Model.FK_Ratings_Products" FromRole="Rating" ToRole="Product" cg:SetterAccess="Internal" />
+          <NavigationProperty Name="User" Relationship="Model.FK_Ratings_Users" FromRole="Rating" ToRole="User" cg:SetterAccess="Internal" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="254" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" />
+          <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" cg:SetterAccess="Internal" />
         </EntityType>
         <Association Name="FK_Ratings_Products">
           <End Type="Model.Product" Role="Product" Multiplicity="1" />

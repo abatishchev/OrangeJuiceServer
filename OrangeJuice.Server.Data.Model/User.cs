@@ -19,9 +19,9 @@ namespace OrangeJuice.Server.Data
             this.Ratings = new HashSet<Rating>();
         }
     
-        public System.Guid UserId { get; set; }
+        public System.Guid UserId { get; internal set; }
         public string Email { get; set; }
     
-        public virtual ICollection<Rating> Ratings { get; set; }
+        public virtual ICollection<Rating> Ratings { get; internal set; }
     }
 }

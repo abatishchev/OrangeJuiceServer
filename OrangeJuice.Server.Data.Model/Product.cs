@@ -19,10 +19,10 @@ namespace OrangeJuice.Server.Data
             this.Ratings = new HashSet<Rating>();
         }
     
-        public System.Guid ProductId { get; set; }
+        public System.Guid ProductId { get; internal set; }
         public string Barcode { get; set; }
         public byte BarcodeType { get; set; }
     
-        public virtual ICollection<Rating> Ratings { get; set; }
+        public virtual ICollection<Rating> Ratings { get; internal set; }
     }
 }
