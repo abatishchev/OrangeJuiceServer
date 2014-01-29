@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>Rating entity</returns>
 		/// <url>GET /api/rating</url>
-		public async Task<IHttpActionResult> GetRating([FromUri] RatingId ratingId)
+		public async Task<IHttpActionResult> GetRating(RatingId ratingId)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -43,12 +43,12 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>200 OK</returns>
 		/// <url>POST /api/rating</url>
-		public async Task<IHttpActionResult> PostRating([FromBody] Rating rating)
+		public async Task<IHttpActionResult> PostRating(RatingInformation ratingInformation)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			await _ratingRepository.AddOrUpdate(rating.RatingId, (byte)rating.Value, rating.Comment);
+			await _ratingRepository.AddOrUpdate(new RatingId { UserId = ratingInformation.UserId, ProductId = ratingInformation.ProductId }, ratingInformation.Value, ratingInformation.Comment);
 
 			return Ok();
 		}

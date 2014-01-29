@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
+using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Repository;
 
@@ -112,7 +113,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.PostRating(new Rating());
+			IHttpActionResult result = await controller.PostRating(new RatingInformation());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -130,7 +131,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Delete(ratingId)).Returns(Task.Delay(0));
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			Rating ratingInformation = new Rating { RatingId = ratingId, Value = value, Comment = comment };
+			RatingInformation ratingInformation = new RatingInformation { Value = value, Comment = comment };
 
 			// Act
 			await controller.PostRating(ratingInformation);
@@ -149,7 +150,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PostRating(new Rating());
+			IHttpActionResult result = await controller.PostRating(new RatingInformation());
 
 			// Assert
 			result.Should().BeOfType<OkResult>();
