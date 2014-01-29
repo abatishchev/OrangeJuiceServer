@@ -26,12 +26,12 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>Rating entity</returns>
 		/// <url>GET /api/rating</url>
-		public async Task<IHttpActionResult> GetRating([FromUri] RatingSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetRating([FromUri] RatingId ratingId)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			IRating rating = await _ratingRepository.Search(searchCriteria.RatingId);
+			IRating rating = await _ratingRepository.Search(ratingId);
 			if (rating == null)
 				return NotFound();
 
@@ -43,13 +43,13 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>200 OK</returns>
 		/// <url>POST /api/rating</url>
-		public async Task<IHttpActionResult> PostRating([FromBody] RatingInformation ratingInformation)
+		public async Task<IHttpActionResult> PostRating([FromBody] Rating rating)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
 			// TODO: replace with just Rating?
-			await _ratingRepository.AddOrUpdate(ratingInformation.RatingId, (byte)ratingInformation.Value, ratingInformation.Comment);
+			await _ratingRepository.AddOrUpdate(rating.RatingId, (byte)rating.Value, rating.Comment);
 
 			return Ok();
 		}
@@ -59,12 +59,12 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// </summary>
 		/// <returns>200 OK</returns>
 		/// <url>DELETE /api/rating</url>
-		public async Task<IHttpActionResult> DeleteRating([FromUri] RatingSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> DeleteRating(RatingId ratingId)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			await _ratingRepository.Delete(searchCriteria.RatingId);
+			await _ratingRepository.Delete(ratingId);
 
 			return Ok();
 		}

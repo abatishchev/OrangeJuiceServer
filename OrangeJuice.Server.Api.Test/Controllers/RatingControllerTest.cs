@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
-using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Repository;
 
@@ -27,7 +26,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.GetRating(new RatingSearchCriteria());
+			IHttpActionResult result = await controller.GetRating(new RatingId());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -43,7 +42,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController();
 
 			// Act
-			IHttpActionResult result = await controller.GetRating(new RatingSearchCriteria());
+			IHttpActionResult result = await controller.GetRating(new RatingId());
 
 			// Assert
 			result.Should().BeOfType<NotFoundResult>();
@@ -59,10 +58,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Search(ratingId)).ReturnsAsync(null);
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { RatingId = ratingId };
 
 			// Act
-			await controller.GetRating(searchCriteria);
+			await controller.GetRating(ratingId);
 
 			// Assert
 			repositoryMock.Verify(r => r.Search(ratingId), Times.Once);
@@ -79,10 +77,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Search(ratingId)).ReturnsAsync(expected);
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { RatingId = ratingId };
 
 			// Act
-			IHttpActionResult result = await controller.GetRating(searchCriteria);
+			IHttpActionResult result = await controller.GetRating(ratingId);
 			IRating actual = ((OkNegotiatedContentResult<IRating>)result).Content;
 
 			// Assert
@@ -99,7 +96,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetRating(new RatingSearchCriteria());
+			IHttpActionResult result = await controller.GetRating(new RatingId());
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<IRating>>();
@@ -115,7 +112,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.PostRating(new RatingInformation());
+			IHttpActionResult result = await controller.PostRating(new Rating());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -133,7 +130,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Delete(ratingId)).Returns(Task.Delay(0));
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingInformation ratingInformation = new RatingInformation { RatingId = ratingId, Value = value, Comment = comment };
+			Rating ratingInformation = new Rating { RatingId = ratingId, Value = value, Comment = comment };
 
 			// Act
 			await controller.PostRating(ratingInformation);
@@ -152,7 +149,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PostRating(new RatingInformation());
+			IHttpActionResult result = await controller.PostRating(new Rating());
 
 			// Assert
 			result.Should().BeOfType<OkResult>();
@@ -168,7 +165,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.DeleteRating(new RatingSearchCriteria());
+			IHttpActionResult result = await controller.DeleteRating(new RatingId());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
@@ -184,10 +181,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Delete(ratingId)).Returns(Task.Delay(0));
 
 			RatingController controller = CreateController(repositoryMock.Object);
-			RatingSearchCriteria searchCriteria = new RatingSearchCriteria { RatingId = ratingId };
 
 			// Act
-			await controller.DeleteRating(searchCriteria);
+			await controller.DeleteRating(ratingId);
 
 			// Assert
 			repositoryMock.Verify(r => r.Delete(ratingId), Times.Once);
@@ -203,7 +199,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.DeleteRating(new RatingSearchCriteria());
+			IHttpActionResult result = await controller.DeleteRating(new RatingId());
 
 			// Assert
 			result.Should().BeOfType<OkResult>();

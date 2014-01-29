@@ -13,6 +13,11 @@ namespace OrangeJuice.Server.Data
 					ProductId = ProductId
 				};
 			}
+			set
+			{
+				UserId = value.UserId;
+				ProductId = value.ProductId;
+			}
 		}
 	}
 }
