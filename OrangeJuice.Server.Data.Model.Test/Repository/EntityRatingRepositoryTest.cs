@@ -59,7 +59,49 @@ namespace OrangeJuice.Server.Data.Test.Repository
 		[TestMethod]
 		public async Task AddOrUpdate_Should_Pass_Result_Of_RatingUnit_Get_To_RatingUnit_AddOrUpdate()
 		{
-			Assert.Inconclusive();
+			// Arrange
+			RatingId ratingId = new RatingId { UserId = Guid.NewGuid(), ProductId = Guid.NewGuid() };
+			Rating rating = new Rating
+			{
+				UserId = ratingId.UserId,
+				ProductId = ratingId.ProductId
+			};
+
+			var ratingUnitMock = new Mock<IRatingUnit>();
+			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(rating);
+
+			IRatingRepository repository = CreateRepository(ratingUnitMock.Object);
+
+			// Act
+			await repository.AddOrUpdate(ratingId, 5, "comment");
+
+			// Assert
+			ratingUnitMock.Verify(u => u.AddOrUpdate(rating), Times.Once);
+		}
+
+		[TestMethod]
+		public async Task AddOrUpdate_Should_Pass_To_RatingUnit_AddOrUpdate_Rating_Having_User_Returned_By_UserUnit_Get()
+		{
+			// Arrange
+			RatingId ratingId = new RatingId { UserId = Guid.NewGuid(), ProductId = Guid.NewGuid() };
+			User user = new User
+			{
+				UserId = ratingId.UserId
+			};
+
+			var ratingUnitMock = new Mock<IRatingUnit>();
+			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(null);
+
+			var userUnitMock = new Mock<IUserUnit>();
+			userUnitMock.Setup(u => u.Get(ratingId.UserId)).ReturnsAsync(user);
+
+			IRatingRepository repository = CreateRepository(ratingUnitMock.Object, userUnitMock.Object);
+
+			// Act
+			await repository.AddOrUpdate(ratingId, 5, "comment");
+
+			// Assert
+			ratingUnitMock.Verify(u => u.AddOrUpdate(It.Is<Rating>(r => r.User == user)), Times.Once);
 		}
 
 		[TestMethod]
