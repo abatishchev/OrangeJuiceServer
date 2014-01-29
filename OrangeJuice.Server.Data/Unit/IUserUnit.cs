@@ -5,8 +5,8 @@ namespace OrangeJuice.Server.Data.Unit
 {
 	public interface IUserUnit : IDisposable
 	{
-		Task<int> Add(User user);
+		Task<User> Add(User user);
 
-		Task<User> Get(Guid userGuid);
+		Task<User> Get(Guid userId);
 	}
 }

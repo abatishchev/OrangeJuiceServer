@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Api
 		{
 			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
 
-			services.Add(typeof(IExceptionLogger), new Services.ElmahExceptionLogger());
+			services.Add(typeof(IExceptionLogger), new Logging.ElmahExceptionLogger());
 		}
 
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)

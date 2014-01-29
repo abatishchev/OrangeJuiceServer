@@ -8,9 +8,11 @@ namespace OrangeJuice.Server.Data.Container
 	public interface IModelContainer : IDisposable
 	{
 		#region Properties
-		DbSet<User> Users { get; set; }
+		DbSet<Product> Products { get; }
 
-		DbSet<Rating> Ratings { get; set; }
+		DbSet<Rating> Ratings { get; }
+
+		DbSet<User> Users { get; }
 		#endregion
 
 		#region Methods

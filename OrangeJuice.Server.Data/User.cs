@@ -21,6 +21,7 @@ namespace OrangeJuice.Server.Data
     
         public System.Guid UserId { get; internal set; }
         public string Email { get; set; }
+        public string Name { get; set; }
     
         public virtual ICollection<Rating> Ratings { get; internal set; }
     }

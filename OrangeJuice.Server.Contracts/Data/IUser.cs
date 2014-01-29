@@ -7,5 +7,7 @@ namespace OrangeJuice.Server.Data
 		Guid UserId { get; }
 
 		string Email { get; set; }
+
+		string Name { get; set; }
 	}
 }

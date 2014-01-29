@@ -29,6 +29,7 @@
           </Key>
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="254" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="254" Nullable="false" />
         </EntityType>
         <Association Name="FK_Ratings_Products">
           <End Role="Products" Type="Self.Products" Multiplicity="1" />
@@ -90,7 +91,7 @@
           </Key>
           <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
           <Property Name="Barcode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="BarcodeType" Type="Byte" Nullable="false" />
+          <Property Name="BarcodeType" Type="Model.BarcodeType" Nullable="false" />
           <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Products" FromRole="Product" ToRole="Rating" cg:SetterAccess="Internal" />
         </EntityType>
         <EntityType Name="Rating">
@@ -112,6 +113,7 @@
           <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="254" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" cg:SetterAccess="Internal" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="254" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Ratings_Products">
           <End Type="Model.Product" Role="Product" Multiplicity="1" />
@@ -137,6 +139,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EnumType Name="BarcodeType" UnderlyingType="Byte" cg:ExternalTypeName="OrangeJuice.Server.Data.BarcodeType" />
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -167,6 +170,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Model.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>

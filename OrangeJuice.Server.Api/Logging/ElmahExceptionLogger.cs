@@ -5,7 +5,7 @@ using System.Web.Http.ExceptionHandling;
 
 using Elmah;
 
-namespace OrangeJuice.Server.Api.Services
+namespace OrangeJuice.Server.Api.Logging
 {
 	public class ElmahExceptionLogger : ExceptionLogger
 	{

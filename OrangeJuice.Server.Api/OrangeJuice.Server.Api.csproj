@@ -130,10 +130,10 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Logging\ElmahExceptionLogger.cs" />
     <Compile Include="Models\RatingInformation.cs" />
     <Compile Include="Policies\EnvironmentErrorDetailPolicyProvider.cs" />
     <Compile Include="Policies\IErrorDetailPolicyProvider.cs" />
-    <Compile Include="Services\ElmahExceptionLogger.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
@@ -155,7 +155,7 @@
     <Compile Include="Handlers\HeaderAppVersionHandler.cs" />
     <Compile Include="Handlers\QueryAppVersionHandler.cs" />
     <Compile Include="Models\UserSearchCriteria.cs" />
-    <Compile Include="Models\UserRegistration.cs">
+    <Compile Include="Models\UserModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Policies\ErrorDetailPolicyResolver.cs" />
@@ -170,7 +170,7 @@
     <Compile Include="Validation\TitleSearchCriteriaValidator.cs" />
     <Compile Include="Validation\Infrustructure\FluentModelValidatorFactory.cs" />
     <Compile Include="Validation\RatingInformationValidator.cs" />
-    <Compile Include="Validation\UserRegistrationValidator.cs" />
+    <Compile Include="Validation\UserModelValidator.cs" />
     <Compile Include="Validation\UserSearchCriteriaValidator.cs" />
   </ItemGroup>
   <ItemGroup>

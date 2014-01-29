@@ -1,9 +1,9 @@
 ﻿namespace OrangeJuice.Server.Data
 {
 	// ReSharper disable InconsistentNaming
-	public enum BarcodeType
+	public enum BarcodeType : byte
 	{
-		EAN,
-		UPC
+		EAN = 1,
+		UPC = 2
 	}
 }

@@ -1,36 +1,27 @@
-using System;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data.Container;
 
 namespace OrangeJuice.Server.Data.Unit
 {
-	public sealed class EntityUserUnit : IUserUnit
+	public sealed class EntityProductUnit : IProductUnit
 	{
 		#region Fields
 		private readonly IModelContainer _container;
 		#endregion
 
 		#region Ctor
-		public EntityUserUnit(IModelContainer container)
+		public EntityProductUnit(IModelContainer container)
 		{
 			_container = container;
 		}
 		#endregion
 
-		#region IUserUnit members
-		public async Task<User> Add(User user)
+		#region IProductUnit members
+		public Task<Product> Get(string barcode, BarcodeType barcodeType)
 		{
-			_container.Users.Add(user);
-
-			await _container.SaveChangesAsync();
-
-			return user;
-		}
-
-		public Task<User> Get(Guid userId)
-		{
-			return _container.Users.FindAsync(userId);
+			return _container.Products.FirstOrDefaultAsync(p => p.Barcode == barcode && p.BarcodeType == barcodeType);
 		}
 		#endregion
 

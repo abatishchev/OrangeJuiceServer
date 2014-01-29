@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Data
     
         public System.Guid ProductId { get; internal set; }
         public string Barcode { get; set; }
-        public byte BarcodeType { get; set; }
+        public OrangeJuice.Server.Data.BarcodeType BarcodeType { get; set; }
     
         public virtual ICollection<Rating> Ratings { get; internal set; }
     }

@@ -181,9 +181,12 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IValidator<ProductDescriptor>, NullProductDescriptorValidator>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IProductRepository, CompositeProductRepository>(
+			container.RegisterType<Data.Repository.IProductRepository, EntityProductRepository>(
+				new HierarchicalLifetimeManager());
+
+			container.RegisterType<Services.IProductRepository, CompositeProductRepository>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(container.ResolveAll<IProductProvider>(), typeof(IValidator<ProductDescriptor>)));
+				new InjectionConstructor(typeof(Data.Repository.IProductRepository), container.ResolveAll<IProductProvider>(), typeof(IValidator<ProductDescriptor>)));
 			#endregion
 
 			#region UserController
