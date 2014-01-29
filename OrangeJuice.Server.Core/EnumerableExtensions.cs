@@ -7,7 +7,7 @@ namespace OrangeJuice.Server
 {
 	public static class EnumerableExtensions
 	{
-		public static async Task<T> FirstAsync<T>(this IEnumerable<Task<T>> sources, Func<T, bool> predicate)
+		public static async Task<T> FirstOrDefaultAsync<T>(this IEnumerable<Task<T>> sources, Func<T, bool> predicate)
 			where T : class
 		{
 			foreach (Task<T> item in sources)

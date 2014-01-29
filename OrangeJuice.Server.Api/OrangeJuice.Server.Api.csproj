@@ -205,7 +205,7 @@
       <Project>{1a416347-6b6c-4551-bfdb-fbe19b121d74}</Project>
       <Name>OrangeJuice.Server.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OrangeJuice.Server.Data.Model\OrangeJuice.Server.Data.csproj">
+    <ProjectReference Include="..\OrangeJuice.Server.Data\OrangeJuice.Server.Data.csproj">
       <Project>{209ccef8-9d7a-4ab4-b7e5-9f5c8efe603a}</Project>
       <Name>OrangeJuice.Server.Data</Name>
     </ProjectReference>
