@@ -98,8 +98,8 @@
             <PropertyRef Name="UserId" />
             <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
-          <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
+          <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" cg:GetterAccess="Internal" />
+          <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" cg:GetterAccess="Internal" />
           <Property Name="Value" Type="Byte" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Product" Relationship="Model.FK_Ratings_Products" FromRole="Rating" ToRole="Product" cg:SetterAccess="Internal" />

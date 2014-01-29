@@ -48,7 +48,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			// TODO: replace with just Rating?
 			await _ratingRepository.AddOrUpdate(rating.RatingId, (byte)rating.Value, rating.Comment);
 
 			return Ok();
