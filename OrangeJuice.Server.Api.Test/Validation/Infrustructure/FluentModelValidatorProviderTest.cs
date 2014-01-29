@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 	{
 		#region GetValidators
 		[TestMethod]
-		public void GetValidators_Should_Pass_IValidator_Of_MetaData_ContainerType_UnderlyingSystemType_To_IValidatorFactory_GetValidator()
+		public void GetValidators_Should_Pass_IValidator_Of_MetaData_ContainerType_UnderlyingSystemType_To_ValidatorFactory_GetValidator()
 		{
 			// Arrange
 			IValidator validator = new Mock<IValidator>().Object;
@@ -33,7 +33,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object, modelValidatorFactoryMock.Object);
 
 			ModelMetadata metadata = CreateMetadata(typeof(object));
-			IEnumerable<ModelValidatorProvider> modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
+			var modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
 
 			// Act
 			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
@@ -55,7 +55,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object, modelValidatorFactoryMock.Object);
 
 			ModelMetadata metadata = CreateMetadata(typeof(object));
-			IEnumerable<ModelValidatorProvider> modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
+			var modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
 
 			// Act
 			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
@@ -71,7 +71,24 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			ModelValidatorProvider provider = CreateProvider();
 
 			ModelMetadata metadata = CreateMetadata(contrainerType: null);
-			IEnumerable<ModelValidatorProvider> modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
+			var modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
+
+			// Act
+			var result = provider.GetValidators(metadata, modelValidatorProviders);
+
+			// Assert
+			result.Should().BeEmpty();
+		}
+
+		[TestMethod]
+		public void GetValidators_Should_Return_Empty_Sequece_When_ValidatorFactory_GetValidator_Returned_Null()
+		{
+			// Arrange
+			var validatorFactoryMock = CreateValidatorFactory(null);
+			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object);
+
+			ModelMetadata metadata = CreateMetadata(typeof(object));
+			var modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
 
 			// Act
 			var result = provider.GetValidators(metadata, modelValidatorProviders);

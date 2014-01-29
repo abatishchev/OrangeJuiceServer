@@ -29,7 +29,8 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 			if (type != null)
 			{
 				IValidator validator = _validatorFactory.GetValidator(type);
-				yield return _modelValidatorFactory.Create(validatorProviders, validator);
+				if (validator != null)
+					yield return _modelValidatorFactory.Create(validatorProviders, validator);
 			}
 		}
 
