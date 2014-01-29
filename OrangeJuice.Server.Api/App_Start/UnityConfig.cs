@@ -186,7 +186,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<Services.IProductRepository, CompositeProductRepository>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(Data.Repository.IProductRepository), container.ResolveAll<IProductProvider>(), typeof(IValidator<ProductDescriptor>)));
+				new InjectionConstructor(typeof(Data.Repository.IProductRepository), container.Resolve<IProductProvider>("Azure"), container.Resolve<IProductProvider>("Aws")));
 			#endregion
 
 			#region UserController

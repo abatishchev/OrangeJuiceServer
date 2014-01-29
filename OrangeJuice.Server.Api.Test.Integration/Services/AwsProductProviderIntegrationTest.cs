@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 				IProductProvider provider = container.Resolve<IProductProvider>("Aws");
 
 				// Act
-				ProductDescriptor descriptor = await provider.SearchBarcode("0747599330971", BarcodeType.EAN.ToString());
+				ProductDescriptor descriptor = await provider.SearchBarcode("0747599330971", BarcodeType.EAN);
 
 				// Assert
 				descriptor.Should().NotBeNull();

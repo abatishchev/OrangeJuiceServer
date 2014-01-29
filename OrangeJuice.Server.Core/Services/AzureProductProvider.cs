@@ -22,22 +22,27 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IProductProvider members
-		public Task<IEnumerable<ProductDescriptor>> SearchTitle(string title)
-		{
-			throw new NotImplementedException();
-		}
-
-		public async Task<ProductDescriptor> SearchBarcode(string barcode, string barcodeType)
+		public async Task<ProductDescriptor> SearchId(Guid productId)
 		{
 			try
 			{
-				string blobContent = await _client.GetBlobFromContainer("products", barcode);
+				string blobContent = await _client.GetBlobFromContainer("products", productId.ToString());
 				return _factory.Create(blobContent);
 			}
 			catch (Microsoft.WindowsAzure.Storage.StorageException)
 			{
 				return null;
 			}
+		}
+
+		public Task<IEnumerable<ProductDescriptor>> SearchTitle(string title)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<ProductDescriptor> SearchBarcode(string barcode, BarcodeType barcodeType)
+		{
+			throw new NotImplementedException();
 		}
 		#endregion
 	}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -23,6 +24,11 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IProductProvider members
+		public Task<ProductDescriptor> SearchId(Guid productId)
+		{
+			throw new NotSupportedException();
+		}
+
 		public async Task<IEnumerable<ProductDescriptor>> SearchTitle(string title)
 		{
 			var args = new Dictionary<string, string>
@@ -37,14 +43,14 @@ namespace OrangeJuice.Server.Services
 			return items.Select(i => _factory.Create(i));
 		}
 
-		public async Task<ProductDescriptor> SearchBarcode(string barcode, string barcodeType)
+		public async Task<ProductDescriptor> SearchBarcode(string barcode, BarcodeType barcodeType)
 		{
 			var args = new Dictionary<string, string>
 			{
 				{ "Operation", "ItemLookup" },
 				{ "SearchIndex", "Grocery" },
 				{ "ResponseGroup", "Images,ItemAttributes" },
-				{ "IdType", barcodeType },
+				{ "IdType", barcodeType.ToString() },
 				{ "ItemId", barcode }
 			};
 

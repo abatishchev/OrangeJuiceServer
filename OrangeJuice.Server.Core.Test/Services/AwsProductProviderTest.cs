@@ -94,13 +94,13 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			// Arrange
 			const string barcode = "barcode";
-			const string barcodeType = "barcodeType";
+			const BarcodeType barcodeType = BarcodeType.EAN;
 
 			Action<IStringDictionary> callback = d => d.Should()
 													   .Contain("Operation", "ItemLookup")
 													   .And.Contain("SearchIndex", "Grocery")
 													   .And.Contain("ResponseGroup", "Images,ItemAttributes")
-													   .And.Contain("IdType", barcodeType)
+													   .And.Contain("IdType", barcodeType.ToString())
 													   .And.Contain("ItemId", barcode);
 			var clientMock = CreateClient(callback: callback);
 
@@ -127,7 +127,7 @@ namespace OrangeJuice.Server.Test.Services
 			IProductProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
 
 			// Act
-			await provider.SearchBarcode("barcode", "barcodeType");
+			await provider.SearchBarcode("barcode", BarcodeType.EAN);
 
 			// Assert
 			factoryMock.Verify(f => f.Create(elements.First()), Times.Once);
@@ -144,7 +144,7 @@ namespace OrangeJuice.Server.Test.Services
 			IProductProvider provider = CreateProvider(factory: factoryMock.Object);
 
 			// Act
-			ProductDescriptor actual = await provider.SearchBarcode("barcode", "barcodeType");
+			ProductDescriptor actual = await provider.SearchBarcode("barcode", BarcodeType.EAN);
 
 			// Assert
 			actual.Should().Be(expected);
