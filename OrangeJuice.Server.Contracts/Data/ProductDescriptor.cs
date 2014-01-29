@@ -1,6 +1,6 @@
 ﻿namespace OrangeJuice.Server.Data
 {
-	public class FoodDescriptor
+	public class ProductDescriptor
 	{
 		public string Id { get; set; }
 

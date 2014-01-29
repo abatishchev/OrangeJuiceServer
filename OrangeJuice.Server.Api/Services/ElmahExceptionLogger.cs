@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Api.Services
 				return;
 
 			// Wrap the exception in an HttpUnhandledException so that ELMAH can capture the original error page.
-			Exception exceptionToRaise = new HttpUnhandledException(message: null, innerException: context.Exception);
+			Exception exceptionToRaise = new HttpUnhandledException(context.Exception.Message, context.Exception);
 
 			// Send the exception to ELMAH (for logging, mailing, filtering, etc.).
 			ErrorSignal signal = ErrorSignal.FromContext(httpContext);

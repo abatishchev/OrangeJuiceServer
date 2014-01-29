@@ -17,12 +17,13 @@ using IStringDictionary = System.Collections.Generic.IDictionary<string, string>
 
 namespace OrangeJuice.Server.Test.Services
 {
+	// ReSharper disable ReturnValueOfPureMethodIsNotUsed
 	[TestClass]
-	public class AwsFoodProviderTest
+	public class AwsProductProviderTest
 	{
-		#region Search
+		#region SearchTitle
 		[TestMethod]
-		public async Task Search_Should_Pass_Arguments_To_Client()
+		public async Task SearchTitle_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
 			const string title = "titlle";
@@ -34,62 +35,62 @@ namespace OrangeJuice.Server.Test.Services
 													   .And.Contain("Keywords", title);
 			var clientMock = CreateClient(callback: callback);
 
-			IFoodProvider provider = CreateProvider(clientMock.Object);
+			IProductProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			await provider.Search(title);
+			await provider.SearchTitle(title);
 
 			// Assert
 			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task Search_Should_Pass_Items_To_FoodDescriptorFactory_Create()
+		public async Task SearchTitle_Should_Pass_Items_To_ProductDescriptorFactory_Create()
 		{
 			// Arrange
 			XElement[] elements = { new XElement("Item"), new XElement("Item") };
 
 			var clientMock = CreateClient(elements);
 
-			var factoryMock = new Mock<IFoodDescriptorFactory>();
-			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new FoodDescriptor());
+			var factoryMock = new Mock<IProductDescriptorFactory<XElement>>();
+			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new ProductDescriptor());
 
-			IFoodProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
+			IProductProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
 
 			// Act
-			(await provider.Search("titlle")).ToArray();
+			(await provider.SearchTitle("titlle")).ToArray();
 
 			// Assert
 			factoryMock.Verify(f => f.Create(It.IsIn(elements)), Times.Exactly(elements.Length));
 		}
 
 		[TestMethod]
-		public async Task Search_Should_Return_Descriptors_Returned_By_FoodDescriptorFactory_Create()
+		public async Task SearchTitle_Should_Return_Descriptors_Returned_By_ProductDescriptorFactory_Create()
 		{
 			// Arrange
 			XElement element1 = new XElement("Item1"), element2 = new XElement("Item2");
-			FoodDescriptor descriptor1 = new FoodDescriptor(), descriptor2 = new FoodDescriptor();
+			ProductDescriptor descriptor1 = new ProductDescriptor(), descriptor2 = new ProductDescriptor();
 			var expected = new[] { descriptor1, descriptor2 };
 
 			var clientMock = CreateClient(new[] { element1, element2 });
 
-			var factoryMock = new Mock<IFoodDescriptorFactory>();
+			var factoryMock = new Mock<IProductDescriptorFactory<XElement>>();
 			factoryMock.Setup(f => f.Create(element1)).Returns(descriptor1);
 			factoryMock.Setup(f => f.Create(element2)).Returns(descriptor2);
 
-			IFoodProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
+			IProductProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
 
 			// Act
-			var actual = await provider.Search("titlle");
+			var actual = await provider.SearchTitle("titlle");
 
 			// Assert
 			actual.ShouldBeEquivalentTo(expected);
 		}
 		#endregion
 
-		#region Lookup
+		#region SearchBarcode
 		[TestMethod]
-		public async Task Lookup_Should_Pass_Arguments_To_Client()
+		public async Task SearchBarcode_Should_Pass_Arguments_To_Client()
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -103,47 +104,47 @@ namespace OrangeJuice.Server.Test.Services
 													   .And.Contain("ItemId", barcode);
 			var clientMock = CreateClient(callback: callback);
 
-			IFoodProvider provider = CreateProvider(clientMock.Object);
+			IProductProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			await provider.Lookup(barcode, barcodeType);
+			await provider.SearchBarcode(barcode, barcodeType);
 
 			// Assert
 			clientMock.Verify(b => b.GetItems(It.IsAny<IStringDictionary>()), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task Lookup_Should_Pass_First_Item_To_FoodDescriptorFactory_Create()
+		public async Task SearchBarcode_Should_Pass_First_Item_To_ProductDescriptorFactory_Create()
 		{
 			// Arrange
 			XElement[] elements = { new XElement("Item"), new XElement("Item") };
 
 			var clientMock = CreateClient(elements);
 
-			var factoryMock = new Mock<IFoodDescriptorFactory>();
-			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new FoodDescriptor());
+			var factoryMock = new Mock<IProductDescriptorFactory<XElement>>();
+			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new ProductDescriptor());
 
-			IFoodProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
+			IProductProvider provider = CreateProvider(clientMock.Object, factoryMock.Object);
 
 			// Act
-			await provider.Lookup("barcode", "barcodeType");
+			await provider.SearchBarcode("barcode", "barcodeType");
 
 			// Assert
 			factoryMock.Verify(f => f.Create(elements.First()), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task Lookup_Should_Return_Descriptor_Returned_By_FoodDescriptorFactory_Create()
+		public async Task SearchBarcode_Should_Return_Descriptor_Returned_By_ProductDescriptorFactory_Create()
 		{
 			// Arrange
-			FoodDescriptor expected = new FoodDescriptor();
+			ProductDescriptor expected = new ProductDescriptor();
 
 			var factoryMock = CreateFactory(expected);
 
-			IFoodProvider provider = CreateProvider(factory: factoryMock.Object);
+			IProductProvider provider = CreateProvider(factory: factoryMock.Object);
 
 			// Act
-			FoodDescriptor actual = await provider.Lookup("barcode", "barcodeType");
+			ProductDescriptor actual = await provider.SearchBarcode("barcode", "barcodeType");
 
 			// Assert
 			actual.Should().Be(expected);
@@ -151,9 +152,9 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IFoodProvider CreateProvider(IAwsClient client = null, IFoodDescriptorFactory factory = null)
+		private static IProductProvider CreateProvider(IAwsClient client = null, IProductDescriptorFactory<XElement> factory = null)
 		{
-			return new AwsFoodProvider(
+			return new AwsProductProvider(
 				client ?? CreateClient().Object,
 				factory ?? CreateFactory().Object);
 		}
@@ -167,10 +168,10 @@ namespace OrangeJuice.Server.Test.Services
 			return clientMock;
 		}
 
-		private static Mock<IFoodDescriptorFactory> CreateFactory(FoodDescriptor descriptor = null)
+		private static Mock<IProductDescriptorFactory<XElement>> CreateFactory(ProductDescriptor descriptor = null)
 		{
-			var factoryMock = new Mock<IFoodDescriptorFactory>();
-			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(descriptor ?? new FoodDescriptor());
+			var factoryMock = new Mock<IProductDescriptorFactory<XElement>>();
+			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(descriptor ?? new ProductDescriptor());
 			return factoryMock;
 		}
 		#endregion

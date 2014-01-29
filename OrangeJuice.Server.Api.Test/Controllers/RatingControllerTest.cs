@@ -141,7 +141,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PostRating_Should_Return_Ok()
+		public async Task PostRating_Should_Return_RatingId()
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
@@ -153,7 +153,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.PostRating(new RatingInformation());
 
 			// Assert
-			result.Should().BeOfType<OkResult>();
+			result.Should().BeOfType<OkNegotiatedContentResult<RatingId>>();
 		}
 		#endregion
 

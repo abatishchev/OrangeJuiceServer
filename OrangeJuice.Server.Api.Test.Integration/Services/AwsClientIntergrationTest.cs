@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 	public class AwsClientIntergrationTest
 	{
 		[TestMethod]
-		public async Task GetItems_Should_Return_Items()
+		public async Task GetItems_Should_Return_Sequnce_Of_XElement()
 		{
 			using (IUnityContainer container = UnityConfig.InitializeContainer())
 			{

@@ -10,28 +10,28 @@ using OrangeJuice.Server.Data;
 namespace OrangeJuice.Server.Test.Data
 {
 	[TestClass]
-	public class XmlFoodDescriptorFactoryTest
+	public class XmlProductDescriptorFactoryTest
 	{
 		#region Test methods
 		[TestMethod]
-		public void Create_Should_Return_FoodDescriptor_Having_Id()
+		public void Create_Should_Return_ProductDescriptor_Having_Id()
 		{
 			// Arrange
 			const string id = "id";
 
 			XElement element = CreateElement(id);
 
-			IFoodDescriptorFactory factory = new XmlFoodDescriptorFactory();
+			IProductDescriptorFactory<XElement> factory = new XmlProductDescriptorFactory();
 
 			// Act
-			FoodDescriptor descriptor = factory.Create(element);
+			ProductDescriptor descriptor = factory.Create(element);
 
 			// Assert
 			descriptor.Id.Should().Be(id);
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_FoodDescriptor_Having_Attributes()
+		public void Create_Should_Return_ProductDescriptor_Having_Attributes()
 		{
 			// Arrange
 			const string title = "title";
@@ -39,10 +39,10 @@ namespace OrangeJuice.Server.Test.Data
 
 			XElement element = CreateElement(title: title, brand: brand);
 
-			IFoodDescriptorFactory factory = new XmlFoodDescriptorFactory();
+			IProductDescriptorFactory<XElement> factory = new XmlProductDescriptorFactory();
 
 			// Act
-			FoodDescriptor descriptor = factory.Create(element);
+			ProductDescriptor descriptor = factory.Create(element);
 
 			// Assert
 			descriptor.Title.Should().Be(title);
@@ -50,7 +50,7 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_FoodDescriptor_Having_Images()
+		public void Create_Should_Return_ProductDescriptor_Having_Images()
 		{
 			// Arrange
 			const string smallImageUrl = "smallImageUrl";
@@ -59,10 +59,10 @@ namespace OrangeJuice.Server.Test.Data
 
 			XElement element = CreateElement(smallImageUrl: smallImageUrl, mediumImageUrl: mediumImageUrl, largeImageUrl: largeImageUrl);
 
-			IFoodDescriptorFactory factory = new XmlFoodDescriptorFactory();
+			IProductDescriptorFactory<XElement> factory = new XmlProductDescriptorFactory();
 
 			// Act
-			FoodDescriptor descriptor = factory.Create(element);
+			ProductDescriptor descriptor = factory.Create(element);
 
 			// Assert
 			descriptor.SmallImageUrl.Should().Be(smallImageUrl);

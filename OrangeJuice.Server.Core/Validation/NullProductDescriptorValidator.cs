@@ -5,10 +5,10 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Validation
 {
-	public sealed class NullFoodDescriptorValidator : IValidator<FoodDescriptor>
+	public sealed class NullProductDescriptorValidator : IValidator<ProductDescriptor>
 	{
 		#region IValidator methods
-		public bool IsValid(FoodDescriptor item)
+		public bool IsValid(ProductDescriptor item)
 		{
 			return GetProperties(item).All(p => p != null);
 		}
@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Validation
 
 
 		#region Methods
-		private static IEnumerable<object> GetProperties(FoodDescriptor item)
+		private static IEnumerable<object> GetProperties(ProductDescriptor item)
 		{
 			yield return item.Id;
 			yield return item.Title;

@@ -7,47 +7,48 @@ using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
-	public sealed class FoodController : ApiController
+	public sealed class ProductController : ApiController
 	{
 		#region Fields
-		private readonly IFoodRepository _foodRepository;
+		private readonly IProductRepository _productRepository;
 		#endregion
 
 		#region Ctor
-		public FoodController(IFoodRepository foodRepository)
+		public ProductController(IProductRepository productRepository)
 		{
-			_foodRepository = foodRepository;
+			_productRepository = productRepository;
 		}
 		#endregion
 
+		// TODO: change to GET
 		#region HTTP methods
 		/// <summary>
-		/// Searches for food by text
+		/// Searches for product by text
 		/// </summary>
-		/// <returns>Collection of food descriptors</returns>
-		/// <url>POST /api/food</url>
+		/// <returns>Collection of product descriptors</returns>
+		/// <url>POST /api/product</url>
 		[ActionName("title")]
 		public async Task<IHttpActionResult> PostTitle(TitleSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var descriptors = await _foodRepository.Search(searchCriteria.Title);
+			var descriptors = await _productRepository.Search(searchCriteria.Title);
 			return Ok(descriptors.ToArray());
 		}
 
 		/// <summary>
-		/// Searches for food by barcode
+		/// Searches for product by barcode
 		/// </summary>
-		/// <returns>Single food descriptor</returns>
-		/// <url>POST /api/food</url>
+		/// <returns>Single product descriptor</returns>
+		/// <url>POST /api/product</url>
 		[ActionName("barcode")]
 		public async Task<IHttpActionResult> PostBarcode(BarcodeSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var descriptor = await _foodRepository.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
+			var descriptor = await _productRepository.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			return Ok(descriptor);
 		}
 		#endregion

@@ -106,7 +106,7 @@ namespace OrangeJuice.Server.Api
 				new InjectionFactory(c => c.Resolve<IFactory<ApiVersion>>().Create()));
 			#endregion
 
-			#region FoodController
+			#region ProductController
 			#region Azure
 			container.RegisterType<IFactory<AzureOptions>, AzureOptionsFactory>(
 				new HierarchicalLifetimeManager());
@@ -125,9 +125,13 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(AzureOptions), typeof(IBlobNameResolver), typeof(IBlobReader)));
 
-			container.RegisterType<IFoodProvider, AzureFoodProvider>(
-				"Azure",
+			container.RegisterType<IProductDescriptorFactory<string>, JsonProductDescriptorFactory>(
 				new HierarchicalLifetimeManager());
+
+			container.RegisterType<IProductProvider, AzureProductProvider>(
+				"Azure",
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(typeof(IAzureClient), typeof(IProductDescriptorFactory<string>)));
 			#endregion
 
 			#region Aws
@@ -165,21 +169,21 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IUrlBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
 
-			container.RegisterType<IFoodDescriptorFactory, XmlFoodDescriptorFactory>(
+			container.RegisterType<IProductDescriptorFactory<XElement>, XmlProductDescriptorFactory>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IFoodProvider, AwsFoodProvider>(
+			container.RegisterType<IProductProvider, AwsProductProvider>(
 				"Aws",
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAwsClient), typeof(IFoodDescriptorFactory)));
+				new InjectionConstructor(typeof(IAwsClient), typeof(IProductDescriptorFactory<XElement>)));
 			#endregion
 
-			container.RegisterType<IValidator<FoodDescriptor>, NullFoodDescriptorValidator>(
+			container.RegisterType<IValidator<ProductDescriptor>, NullProductDescriptorValidator>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IFoodRepository, CompositeFoodRepository>(
+			container.RegisterType<IProductRepository, CompositeProductRepository>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(container.ResolveAll<IFoodProvider>(), typeof(IValidator<FoodDescriptor>)));
+				new InjectionConstructor(container.ResolveAll<IProductProvider>(), typeof(IValidator<ProductDescriptor>)));
 			#endregion
 
 			#region UserController

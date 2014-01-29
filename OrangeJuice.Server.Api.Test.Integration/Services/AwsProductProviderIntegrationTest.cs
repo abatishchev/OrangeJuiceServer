@@ -11,18 +11,18 @@ using OrangeJuice.Server.Services;
 namespace OrangeJuice.Server.Api.Test.Integration.Services
 {
 	[TestClass]
-	public class AwsFoodProviderIntegrationTest
+	public class AwsProductProviderIntegrationTest
 	{
 		[TestMethod]
-		public async Task Lookup_Should_Return_Descriptor()
+		public async Task Lookup_Should_Return_ProductDescriptor()
 		{
 			using (IUnityContainer container = UnityConfig.InitializeContainer())
 			{
 				// Arrange
-				IFoodProvider provider = container.Resolve<IFoodProvider>("Aws");
+				IProductProvider provider = container.Resolve<IProductProvider>("Aws");
 
 				// Act
-				FoodDescriptor descriptor = await provider.Lookup("0747599330971", BarcodeType.EAN.ToString());
+				ProductDescriptor descriptor = await provider.SearchBarcode("0747599330971", BarcodeType.EAN.ToString());
 
 				// Assert
 				descriptor.Should().NotBeNull();

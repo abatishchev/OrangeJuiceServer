@@ -1,28 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class AwsFoodProvider : IFoodProvider
+	public sealed class AwsProductProvider : IProductProvider
 	{
 		#region Fields
 		private readonly IAwsClient _client;
-		private readonly IFoodDescriptorFactory _factory;
+		private readonly IProductDescriptorFactory<XElement> _factory;
 		#endregion
 
 		#region Ctor
-		public AwsFoodProvider(IAwsClient client, IFoodDescriptorFactory factory)
+		public AwsProductProvider(IAwsClient client, IProductDescriptorFactory<XElement> factory)
 		{
 			_client = client;
 			_factory = factory;
 		}
 		#endregion
 
-		#region IFoodProvider members
-		public async Task<IEnumerable<FoodDescriptor>> Search(string title)
+		#region IProductProvider members
+		public async Task<IEnumerable<ProductDescriptor>> SearchTitle(string title)
 		{
 			var args = new Dictionary<string, string>
 			{
@@ -36,7 +37,7 @@ namespace OrangeJuice.Server.Services
 			return items.Select(i => _factory.Create(i));
 		}
 
-		public async Task<FoodDescriptor> Lookup(string barcode, string barcodeType)
+		public async Task<ProductDescriptor> SearchBarcode(string barcode, string barcodeType)
 		{
 			var args = new Dictionary<string, string>
 			{

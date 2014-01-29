@@ -8,13 +8,13 @@ using OrangeJuice.Server.Validation;
 namespace OrangeJuice.Server.Test.Validation
 {
 	[TestClass]
-	public class NullFoodDescriptorValidatorTest
+	public class NullProductDescriptorValidatorTest
 	{
 		[TestMethod]
 		public void Validate_Should_Return_True_When_All_Properies_Are_Not_Null()
 		{
 			// Arrange
-			FoodDescriptor descriptor = new FoodDescriptor
+			ProductDescriptor descriptor = new ProductDescriptor
 			{
 				Id = "id",
 				Title = "title",
@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Test.Validation
 				MediumImageUrl = "mediumImageUrl",
 				LargeImageUrl = "largeImageUrl"
 			};
-			IValidator<FoodDescriptor> validator = new NullFoodDescriptorValidator();
+			IValidator<ProductDescriptor> validator = new NullProductDescriptorValidator();
 
 			// Act
 			bool isValid = validator.IsValid(descriptor);

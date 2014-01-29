@@ -58,11 +58,11 @@
     <Compile Include="Data\ApiVersion.cs" />
     <Compile Include="Data\BarcodeType.cs" />
     <Compile Include="Data\RatingId.cs" />
-    <Compile Include="Data\FoodDescriptor.cs" />
-    <Compile Include="Data\IFoodDescriptorFactory.cs" />
+    <Compile Include="Data\ProductDescriptor.cs" />
+    <Compile Include="Data\IProductDescriptorFactory.cs" />
     <Compile Include="Data\IProduct.cs" />
     <Compile Include="IPipeline.cs" />
-    <Compile Include="Services\IFoodRepository.cs" />
+    <Compile Include="Services\IProductRepository.cs" />
     <Compile Include="Data\IRating.cs" />
     <Compile Include="Data\Repository\IRatingRepository.cs" />
     <Compile Include="Data\IUser.cs" />
@@ -78,7 +78,7 @@
     <Compile Include="Services\IAzureClient.cs" />
     <Compile Include="Services\IBlobNameResolver.cs" />
     <Compile Include="Services\IBlobReader.cs" />
-    <Compile Include="Services\IFoodProvider.cs" />
+    <Compile Include="Services\IProductProvider.cs" />
     <Compile Include="Services\IItemSelector.cs" />
     <Compile Include="Services\IUrlBuilder.cs" />
     <Compile Include="Services\IQuerySigner.cs" />

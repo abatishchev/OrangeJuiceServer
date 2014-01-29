@@ -22,10 +22,10 @@ namespace OrangeJuice.Server.Api.Controllers
 
 		#region HTTP methods
 		/// <summary>
-		/// Searches for food rating by product id and user guid
+		/// Searches for product rating by rating id
 		/// </summary>
 		/// <returns>Rating entity</returns>
-		/// <url>GET /api/rating</url>
+		/// <url>GET /api/rating/?userId={guid}&productId={guid}</url>
 		public async Task<IHttpActionResult> GetRating(RatingId ratingId)
 		{
 			if (!ModelState.IsValid)
@@ -39,22 +39,24 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		/// <summary>
-		/// Adds or updates rating basing on its existence by product id and user guid
+		/// Adds or updates product rating
 		/// </summary>
-		/// <returns>200 OK</returns>
+		/// <returns>Rating id</returns>
 		/// <url>POST /api/rating</url>
 		public async Task<IHttpActionResult> PostRating(RatingInformation ratingInformation)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			await _ratingRepository.AddOrUpdate(new RatingId { UserId = ratingInformation.UserId, ProductId = ratingInformation.ProductId }, ratingInformation.Value, ratingInformation.Comment);
+			RatingId ratingId = new RatingId { UserId = ratingInformation.UserId, ProductId = ratingInformation.ProductId };
 
-			return Ok();
+			await _ratingRepository.AddOrUpdate(ratingId, ratingInformation.Value, ratingInformation.Comment);
+
+			return Ok(ratingId);
 		}
 
 		/// <summary>
-		/// Deletes rating by product id and user guid
+		/// Deletes product rating by rating id
 		/// </summary>
 		/// <returns>200 OK</returns>
 		/// <url>DELETE /api/rating</url>
