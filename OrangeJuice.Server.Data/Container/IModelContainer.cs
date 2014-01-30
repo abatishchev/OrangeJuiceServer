@@ -18,6 +18,8 @@ namespace OrangeJuice.Server.Data.Container
 		#region Methods
 		DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
+		int SaveChanges();
+
 		Task<int> SaveChangesAsync();
 		#endregion
 	}

@@ -184,7 +184,7 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IProductUnit)));
 
-			container.RegisterType<IProductCoordinator, CloudProductCoordinator>(
+			container.RegisterType<IProductManager, CloudProductManager>(
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IProductRepository), typeof(IAzureProductProvider), typeof(IAwsProductProvider)));
 			#endregion

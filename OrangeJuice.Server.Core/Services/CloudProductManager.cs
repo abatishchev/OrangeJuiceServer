@@ -5,7 +5,7 @@ using OrangeJuice.Server.Data.Repository;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class CloudProductCoordinator : IProductCoordinator
+	public sealed class CloudProductManager : IProductManager
 	{
 		#region Fields
 		private readonly IProductRepository _productRepository;
@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public CloudProductCoordinator(IProductRepository productRepository, IAzureProductProvider azureProvider, IAwsProductProvider awsProvider)
+		public CloudProductManager(IProductRepository productRepository, IAzureProductProvider azureProvider, IAwsProductProvider awsProvider)
 		{
 			_productRepository = productRepository;
 			_azureProvider = azureProvider;
@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Services
 		}
 		#endregion
 
-		#region IProductCoordinator members
+		#region IProductManager members
 		public async Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)
 		{
 			IProduct product = await _productRepository.Search(barcode, barcodeType);
@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Services
 
 			ProductDescriptor descriptor = await _awsProvider.Search(barcode, barcodeType);
 
-			await Task.Factory.StartNew(() => SaveProduct(descriptor, barcode, barcodeType));
+			await SaveProduct(descriptor, barcode, barcodeType);
 
 			return descriptor;
 		}

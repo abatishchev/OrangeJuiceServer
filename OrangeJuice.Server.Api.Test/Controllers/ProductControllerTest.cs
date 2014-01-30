@@ -34,13 +34,13 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProduct_Should_Pass_Title_To_ProductRepository_Lookup()
+		public async Task GetProduct_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
 		{
 			// Arrange
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
-			var productRepositoryMock = new Mock<IProductCoordinator>();
+			var productRepositoryMock = new Mock<IProductManager>();
 			productRepositoryMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor());
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
@@ -53,12 +53,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProduct_Should_Return_ProductDescriptor_Returned_By_ProductRepository_Lookup()
+		public async Task GetProduct_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search()
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
 
-			var productRepositoryMock = new Mock<IProductCoordinator>();
+			var productRepositoryMock = new Mock<IProductManager>();
 			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
@@ -72,10 +72,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProduct_Should_Return_NotFound_When_ProductRepository_Lookup_Returned_Null()
+		public async Task GetProduct_Should_Return_NotFound_When_ProductManager_Search_Returned_Null()
 		{
 			// Arrange
-			var productRepositoryMock = new Mock<IProductCoordinator>();
+			var productRepositoryMock = new Mock<IProductManager>();
 			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
@@ -89,9 +89,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static ProductController CreateController(IProductCoordinator coordinator = null)
+		private static ProductController CreateController(IProductManager manager = null)
 		{
-			return ControllerFactory.Create<ProductController>(coordinator ?? new Mock<IProductCoordinator>().Object);
+			return ControllerFactory.Create<ProductController>(manager ?? new Mock<IProductManager>().Object);
 		}
 		#endregion
 	}

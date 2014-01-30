@@ -9,8 +9,8 @@
           <Key>
             <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="ProductId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Barcode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProductId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Barcode" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="BarcodeType" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="Ratings">
@@ -27,7 +27,7 @@
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="varchar" MaxLength="254" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="254" Nullable="false" />
         </EntityType>
@@ -89,8 +89,8 @@
           <Key>
             <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
-          <Property Name="Barcode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Barcode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
           <Property Name="BarcodeType" Type="Model.BarcodeType" Nullable="false" />
           <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Products" FromRole="Product" ToRole="Rating" cg:SetterAccess="Internal" />
         </EntityType>
@@ -99,8 +99,8 @@
             <PropertyRef Name="UserId" />
             <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" cg:GetterAccess="Internal" />
-          <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" cg:GetterAccess="Internal" />
+          <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" cg:GetterAccess="Internal" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" cg:GetterAccess="Internal" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Value" Type="Byte" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Product" Relationship="Model.FK_Ratings_Products" FromRole="Rating" ToRole="Product" cg:SetterAccess="Internal" />
@@ -110,7 +110,7 @@
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" />
+          <Property Name="UserId" Type="Guid" Nullable="false" cg:SetterAccess="Internal" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="254" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Users" FromRole="User" ToRole="Rating" cg:SetterAccess="Internal" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="254" FixedLength="false" Unicode="true" />

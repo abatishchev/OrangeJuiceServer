@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data.Unit;
 
@@ -17,7 +18,7 @@ namespace OrangeJuice.Server.Data.Repository
 		}
 		#endregion
 
-		#region IProductCoordinator members
+		#region IProductManager members
 		public async Task<IProduct> Search(string barcode, BarcodeType barcodeType)
 		{
 			return await _productUnit.Get(barcode, barcodeType);

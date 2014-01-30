@@ -20,10 +20,8 @@ namespace OrangeJuice.Server.Services
 
 		public async Task Write(ICloudBlob blob, string content)
 		{
-			using (MemoryStream stream = new MemoryStream())
-			using (StreamWriter streamWriter = new StreamWriter(stream, Encoding.UTF8))
+			using (Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(content)))
 			{
-				streamWriter.Write(content);
 				await blob.UploadFromStreamAsync(stream);
 			}
 		}

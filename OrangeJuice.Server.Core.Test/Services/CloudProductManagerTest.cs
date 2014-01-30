@@ -3,7 +3,7 @@
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class CloudProductCoordinatorTest
+	public class CloudProductManagerTest
 	{
 		#region Search
 		[TestMethod]

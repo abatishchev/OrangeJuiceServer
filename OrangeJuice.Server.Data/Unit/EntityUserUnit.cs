@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Data.Unit
 		#region IUserUnit members
 		public async Task<User> Add(User user)
 		{
-			_container.Users.Add(user);
+			user = _container.Users.Add(user);
 
 			await _container.SaveChangesAsync();
 
