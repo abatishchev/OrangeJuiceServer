@@ -72,7 +72,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProduct_Should_Return_NotFound_When_ProductManager_Search_Returned_Null()
+		public async Task GetProduct_Should_Return_NotFound_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();

@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 	{
 		#region Validate
 		[TestMethod]
-		public void Validate_Should_Return_Empty_Sequence_When_Underlying_Validator_Validate_Returned_No_Errors()
+		public void Validate_Should_Return_Empty_Sequence_When_Underlying_Validator_Validate_Returns_No_Errors()
 		{
 			// Arrange
 			var underlyingValidator = new Mock<IValidator>();

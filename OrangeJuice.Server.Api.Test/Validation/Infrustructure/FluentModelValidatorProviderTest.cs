@@ -81,7 +81,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 		}
 
 		[TestMethod]
-		public void GetValidators_Should_Return_Empty_Sequece_When_ValidatorFactory_GetValidator_Returned_Null()
+		public void GetValidators_Should_Return_Empty_Sequece_When_ValidatorFactory_GetValidator_Returns_Null()
 		{
 			// Arrange
 			var validatorFactoryMock = CreateValidatorFactory(null);

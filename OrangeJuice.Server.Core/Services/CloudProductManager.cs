@@ -31,21 +31,12 @@ namespace OrangeJuice.Server.Services
 				return await _azureProvider.Get(product.ProductId);
 
 			ProductDescriptor descriptor = await _awsProvider.Search(barcode, barcodeType);
-
-			await SaveProduct(descriptor, barcode, barcodeType);
-
-			return descriptor;
-		}
-		#endregion
-
-		#region Methods
-		private async Task SaveProduct(ProductDescriptor descriptor, string barcode, BarcodeType barcodeType)
-		{
 			Guid productId = await _productRepository.Save(barcode, barcodeType);
 
 			descriptor.ProductId = productId;
-
 			await _azureProvider.Save(descriptor);
+
+			return descriptor;
 		}
 		#endregion
 	}
