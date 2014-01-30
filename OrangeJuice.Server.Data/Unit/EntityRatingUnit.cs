@@ -19,11 +19,11 @@ namespace OrangeJuice.Server.Data.Unit
 		#endregion
 
 		#region IRatingUnit members
-		public Task<int> AddOrUpdate(Rating rating)
+		public async Task AddOrUpdate(Rating rating)
 		{
 			_db.Ratings.AddOrUpdate(rating);
 
-			return _db.SaveChangesAsync();
+			await _db.SaveChangesAsync();
 		}
 
 		public Task<Rating> Get(RatingId ratingId)
@@ -31,11 +31,11 @@ namespace OrangeJuice.Server.Data.Unit
 			return _db.Ratings.FindAsync(ratingId.UserId, ratingId.ProductId);
 		}
 
-		public Task<int> Remove(Rating rating)
+		public async Task Remove(Rating rating)
 		{
 			_db.Ratings.Remove(rating);
 
-			return _db.SaveChangesAsync();
+			await _db.SaveChangesAsync();
 		}
 		#endregion
 

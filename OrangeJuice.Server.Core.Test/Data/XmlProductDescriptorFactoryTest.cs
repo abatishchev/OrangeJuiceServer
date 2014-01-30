@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Test.Data
 	{
 		#region Test methods
 		[TestMethod]
-		public void Create_Should_Return_ProductDescriptor_Having_Id()
+		public void Create_Should_Return_ProductDescriptor_Having_SourceProductId()
 		{
 			// Arrange
 			const string id = "id";
@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Test.Data
 			ProductDescriptor descriptor = factory.Create(element);
 
 			// Assert
-			descriptor.Id.Should().Be(id);
+			descriptor.SourceProductId.Should().Be(id);
 		}
 
 		[TestMethod]

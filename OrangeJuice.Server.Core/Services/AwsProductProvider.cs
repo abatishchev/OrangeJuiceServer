@@ -24,6 +24,11 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IProductProvider members
+		public Task Save(ProductDescriptor descriptor)
+		{
+			throw new NotSupportedException();
+		}
+
 		public Task<ProductDescriptor> SearchId(Guid productId)
 		{
 			throw new NotSupportedException();

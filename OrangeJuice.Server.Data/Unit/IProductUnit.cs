@@ -5,6 +5,8 @@ namespace OrangeJuice.Server.Data.Unit
 {
 	public interface IProductUnit : IDisposable
 	{
+		Task<Product> Add(string barcode, BarcodeType barcodeType);
+
 		Task<Product> Get(string barcode, BarcodeType barcodeType);
 	}
 }

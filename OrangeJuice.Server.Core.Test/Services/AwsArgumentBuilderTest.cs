@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Services;
 
 using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
@@ -21,14 +22,14 @@ namespace OrangeJuice.Server.Test.Services
 		public void BuildArgs_Should_Add_Default_Arguments()
 		{
 			// Arrange
-			const string accessKey = "anyKey";
-			const string associateTag = "anyTag";
+			const string accessKey = "key";
+			const string associateTag = "tag";
 
 			DateTime now = DateTime.UtcNow;
 			string timestamp = Convert.ToString(now);
 			var dateTimeProvider = CreateDateTimeProvider(now);
 
-			var argumentBuilder = CreateArgumentBuilder(accessKey, associateTag, dateTimeProvider.Object);
+			var argumentBuilder = CreateArgumentBuilder(new AwsOptions { AccessKey = accessKey, AssociateTag = associateTag }, dateTimeProvider.Object);
 
 			// Act
 			var args = argumentBuilder.BuildArgs(new StringDictionary());
@@ -45,8 +46,8 @@ namespace OrangeJuice.Server.Test.Services
 		public void BuildArgs_Should_Add_Arguments()
 		{
 			// Arange
-			const string key = "anyKey";
-			const string value = "anyValue";
+			const string key = "key";
+			const string value = "value";
 
 			var queryBuilder = CreateArgumentBuilder();
 
@@ -106,11 +107,10 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static AwsArgumentBuilder CreateArgumentBuilder(string accessKey = null, string associateTag = null, IDateTimeProvider dateTimeProvider = null)
+		private static AwsArgumentBuilder CreateArgumentBuilder(AwsOptions awsOptions = null, IDateTimeProvider dateTimeProvider = null)
 		{
 			return new AwsArgumentBuilder(
-				accessKey ?? "anyKey",
-				associateTag ?? "anyTag",
+				awsOptions ?? new AwsOptions(),
 				dateTimeProvider ?? CreateDateTimeProvider(DateTime.UtcNow).Object);
 		}
 

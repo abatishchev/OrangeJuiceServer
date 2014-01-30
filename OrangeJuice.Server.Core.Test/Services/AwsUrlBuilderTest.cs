@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
@@ -76,7 +77,7 @@ namespace OrangeJuice.Server.Test.Services
 		private static IUrlBuilder CreateUrlBuilder(IArgumentBuilder argumentBuilder = null, IQueryBuilder queryBuilder = null, IQuerySigner querySigner = null)
 		{
 			return new AwsUrlBuilder(
-				argumentBuilder ?? new AwsArgumentBuilder("", "", new UtcDateTimeProvider()),
+				argumentBuilder ?? new AwsArgumentBuilder(new AwsOptions { AccessKey = "", AssociateTag = "", SecretKey = "" }, new UtcDateTimeProvider()),
 				queryBuilder ?? new EncodedQueryBuilder(new PercentUrlEncoder(new PercentUrlEncodingPipeline())),
 				querySigner ?? CreateQuerySigner());
 		}

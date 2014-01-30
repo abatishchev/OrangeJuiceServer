@@ -4,8 +4,10 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace OrangeJuice.Server.Services
 {
-	public interface IBlobReader
+	public interface IBlobClient
 	{
 		Task<string> Read(ICloudBlob blob);
+
+		Task Write(ICloudBlob blob, string content);
 	}
 }

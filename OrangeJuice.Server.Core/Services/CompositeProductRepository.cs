@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,24 +33,26 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<ProductDescriptor> Lookup(string barcode, BarcodeType barcodeType)
 		{
-			// TODO: refactor out the flow
-
 			IProduct product = await _producDataRepository.Search(barcode, barcodeType);
 			if (product != null)
 				return await _azureProvider.SearchId(product.ProductId);
 
 			ProductDescriptor descriptor = await _awsProvider.SearchBarcode(barcode, barcodeType);
 
-			Task.Factory.StartNew(() => SaveProduct(descriptor));
+			Task.Factory.StartNew(() => SaveProduct(descriptor, barcode, barcodeType));
 
 			return descriptor;
 		}
 		#endregion
 
 		#region Methods
-		private void SaveProduct(ProductDescriptor descriptor)
+		private async Task SaveProduct(ProductDescriptor descriptor, string barcode, BarcodeType barcodeType)
 		{
-			throw new NotImplementedException();
+			IProduct product = await _producDataRepository.Save(barcode, barcodeType);
+
+			descriptor.ProductId = product.ProductId;
+
+			await _azureProvider.Save(descriptor);
 		}
 		#endregion
 	}

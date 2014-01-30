@@ -4,6 +4,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Test.Services
@@ -16,7 +17,7 @@ namespace OrangeJuice.Server.Test.Services
 		public void CreateHashAlgorithm_Should_Return_HMACSHA256()
 		{
 			// Arrange
-			IFactory<HashAlgorithm> factory = new AwsAlgorithmFactory("anyKey");
+			IFactory<HashAlgorithm> factory = new AwsAlgorithmFactory(new AwsOptions { SecretKey = "Key" });
 
 			// Act
 			HashAlgorithm hashAlgorithm = factory.Create();

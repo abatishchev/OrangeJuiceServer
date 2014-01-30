@@ -1,8 +1,12 @@
-﻿namespace OrangeJuice.Server.Data
+﻿using System;
+
+namespace OrangeJuice.Server.Data
 {
 	public class ProductDescriptor
 	{
-		public string Id { get; set; }
+		public Guid ProductId { get; set; }
+		
+		public string SourceProductId { get; set; }
 
 		public string Title { get; set; }
 

@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Data
 
 			return new ProductDescriptor
 			{
-				Id = (string)element.XPathSelectElement("x:ASIN", nm),
+				SourceProductId = (string)element.XPathSelectElement("x:ASIN", nm),
 
 				Title = (string)element.XPathSelectElement("x:ItemAttributes/x:Title", nm),
 				Brand = (string)element.XPathSelectElement("x:ItemAttributes/x:Brand", nm),

@@ -118,20 +118,20 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IBlobNameResolver, JsonBlobNameResolver>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IBlobReader, AsyncStreamBlobReader>(
+			container.RegisterType<IBlobClient, AzureBlobClient>(
 				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IAzureClient, AzureClient>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(AzureOptions), typeof(IBlobNameResolver), typeof(IBlobReader)));
+				new InjectionConstructor(typeof(AzureOptions), typeof(IBlobNameResolver), typeof(IBlobClient)));
 
-			container.RegisterType<IProductDescriptorFactory<string>, JsonProductDescriptorFactory>(
+			container.RegisterType<IConverter<string, ProductDescriptor>, StringProductDescriptorConverter>(
 				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IProductProvider, AzureProductProvider>(
 				"Azure",
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAzureClient), typeof(IProductDescriptorFactory<string>)));
+				new InjectionConstructor(typeof(IAzureClient), typeof(IConverter<string, ProductDescriptor>)));
 			#endregion
 
 			#region Aws

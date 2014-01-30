@@ -1,3 +1,4 @@
+using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
@@ -19,6 +20,20 @@ namespace OrangeJuice.Server.Data.Unit
 		#endregion
 
 		#region IProductUnit members
+		public async Task<Product> Add(string barcode, BarcodeType barcodeType)
+		{
+			Product product = new Product
+			{
+				Barcode = barcode,
+				BarcodeType = barcodeType
+			};
+			product = _container.Products.Attach(product);
+
+			await _container.SaveChangesAsync();
+
+			return product;
+		}
+
 		public Task<Product> Get(string barcode, BarcodeType barcodeType)
 		{
 			return _container.Products.FirstOrDefaultAsync(p => p.Barcode == barcode && p.BarcodeType == barcodeType);

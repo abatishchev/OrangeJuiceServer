@@ -105,7 +105,6 @@
     <Compile Include="Services\JsonBlobNameResolverTest.cs" />
     <Compile Include="Services\XmlItemSelectorTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
-    <Compile Include="Validation\NullProductDescriptorValidatorTest.cs" />
     <Compile Include="Validation\XmlRequestValidatorTest.cs" />
     <Compile Include="Web\EncodedQueryBuilderTest.cs" />
     <Compile Include="Web\PercentUrlEncoderTest.cs" />
