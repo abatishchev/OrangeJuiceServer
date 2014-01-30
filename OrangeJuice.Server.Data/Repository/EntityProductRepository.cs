@@ -1,4 +1,4 @@
-﻿using System.Threading;
+﻿using System;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data.Unit;
@@ -24,9 +24,10 @@ namespace OrangeJuice.Server.Data.Repository
 			return await _productUnit.Get(barcode, barcodeType);
 		}
 
-		public async Task<IProduct> Save(string barcode, BarcodeType barcodeType)
+		public async Task<Guid> Save(string barcode, BarcodeType barcodeType)
 		{
-			return await _productUnit.Add(barcode, barcodeType);
+			Product product = await _productUnit.Add(barcode, barcodeType);
+			return product.ProductId;
 		}
 		#endregion
 

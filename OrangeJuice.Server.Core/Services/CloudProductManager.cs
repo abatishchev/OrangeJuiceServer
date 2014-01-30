@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Repository;
@@ -40,9 +41,9 @@ namespace OrangeJuice.Server.Services
 		#region Methods
 		private async Task SaveProduct(ProductDescriptor descriptor, string barcode, BarcodeType barcodeType)
 		{
-			IProduct product = await _productRepository.Save(barcode, barcodeType);
+			Guid productId = await _productRepository.Save(barcode, barcodeType);
 
-			descriptor.ProductId = product.ProductId;
+			descriptor.ProductId = productId;
 
 			await _azureProvider.Save(descriptor);
 		}

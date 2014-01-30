@@ -92,7 +92,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Search(It.IsAny<RatingId>())).ReturnsAsync(new Mock<IRating>().Object);
+			repositoryMock.Setup(r => r.Search(It.IsAny<RatingId>())).ReturnsAsync(Mock.Of<IRating>());
 
 			RatingController controller = CreateController(repositoryMock.Object);
 

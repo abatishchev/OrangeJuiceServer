@@ -151,7 +151,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const string name = "name";
 
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(email, name)).ReturnsAsync(new Mock<IUser>().Object);
+			repositoryMock.Setup(r => r.Register(email, name)).ReturnsAsync(Mock.Of<IUser>());
 
 			UserController controller = CreateController(repositoryMock.Object);
 			UserModel userModel = new UserModel { Email = email, Name = name };
