@@ -30,6 +30,7 @@ namespace OrangeJuice.Server.Data.Repository
 								new Rating
 								{
 									User = await _userUnit.Get(ratingId.UserId),
+									// TOOD: set Product instead
 									ProductId = ratingId.ProductId,
 								};
 				rating.Value = ratingValue;

@@ -24,14 +24,16 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// Searches for product by barcode
 		/// </summary>
 		/// <returns>Single product descriptor</returns>
-		/// <url>POST /api/product</url>
-		//[ActionName("barcode")]
-		public async Task<IHttpActionResult> GetProduct(BarcodeSearchCriteria searchCriteria)
+		/// <url>GET /api/product/?barcode={string}&barcodeType={enum}</url>
+		public async Task<IHttpActionResult> GetProduct([FromUri] BarcodeSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
 			var descriptor = await _productCoordinator.Search(searchCriteria.Barcode, searchCriteria.BarcodeType);
+			if (descriptor == null)
+				return NotFound();
+
 			return Ok(descriptor);
 		}
 		#endregion

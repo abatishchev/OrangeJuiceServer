@@ -15,7 +15,7 @@ namespace OrangeJuice.Server.Api.Validation
 			RuleFor(x => x.Barcode).NotNull();
 			RuleFor(x => x.Barcode).Length(UPCLength, EANLength);
 
-			//RuleFor(x => x.BarcodeType).NotEmpty();
+			RuleFor(x => x.BarcodeType).NotEmpty();
 		}
 	}
 }

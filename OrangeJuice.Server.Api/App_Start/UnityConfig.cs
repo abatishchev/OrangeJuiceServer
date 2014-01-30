@@ -176,8 +176,13 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IAwsClient), typeof(IFactory<XElement, ProductDescriptor>)));
 			#endregion
 
+			container.RegisterType<IProductUnit, EntityProductUnit>(
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(typeof(IModelContainer)));
+
 			container.RegisterType<IProductRepository, EntityProductRepository>(
-				new HierarchicalLifetimeManager());
+				new HierarchicalLifetimeManager(),
+				new InjectionConstructor(typeof(IProductUnit)));
 
 			container.RegisterType<IProductCoordinator, CloudProductCoordinator>(
 				new HierarchicalLifetimeManager(),

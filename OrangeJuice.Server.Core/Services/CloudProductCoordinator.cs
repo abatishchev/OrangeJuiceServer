@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Services
 
 			ProductDescriptor descriptor = await _awsProvider.Search(barcode, barcodeType);
 
-			Task.Factory.StartNew(() => SaveProduct(descriptor, barcode, barcodeType));
+			await Task.Factory.StartNew(() => SaveProduct(descriptor, barcode, barcodeType));
 
 			return descriptor;
 		}

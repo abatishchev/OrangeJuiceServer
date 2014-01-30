@@ -72,7 +72,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProduct_Should_Return_Null_When_ProductRepository_Lookup_Returned_Null()
+		public async Task GetProduct_Should_Return_NotFound_When_ProductRepository_Lookup_Returned_Null()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductCoordinator>();
@@ -82,10 +82,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.GetProduct(new BarcodeSearchCriteria());
-			ProductDescriptor actual = ((OkNegotiatedContentResult<ProductDescriptor>)result).Content;
 
 			// Assert
-			actual.Should().BeNull();
+			result.Should().BeOfType<NotFoundResult>();
 		}
 		#endregion
 

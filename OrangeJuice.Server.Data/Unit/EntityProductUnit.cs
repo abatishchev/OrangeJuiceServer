@@ -1,4 +1,3 @@
-using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace OrangeJuice.Server.Data.Unit
 				Barcode = barcode,
 				BarcodeType = barcodeType
 			};
-			product = _container.Products.Attach(product);
+			product = _container.Products.Add(product);
 
 			await _container.SaveChangesAsync();
 
