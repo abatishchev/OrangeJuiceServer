@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using OrangeJuice.Server.Configuration;
+
 namespace OrangeJuice.Server.Services
 {
 	public sealed class AwsArgumentBuilder : IArgumentBuilder
@@ -12,10 +14,10 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public AwsArgumentBuilder(string accessKey, string associateTag, IDateTimeProvider dateTimeProvider)
+		public AwsArgumentBuilder(AwsOptions awsOptions, IDateTimeProvider dateTimeProvider)
 		{
-			_accessKey = accessKey;
-			_associateTag = associateTag;
+			_accessKey = awsOptions.AccessKey;
+			_associateTag = awsOptions.AssociateTag;
 			_dateTimeProvider = dateTimeProvider;
 		}
 		#endregion

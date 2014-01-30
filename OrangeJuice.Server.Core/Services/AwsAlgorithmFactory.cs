@@ -1,15 +1,17 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
+using OrangeJuice.Server.Configuration;
+
 namespace OrangeJuice.Server.Services
 {
 	public sealed class AwsAlgorithmFactory : IFactory<HashAlgorithm>
 	{
 		private readonly string _secretKey;
 
-		public AwsAlgorithmFactory(string secretKey)
+		public AwsAlgorithmFactory(AwsOptions awsOptions)
 		{
-			_secretKey = secretKey;
+			_secretKey = awsOptions.SecretKey;
 		}
 
 		public HashAlgorithm Create()

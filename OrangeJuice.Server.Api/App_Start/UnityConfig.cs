@@ -144,11 +144,11 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(container.Resolve<AwsOptions>().AccessKey, container.Resolve<AwsOptions>().AssociateTag, typeof(IDateTimeProvider)));
+				new InjectionConstructor(typeof(AwsOptions), typeof(IDateTimeProvider)));
 
 			container.RegisterType<IFactory<HashAlgorithm>, AwsAlgorithmFactory>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(container.Resolve<AwsOptions>().SecretKey));
+				new InjectionConstructor(typeof(AwsOptions)));
 
 			container.RegisterType<IQuerySigner, AwsQuerySigner>(
 				new HierarchicalLifetimeManager(),
@@ -178,15 +178,15 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IAwsClient), typeof(IProductDescriptorFactory<XElement>)));
 			#endregion
 
-			container.RegisterType<IValidator<ProductDescriptor>, NullProductDescriptorValidator>(
-				new HierarchicalLifetimeManager());
-
 			container.RegisterType<Data.Repository.IProductRepository, EntityProductRepository>(
 				new HierarchicalLifetimeManager());
 
 			container.RegisterType<Services.IProductRepository, CompositeProductRepository>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(Data.Repository.IProductRepository), container.Resolve<IProductProvider>("Azure"), container.Resolve<IProductProvider>("Aws")));
+				new InjectionConstructor(
+					typeof(Data.Repository.IProductRepository),
+					container.Resolve<IProductProvider>("Azure"),
+					container.Resolve<IProductProvider>("Aws")));
 			#endregion
 
 			#region UserController
