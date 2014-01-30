@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var descriptor = await _productCoordinator.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
+			var descriptor = await _productCoordinator.Search(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			return Ok(descriptor);
 		}
 		#endregion

@@ -4,9 +4,9 @@ using System.Xml.XPath;
 
 namespace OrangeJuice.Server.Data
 {
-	public sealed class XmlProductDescriptorFactory : IProductDescriptorFactory<XElement>
+	public sealed class XmlProductDescriptorFactory : IFactory<XElement, ProductDescriptor>
 	{
-		#region IProductDescriptorFactory members
+		#region IParamFactory members
 		public ProductDescriptor Create(XElement element)
 		{
 			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());

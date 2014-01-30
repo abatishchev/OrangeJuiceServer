@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Test.Data
 
 			XElement element = CreateElement(id);
 
-			IProductDescriptorFactory<XElement> factory = new XmlProductDescriptorFactory();
+			var factory = new XmlProductDescriptorFactory();
 
 			// Act
 			ProductDescriptor descriptor = factory.Create(element);
@@ -39,7 +39,7 @@ namespace OrangeJuice.Server.Test.Data
 
 			XElement element = CreateElement(title: title, brand: brand);
 
-			IProductDescriptorFactory<XElement> factory = new XmlProductDescriptorFactory();
+			var factory = new XmlProductDescriptorFactory();
 
 			// Act
 			ProductDescriptor descriptor = factory.Create(element);
@@ -59,7 +59,7 @@ namespace OrangeJuice.Server.Test.Data
 
 			XElement element = CreateElement(smallImageUrl: smallImageUrl, mediumImageUrl: mediumImageUrl, largeImageUrl: largeImageUrl);
 
-			IProductDescriptorFactory<XElement> factory = new XmlProductDescriptorFactory();
+			var factory = new XmlProductDescriptorFactory();
 
 			// Act
 			ProductDescriptor descriptor = factory.Create(element);

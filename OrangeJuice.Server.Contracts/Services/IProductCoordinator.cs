@@ -6,6 +6,6 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IProductCoordinator
 	{
-		Task<ProductDescriptor> Lookup(string barcode, BarcodeType barcodeType);
+		Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType);
 	}
 }

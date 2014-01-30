@@ -10,11 +10,11 @@ namespace OrangeJuice.Server.Services
 	{
 		#region Fields
 		private readonly IAwsClient _client;
-		private readonly IProductDescriptorFactory<XElement> _factory;
+		private readonly IFactory<XElement, ProductDescriptor> _factory;
 		#endregion
 
 		#region Ctor
-		public AwsProductProvider(IAwsClient client, IProductDescriptorFactory<XElement> factory)
+		public AwsProductProvider(IAwsClient client, IFactory<XElement, ProductDescriptor> factory)
 		{
 			_client = client;
 			_factory = factory;

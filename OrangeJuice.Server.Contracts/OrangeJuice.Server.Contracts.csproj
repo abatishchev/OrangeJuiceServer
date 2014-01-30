@@ -58,7 +58,6 @@
     <Compile Include="Data\ApiVersion.cs" />
     <Compile Include="Data\BarcodeType.cs" />
     <Compile Include="Data\IProduct.cs" />
-    <Compile Include="Data\IProductDescriptorFactory.cs" />
     <Compile Include="Data\IRating.cs" />
     <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\ProductDescriptor.cs" />

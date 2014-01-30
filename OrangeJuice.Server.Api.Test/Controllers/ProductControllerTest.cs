@@ -41,7 +41,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
 			var productRepositoryMock = new Mock<IProductCoordinator>();
-			productRepositoryMock.Setup(r => r.Lookup(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor());
+			productRepositoryMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor());
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
@@ -49,7 +49,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			await controller.GetProduct(new BarcodeSearchCriteria { Barcode = barcode, BarcodeType = barcodeType });
 
 			// Assert
-			productRepositoryMock.Verify(r => r.Lookup(barcode, barcodeType), Times.Once);
+			productRepositoryMock.Verify(r => r.Search(barcode, barcodeType), Times.Once);
 		}
 
 		[TestMethod]
@@ -59,7 +59,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductDescriptor expected = new ProductDescriptor();
 
 			var productRepositoryMock = new Mock<IProductCoordinator>();
-			productRepositoryMock.Setup(r => r.Lookup(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
+			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
@@ -76,7 +76,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductCoordinator>();
-			productRepositoryMock.Setup(r => r.Lookup(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
+			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
 

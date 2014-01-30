@@ -168,13 +168,12 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IUrlBuilder), typeof(IDocumentLoader), typeof(IItemSelector)));
 
-			container.RegisterType<IProductDescriptorFactory<XElement>, XmlProductDescriptorFactory>(
+			container.RegisterType<IFactory<XElement, ProductDescriptor>, XmlProductDescriptorFactory>(
 				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IAwsProductProvider, AwsProductProvider>(
-				"Aws",
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAwsClient), typeof(IProductDescriptorFactory<XElement>)));
+				new InjectionConstructor(typeof(IAwsClient), typeof(IFactory<XElement, ProductDescriptor>)));
 			#endregion
 
 			container.RegisterType<IProductRepository, EntityProductRepository>(

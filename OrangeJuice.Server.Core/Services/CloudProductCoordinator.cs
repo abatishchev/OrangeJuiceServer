@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IProductCoordinator members
-		public async Task<ProductDescriptor> Lookup(string barcode, BarcodeType barcodeType)
+		public async Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)
 		{
 			IProduct product = await _productRepository.Search(barcode, barcodeType);
 			if (product != null)
