@@ -128,8 +128,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IConverter<string, ProductDescriptor>, StringProductDescriptorConverter>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IProductProvider, AzureProductProvider>(
-				"Azure",
+			container.RegisterType<IAzureProductProvider, AzureProductProvider>(
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IAzureClient), typeof(IConverter<string, ProductDescriptor>)));
 			#endregion
@@ -172,21 +171,18 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IProductDescriptorFactory<XElement>, XmlProductDescriptorFactory>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IProductProvider, AwsProductProvider>(
+			container.RegisterType<IAwsProductProvider, AwsProductProvider>(
 				"Aws",
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IAwsClient), typeof(IProductDescriptorFactory<XElement>)));
 			#endregion
 
-			container.RegisterType<Data.Repository.IProductRepository, EntityProductRepository>(
+			container.RegisterType<IProductRepository, EntityProductRepository>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<Services.IProductCoordinator, CloudProductCoordinator>(
+			container.RegisterType<IProductCoordinator, CloudProductCoordinator>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(
-					typeof(Data.Repository.IProductRepository),
-					container.Resolve<IProductProvider>("Azure"),
-					container.Resolve<IProductProvider>("Aws")));
+				new InjectionConstructor(typeof(IProductRepository), typeof(IAzureProductProvider), typeof(IAwsProductProvider)));
 			#endregion
 
 			#region UserController

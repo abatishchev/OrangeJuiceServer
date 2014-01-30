@@ -4,8 +4,9 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Services
 {
-	public interface IProductCoordinator
+	public interface IAwsProductProvider
 	{
-		Task<ProductDescriptor> Lookup(string barcode, BarcodeType barcodeType);
+		Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType);
+
 	}
 }

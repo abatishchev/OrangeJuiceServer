@@ -39,7 +39,7 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IProductCoordinator CreateCoordinator(IProductRepository productRepository, IProductProvider azureProvider, IProductProvider awsProvider)
+		private static IProductCoordinator CreateCoordinator(IProductRepository productRepository, IAzureProductProvider azureProvider, IAwsProductProvider awsProvider)
 		{
 			return new CloudProductCoordinator(
 				productRepository,

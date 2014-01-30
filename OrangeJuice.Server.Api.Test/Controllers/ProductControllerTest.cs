@@ -18,77 +18,23 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	[TestClass]
 	public class ProductControllerTest
 	{
-		#region PostTitle
+		#region GetProduct
 		[TestMethod]
-		public async Task PostTitle_Should_Return_InvalidModelState_When_Model_Not_IsValid()
+		public async Task GetProduct_Should_Return_InvalidModelState_When_Model_Not_IsValid()
 		{
 			// Arrange
 			ProductController controller = CreateController();
 			controller.ModelState.AddModelError("", "");
 
 			// Act
-			IHttpActionResult result = await controller.PostTitle(new TitleSearchCriteria());
+			IHttpActionResult result = await controller.GetProduct(new BarcodeSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<InvalidModelStateResult>();
 		}
 
 		[TestMethod]
-		public async Task PostTitle_Should_Pass_Title_To_ProductRepository_SearchTitle()
-		{
-			// Arrange
-			const string title = "title";
-			TitleSearchCriteria searchCriteria = new TitleSearchCriteria { Title = title };
-
-			var productRepositoryMock = new Mock<IProductCoordinator>();
-			productRepositoryMock.Setup(r => r.Search(title)).ReturnsAsync(new[] { new ProductDescriptor() });
-
-			ProductController controller = CreateController(productRepositoryMock.Object);
-
-			// Act
-			await controller.PostTitle(searchCriteria);
-
-			// Assert
-			productRepositoryMock.Verify(r => r.Search(title), Times.Once);
-		}
-
-		[TestMethod]
-		public async Task PostTitle_Should_Return_Collection_Of_ProductDescriptors_Returned_By_ProductRepository_SearchTitle()
-		{
-			// Arrange
-			ProductDescriptor[] expected = { new ProductDescriptor() };
-
-			var productRepositoryMock = new Mock<IProductCoordinator>();
-			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>())).ReturnsAsync(expected);
-
-			ProductController controller = CreateController(productRepositoryMock.Object);
-
-			// Act
-			IHttpActionResult result = await controller.PostTitle(new TitleSearchCriteria());
-			var actual = ((OkNegotiatedContentResult<ProductDescriptor[]>)result).Content;
-
-			// Assert
-			actual.ShouldBeEquivalentTo(expected);
-		}
-		#endregion
-
-		#region PostBarcode
-		[TestMethod]
-		public async Task PostBarcode_Should_Return_InvalidModelState_When_Model_Not_IsValid()
-		{
-			// Arrange
-			ProductController controller = CreateController();
-			controller.ModelState.AddModelError("", "");
-
-			// Act
-			IHttpActionResult result = await controller.PostBarcode(new BarcodeSearchCriteria());
-
-			// Assert
-			result.Should().BeOfType<InvalidModelStateResult>();
-		}
-
-		[TestMethod]
-		public async Task PostBarcode_Should_Pass_Title_To_ProductRepository_Lookup()
+		public async Task GetProduct_Should_Pass_Title_To_ProductRepository_Lookup()
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -100,14 +46,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			await controller.PostBarcode(new BarcodeSearchCriteria { Barcode = barcode, BarcodeType = barcodeType });
+			await controller.GetProduct(new BarcodeSearchCriteria { Barcode = barcode, BarcodeType = barcodeType });
 
 			// Assert
 			productRepositoryMock.Verify(r => r.Lookup(barcode, barcodeType), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task PostBarcode_Should_Return_ProductDescriptor_Returned_By_ProductRepository_Lookup()
+		public async Task GetProduct_Should_Return_ProductDescriptor_Returned_By_ProductRepository_Lookup()
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
@@ -118,7 +64,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PostBarcode(new BarcodeSearchCriteria());
+			IHttpActionResult result = await controller.GetProduct(new BarcodeSearchCriteria());
 			ProductDescriptor actual = ((OkNegotiatedContentResult<ProductDescriptor>)result).Content;
 
 			// Assert
@@ -126,7 +72,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PostBarcode_Should_Return_Null_When_ProductRepository_Lookup_Returned_Null()
+		public async Task GetProduct_Should_Return_Null_When_ProductRepository_Lookup_Returned_Null()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductCoordinator>();
@@ -135,7 +81,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PostBarcode(new BarcodeSearchCriteria());
+			IHttpActionResult result = await controller.GetProduct(new BarcodeSearchCriteria());
 			ProductDescriptor actual = ((OkNegotiatedContentResult<ProductDescriptor>)result).Content;
 
 			// Assert

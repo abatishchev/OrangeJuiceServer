@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -8,7 +6,7 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class AwsProductProvider : IProductProvider
+	public sealed class AwsProductProvider : IAwsProductProvider
 	{
 		#region Fields
 		private readonly IAwsClient _client;
@@ -23,32 +21,8 @@ namespace OrangeJuice.Server.Services
 		}
 		#endregion
 
-		#region IProductProvider members
-		public Task Save(ProductDescriptor descriptor)
-		{
-			throw new NotSupportedException();
-		}
-
-		public Task<ProductDescriptor> SearchId(Guid productId)
-		{
-			throw new NotSupportedException();
-		}
-
-		public async Task<IEnumerable<ProductDescriptor>> SearchTitle(string title)
-		{
-			var args = new Dictionary<string, string>
-			{
-				{ "Operation", "ItemSearch" },
-				{ "SearchIndex", "Grocery" },
-				{ "ResponseGroup", "Images,ItemAttributes" },
-				{ "Keywords", title }
-			};
-
-			var items = await _client.GetItems(args);
-			return items.Select(i => _factory.Create(i));
-		}
-
-		public async Task<ProductDescriptor> SearchBarcode(string barcode, BarcodeType barcodeType)
+		#region IAwsProductProvider members
+		public async Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)
 		{
 			var args = new Dictionary<string, string>
 			{

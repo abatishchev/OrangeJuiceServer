@@ -19,10 +19,10 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			using (IUnityContainer container = UnityConfig.InitializeContainer())
 			{
 				// Arrange
-				IProductProvider provider = container.Resolve<IProductProvider>("Aws");
+				IAwsProductProvider provider = container.Resolve<IAwsProductProvider>("Aws");
 
 				// Act
-				ProductDescriptor descriptor = await provider.SearchBarcode("0747599330971", BarcodeType.EAN);
+				ProductDescriptor descriptor = await provider.Search("0747599330971", BarcodeType.EAN);
 
 				// Assert
 				descriptor.Should().NotBeNull();

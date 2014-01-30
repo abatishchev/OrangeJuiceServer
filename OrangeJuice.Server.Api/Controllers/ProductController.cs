@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
@@ -20,30 +19,14 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 		#endregion
 
-		// TODO: change to GET
 		#region HTTP methods
-		/// <summary>
-		/// Searches for product by text
-		/// </summary>
-		/// <returns>Collection of product descriptors</returns>
-		/// <url>POST /api/product</url>
-		[ActionName("title")]
-		public async Task<IHttpActionResult> PostTitle(TitleSearchCriteria searchCriteria)
-		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
-
-			var descriptors = await _productCoordinator.Search(searchCriteria.Title);
-			return Ok(descriptors.ToArray());
-		}
-
 		/// <summary>
 		/// Searches for product by barcode
 		/// </summary>
 		/// <returns>Single product descriptor</returns>
 		/// <url>POST /api/product</url>
-		[ActionName("barcode")]
-		public async Task<IHttpActionResult> PostBarcode(BarcodeSearchCriteria searchCriteria)
+		//[ActionName("barcode")]
+		public async Task<IHttpActionResult> GetProduct(BarcodeSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);

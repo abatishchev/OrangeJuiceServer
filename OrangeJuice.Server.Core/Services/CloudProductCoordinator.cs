@@ -1,23 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Repository;
 
 namespace OrangeJuice.Server.Services
 {
-	// TODO: rename to avoid naming ambiguity
 	public sealed class CloudProductCoordinator : IProductCoordinator
 	{
 		#region Fields
 		private readonly IProductRepository _productRepository;
-		private readonly IProductProvider _azureProvider;
-		private readonly IProductProvider _awsProvider;
+		private readonly IAzureProductProvider _azureProvider;
+		private readonly IAwsProductProvider _awsProvider;
 		#endregion
 
 		#region Ctor
-		public CloudProductCoordinator(IProductRepository productRepository, IProductProvider azureProvider, IProductProvider awsProvider)
+		public CloudProductCoordinator(IProductRepository productRepository, IAzureProductProvider azureProvider, IAwsProductProvider awsProvider)
 		{
 			_productRepository = productRepository;
 			_azureProvider = azureProvider;
@@ -26,19 +23,13 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IProductCoordinator members
-		public async Task<IEnumerable<ProductDescriptor>> Search(string title)
-		{
-			return await new[] { _azureProvider, _awsProvider }.Select(p => p.SearchTitle(title))
-															   .FirstOrDefaultAsync(d => d != null);
-		}
-
 		public async Task<ProductDescriptor> Lookup(string barcode, BarcodeType barcodeType)
 		{
 			IProduct product = await _productRepository.Search(barcode, barcodeType);
 			if (product != null)
-				return await _azureProvider.SearchId(product.ProductId);
+				return await _azureProvider.Get(product.ProductId);
 
-			ProductDescriptor descriptor = await _awsProvider.SearchBarcode(barcode, barcodeType);
+			ProductDescriptor descriptor = await _awsProvider.Search(barcode, barcodeType);
 
 			Task.Factory.StartNew(() => SaveProduct(descriptor, barcode, barcodeType));
 
