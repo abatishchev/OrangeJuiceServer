@@ -10,13 +10,13 @@ namespace OrangeJuice.Server.Api.Controllers
 	public sealed class ProductController : ApiController
 	{
 		#region Fields
-		private readonly IProductRepository _productRepository;
+		private readonly IProductCoordinator _productCoordinator;
 		#endregion
 
 		#region Ctor
-		public ProductController(IProductRepository productRepository)
+		public ProductController(IProductCoordinator productCoordinator)
 		{
-			_productRepository = productRepository;
+			_productCoordinator = productCoordinator;
 		}
 		#endregion
 
@@ -33,7 +33,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var descriptors = await _productRepository.Search(searchCriteria.Title);
+			var descriptors = await _productCoordinator.Search(searchCriteria.Title);
 			return Ok(descriptors.ToArray());
 		}
 
@@ -48,7 +48,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var descriptor = await _productRepository.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
+			var descriptor = await _productCoordinator.Lookup(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			return Ok(descriptor);
 		}
 		#endregion

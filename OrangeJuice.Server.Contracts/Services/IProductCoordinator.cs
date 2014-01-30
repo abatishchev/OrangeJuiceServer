@@ -5,7 +5,7 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Services
 {
-	public interface IProductRepository
+	public interface IProductCoordinator
 	{
 		Task<IEnumerable<ProductDescriptor>> Search(string title);
 

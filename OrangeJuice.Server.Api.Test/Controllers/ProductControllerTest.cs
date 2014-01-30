@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const string title = "title";
 			TitleSearchCriteria searchCriteria = new TitleSearchCriteria { Title = title };
 
-			var productRepositoryMock = new Mock<IProductRepository>();
+			var productRepositoryMock = new Mock<IProductCoordinator>();
 			productRepositoryMock.Setup(r => r.Search(title)).ReturnsAsync(new[] { new ProductDescriptor() });
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
@@ -58,7 +58,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			ProductDescriptor[] expected = { new ProductDescriptor() };
 
-			var productRepositoryMock = new Mock<IProductRepository>();
+			var productRepositoryMock = new Mock<IProductCoordinator>();
 			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>())).ReturnsAsync(expected);
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
@@ -94,7 +94,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
-			var productRepositoryMock = new Mock<IProductRepository>();
+			var productRepositoryMock = new Mock<IProductCoordinator>();
 			productRepositoryMock.Setup(r => r.Lookup(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor());
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
@@ -112,7 +112,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
 
-			var productRepositoryMock = new Mock<IProductRepository>();
+			var productRepositoryMock = new Mock<IProductCoordinator>();
 			productRepositoryMock.Setup(r => r.Lookup(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
@@ -129,7 +129,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task PostBarcode_Should_Return_Null_When_ProductRepository_Lookup_Returned_Null()
 		{
 			// Arrange
-			var productRepositoryMock = new Mock<IProductRepository>();
+			var productRepositoryMock = new Mock<IProductCoordinator>();
 			productRepositoryMock.Setup(r => r.Lookup(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
 
 			ProductController controller = CreateController(productRepositoryMock.Object);
@@ -144,9 +144,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static ProductController CreateController(IProductRepository repository = null)
+		private static ProductController CreateController(IProductCoordinator coordinator = null)
 		{
-			return ControllerFactory.Create<ProductController>(repository ?? new Mock<IProductRepository>().Object);
+			return ControllerFactory.Create<ProductController>(coordinator ?? new Mock<IProductCoordinator>().Object);
 		}
 		#endregion
 	}

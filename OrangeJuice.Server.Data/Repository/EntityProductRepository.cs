@@ -17,7 +17,7 @@ namespace OrangeJuice.Server.Data.Repository
 		}
 		#endregion
 
-		#region IProductRepository members
+		#region IProductCoordinator members
 		public async Task<IProduct> Search(string barcode, BarcodeType barcodeType)
 		{
 			return await _productUnit.Get(barcode, barcodeType);

@@ -4,8 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Services;
-using IProductDataRepository = OrangeJuice.Server.Data.Repository.IProductRepository;
 
 namespace OrangeJuice.Server.Test.Services
 {
@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Search
 		[TestMethod]
-		public async Task Search_Should()
+		public void Search_Should()
 		{
 			// Arrange
 
@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		#region Lookup
 		[TestMethod]
-		public async Task Lookup_Should()
+		public void Lookup_Should()
 		{
 			// Arrange
 
@@ -39,18 +39,12 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IProductRepository CreateRepository(IProductDataRepository dataRepository, IProductProvider azureProvider, IProductProvider awsProvider)
+		private static IProductCoordinator CreateCoordinator(IProductRepository productRepository, IProductProvider azureProvider, IProductProvider awsProvider)
 		{
-			return new CompositeProductRepository(
-				dataRepository ?? CreateDataRepository(),
+			return new CloudProductCoordinator(
+				productRepository,
 				azureProvider,
 				awsProvider);
-		}
-
-		private static IProductDataRepository CreateDataRepository()
-		{
-			var repositoryMock = new Mock<IProductDataRepository>();
-			return repositoryMock.Object;
 		}
 		#endregion
 	}
