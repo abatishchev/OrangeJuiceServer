@@ -130,7 +130,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IAzureProductProvider, AzureProductProvider>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAzureClient), typeof(IConverter<string, ProductDescriptor>)));
+				new InjectionConstructor(typeof(AzureOptions), typeof(IAzureClient), typeof(IConverter<string, ProductDescriptor>)));
 			#endregion
 
 			#region Aws

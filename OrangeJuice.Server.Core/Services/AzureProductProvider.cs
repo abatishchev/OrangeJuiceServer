@@ -1,22 +1,23 @@
 using System;
 using System.Threading.Tasks;
 
+using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Services
 {
 	public sealed class AzureProductProvider : IAzureProductProvider
 	{
-		private const string ProductContainerName = "products";
-
 		#region Fields
+		private readonly AzureOptions _azureOptions;
 		private readonly IAzureClient _client;
 		private readonly IConverter<string, ProductDescriptor> _converter;
 		#endregion
 
 		#region Ctor
-		public AzureProductProvider(IAzureClient client, IConverter<string, ProductDescriptor> converter)
+		public AzureProductProvider(AzureOptions azureOptions, IAzureClient client, IConverter<string, ProductDescriptor> converter)
 		{
+			_azureOptions = azureOptions;
 			_client = client;
 			_converter = converter;
 		}
@@ -25,14 +26,14 @@ namespace OrangeJuice.Server.Services
 		#region IAzureProductProvider members
 		public async Task<ProductDescriptor> Get(Guid productId)
 		{
-			string content = await _client.GetBlobFromContainer(ProductContainerName, productId.ToString());
+			string content = await _client.GetBlobFromContainer(_azureOptions.ProductContainer, productId.ToString());
 			return _converter.Convert(content);
 		}
 
 		public async Task Save(ProductDescriptor descriptor)
 		{
 			string content = _converter.Convert(descriptor);
-			await _client.PutBlobToContainer(ProductContainerName, descriptor.ProductId.ToString(), content);
+			await _client.PutBlobToContainer(_azureOptions.ProductContainer, descriptor.ProductId.ToString(), content);
 		}
 
 		#endregion

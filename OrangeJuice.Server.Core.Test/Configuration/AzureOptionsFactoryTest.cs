@@ -20,6 +20,7 @@ namespace OrangeJuice.Server.Test.Configuration
 
 			// Assert
 			options.ConnectionString.Should().NotBeNullOrEmpty();
+			options.ProductContainer.Should().NotBeNullOrEmpty();
 		}
 	}
 }
