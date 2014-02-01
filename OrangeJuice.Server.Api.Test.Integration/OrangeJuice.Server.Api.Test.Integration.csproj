@@ -78,7 +78,7 @@
     <None Include="Controllers\VersionControllerWebTest.webtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Controllers\FoodControllerWebTest.webtest" />
+    <None Include="Controllers\ProductControllerWebTest.webtest" />
     <None Include="Controllers\HomeControllerWebTest.webtest" />
     <None Include="Controllers\UserControllerWebTest.webtest" />
     <None Include="packages.config" />
