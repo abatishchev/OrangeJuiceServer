@@ -3,7 +3,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using OrangeJuice.Server.Configuration;
-using OrangeJuice.Server.Test.Configuration.Temp;
 
 namespace OrangeJuice.Server.Test.Configuration
 {
@@ -14,29 +13,23 @@ namespace OrangeJuice.Server.Test.Configuration
 		public void GetValue_Should_Return_Value_From_AppSettings()
 		{
 			// Arrange
-			const string name = "TestKey1";
-			const string expected = "TestValue";
 			IConfigurationProvider configurationProvider = new AppSettingsConfigurationProvider();
 
 			// Act
-			using (new TempAppSettings(name, expected))
-			{
-				string actual = configurationProvider.GetValue(name);
+			string key = configurationProvider.GetValue("Test");
 
-				// Assert
-				actual.Should().Be(expected);
-			}
+			// Assert
+			key.Should().Be("Value");
 		}
 
 		[TestMethod]
 		public void GetValue_Should_Return_Null_When_AppSettings_Does_Not_Contain_Key_Specified()
 		{
 			// Arrange
-			const string name = "TestKey2";
 			IConfigurationProvider configurationProvider = new AppSettingsConfigurationProvider();
 
 			// Act
-			string actual = configurationProvider.GetValue(name);
+			string actual = configurationProvider.GetValue("NotExistingKey");
 
 			// Assert
 			actual.Should().BeNull();

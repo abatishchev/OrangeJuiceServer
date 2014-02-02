@@ -5,14 +5,12 @@ namespace OrangeJuice.Server.Api.Diagnostics
 {
 	public sealed class EntityErrorLog : Elmah.SqlErrorLog
 	{
-		internal const string ConnectionStringNameKey = "connectionStringName";
-
 		private readonly string _connectionStringName;
 
 		public EntityErrorLog(System.Collections.IDictionary config)
 			: base(config)
 		{
-			_connectionStringName = (string)config[ConnectionStringNameKey];
+			_connectionStringName = (string)config["connectionStringName"];
 		}
 
 		public override string ConnectionString
