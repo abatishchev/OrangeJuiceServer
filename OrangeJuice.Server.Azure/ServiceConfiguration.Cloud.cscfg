@@ -4,6 +4,8 @@
 		<Instances count="2" />
 		<ConfigurationSettings>
 			<Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=orangejuicelogs;AccountKey=iKDZOSAlFEK52F6QVF/lqzNpM/ey6bbpvFnpSFY19CTNAggZ7LNlFNvwbEYc01iGlp7x9z+xJxXyJMVPUGhASA==" />
+
+			<Setting name="Environment" value="Prod" />
 		</ConfigurationSettings>
 		<Certificates>
 		</Certificates>

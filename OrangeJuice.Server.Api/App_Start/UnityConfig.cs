@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Api
 		private static void RegisterTypes(IUnityContainer container)
 		{
 			#region Providers
-			container.RegisterType<IConfigurationProvider, AppSettingsConfigurationProvider>(
+			container.RegisterType<IConfigurationProvider, ClouConfigurationProvider>(
 				new HierarchicalLifetimeManager());
 
 			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
