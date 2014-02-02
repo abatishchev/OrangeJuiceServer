@@ -20,6 +20,7 @@
 			<LocalStorage name="DiagnosticStore" sizeInMB="20000" cleanOnRoleRecycle="false" />
 		</LocalResources>
 		<ConfigurationSettings>
+			<Setting name="Environment" />
 		</ConfigurationSettings>
 	</WebRole>
 </ServiceDefinition>
