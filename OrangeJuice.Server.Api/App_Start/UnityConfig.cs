@@ -99,7 +99,7 @@ namespace OrangeJuice.Server.Api
 			#region VersionController
 			container.RegisterType<IFactory<ApiVersion>, ApiVersionFactory>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IAssemblyProvider)));
+				new InjectionConstructor(typeof(IAssemblyProvider), typeof(IEnvironmentProvider)));
 
 			container.RegisterType<ApiVersion>(
 				new HierarchicalLifetimeManager(),
