@@ -21,20 +21,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetProduct
 		[TestMethod]
-		public async Task GetProduct_Should_Return_InvalidModelState_When_Model_Not_IsValid()
-		{
-			// Arrange
-			ProductController controller = CreateController();
-			controller.ModelState.AddModelError("", "");
-
-			// Act
-			IHttpActionResult result = await controller.GetProduct(new ProductSearchCriteria());
-
-			// Assert
-			result.Should().BeOfType<InvalidModelStateResult>();
-		}
-
-		[TestMethod]
 		public async Task GetProduct_Should_Return_Ok()
 		{
 			// Arrange
@@ -105,20 +91,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region SearchProduct
-		[TestMethod]
-		public async Task SearchProduct_Should_Return_InvalidModelState_When_Model_Not_IsValid()
-		{
-			// Arrange
-			ProductController controller = CreateController();
-			controller.ModelState.AddModelError("", "");
-
-			// Act
-			IHttpActionResult result = await controller.SearchProduct(new BarcodeSearchCriteria());
-
-			// Assert
-			result.Should().BeOfType<InvalidModelStateResult>();
-		}
-
 		[TestMethod]
 		public async Task SearchProduct_Should_Return_Ok()
 		{

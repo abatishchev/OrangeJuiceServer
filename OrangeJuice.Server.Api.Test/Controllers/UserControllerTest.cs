@@ -21,22 +21,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetUser
 		[TestMethod]
-		public async Task GetUser_Should_Return_InvalidModelState_When_Model_Not_IsValid()
-		{
-			// Arrange
-			UserController controller = CreateController();
-			controller.ModelState.AddModelError("", "");
-
-			UserSearchCriteria searchCriteria = new UserSearchCriteria();
-
-			// Act
-			IHttpActionResult result = await controller.GetUser(searchCriteria);
-
-			// Assert
-			result.Should().BeOfType<InvalidModelStateResult>();
-		}
-
-		[TestMethod]
 		public async Task GetUser_Should_Return_NotFound_When_UserRepository_Returns_Null()
 		{
 			//Arrange
@@ -113,20 +97,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region PutUser
-		[TestMethod]
-		public async Task PutUser_Should_Return_InvalidModelState_When_Model_Not_IsValid()
-		{
-			// Arrange
-			UserController controller = CreateController();
-			controller.ModelState.AddModelError("", "");
-
-			// Act
-			IHttpActionResult result = await controller.PutUser(new UserModel());
-
-			// Assert
-			result.Should().BeOfType<InvalidModelStateResult>();
-		}
-
 		[TestMethod]
 		public async Task PutUser_Should_Return_InternalError_When_UserRepository_Register_Returns_Null()
 		{

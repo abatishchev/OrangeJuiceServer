@@ -28,9 +28,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <url>GET /api/rating/?userId={guid}&productId={guid}</url>
 		public async Task<IHttpActionResult> GetRating(RatingId ratingId)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
-
 			IRating rating = await _ratingRepository.Search(ratingId);
 			if (rating == null)
 				return NotFound();
@@ -45,9 +42,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <url>POST /api/rating</url>
 		public async Task<IHttpActionResult> PostRating(RatingModel ratingModel)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
-
 			RatingId ratingId = new RatingId { UserId = ratingModel.UserId, ProductId = ratingModel.ProductId };
 
 			await _ratingRepository.AddOrUpdate(ratingId, ratingModel.Value, ratingModel.Comment);
@@ -62,9 +56,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <url>DELETE /api/rating</url>
 		public async Task<IHttpActionResult> DeleteRating(RatingId ratingId)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
-
 			await _ratingRepository.Delete(ratingId);
 
 			return Ok();

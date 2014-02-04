@@ -26,9 +26,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		[HttpGet, Route("api/product/id/{productId}")]
 		public async Task<IHttpActionResult> GetProduct([FromUri] ProductSearchCriteria searchCriteria)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
-
 			var descriptor = await _productManager.Get(searchCriteria.ProductId);
 			if (descriptor == null)
 				return NotFound();
@@ -42,9 +39,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		[HttpGet, Route("api/product/barcode/{barcodeType}/{barcode}")]
 		public async Task<IHttpActionResult> SearchProduct([FromUri] BarcodeSearchCriteria searchCriteria)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
-
 			var descriptor = await _productManager.Search(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			if (descriptor == null)
 				return NotFound();

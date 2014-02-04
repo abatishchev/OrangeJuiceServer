@@ -20,20 +20,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetRating
 		[TestMethod]
-		public async Task GetRating_Should_Return_InvalidModelState_When_Model_Not_IsValid()
-		{
-			// Arrange
-			RatingController controller = CreateController();
-			controller.ModelState.AddModelError("", "");
-
-			// Act
-			IHttpActionResult result = await controller.GetRating(new RatingId());
-
-			// Assert
-			result.Should().BeOfType<InvalidModelStateResult>();
-		}
-
-		[TestMethod]
 		public async Task GetRating_Should_Return_NotFound_When_RatingRepository_Returns_Null()
 		{
 			//Arrange
@@ -106,20 +92,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region PostRating
 		[TestMethod]
-		public async Task PostRating_Should_Return_InvalidModelState_When_Model_Not_IsValid()
-		{
-			// Arrange
-			RatingController controller = CreateController();
-			controller.ModelState.AddModelError("", "");
-
-			// Act
-			IHttpActionResult result = await controller.PostRating(new RatingModel());
-
-			// Assert
-			result.Should().BeOfType<InvalidModelStateResult>();
-		}
-
-		[TestMethod]
 		public async Task PostRating_Should_Pass_UserId_And_ProductId_And_Value_To_RatingRepository_Delete()
 		{
 			// Arrange
@@ -158,20 +130,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region DeleteRating
-		[TestMethod]
-		public async Task DeleteRating_Should_Return_InvalidModelState_When_Model_Not_IsValid()
-		{
-			// Arrange
-			RatingController controller = CreateController();
-			controller.ModelState.AddModelError("", "");
-
-			// Act
-			IHttpActionResult result = await controller.DeleteRating(new RatingId());
-
-			// Assert
-			result.Should().BeOfType<InvalidModelStateResult>();
-		}
-
 		[TestMethod]
 		public async Task DeleteRating_Should_Pass_UserId_And_ProductId_To_RatingRepository_Delete()
 		{

@@ -28,9 +28,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <url>GET /api/user</url>
 		public async Task<IHttpActionResult> GetUser([FromUri]UserSearchCriteria searchCriteria)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
-
 			IUser user = await _userRepository.Search(searchCriteria.UserId);
 			if (user == null)
 				return NotFound();
@@ -45,9 +42,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		/// <url>PUT /api/user</url>
 		public async Task<IHttpActionResult> PutUser(UserModel userModel)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
-
 			IUser user = await _userRepository.Register(userModel.Email, userModel.Name);
 			if (user == null)
 				return InternalServerError();
