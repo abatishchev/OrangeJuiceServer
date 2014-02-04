@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Data.Test.Repository
 	{
 		#region AddOrUpdate
 		[TestMethod]
-		public async Task AddOrUpdate_Should_Call_UserUnit_Get_When_RatingUnit_Get_Returns_Null()
+		public async Task AddOrUpdate_Should_Pass_UserId_To_UserUnit_Get_When_RatingUnit_Get_Returns_Null()
 		{
 			// Arrange
 			RatingId ratingId = new RatingId();

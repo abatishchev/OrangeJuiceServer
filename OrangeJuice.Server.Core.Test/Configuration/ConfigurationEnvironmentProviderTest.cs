@@ -12,28 +12,32 @@ namespace OrangeJuice.Server.Test.Configuration
 	public class ConfigurationEnvironmentProviderTest
 	{
 		[TestMethod]
-		public void GetCurrentEnvironment_Should_Call_ConfigurationProvider_GetValue_With_KeyName()
+		public void GetCurrentEnvironment_Should_Pass_KeyName_Environment_To_ConfigurationProvider_GetValue()
 		{
 			// Arrange
-			const string environment = "SomeEnvironment";
+			const string environment = Environment.Testing;
+
 			var configurationProviderMock = new Mock<IConfigurationProvider>();
-			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName)).Returns(environment);
+			configurationProviderMock.Setup(p => p.GetValue("Environment")).Returns(environment);
+
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
 			// Act
 			environmentProvider.GetCurrentEnvironment();
 
 			// Assert
-			configurationProviderMock.Verify(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName));
+			configurationProviderMock.Verify(p => p.GetValue("Environment"));
 		}
 
 		[TestMethod]
 		public void GetCurrentEnvironment_Should_Return_Value_Returned_By_ConfigurationProvider_GetValue()
 		{
 			// Arrange
-			const string expected = "SomeEnvironment";
+			const string expected = Environment.Testing;
+
 			var configurationProviderMock = new Mock<IConfigurationProvider>();
-			configurationProviderMock.Setup(p => p.GetValue(ConfigurationEnvironmentProvider.KeyName)).Returns(expected);
+			configurationProviderMock.Setup(p => p.GetValue("Environment")).Returns(expected);
+
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
 			// Act

@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Test.Web
 	{
 		#region Test methods
 		[TestMethod]
-		public void BuildQuery_Should_Call_UrlEncoder_Encode_For_Each_Argument_Value()
+		public void BuildQuery_Should_Pass_Each_Argument_Value_To_UrlEncoder_Encode()
 		{
 			// Arrange
 			var encoderMock = CreateEncoder();
@@ -65,7 +65,7 @@ namespace OrangeJuice.Server.Test.Web
 		}
 
 		[TestMethod]
-		public void SignQuery_Should_Call_UrlEncoder_Encode_For_Signature()
+		public void SignQuery_Should_Pass_Signature_To_UrlEncoder_Encode()
 		{
 			// Arrange
 			const string query = "query";
