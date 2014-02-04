@@ -123,11 +123,10 @@ namespace OrangeJuice.Server.Test.Services
 			ProductDescriptor descriptor = new ProductDescriptor();
 			const string content = "content";
 
-			var clientMock = new Mock<IAzureClient>();
-			clientMock.Setup(c => c.GetBlobFromContainer(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(content);
+			var clientMock = CreateClient(content: content);
 
 			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
-			converterMock.Setup(c => c.Convert(content)).Returns(descriptor);
+			converterMock.Setup(c => c.Convert(descriptor)).Returns(content);
 
 			IAzureProductProvider provider = CreateProvider(clientMock.Object, converterMock.Object);
 
