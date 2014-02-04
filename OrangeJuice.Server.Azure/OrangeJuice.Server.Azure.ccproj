@@ -52,11 +52,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="OrangeJuice.Server.ApiContent\" />
+    <Folder Include="Profiles" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="OrangeJuice.Server.ApiContent\diagnostics.wadcfg">
       <SubType>Content</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishProfile Include="Profiles\Dev Prod.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
