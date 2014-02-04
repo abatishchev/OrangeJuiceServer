@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace OrangeJuice.Server.Data
 {
@@ -14,7 +15,7 @@ namespace OrangeJuice.Server.Data
 		public string Convert(ProductDescriptor descriptor)
 		{
 			JObject jobj = JObject.FromObject(descriptor);
-			return jobj.ToString();
+			return jobj.ToString(Formatting.Indented);
 		}
 		#endregion
 	}

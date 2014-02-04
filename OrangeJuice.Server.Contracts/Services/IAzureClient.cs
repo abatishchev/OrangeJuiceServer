@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Services
@@ -7,5 +8,7 @@ namespace OrangeJuice.Server.Services
 		Task<string> GetBlobFromContainer(string containerName, string fileName);
 
 		Task PutBlobToContainer(string containerName, string fileName, string content);
+
+		Task<Uri> GetBlobUrl(string fileName, string containerName);
 	}
 }

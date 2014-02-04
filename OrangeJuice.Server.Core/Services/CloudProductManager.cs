@@ -24,6 +24,11 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IProductManager members
+		public Task<ProductDescriptor> Get(Guid productId)
+		{
+			return  _azureProvider.Get(productId);
+		}
+
 		public async Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)
 		{
 			IProduct product = await _productRepository.Search(barcode, barcodeType);
@@ -31,8 +36,10 @@ namespace OrangeJuice.Server.Services
 				return await _azureProvider.Get(product.ProductId);
 
 			ProductDescriptor descriptor = await _awsProvider.Search(barcode, barcodeType);
-			Guid productId = await _productRepository.Save(barcode, barcodeType);
+			if (descriptor == null)
+				return null;
 
+			Guid productId = await _productRepository.Save(barcode, barcodeType);
 			descriptor.ProductId = productId;
 			await _azureProvider.Save(descriptor);
 

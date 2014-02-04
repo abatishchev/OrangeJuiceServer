@@ -10,5 +10,7 @@ namespace OrangeJuice.Server.Services
 		Task<ProductDescriptor> Get(Guid productId);
 
 		Task Save(ProductDescriptor descriptor);
+
+		Task<Uri> GetUrl(Guid productId);
 	}
 }

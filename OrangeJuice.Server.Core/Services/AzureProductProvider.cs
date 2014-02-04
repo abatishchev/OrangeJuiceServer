@@ -36,6 +36,10 @@ namespace OrangeJuice.Server.Services
 			await _client.PutBlobToContainer(_azureOptions.ProductContainer, descriptor.ProductId.ToString(), content);
 		}
 
+		public Task<Uri> GetUrl(Guid productId)
+		{
+			return _client.GetBlobUrl(_azureOptions.ProductContainer, productId.ToString());
+		}
 		#endregion
 	}
 }

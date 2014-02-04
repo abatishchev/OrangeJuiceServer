@@ -29,10 +29,7 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<string> GetBlobFromContainer(string containerName, string fileName)
 		{
-			CloudBlobContainer container = await GetContainer(containerName);
-
-			string blobName = _blobNameResolver.Resolve(fileName);
-			ICloudBlob blob = await container.GetBlobReferenceFromServerAsync(blobName);
+			ICloudBlob blob = await GetBlobReferenc(containerName, fileName);
 
 			bool exists = await blob.ExistsAsync();
 			if (!exists)
@@ -43,16 +40,20 @@ namespace OrangeJuice.Server.Services
 
 		public async Task PutBlobToContainer(string containerName, string fileName, string content)
 		{
-			CloudBlobContainer container = await GetContainer(containerName);
-			string blobName = _blobNameResolver.Resolve(fileName);
-
-			ICloudBlob blob = container.GetBlockBlobReference(blobName);
+			ICloudBlob blob = await GetBlockReference(containerName, fileName);
+			blob.Properties.CacheControl = "public, max-age=31536000";
 			await _blobClient.Write(blob, content);
+		}
+
+		public async Task<Uri> GetBlobUrl(string containerName, string fileName)
+		{
+			ICloudBlob blob = await GetBlobReferenc(containerName, fileName);
+			return blob.Uri;
 		}
 		#endregion
 
 		#region Methods
-		// TODO: refactor out
+		// TODO: refactor out?
 		private async Task<CloudBlobContainer> GetContainer(string containerName)
 		{
 			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_azureOptions.ConnectionString);
@@ -64,6 +65,20 @@ namespace OrangeJuice.Server.Services
 				throw new InvalidOperationException(String.Format("Container {0} doesn't exist", containerName));
 
 			return container;
+		}
+
+		private async Task<ICloudBlob> GetBlobReferenc(string containerName, string fileName)
+		{
+			CloudBlobContainer container = await GetContainer(containerName);
+			string blobName = _blobNameResolver.Resolve(fileName);
+			return await container.GetBlobReferenceFromServerAsync(blobName);
+		}
+
+		private async Task<ICloudBlob> GetBlockReference(string containerName, string fileName)
+		{
+			CloudBlobContainer container = await GetContainer(containerName);
+			string blobName = _blobNameResolver.Resolve(fileName);
+			return container.GetBlockBlobReference(blobName);
 		}
 		#endregion
 	}

@@ -21,11 +21,26 @@ namespace OrangeJuice.Server.Api.Controllers
 
 		#region HTTP methods
 		/// <summary>
+		/// Returnes product by id
+		/// </summary>
+		[HttpGet, Route("api/product/id/{productId}")]
+		public async Task<IHttpActionResult> GetProduct([FromUri] ProductSearchCriteria searchCriteria)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+
+			var descriptor = await _productManager.Get(searchCriteria.ProductId);
+			if (descriptor == null)
+				return NotFound();
+
+			return Ok(descriptor);
+		}
+
+		/// <summary>
 		/// Searches for product by barcode
 		/// </summary>
-		/// <returns>Single product descriptor</returns>
-		/// <url>GET /api/product/?barcode={string}&barcodeType={enum}</url>
-		public async Task<IHttpActionResult> GetProduct([FromUri] BarcodeSearchCriteria searchCriteria)
+		[HttpGet, Route("api/product/barcode/{barcodeType}/{barcode}")]
+		public async Task<IHttpActionResult> SearchProduct([FromUri] BarcodeSearchCriteria searchCriteria)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);

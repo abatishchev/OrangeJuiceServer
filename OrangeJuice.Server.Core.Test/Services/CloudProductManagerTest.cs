@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Test.Services
 	[TestClass]
 	public class CloudProductManagerTest
 	{
-		#region Test methods
+		#region Search
 		[TestMethod]
 		public async Task Search_Should_Pass_Barcode_BarcodeType_To_ProductRepository_Search()
 		{
@@ -121,7 +121,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			IProductRepository repository = CreateRepository(null);
 
-			var awsProviderMock = CreateAwsProvider();
+			var awsProviderMock = CreateAwsProvider(null);
 
 			IProductManager manager = CreateManager(repository, awsProvider: awsProviderMock.Object);
 
@@ -130,6 +130,25 @@ namespace OrangeJuice.Server.Test.Services
 
 			// Assert
 			awsProviderMock.Verify(p => p.Search(barcode, barcodeType), Times.Once);
+		}
+
+		[TestMethod]
+		public async Task Search_Should_Return_Null_When_AwsProvider_Search_Returns_Null()
+		{
+			const string barcode = "barcode";
+			const BarcodeType barcodeType = BarcodeType.EAN;
+
+			IProductRepository repository = CreateRepository(null);
+
+			var awsProviderMock = CreateAwsProvider(null);
+
+			IProductManager manager = CreateManager(repository, awsProvider: awsProviderMock.Object);
+
+			// Act
+			ProductDescriptor descriptor = await manager.Search(barcode, barcodeType);
+
+			// Assert
+			descriptor.Should().BeNull();
 		}
 
 		[TestMethod]
@@ -200,7 +219,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public async Task Search_Should_Return_ProductDescriptor_Returned_By_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Null()
+		public async Task Search_Should_Return_ProductDescriptor_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Null()
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
@@ -219,13 +238,37 @@ namespace OrangeJuice.Server.Test.Services
 		}
 		#endregion
 
+		#region Get
+		[TestMethod]
+		public async Task Get_Should_Return_ProductDescriptor_Returned_By_AzureProductProvider_Get()
+		{
+			// Arrange
+			ProductDescriptor expected = new ProductDescriptor();
+
+			Guid productId = Guid.NewGuid();
+			IProduct product = CreateProduct(productId);
+			IProductRepository repository = CreateRepository(product);
+
+			var azureProviderMock = new Mock<IAzureProductProvider>();
+			azureProviderMock.Setup(p => p.Get(productId)).ReturnsAsync(expected);
+
+			IProductManager manager = CreateManager(repository, azureProviderMock.Object);
+
+			// Act
+			ProductDescriptor actual = await manager.Get(productId);
+
+			// Assert
+			actual.Should().Be(expected);
+		}
+		#endregion
+
 		#region Helper methods
 		private static IProductManager CreateManager(IProductRepository repository, IAzureProductProvider azureProvider = null, IAwsProductProvider awsProvider = null)
 		{
 			return new CloudProductManager(
 				repository,
 				azureProvider ?? CreateAzureProvider().Object,
-				awsProvider ?? CreateAwsProvider().Object);
+				awsProvider ?? CreateAwsProvider(new ProductDescriptor()).Object);
 		}
 
 		private static IProductRepository CreateRepository(IProduct product)
@@ -249,10 +292,10 @@ namespace OrangeJuice.Server.Test.Services
 			return azureProviderMock;
 		}
 
-		private static Mock<IAwsProductProvider> CreateAwsProvider(ProductDescriptor descriptor = null)
+		private static Mock<IAwsProductProvider> CreateAwsProvider(ProductDescriptor descriptor)
 		{
 			var awsProviderMock = new Mock<IAwsProductProvider>();
-			awsProviderMock.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(descriptor ?? new ProductDescriptor());
+			awsProviderMock.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(descriptor);
 			return awsProviderMock;
 		}
 		#endregion
