@@ -20,11 +20,9 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		/// <summary>
-		/// Returnes product by id
-		/// </summary>
-		[HttpGet, Route("api/product/id/{productId}")]
-		public async Task<IHttpActionResult> GetProduct([FromUri] ProductSearchCriteria searchCriteria)
+		[Route("api/product/id")]
+		[Route("api/product/id/{productId}")]
+		public async Task<IHttpActionResult> GetProductId([FromUri] ProductSearchCriteria searchCriteria)
 		{
 			var descriptor = await _productManager.Get(searchCriteria.ProductId);
 			if (descriptor == null)
@@ -33,11 +31,9 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(descriptor);
 		}
 
-		/// <summary>
-		/// Searches for product by barcode
-		/// </summary>
-		[HttpGet, Route("api/product/barcode/{barcodeType}/{barcode}")]
-		public async Task<IHttpActionResult> SearchProduct([FromUri] BarcodeSearchCriteria searchCriteria)
+		[Route("api/product/barcode")]
+		[Route("api/product/barcode/{barcodeType}/{barcode}")]
+		public async Task<IHttpActionResult> GetProductBarcode([FromUri] BarcodeSearchCriteria searchCriteria)
 		{
 			var descriptor = await _productManager.Search(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			if (descriptor == null)

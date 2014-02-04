@@ -19,9 +19,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	[TestClass]
 	public class ProductControllerTest
 	{
-		#region GetProduct
+		#region GetProductId
 		[TestMethod]
-		public async Task GetProduct_Should_Return_Ok()
+		public async Task GetProducId_Should_Return_Ok()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();
@@ -30,14 +30,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetProduct(new ProductSearchCriteria());
+			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor>>();
 		}
 
 		[TestMethod]
-		public async Task GetProduct_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
+		public async Task GetProducId_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
 		{
 			// Arrange
 			Guid productId = Guid.NewGuid();
@@ -48,14 +48,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			await controller.GetProduct(new ProductSearchCriteria { ProductId = productId });
+			await controller.GetProductId(new ProductSearchCriteria { ProductId = productId });
 
 			// Assert
 			productRepositoryMock.Verify(r => r.Get(productId), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task GetProduct_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search()
+		public async Task GetProducId_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search()
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
@@ -66,7 +66,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetProduct(new ProductSearchCriteria());
+			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
 			ProductDescriptor actual = ((OkNegotiatedContentResult<ProductDescriptor>)result).Content;
 
 			// Assert
@@ -74,7 +74,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProduct_Should_Return_NotFound_When_ProductManager_Search_Returns_Null()
+		public async Task GetProducId_Should_Return_NotFound_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();
@@ -83,16 +83,16 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetProduct(new ProductSearchCriteria());
+			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<NotFoundResult>();
 		}
 		#endregion
 
-		#region SearchProduct
+		#region GetProductBarcode
 		[TestMethod]
-		public async Task SearchProduct_Should_Return_Ok()
+		public async Task GetProductBarcode_Should_Return_Ok()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();
@@ -101,14 +101,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.SearchProduct(new BarcodeSearchCriteria());
+			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor>>();
 		}
 
 		[TestMethod]
-		public async Task SearchProduct_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
+		public async Task GetProductBarcode_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -120,14 +120,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			await controller.SearchProduct(new BarcodeSearchCriteria { Barcode = barcode, BarcodeType = barcodeType });
+			await controller.GetProductBarcode(new BarcodeSearchCriteria { Barcode = barcode, BarcodeType = barcodeType });
 
 			// Assert
 			productRepositoryMock.Verify(r => r.Search(barcode, barcodeType), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task SearchProduct_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search()
+		public async Task GetProductBarcode_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search()
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
@@ -138,7 +138,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.SearchProduct(new BarcodeSearchCriteria());
+			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
 			ProductDescriptor actual = ((OkNegotiatedContentResult<ProductDescriptor>)result).Content;
 
 			// Assert
@@ -146,7 +146,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task SearchProduct_Should_Return_NotFound_When_ProductManager_Search_Returns_Null()
+		public async Task GetProductBarcode_Should_Return_NotFound_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();
@@ -155,7 +155,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			ProductController controller = CreateController(productRepositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.SearchProduct(new BarcodeSearchCriteria());
+			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<NotFoundResult>();

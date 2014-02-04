@@ -1,37 +1,112 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WebTest Name="ProductControllerWebTest" Id="71f1dbbe-1856-4a08-acb0-ba86aab86038" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
   <Items>
-    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="403" ExpectedResponseUrl="" ReportingName="No parameters specified" IgnoreHttpStatusCode="False" />
-    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="403" ExpectedResponseUrl="" ReportingName="AppVer is emty" IgnoreHttpStatusCode="False">
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/barcode" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="Barcode is empty" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
       <QueryStringParameters>
-        <QueryStringParameter Name="appVer" Value="" RecordedValue="" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
-      </QueryStringParameters>
-    </Request>
-    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="Barcode is empty" IgnoreHttpStatusCode="False">
-      <QueryStringParameters>
-        <QueryStringParameter Name="appVer" Value="{{appVer}}" RecordedValue="" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
         <QueryStringParameter Name="barcode" Value="" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
       </QueryStringParameters>
     </Request>
-    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="BarcodeType is empty" IgnoreHttpStatusCode="False">
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/barcode" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="Barcode is incorrect" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
       <QueryStringParameters>
-        <QueryStringParameter Name="appVer" Value="{{appVer}}" RecordedValue="" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+        <QueryStringParameter Name="barcode" Value="0" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+        <QueryStringParameter Name="barcodeType" Value="" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/barcode" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="BarcodeType is empty" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
+      <QueryStringParameters>
         <QueryStringParameter Name="barcode" Value="0747599330971" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
         <QueryStringParameter Name="barcodeType" Value="" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
       </QueryStringParameters>
     </Request>
-    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="All parameters set" IgnoreHttpStatusCode="False">
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/barcode" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="BarcodeType is incorrect" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
       <QueryStringParameters>
-        <QueryStringParameter Name="appVer" Value="{{appVer}}" RecordedValue="" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+        <QueryStringParameter Name="barcode" Value="0747599330971" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+        <QueryStringParameter Name="barcodeType" Value="0" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/barcode" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="Barcode and BarcodeType are specified" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
+      <QueryStringParameters>
         <QueryStringParameter Name="barcode" Value="0747599330971" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
         <QueryStringParameter Name="barcodeType" Value="{{barcodeType1}}" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
       </QueryStringParameters>
     </Request>
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/barcode" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="Barcode and BarcodeType are from DB" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="barcode" Value="{{AzureDev.Products.Barcode}}" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+        <QueryStringParameter Name="barcodeType" Value="{{AzureDev.Products.BarcodeType}}" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/id" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="Id is empty" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="productId" Value="" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/id" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="Id is incorrect" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="productId" Value="0" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/id" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="404" ExpectedResponseUrl="" ReportingName="Id doesn't exist" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="productId" Value="{{randomGuid}}" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/id" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="Id is from DB" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="X-AppVer" Value="{{appVer}}" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="productId" Value="{{AzureDev.Products.ProductId}}" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
   </Items>
+  <DataSources>
+    <DataSource Name="AzureDev" Provider="System.Data.SqlClient" Connection="LAs4ogoKlDcWGj2pc9vP1l7tE+YoUKhZ5LbSY20NKOPFO48jvu7yNWF8PA0pGEyXXIlV+LGOcNyHgoahz7zZ53jta5f57/zqRSUGIBJmlx3fsV+N60g4MoAleTSuFG6BrT+rGkHGbEz9SibhLKyO95oWF2ECqejS0bZxHVd1c54KSX+VUQP62TAsCyaPFCHwx2dM4ppkub3Tw6/899R+FF5fm8YlFqq65erf9CMP1saHyqIwW5rtPfoyqnuFgYAwEvhyVyvFk4iG43sgz6ZUJw==" ConnectionDisplayValue="Data Source=tcp:tgqcn5cgi6.database.windows.net,1433;Initial Catalog=OrangeJuiceDev;Integrated Security=False;User ID=OrangeJuiceDev@tgqcn5cgi6;Connect Timeout=30;Encrypt=True">
+      <Tables>
+        <DataSourceTable Name="Products" SelectColumns="SelectOnlyBoundColumns" AccessMethod="Sequential" />
+      </Tables>
+    </DataSource>
+  </DataSources>
   <ContextParameters>
     <ContextParameter Name="host" Value="http://dev.api.orangejuice.mobi" />
     <ContextParameter Name="appVer" Value="0.0.0.0" />
     <ContextParameter Name="barcodeType1" Value="EAN" />
     <ContextParameter Name="barcodeType2" Value="UPC" />
+    <ContextParameter Name="randomGuid" Value="" />
   </ContextParameters>
+  <WebTestPlugins>
+    <WebTestPlugin Classname="Microsoft.SystemCenter.Cloud.GsmPlugins.GuidGeneratorWebTestPlugin, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Generate Guid" Description="Generates a new guid.">
+      <RuleParameters>
+        <RuleParameter Name="ContextParameterName" Value="randomGuid" />
+        <RuleParameter Name="OutputFormat" Value="" />
+      </RuleParameters>
+    </WebTestPlugin>
+  </WebTestPlugins>
 </WebTest>

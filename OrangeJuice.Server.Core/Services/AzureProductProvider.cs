@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Services
 		public async Task<ProductDescriptor> Get(Guid productId)
 		{
 			string content = await _client.GetBlobFromContainer(_azureOptions.ProductContainer, productId.ToString());
-			return _converter.Convert(content);
+			return content != null ? _converter.Convert(content) : null;
 		}
 
 		public async Task Save(ProductDescriptor descriptor)
