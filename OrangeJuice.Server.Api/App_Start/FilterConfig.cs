@@ -1,5 +1,7 @@
 ﻿using System.Web.Http.Filters;
 
+using OrangeJuice.Server.Api.Filters;
+
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
@@ -7,6 +9,7 @@ namespace OrangeJuice.Server.Api
 	{
 		public static void RegisterFilters(HttpFilterCollection filters)
 		{
+			filters.Add(new ValidModelActionFilter());
 		}
 	}
 }

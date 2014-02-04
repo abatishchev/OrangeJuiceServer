@@ -101,6 +101,7 @@
     <Compile Include="Controllers\UserControllerTest.cs" />
     <Compile Include="Controllers\VersionControllerTest.cs" />
     <Compile Include="Diagnostics\EntityErrorLogTest.cs" />
+    <Compile Include="Filters\ValidModelActionFilterTest.cs" />
     <Compile Include="Handlers\QueryAppVersionHandlerTest.cs" />
     <Compile Include="Handlers\HeaderAppVersionHandlerTest.cs" />
     <Compile Include="Handlers\AppVersionHandlerFactoryTest.cs" />
