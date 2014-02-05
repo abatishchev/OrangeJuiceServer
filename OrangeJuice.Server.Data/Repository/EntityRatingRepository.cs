@@ -64,7 +64,9 @@ namespace OrangeJuice.Server.Data.Repository
 		public async Task<ICollection<IRating>> SearchAll(Guid productId)
 		{
 			var ratings = await _ratingUnit.Get(productId);
-			return ratings.Cast<IRating>().ToArray();
+			return ratings != null ?
+				ratings.Cast<IRating>().ToArray() :
+				null;
 		}
 		#endregion
 

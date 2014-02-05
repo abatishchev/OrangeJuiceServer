@@ -36,7 +36,7 @@ namespace OrangeJuice.Server.Data.Unit
 		public async Task<ICollection<Rating>> Get(Guid productId)
 		{
 			Product product = await _db.Products.FindAsync(productId);
-			return product.Ratings;
+			return product != null ? product.Ratings : null;
 		}
 
 		public async Task Remove(Rating rating)
