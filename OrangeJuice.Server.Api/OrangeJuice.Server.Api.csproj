@@ -109,6 +109,7 @@
     <Compile Include="Logging\ElmahExceptionLogger.cs" />
     <Compile Include="Models\ProductSearchCriteria.cs" />
     <Compile Include="Models\RatingModel.cs" />
+    <Compile Include="Models\RatingSearchCriteria.cs" />
     <Compile Include="Policies\EnvironmentErrorDetailPolicyProvider.cs" />
     <Compile Include="Policies\IErrorDetailPolicyProvider.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -145,7 +146,7 @@
     <Compile Include="Validation\BarcodeSearchCriteriaValidator.cs" />
     <Compile Include="Validation\Infrustructure\FluentModelValidatorFactory.cs" />
     <Compile Include="Validation\ProductSearchCriteriaValidator.cs" />
-    <Compile Include="Validation\RatingModel.cs" />
+    <Compile Include="Validation\RatingModelValidator.cs" />
     <Compile Include="Validation\UserModelValidator.cs" />
     <Compile Include="Validation\UserSearchCriteriaValidator.cs" />
   </ItemGroup>
