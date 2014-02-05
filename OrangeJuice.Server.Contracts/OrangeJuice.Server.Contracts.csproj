@@ -59,7 +59,6 @@
     <Compile Include="Data\IRating.cs" />
     <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\ProductDescriptor.cs" />
-    <Compile Include="Data\RatingId.cs" />
     <Compile Include="Data\Repository\IProductRepository.cs" />
     <Compile Include="Data\Repository\IRatingRepository.cs" />
     <Compile Include="Data\Repository\IUserRepository.cs" />

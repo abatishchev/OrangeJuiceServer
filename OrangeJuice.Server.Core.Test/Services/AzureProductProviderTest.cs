@@ -25,35 +25,33 @@ namespace OrangeJuice.Server.Test.Services
 			AzureOptions azureOptions = new AzureOptions { ProductContainer = containerName };
 			Guid productId = Guid.NewGuid();
 
-			var clientMock = CreateClient(containerName, productId.ToString());
+			IAzureClient client = CreateClient(containerName, productId.ToString());
 
-			IAzureProductProvider provider = CreateProvider(azureOptions, clientMock.Object);
+			IAzureProductProvider provider = CreateProvider(azureOptions, client);
 
 			// Act
 			await provider.Get(productId);
 
 			// Assert
-			clientMock.Verify(c => c.GetBlobFromContainer(containerName, productId.ToString()), Times.Once);
+			Mock.Get(client).Verify(c => c.GetBlobFromContainer(containerName, productId.ToString()), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task Get_Should_Pass_Content_Returned_By_AzureClient_GetBlobFromContainer_To_Converter_Convert()
+		public async Task Get_Should_Pass_Content_Returned_By_AzureClient_GetBlobFromContainer_To_Converter_ConvertBack()
 		{
 			// Arrange
 			const string content = "content";
-			const string containerName = "containerName";
-			AzureOptions azureOptions = new AzureOptions { ProductContainer = containerName };
-			Guid productId = Guid.NewGuid();
+			AzureOptions azureOptions = new AzureOptions { ProductContainer = "containerName" };
 
-			var clientMock = CreateClient(containerName, productId.ToString(), content);
+			IAzureClient client = CreateClient(content);
 
 			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
-			converterMock.Setup(c => c.Convert(It.IsAny<ProductDescriptor>())).Returns(content);
+			converterMock.Setup(c => c.ConvertBack(It.IsAny<ProductDescriptor>())).Returns(content);
 
-			IAzureProductProvider provider = CreateProvider(azureOptions, clientMock.Object, converterMock.Object);
+			IAzureProductProvider provider = CreateProvider(azureOptions, client, converterMock.Object);
 
 			// Act
-			await provider.Get(productId);
+			await provider.Get(Guid.NewGuid());
 
 			// Assert
 			converterMock.Verify(c => c.Convert(content), Times.Once);
@@ -66,13 +64,12 @@ namespace OrangeJuice.Server.Test.Services
 			ProductDescriptor expected = new ProductDescriptor();
 			const string content = "content";
 
-			var clientMock = new Mock<IAzureClient>();
-			clientMock.Setup(c => c.GetBlobFromContainer(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(content);
+			IAzureClient client = CreateClient(content);
 
 			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
 			converterMock.Setup(c => c.Convert(content)).Returns(expected);
 
-			IAzureProductProvider provider = CreateProvider(clientMock.Object, converterMock.Object);
+			IAzureProductProvider provider = CreateProvider(client, converterMock.Object);
 
 			// Act
 			ProductDescriptor actual = await provider.Get(Guid.NewGuid());
@@ -100,41 +97,41 @@ namespace OrangeJuice.Server.Test.Services
 
 		#region Save
 		[TestMethod]
-		public async Task Save_Should_Pass_ProductDescriptor_To_Converter_Convert()
+		public async Task Save_Should_Pass_ProductDescriptor_To_Converter_ConvertBack()
 		{
 			// Arrange
 			ProductDescriptor descriptor = new ProductDescriptor();
 
-			var converterMock = CreateConverter();
+			var converter = CreateConverter();
 
-			IAzureProductProvider provider = CreateProvider(converter: converterMock.Object);
+			IAzureProductProvider provider = CreateProvider(converter: converter);
 
 			// Act
 			await provider.Save(descriptor);
 
 			// Assert
-			converterMock.Verify(c => c.Convert(descriptor), Times.Once);
+			Mock.Get(converter).Verify(c => c.ConvertBack(descriptor), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task Set_Should_Pass_Content_Returned_By_Converter_Convert_To_AzureClient_PutBlobToContainer()
+		public async Task Set_Should_Pass_Content_Returned_By_Converter_ConvertBack_To_AzureClient_PutBlobToContainer()
 		{
 			// Arrange
 			ProductDescriptor descriptor = new ProductDescriptor();
 			const string content = "content";
 
-			var clientMock = CreateClient(content: content);
+			IAzureClient client = CreateClient(content);
 
 			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
-			converterMock.Setup(c => c.Convert(descriptor)).Returns(content);
+			converterMock.Setup(c => c.ConvertBack(descriptor)).Returns(content);
 
-			IAzureProductProvider provider = CreateProvider(clientMock.Object, converterMock.Object);
+			IAzureProductProvider provider = CreateProvider(client, converterMock.Object);
 
 			// Act
 			await provider.Save(descriptor);
 
 			// Arrange
-			clientMock.Verify(c => c.PutBlobToContainer(It.IsAny<string>(), It.IsAny<string>(), content), Times.Once);
+			Mock.Get(client).Verify(c => c.PutBlobToContainer(It.IsAny<string>(), It.IsAny<string>(), content), Times.Once);
 		}
 
 		[TestMethod]
@@ -147,15 +144,15 @@ namespace OrangeJuice.Server.Test.Services
 			Guid productId = Guid.NewGuid();
 			ProductDescriptor descriptor = new ProductDescriptor { ProductId = productId };
 
-			var clientMock = CreateClient(containerName, productId.ToString());
+			IAzureClient client = CreateClient(containerName, productId.ToString());
 
-			IAzureProductProvider provider = CreateProvider(azureOptions, clientMock.Object);
+			IAzureProductProvider provider = CreateProvider(azureOptions, client);
 
 			// Act
 			await provider.Save(descriptor);
 
 			// Arrange
-			clientMock.Verify(c => c.PutBlobToContainer(containerName, productId.ToString(), It.IsAny<string>()), Times.Once);
+			Mock.Get(client).Verify(c => c.PutBlobToContainer(containerName, productId.ToString(), It.IsAny<string>()), Times.Once);
 		}
 		#endregion
 
@@ -170,24 +167,32 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			return new AzureProductProvider(
 				azureOptions ?? new AzureOptions(),
-				client ?? CreateClient().Object,
-				converter ?? CreateConverter().Object);
+				client ?? CreateClient(null),
+				converter ?? CreateConverter());
 		}
 
-		private static Mock<IAzureClient> CreateClient(string containerName = null, string fileName = null, string content = null)
+		private static IAzureClient CreateClient(string containerName, string fileName)
 		{
 			var clientMock = new Mock<IAzureClient>();
-			clientMock.Setup(c => c.GetBlobFromContainer(containerName ?? It.IsAny<string>(), fileName ?? It.IsAny<string>())).ReturnsAsync(content ?? "content");
-			clientMock.Setup(c => c.PutBlobToContainer(containerName ?? It.IsAny<string>(), fileName ?? It.IsAny<string>(), content ?? It.IsAny<string>())).Returns(Task.Delay(0));
-			return clientMock;
+			clientMock.Setup(c => c.GetBlobFromContainer(containerName, fileName)).ReturnsAsync("content");
+			clientMock.Setup(c => c.PutBlobToContainer(containerName, fileName, It.IsAny<string>())).Returns(Task.Delay(0));
+			return clientMock.Object;
 		}
 
-		private static Mock<IConverter<string, ProductDescriptor>> CreateConverter(ProductDescriptor descriptor = null, string content = null)
+		private static IAzureClient CreateClient(string content)
+		{
+			var clientMock = new Mock<IAzureClient>();
+			clientMock.Setup(c => c.GetBlobFromContainer(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(content);
+			clientMock.Setup(c => c.PutBlobToContainer(It.IsAny<string>(), It.IsAny<string>(), content)).Returns(Task.Delay(0));
+			return clientMock.Object;
+		}
+
+		private static IConverter<string, ProductDescriptor> CreateConverter()
 		{
 			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
-			converterMock.Setup(c => c.Convert(It.IsAny<string>())).Returns(descriptor ?? new ProductDescriptor());
-			converterMock.Setup(c => c.Convert(It.IsAny<ProductDescriptor>())).Returns(content ?? "content");
-			return converterMock;
+			converterMock.Setup(c => c.Convert(It.IsAny<string>())).Returns(new ProductDescriptor());
+			converterMock.Setup(c => c.ConvertBack(It.IsAny<ProductDescriptor>())).Returns("content");
+			return converterMock.Object;
 		}
 		#endregion
 	}

@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Repository
 {
 	public interface IRatingRepository : IDisposable
 	{
-		Task AddOrUpdate(RatingId ratingId, byte ratingValue, string comment);
+		Task AddOrUpdate(Guid userId, Guid productId, byte ratingValue, string comment);
 
-		Task Delete(RatingId ratingId);
+		Task Delete(Guid ratingId, Guid productId);
 
-		Task<IRating> Search(RatingId ratingId);
+		Task<IRating> Search(Guid userId, Guid productId);
+
+		Task<ICollection<IRating>> SearchAll(Guid productId);
 	}
 }

@@ -32,7 +32,7 @@ namespace OrangeJuice.Server.Services
 
 		public async Task Save(ProductDescriptor descriptor)
 		{
-			string content = _converter.Convert(descriptor);
+			string content = _converter.ConvertBack(descriptor);
 			await _client.PutBlobToContainer(_azureOptions.ProductContainer, descriptor.ProductId.ToString(), content);
 		}
 

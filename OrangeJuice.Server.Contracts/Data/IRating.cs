@@ -1,8 +1,12 @@
-﻿namespace OrangeJuice.Server.Data
+﻿using System;
+
+namespace OrangeJuice.Server.Data
 {
 	public interface IRating
 	{
-		RatingId RatingId { get; }
+		Guid UserId { get; }
+
+		Guid ProductId { get; }
 
 		byte Value { get; set; }
 

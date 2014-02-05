@@ -12,7 +12,7 @@ namespace OrangeJuice.Server.Data
 			return jobj.ToObject<ProductDescriptor>();
 		}
 
-		public string Convert(ProductDescriptor descriptor)
+		public string ConvertBack(ProductDescriptor descriptor)
 		{
 			JObject jobj = JObject.FromObject(descriptor);
 			return jobj.ToString(Formatting.Indented);

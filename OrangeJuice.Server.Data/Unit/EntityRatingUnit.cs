@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
 
@@ -26,9 +28,15 @@ namespace OrangeJuice.Server.Data.Unit
 			await _db.SaveChangesAsync();
 		}
 
-		public Task<Rating> Get(RatingId ratingId)
+		public Task<Rating> Get(Guid userId, Guid productId)
 		{
-			return _db.Ratings.FindAsync(ratingId.UserId, ratingId.ProductId);
+			return _db.Ratings.FindAsync(userId, productId);
+		}
+
+		public async Task<ICollection<Rating>> Get(Guid productId)
+		{
+			Product product = await _db.Products.FindAsync(productId);
+			return product.Ratings;
 		}
 
 		public async Task Remove(Rating rating)

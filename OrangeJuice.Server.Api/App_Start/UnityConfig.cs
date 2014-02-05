@@ -206,7 +206,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IRatingRepository, EntityRatingRepository>(
 				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IRatingUnit), typeof(IUserUnit)));
+				new InjectionConstructor(typeof(IRatingUnit)));
 			#endregion
 		}
 	}

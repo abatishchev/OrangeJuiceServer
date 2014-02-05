@@ -21,42 +21,35 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		/// <summary>
-		/// Searches for product rating by rating id
-		/// </summary>
-		/// <returns>Rating entity</returns>
-		/// <url>GET /api/rating/?userId={guid}&productId={guid}</url>
-		public async Task<IHttpActionResult> GetRating(RatingId ratingId)
+		public async Task<IHttpActionResult> GetRating(RatingSearchCriteria searchCriteria)
 		{
-			IRating rating = await _ratingRepository.Search(ratingId);
+			IRating rating = await _ratingRepository.Search(searchCriteria.UserId, searchCriteria.ProductId);
 			if (rating == null)
 				return NotFound();
 
 			return Ok(rating);
 		}
 
-		/// <summary>
-		/// Adds or updates product rating
-		/// </summary>
-		/// <returns>Rating id</returns>
-		/// <url>POST /api/rating</url>
-		public async Task<IHttpActionResult> PostRating(RatingModel ratingModel)
+		[Route("api/product/{productId}/rating")]
+		public async Task<IHttpActionResult> GetRatings(RatingSearchCriteria searchCriteria)
 		{
-			RatingId ratingId = new RatingId { UserId = ratingModel.UserId, ProductId = ratingModel.ProductId };
+			var ratings = await _ratingRepository.SearchAll(searchCriteria.ProductId);
+			if (ratings == null)
+				return NotFound();
 
-			await _ratingRepository.AddOrUpdate(ratingId, ratingModel.Value, ratingModel.Comment);
-
-			return Ok(ratingId);
+			return Ok(ratings);
 		}
 
-		/// <summary>
-		/// Deletes product rating by rating id
-		/// </summary>
-		/// <returns>200 OK</returns>
-		/// <url>DELETE /api/rating</url>
-		public async Task<IHttpActionResult> DeleteRating(RatingId ratingId)
+		public async Task<IHttpActionResult> PostRating(RatingModel ratingModel)
 		{
-			await _ratingRepository.Delete(ratingId);
+			await _ratingRepository.AddOrUpdate(ratingModel.UserId, ratingModel.ProductId, ratingModel.Value, ratingModel.Comment);
+
+			return Ok();
+		}
+
+		public async Task<IHttpActionResult> DeleteRating(RatingSearchCriteria searchCriteria)
+		{
+			await _ratingRepository.Delete(searchCriteria.UserId, searchCriteria.ProductId);
 
 			return Ok();
 		}

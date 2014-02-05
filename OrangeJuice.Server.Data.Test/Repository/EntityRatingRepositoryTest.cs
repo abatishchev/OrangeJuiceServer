@@ -18,90 +18,38 @@ namespace OrangeJuice.Server.Data.Test.Repository
 	{
 		#region AddOrUpdate
 		[TestMethod]
-		public async Task AddOrUpdate_Should_Pass_UserId_To_UserUnit_Get_When_RatingUnit_Get_Returns_Null()
+		public async Task AddOrUpdate_Should_Pass_Rating_Returned_By_RatingUnit_Get_To_RatingUnit_AddOrUpdate()
 		{
 			// Arrange
-			RatingId ratingId = new RatingId();
+			Guid userId = Guid.NewGuid(), productId = Guid.NewGuid();
 
-			var ratingUnitMock = new Mock<IRatingUnit>();
-			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(null);
-
-			var userUnitMock = new Mock<IUserUnit>();
-
-			IRatingRepository repository = CreateRepository(ratingUnitMock.Object, userUnitMock.Object);
-
-			// Act
-			await repository.AddOrUpdate(ratingId, 5, "comment");
-
-			// Assert
-			userUnitMock.Verify(u => u.Get(ratingId.UserId), Times.Once);
-		}
-
-		public async Task AddOrUpdate_Should_Not_Call_UserUnit_Get_When_RatingUnit_Get_Returns_Not_Null()
-		{
-			// Arrange
-			RatingId ratingId = new RatingId();
-
-			var ratingUnitMock = new Mock<IRatingUnit>();
-			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(new Rating());
-
-			var userUnitMock = new Mock<IUserUnit>();
-
-			IRatingRepository repository = CreateRepository(ratingUnitMock.Object, userUnitMock.Object);
-
-			// Act
-			await repository.AddOrUpdate(ratingId, 5, "comment");
-
-			// Assert
-			userUnitMock.Verify(u => u.Get(ratingId.UserId), Times.Never);
-		}
-
-		[TestMethod]
-		public async Task AddOrUpdate_Should_Pass_Result_Of_RatingUnit_Get_To_RatingUnit_AddOrUpdate()
-		{
-			// Arrange
-			RatingId ratingId = new RatingId { UserId = Guid.NewGuid(), ProductId = Guid.NewGuid() };
-			Rating rating = new Rating
-			{
-				UserId = ratingId.UserId,
-				ProductId = ratingId.ProductId
-			};
-
-			var ratingUnitMock = new Mock<IRatingUnit>();
-			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(rating);
+			Rating rating = new Rating { UserId = userId, ProductId = userId };
+			var ratingUnitMock = CreateUnit(rating);
 
 			IRatingRepository repository = CreateRepository(ratingUnitMock.Object);
 
 			// Act
-			await repository.AddOrUpdate(ratingId, 5, "comment");
+			await repository.AddOrUpdate(userId, productId, 5, "comment");
 
 			// Assert
 			ratingUnitMock.Verify(u => u.AddOrUpdate(rating), Times.Once);
 		}
 
 		[TestMethod]
-		public async Task AddOrUpdate_Should_Pass_To_RatingUnit_AddOrUpdate_Rating_Having_User_Returned_By_UserUnit_Get()
+		public async Task AddOrUpdate_Should_Pass_Rating_To_RatingUnit_AddOrUpdate_Having_UserId_ProductId_Set_When_RatingUnit_Get_Returns_Null()
 		{
 			// Arrange
-			RatingId ratingId = new RatingId { UserId = Guid.NewGuid(), ProductId = Guid.NewGuid() };
-			User user = new User
-			{
-				UserId = ratingId.UserId
-			};
+			Guid userId = Guid.NewGuid(), productId = Guid.NewGuid();
 
-			var ratingUnitMock = new Mock<IRatingUnit>();
-			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(null);
+			var ratingUnitMock = CreateUnit(null);
 
-			var userUnitMock = new Mock<IUserUnit>();
-			userUnitMock.Setup(u => u.Get(ratingId.UserId)).ReturnsAsync(user);
-
-			IRatingRepository repository = CreateRepository(ratingUnitMock.Object, userUnitMock.Object);
+			IRatingRepository repository = CreateRepository(ratingUnitMock.Object);
 
 			// Act
-			await repository.AddOrUpdate(ratingId, 5, "comment");
+			await repository.AddOrUpdate(userId, productId, 5, "comment");
 
 			// Assert
-			ratingUnitMock.Verify(u => u.AddOrUpdate(It.Is<Rating>(r => r.User == user)), Times.Once);
+			ratingUnitMock.Verify(u => u.AddOrUpdate(It.Is<Rating>(r => r.UserId == userId && r.ProductId == productId)), Times.Once);
 		}
 		#endregion
 
@@ -110,18 +58,56 @@ namespace OrangeJuice.Server.Data.Test.Repository
 		public void Delete_Should_Throw_Exception_When_UserUnit_Get_Returns_Null()
 		{
 			// Arrange
-			RatingId ratingId = new RatingId();
+			Guid userId = Guid.NewGuid(), productId = Guid.NewGuid();
 
-			var ratingUnitMock = new Mock<IRatingUnit>();
-			ratingUnitMock.Setup(u => u.Get(ratingId)).ReturnsAsync(null);
+			var ratingUnitMock = CreateUnit(null);
 
 			IRatingRepository repository = CreateRepository(ratingUnitMock.Object);
 
 			// Act
-			Func<Task> func = () => repository.Delete(ratingId);
+			Func<Task> func = () => repository.Delete(userId, productId);
 
 			// Assert
 			func.ShouldThrow<ObjectNotFoundException>();
+		}
+		#endregion
+
+		#region Search
+		[TestMethod]
+		public async Task Search_Should_Pass_UserId_ProductId_To_RatingUnit_Get()
+		{
+			// Arrange
+			Guid userId = Guid.NewGuid(), productId = Guid.NewGuid();
+
+			var ratingUnitMock = CreateUnit(new Rating());
+
+			IRatingRepository repository = CreateRepository(ratingUnitMock.Object);
+
+			// Act
+			await repository.Search(userId, productId);
+
+			// Assert
+			ratingUnitMock.Verify(u => u.Get(userId, productId), Times.Once);
+		}
+		#endregion
+
+		#region SearchAll
+		[TestMethod]
+		public async Task SearchAll_Should_Pass_ProductId_To_RatingUnit_Get()
+		{
+			// Arrange
+			Guid productId = Guid.NewGuid();
+
+			var ratingUnitMock = new Mock<IRatingUnit>();
+			ratingUnitMock.Setup(u => u.Get(productId)).ReturnsAsync(new[] { new Rating(), new Rating() });
+
+			IRatingRepository repository = CreateRepository(ratingUnitMock.Object);
+
+			// Act
+			await repository.SearchAll(productId);
+
+			// Assert
+			ratingUnitMock.Verify(u => u.Get(productId), Times.Once);
 		}
 		#endregion
 
@@ -140,29 +126,20 @@ namespace OrangeJuice.Server.Data.Test.Repository
 			// Assert
 			ratingUnitMock.Verify(u => u.Dispose(), Times.Once);
 		}
-
-		[TestMethod]
-		public void Dispose_Should_Call_UserUnit_Dispose()
-		{
-			// Arrange
-			var userUnitMock = new Mock<IUserUnit>();
-
-			IRatingRepository repository = CreateRepository(userUnit: userUnitMock.Object);
-
-			// Act
-			repository.Dispose();
-
-			// Assert
-			userUnitMock.Verify(u => u.Dispose(), Times.Once);
-		}
 		#endregion
 
 		#region Helper methods
-		private static IRatingRepository CreateRepository(IRatingUnit ratingUnit = null, IUserUnit userUnit = null)
+		private static IRatingRepository CreateRepository(IRatingUnit ratingUnit = null)
 		{
 			return new EntityRatingRepository(
-				ratingUnit ?? new Mock<IRatingUnit>().Object,
-				userUnit ?? new Mock<IUserUnit>().Object);
+				ratingUnit ?? new Mock<IRatingUnit>().Object);
+		}
+
+		private static Mock<IRatingUnit> CreateUnit(Rating rating)
+		{
+			var ratingUnitMock = new Mock<IRatingUnit>();
+			ratingUnitMock.Setup(u => u.Get(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(rating);
+			return ratingUnitMock;
 		}
 		#endregion
 	}

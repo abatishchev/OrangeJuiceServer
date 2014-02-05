@@ -1,4 +1,7 @@
-﻿using System.Data.Entity.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -10,28 +13,25 @@ namespace OrangeJuice.Server.Data.Repository
 	{
 		#region Fields
 		private readonly IRatingUnit _ratingUnit;
-		private readonly IUserUnit _userUnit;
 		#endregion
 
 		#region Ctor
-		public EntityRatingRepository(IRatingUnit ratingUnit, IUserUnit userUnit)
+		public EntityRatingRepository(IRatingUnit ratingUnit)
 		{
 			_ratingUnit = ratingUnit;
-			_userUnit = userUnit;
 		}
 		#endregion
 
 		#region IRatingRepository members
-		public async Task AddOrUpdate(RatingId ratingId, byte ratingValue, string comment)
+		public async Task AddOrUpdate(Guid userId, Guid productId, byte ratingValue, string comment)
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
-				Rating rating = await _ratingUnit.Get(ratingId) ??
+				Rating rating = await _ratingUnit.Get(userId, productId) ??
 								new Rating
 								{
-									User = await _userUnit.Get(ratingId.UserId),
-									// TOOD: set Product instead
-									ProductId = ratingId.ProductId,
+									UserId = userId,
+									ProductId = productId,
 								};
 				rating.Value = ratingValue;
 
@@ -41,11 +41,11 @@ namespace OrangeJuice.Server.Data.Repository
 			}
 		}
 
-		public async Task Delete(RatingId ratingId)
+		public async Task Delete(Guid userId, Guid productId)
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
-				Rating rating = await _ratingUnit.Get(ratingId);
+				Rating rating = await _ratingUnit.Get(userId, productId);
 
 				if (rating == null)
 					throw new ObjectNotFoundException();
@@ -56,9 +56,15 @@ namespace OrangeJuice.Server.Data.Repository
 			}
 		}
 
-		public async Task<IRating> Search(RatingId ratingId)
+		public async Task<IRating> Search(Guid userId, Guid productId)
 		{
-			return await _ratingUnit.Get(ratingId);
+			return await _ratingUnit.Get(userId, productId);
+		}
+
+		public async Task<ICollection<IRating>> SearchAll(Guid productId)
+		{
+			var ratings = await _ratingUnit.Get(productId);
+			return ratings.Cast<IRating>().ToArray();
 		}
 		#endregion
 
@@ -66,7 +72,6 @@ namespace OrangeJuice.Server.Data.Repository
 		public void Dispose()
 		{
 			_ratingUnit.Dispose();
-			_userUnit.Dispose();
 		}
 		#endregion
 	}

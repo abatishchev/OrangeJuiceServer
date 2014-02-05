@@ -27,10 +27,10 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			// Arrange
 			IValidator validator = new Mock<IValidator>().Object;
 
-			var validatorFactoryMock = CreateValidatorFactory(validator);
-			var modelValidatorFactoryMock = CreateModelValidatorFactory();
+			IValidatorFactory validatorFactory = CreateValidatorFactory(validator);
+			IModelValidatorFactory modelValidatorFactory = CreateModelValidatorFactory();
 
-			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object, modelValidatorFactoryMock.Object);
+			ModelValidatorProvider provider = CreateProvider(validatorFactory, modelValidatorFactory);
 
 			ModelMetadata metadata = CreateMetadata(typeof(object));
 			var modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
@@ -39,7 +39,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
 
 			// Assert
-			validatorFactoryMock.Verify(f => f.GetValidator(It.Is<Type>(t => t.IsAssignableFrom(typeof(IValidator<object>)))), Times.Once);
+			Mock.Get(validatorFactory).Verify(f => f.GetValidator(It.Is<Type>(t => t.IsAssignableFrom(typeof(IValidator<object>)))), Times.Once);
 		}
 
 		[TestMethod]
@@ -49,10 +49,10 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			IEnumerable<ModelValidatorProvider> validatorProviders = Enumerable.Empty<ModelValidatorProvider>();
 			IValidator validator = new Mock<IValidator>().Object;
 
-			var validatorFactoryMock = CreateValidatorFactory(validator);
-			var modelValidatorFactoryMock = CreateModelValidatorFactory();
+			IValidatorFactory validatorFactory = CreateValidatorFactory(validator);
+			IModelValidatorFactory modelValidatorFactory = CreateModelValidatorFactory();
 
-			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object, modelValidatorFactoryMock.Object);
+			ModelValidatorProvider provider = CreateProvider(validatorFactory, modelValidatorFactory);
 
 			ModelMetadata metadata = CreateMetadata(typeof(object));
 			var modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
@@ -61,7 +61,7 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			provider.GetValidators(metadata, modelValidatorProviders).ToArray();
 
 			// Assert
-			modelValidatorFactoryMock.Verify(f => f.Create(validatorProviders, validator), Times.Once);
+			Mock.Get(modelValidatorFactory).Verify(f => f.Create(validatorProviders, validator), Times.Once);
 		}
 
 		[TestMethod]
@@ -84,8 +84,8 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 		public void GetValidators_Should_Return_Empty_Sequece_When_ValidatorFactory_GetValidator_Returns_Null()
 		{
 			// Arrange
-			var validatorFactoryMock = CreateValidatorFactory(null);
-			ModelValidatorProvider provider = CreateProvider(validatorFactoryMock.Object);
+			IValidatorFactory validatorFactory = CreateValidatorFactory(null);
+			ModelValidatorProvider provider = CreateProvider(validatorFactory);
 
 			ModelMetadata metadata = CreateMetadata(typeof(object));
 			var modelValidatorProviders = Enumerable.Empty<ModelValidatorProvider>();
@@ -111,19 +111,19 @@ namespace OrangeJuice.Server.Api.Test.Validation.Infrustructure
 			return new ModelMetadata(new Mock<ModelMetadataProvider>().Object, contrainerType, () => null, typeof(object), "AnyPropertyName");
 		}
 
-		private static Mock<IValidatorFactory> CreateValidatorFactory(IValidator validator)
+		private static IValidatorFactory CreateValidatorFactory(IValidator validator)
 		{
 			var factoryMock = new Mock<IValidatorFactory>();
 			factoryMock.Setup(f => f.GetValidator(It.IsAny<Type>())).Returns(validator);
-			return factoryMock;
+			return factoryMock.Object;
 		}
 
-		private static Mock<IModelValidatorFactory> CreateModelValidatorFactory()
+		private static IModelValidatorFactory CreateModelValidatorFactory()
 		{
 			var factoryMock = new Mock<IModelValidatorFactory>();
 			factoryMock.Setup(f => f.Create(It.IsAny<IEnumerable<ModelValidatorProvider>>(), It.IsAny<IValidator>()))
 					   .Returns<IEnumerable<ModelValidatorProvider>, IValidator>((p, v) => new FluentModelValidator(p, v));
-			return factoryMock;
+			return factoryMock.Object;
 		}
 		#endregion
 	}

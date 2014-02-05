@@ -4,6 +4,6 @@
 	{
 		TOut Convert(TIn item);
 
-		TIn Convert(TOut item);
+		TIn ConvertBack(TOut item);
 	}
 }

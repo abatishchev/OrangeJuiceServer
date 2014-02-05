@@ -90,7 +90,6 @@
     <Compile Include="Services\AwsClientTest.cs" />
     <Compile Include="Services\AwsProductProviderTest.cs" />
     <Compile Include="Services\AwsUrlBuilderTest.cs" />
-    <Compile Include="Services\AzureClientTest.cs" />
     <Compile Include="Services\AzureProductProviderTest.cs" />
     <Compile Include="Services\CloudProductManagerTest.cs" />
     <Compile Include="Services\JsonBlobNameResolverTest.cs" />

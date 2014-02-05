@@ -14,8 +14,8 @@ namespace OrangeJuice.Server.Data
     
     public partial class Rating
     {
-        internal System.Guid UserId { get; set; }
-        internal System.Guid ProductId { get; set; }
+        public System.Guid UserId { get; internal set; }
+        public System.Guid ProductId { get; internal set; }
         public byte Value { get; set; }
         public string Comment { get; set; }
     

@@ -84,15 +84,15 @@ namespace OrangeJuice.Server.Test.Services
 			IProduct product = CreateProduct();
 			IProductRepository repository = CreateRepository(product);
 
-			var awsProviderMock = new Mock<IAwsProductProvider>();
+			var awsProvider = new Mock<IAwsProductProvider>();
 
-			IProductManager manager = CreateManager(repository, awsProvider: awsProviderMock.Object);
+			IProductManager manager = CreateManager(repository, awsProvider: awsProvider.Object);
 
 			// Act
 			await manager.Search("barcode", BarcodeType.EAN);
 
 			// Assert
-			awsProviderMock.Verify(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>()), Times.Never);
+			awsProvider.Verify(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>()), Times.Never);
 		}
 
 		[TestMethod]
@@ -121,15 +121,15 @@ namespace OrangeJuice.Server.Test.Services
 
 			IProductRepository repository = CreateRepository(null);
 
-			var awsProviderMock = CreateAwsProvider(null);
+			IAwsProductProvider awsProvider = CreateAwsProvider(null);
 
-			IProductManager manager = CreateManager(repository, awsProvider: awsProviderMock.Object);
+			IProductManager manager = CreateManager(repository, awsProvider: awsProvider);
 
 			// Act
 			await manager.Search(barcode, barcodeType);
 
 			// Assert
-			awsProviderMock.Verify(p => p.Search(barcode, barcodeType), Times.Once);
+			Mock.Get(awsProvider).Verify(p => p.Search(barcode, barcodeType), Times.Once);
 		}
 
 		[TestMethod]
@@ -140,9 +140,9 @@ namespace OrangeJuice.Server.Test.Services
 
 			IProductRepository repository = CreateRepository(null);
 
-			var awsProviderMock = CreateAwsProvider(null);
+			var awsProvider = CreateAwsProvider(null);
 
-			IProductManager manager = CreateManager(repository, awsProvider: awsProviderMock.Object);
+			IProductManager manager = CreateManager(repository, awsProvider: awsProvider);
 
 			// Act
 			ProductDescriptor descriptor = await manager.Search(barcode, barcodeType);
@@ -181,18 +181,18 @@ namespace OrangeJuice.Server.Test.Services
 
 			IProductRepository repository = CreateRepository(null);
 
-			var azureProviderMock = CreateAzureProvider(descriptor);
+			IAzureProductProvider azureProvider = CreateAzureProvider(descriptor);
 
 			var awsProvider = new Mock<IAwsProductProvider>();
 			awsProvider.Setup(p => p.Search(barcode, barcodeType)).ReturnsAsync(descriptor);
 
-			IProductManager manager = CreateManager(repository, azureProviderMock.Object, awsProvider.Object);
+			IProductManager manager = CreateManager(repository, azureProvider, awsProvider.Object);
 
 			// Act
 			await manager.Search(barcode, barcodeType);
 
 			// Assert
-			azureProviderMock.Verify(p => p.Save(descriptor), Times.Once);
+			Mock.Get(azureProvider).Verify(p => p.Save(descriptor), Times.Once);
 		}
 
 		[TestMethod]
@@ -228,7 +228,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			var awsProvider = CreateAwsProvider(expected);
 
-			IProductManager manager = CreateManager(repository, awsProvider: awsProvider.Object);
+			IProductManager manager = CreateManager(repository, awsProvider: awsProvider);
 
 			// Act
 			ProductDescriptor actual = await manager.Search("barcode", BarcodeType.EAN);
@@ -267,8 +267,8 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			return new CloudProductManager(
 				repository,
-				azureProvider ?? CreateAzureProvider().Object,
-				awsProvider ?? CreateAwsProvider(new ProductDescriptor()).Object);
+				azureProvider ?? CreateAzureProvider(),
+				awsProvider ?? CreateAwsProvider(new ProductDescriptor()));
 		}
 
 		private static IProductRepository CreateRepository(IProduct product)
@@ -285,18 +285,18 @@ namespace OrangeJuice.Server.Test.Services
 			return productMock.Object;
 		}
 
-		private static Mock<IAzureProductProvider> CreateAzureProvider(ProductDescriptor descriptor = null)
+		private static IAzureProductProvider CreateAzureProvider(ProductDescriptor descriptor = null)
 		{
 			var azureProviderMock = new Mock<IAzureProductProvider>();
 			azureProviderMock.Setup(p => p.Save(descriptor ?? It.IsAny<ProductDescriptor>())).Returns(Task.Delay(0));
-			return azureProviderMock;
+			return azureProviderMock.Object;
 		}
 
-		private static Mock<IAwsProductProvider> CreateAwsProvider(ProductDescriptor descriptor)
+		private static IAwsProductProvider CreateAwsProvider(ProductDescriptor descriptor)
 		{
-			var awsProviderMock = new Mock<IAwsProductProvider>();
-			awsProviderMock.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(descriptor);
-			return awsProviderMock;
+			var awsProvider = new Mock<IAwsProductProvider>();
+			awsProvider.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(descriptor);
+			return awsProvider.Object;
 		}
 		#endregion
 	}

@@ -74,7 +74,7 @@ namespace OrangeJuice.Server.Test.Services
 			var actual = await client.GetItems(new StringDictionary());
 
 			// Assert
-			actual.ShouldBeEquivalentTo(expected);
+			actual.Should().BeEquivalentTo(expected);
 		}
 		#endregion
 

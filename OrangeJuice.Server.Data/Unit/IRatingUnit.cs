@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Unit
@@ -7,7 +8,9 @@ namespace OrangeJuice.Server.Data.Unit
 	{
 		Task AddOrUpdate(Rating rating);
 
-		Task<Rating> Get(RatingId ratingId);
+		Task<Rating> Get(Guid userId, Guid productId);
+
+		Task<ICollection<Rating>> Get(Guid productId);
 
 		Task Remove(Rating rating);
 	}

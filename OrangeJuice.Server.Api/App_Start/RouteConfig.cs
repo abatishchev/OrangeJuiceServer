@@ -8,11 +8,6 @@ namespace OrangeJuice.Server.Api
 		public static void RegisterRoutes(HttpRouteCollection routes)
 		{
 			routes.MapHttpRoute(
-				name: "WithAction",
-				routeTemplate: "api/{controller}/{action}/{id}",
-				defaults: new { controller = "Home", id = RouteParameter.Optional });
-
-			routes.MapHttpRoute(
 				name: "DefaultApi",
 				routeTemplate: "api/{controller}/{id}",
 				defaults: new { controller = "Home", id = RouteParameter.Optional });

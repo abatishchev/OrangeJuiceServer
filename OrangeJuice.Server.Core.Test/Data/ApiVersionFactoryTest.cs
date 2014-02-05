@@ -17,14 +17,16 @@ namespace OrangeJuice.Server.Test.Data
 		public void Create_Should_Call_AssemblyProvider_GetExecutingAssembly()
 		{
 			// Arrange
-			var assemblyProviderMock = CreateAssemblyProvider();
-			var factory = CreateFactory(assemblyProviderMock.Object);
+			var providerMock = new Mock<IAssemblyProvider>();
+			providerMock.Setup(p => p.GetExecutingAssembly()).Returns(typeof(ApiVersionFactoryTest).Assembly);
+
+			var factory = CreateFactory(providerMock.Object);
 
 			// Act
 			factory.Create();
 
 			// Assert
-			assemblyProviderMock.Verify(p => p.GetExecutingAssembly(), Times.Once);
+			providerMock.Verify(p => p.GetExecutingAssembly(), Times.Once);
 		}
 
 		[TestMethod]
@@ -33,10 +35,9 @@ namespace OrangeJuice.Server.Test.Data
 			// Arrange
 			const string environment = Environment.Testing;
 
-			var environmentProviderMock = new Mock<IEnvironmentProvider>();
-			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
+			var providerMock = CreateEnvironmentProvider(environment);
 
-			var factory = CreateFactory(environmentProvider: environmentProviderMock.Object);
+			var factory = CreateFactory(environmentProvider: providerMock);
 
 			// Act
 			ApiVersion apiVersion = factory.Create();
@@ -50,15 +51,22 @@ namespace OrangeJuice.Server.Test.Data
 		private static IFactory<ApiVersion> CreateFactory(IAssemblyProvider assemblyProvider = null, IEnvironmentProvider environmentProvider = null)
 		{
 			return new ApiVersionFactory(
-				assemblyProvider ?? CreateAssemblyProvider().Object,
-				environmentProvider ?? Mock.Of<IEnvironmentProvider>());
+				assemblyProvider ?? CreateAssemblyProvider(),
+				environmentProvider ?? CreateEnvironmentProvider());
 		}
 
-		private static Mock<IAssemblyProvider> CreateAssemblyProvider()
+		private static IAssemblyProvider CreateAssemblyProvider()
 		{
 			var providerMock = new Mock<IAssemblyProvider>();
 			providerMock.Setup(p => p.GetExecutingAssembly()).Returns(typeof(ApiVersionFactoryTest).Assembly);
-			return providerMock;
+			return providerMock.Object;
+		}
+
+		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = null)
+		{
+			var providerMock = new Mock<IEnvironmentProvider>();
+			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
+			return providerMock.Object;
 		}
 		#endregion
 	}

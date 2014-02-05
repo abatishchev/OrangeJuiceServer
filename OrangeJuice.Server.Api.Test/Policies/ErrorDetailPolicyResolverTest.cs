@@ -20,28 +20,28 @@ namespace OrangeJuice.Server.Api.Test.Policies
 		public void Resolve_Should_Call_ErrorDetailPolicyProvider_GetPolicies()
 		{
 			// Arrange
-			var errorDetailPolicyProvider = CreateErrorDetailPolicyProvider();
-			var resolver = CreateResolver(errorDetailPolicyProvider.Object);
+			IErrorDetailPolicyProvider provider = CreateErrorDetailPolicyProvider();
+			ErrorDetailPolicyResolver resolver = CreateResolver(provider);
 
 			// Act
 			resolver.Resolve();
 
 			// Assert
-			errorDetailPolicyProvider.Verify(p => p.GetPolicies(), Times.Once);
+			Mock.Get(provider).Verify(p => p.GetPolicies(), Times.Once);
 		}
 
 		[TestMethod]
 		public void Resolve_Should_Call_EnvironmentProvider_GetCurrentEnvironment()
 		{
 			// Arrange
-			var environmentProvider = CreateEnvironmentProvider();
-			var resolver = CreateResolver(environmentProvider: environmentProvider.Object);
+			IEnvironmentProvider provider = CreateEnvironmentProvider();
+			ErrorDetailPolicyResolver resolver = CreateResolver(environmentProvider: provider);
 
 			// Act
 			resolver.Resolve();
 
 			// Assert
-			environmentProvider.Verify(p => p.GetCurrentEnvironment(), Times.Once);
+			Mock.Get(provider).Verify(p => p.GetCurrentEnvironment(), Times.Once);
 		}
 
 		[TestMethod]
@@ -50,9 +50,9 @@ namespace OrangeJuice.Server.Api.Test.Policies
 			// Arrange
 			const IncludeErrorDetailPolicy expected = IncludeErrorDetailPolicy.Default;
 
-			var errorDetailPolicyProvider = CreateErrorDetailPolicyProvider();
-			var environmentProvider = CreateEnvironmentProvider();
-			var resolver = CreateResolver(errorDetailPolicyProvider.Object, environmentProvider.Object);
+			IErrorDetailPolicyProvider errorDetailPolicyProvider = CreateErrorDetailPolicyProvider();
+			IEnvironmentProvider environmentProvider = CreateEnvironmentProvider();
+			ErrorDetailPolicyResolver resolver = CreateResolver(errorDetailPolicyProvider, environmentProvider);
 
 			// Act
 			IncludeErrorDetailPolicy actual = resolver.Resolve();
@@ -66,23 +66,23 @@ namespace OrangeJuice.Server.Api.Test.Policies
 		private static ErrorDetailPolicyResolver CreateResolver(IErrorDetailPolicyProvider errorDetailPolicyProvider = null, IEnvironmentProvider environmentProvider = null)
 		{
 			return new ErrorDetailPolicyResolver(
-				errorDetailPolicyProvider ?? CreateErrorDetailPolicyProvider().Object,
-				environmentProvider ?? CreateEnvironmentProvider().Object);
+				errorDetailPolicyProvider ?? CreateErrorDetailPolicyProvider(),
+				environmentProvider ?? CreateEnvironmentProvider());
 		}
 
-		private static Mock<IErrorDetailPolicyProvider> CreateErrorDetailPolicyProvider(string environment = "", IncludeErrorDetailPolicy policy = IncludeErrorDetailPolicy.Default)
+		private static IErrorDetailPolicyProvider CreateErrorDetailPolicyProvider(string environment = "", IncludeErrorDetailPolicy policy = IncludeErrorDetailPolicy.Default)
 		{
 			var errorDetailPolicyProvider = new Mock<IErrorDetailPolicyProvider>();
 			errorDetailPolicyProvider.Setup(p => p.GetPolicies()).Returns(
 				new Dictionary<string, IncludeErrorDetailPolicy> { { environment, policy } });
-			return errorDetailPolicyProvider;
+			return errorDetailPolicyProvider.Object;
 		}
 
-		private static Mock<IEnvironmentProvider> CreateEnvironmentProvider(string environment = "")
+		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = "")
 		{
 			var environmentProviderMock = new Mock<IEnvironmentProvider>();
 			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
-			return environmentProviderMock;
+			return environmentProviderMock.Object;
 		}
 		#endregion
 	}
