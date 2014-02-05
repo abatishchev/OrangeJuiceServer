@@ -4,12 +4,14 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.ExceptionHandling;
+using System.Web.Http.Filters;
 using System.Web.Http.Validation;
 
 using Microsoft.Practices.Unity;
 
 using Newtonsoft.Json;
 
+using OrangeJuice.Server.Api.Filters;
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Policies;
 using OrangeJuice.Server.Configuration;
@@ -22,6 +24,7 @@ namespace OrangeJuice.Server.Api
 		public static void Configure(HttpConfiguration config, IUnityContainer container)
 		{
 			ConfigureServices(config.Services, container);
+			RegisterFilters(config.Filters);
 			ConfigureHandlers(config.MessageHandlers, container);
 
 			ConfigureErrorDetailPolicy(config, container);
@@ -45,10 +48,14 @@ namespace OrangeJuice.Server.Api
 			services.Add(typeof(IExceptionLogger), new Logging.ElmahExceptionLogger());
 		}
 
+		public static void RegisterFilters(HttpFilterCollection filters)
+		{
+			filters.Add(new ValidModelActionFilter());
+		}
+
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)
 		{
-			DelegatingHandler handler = container.Resolve<AppVersionHandler>();
-			handlers.Add(handler);
+			handlers.Add(container.Resolve<AppVersionHandler>());
 		}
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)
@@ -66,7 +73,6 @@ namespace OrangeJuice.Server.Api
 			var settings = formatters.JsonFormatter.SerializerSettings;
 			settings.Formatting = Formatting.Indented;
 			settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-			settings.PreserveReferencesHandling = PreserveReferencesHandling.Arrays;
 			settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 		}
 	}

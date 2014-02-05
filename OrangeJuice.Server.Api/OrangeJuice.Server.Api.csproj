@@ -113,7 +113,6 @@
     <Compile Include="Validation\RatingSearchCriteriaValidator.cs" />
     <Compile Include="Policies\EnvironmentErrorDetailPolicyProvider.cs" />
     <Compile Include="Policies\IErrorDetailPolicyProvider.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="Handlers\AppVersionHandlerFactory.cs" />

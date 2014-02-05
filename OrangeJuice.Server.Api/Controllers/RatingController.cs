@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		public async Task<IHttpActionResult> GetRating(RatingSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetRating([FromUri]RatingSearchCriteria searchCriteria)
 		{
 			IRating rating = await _ratingRepository.Search(searchCriteria.UserId, searchCriteria.ProductId);
 			if (rating == null)
@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		[Route("api/product/{productId}/rating")]
-		public async Task<IHttpActionResult> GetRatings(RatingSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetRatings([FromUri]RatingSearchCriteria searchCriteria)
 		{
 			var ratings = await _ratingRepository.SearchAll(searchCriteria.ProductId);
 			if (ratings == null)
@@ -47,7 +47,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok();
 		}
 
-		public async Task<IHttpActionResult> DeleteRating(RatingSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> DeleteRating([FromUri]RatingSearchCriteria searchCriteria)
 		{
 			await _ratingRepository.Delete(searchCriteria.UserId, searchCriteria.ProductId);
 
