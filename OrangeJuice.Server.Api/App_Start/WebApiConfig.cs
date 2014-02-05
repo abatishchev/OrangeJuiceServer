@@ -23,9 +23,11 @@ namespace OrangeJuice.Server.Api
 	{
 		public static void Configure(HttpConfiguration config, IUnityContainer container)
 		{
-			ConfigureServices(config.Services, container);
-			RegisterFilters(config.Filters);
+			ConfigureRoutes(GlobalConfiguration.Configuration.Routes);
+
+			ConfigureFilters(config.Filters);
 			ConfigureHandlers(config.MessageHandlers, container);
+			ConfigureServices(config.Services, container);
 
 			ConfigureErrorDetailPolicy(config, container);
 			ConfigureFormatters(config.Formatters);
@@ -41,14 +43,15 @@ namespace OrangeJuice.Server.Api
 			//config.EnableSystemDiagnosticsTracing();
 		}
 
-		private static void ConfigureServices(ServicesContainer services, IUnityContainer container)
+		private static void ConfigureRoutes(HttpRouteCollection routes)
 		{
-			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
-
-			services.Add(typeof(IExceptionLogger), new Logging.ElmahExceptionLogger());
+			routes.MapHttpRoute(
+				name: "DefaultApi",
+				routeTemplate: "api/{controller}/{id}",
+				defaults: new { controller = "Home", id = RouteParameter.Optional });
 		}
 
-		public static void RegisterFilters(HttpFilterCollection filters)
+		public static void ConfigureFilters(HttpFilterCollection filters)
 		{
 			filters.Add(new ValidModelActionFilter());
 		}
@@ -56,6 +59,13 @@ namespace OrangeJuice.Server.Api
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)
 		{
 			handlers.Add(container.Resolve<AppVersionHandler>());
+		}
+
+		private static void ConfigureServices(ServicesContainer services, IUnityContainer container)
+		{
+			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
+
+			services.Add(typeof(IExceptionLogger), new Logging.ElmahExceptionLogger());
 		}
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)

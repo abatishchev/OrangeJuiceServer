@@ -117,7 +117,6 @@
     <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="Handlers\AppVersionHandlerFactory.cs" />
     <Compile Include="Handlers\AppVersionHandler.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Handlers\EmptyAppVersionHandler.cs" />

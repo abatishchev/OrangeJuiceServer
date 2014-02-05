@@ -9,9 +9,6 @@ namespace OrangeJuice.Server.Api
 			var container = UnityConfig.InitializeContainer();
 
 			GlobalConfiguration.Configure(c => WebApiConfig.Configure(c, container));
-
-			RouteConfig.RegisterRoutes(GlobalConfiguration.Configuration.Routes);
-			FilterConfig.RegisterFilters(GlobalConfiguration.Configuration.Filters);
 		}
 	}
 }
