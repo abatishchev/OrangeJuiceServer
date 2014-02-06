@@ -21,11 +21,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		/// <summary>
-		/// Retrieves a user
-		/// </summary>
-		/// <returns>User entity</returns>
-		/// <url>GET /api/user</url>
 		public async Task<IHttpActionResult> GetUser([FromUri]UserSearchCriteria searchCriteria)
 		{
 			IUser user = await _userRepository.Search(searchCriteria.UserId);
@@ -35,11 +30,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(user);
 		}
 
-		/// <summary>
-		/// Registers a user
-		/// </summary>
-		/// <returns>Guid representing the user</returns>
-		/// <url>PUT /api/user</url>
 		public async Task<IHttpActionResult> PutUser(UserModel userModel)
 		{
 			IUser user = await _userRepository.Register(userModel.Email, userModel.Name);

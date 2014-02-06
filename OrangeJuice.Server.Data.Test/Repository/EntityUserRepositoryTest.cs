@@ -17,31 +17,46 @@ namespace OrangeJuice.Server.Data.Test.Repository
 	{
 		#region Register
 		[TestMethod]
+		public async Task Register_Should_Return_User_Returned_By_UserUnit_Add()
+		{
+			// Arrange
+			User expected = new User { Name = "name", Email = "email" };
+
+			var userUnitMock = CreateUserUnit(expected);
+
+			IUserRepository repository = CreateRepository(userUnitMock.Object);
+
+			// Act
+			IUser actual = await repository.Register(expected.Name, expected.Email);
+
+			// Assert
+			actual.Should().Be(expected);
+		}
+
+		[TestMethod]
 		public async Task Register_Should_Return_User_Having_Properties()
 		{
 			// Arrange
 			const string email = "email";
 			const string name = "name";
 
-			var userUnitMock = new Mock<IUserUnit>();
-			userUnitMock.Setup(u => u.Add(It.IsAny<User>())).Returns<User>(Task.FromResult);
+			var userUnitMock = CreateUserUnit();
 
 			IUserRepository repository = CreateRepository(userUnitMock.Object);
 
 			// Act
-			IUser user = await repository.Register(email, name);
+			IUser user = await repository.Register(name, email);
 
 			// Assert
-			user.Email.Should().NotBeEmpty();
-			user.Name.Should().NotBeEmpty();
+			user.Email.Should().NotBeNullOrEmpty();
+			user.Name.Should().NotBeNullOrEmpty();
 		}
 
 		[TestMethod]
 		public async Task Register_Should_Call_UserUnit_Add()
 		{
 			// Arrange
-			var userUnitMock = new Mock<IUserUnit>();
-			userUnitMock.Setup(u => u.Add(It.IsAny<User>())).Returns<User>(Task.FromResult);
+			var userUnitMock = CreateUserUnit();
 
 			IUserRepository repository = CreateRepository(userUnitMock.Object);
 
@@ -50,6 +65,24 @@ namespace OrangeJuice.Server.Data.Test.Repository
 
 			// Assert
 			userUnitMock.Verify(u => u.Add(user), Times.Once);
+		}
+
+		[TestMethod]
+		public async Task Register_Should_Return_Pass_User_To_User_Add_Having_Properties_Set_From_Parameters()
+		{
+			// Arrange
+			const string email = "email";
+			const string name = "name";
+
+			var userUnitMock = CreateUserUnit();
+
+			IUserRepository repository = CreateRepository(userUnitMock.Object);
+
+			// Act
+			await repository.Register(name, email);
+
+			// Assert
+			userUnitMock.Verify(unit => unit.Add(It.Is<User>(u => u.Name == name && u.Email == email)), Times.Once);
 		}
 		#endregion
 
@@ -112,6 +145,13 @@ namespace OrangeJuice.Server.Data.Test.Repository
 		private static IUserRepository CreateRepository(IUserUnit userUnit = null)
 		{
 			return new EntityUserRepository(userUnit ?? new Mock<IUserUnit>().Object);
+		}
+
+		private static Mock<IUserUnit> CreateUserUnit(User user = null)
+		{
+			var userUnitMock = new Mock<IUserUnit>();
+			userUnitMock.Setup(u => u.Add(It.IsAny<User>())).Returns<User>(u => Task.FromResult(user ?? u));
+			return userUnitMock;
 		}
 
 		#endregion

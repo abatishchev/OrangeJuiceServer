@@ -19,12 +19,12 @@ namespace OrangeJuice.Server.Data.Repository
 		#endregion
 
 		#region IUserRepository members
-		public async Task<IUser> Register(string email, string name)
+		public async Task<IUser> Register(string name, string email)
 		{
 			User user = new User
 			{
-				Email = email,
-				Name = name
+				Name = name,
+				Email = email
 			};
 
 			return await _userUnit.Add(user);

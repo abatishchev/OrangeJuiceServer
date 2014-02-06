@@ -31,9 +31,9 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 				descriptor.Title.Should().Be("Ghirardelli Valentine's Chocolate Squares Premium Chocolate Assortment");
 				descriptor.Brand.Should().Be("Ghirardelli");
 
-				descriptor.SmallImageUrl.Should().NotBeEmpty();
-				descriptor.MediumImageUrl.Should().NotBeEmpty();
-				descriptor.LargeImageUrl.Should().NotBeEmpty();
+				descriptor.SmallImageUrl.Should().NotBeNullOrEmpty();
+				descriptor.MediumImageUrl.Should().NotBeNullOrEmpty();
+				descriptor.LargeImageUrl.Should().NotBeNullOrEmpty();
 			}
 		}
 	}
