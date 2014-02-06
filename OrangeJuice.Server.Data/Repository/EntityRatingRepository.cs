@@ -34,6 +34,7 @@ namespace OrangeJuice.Server.Data.Repository
 									ProductId = productId,
 								};
 				rating.Value = ratingValue;
+				rating.Comment = comment;
 
 				await _ratingUnit.AddOrUpdate(rating);
 
