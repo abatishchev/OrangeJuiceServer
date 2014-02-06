@@ -6,9 +6,9 @@ namespace OrangeJuice.Server.Api.Validation
 	{
 		public RatingSearchCriteriaValidator()
 		{
-			RuleFor(x => x.ProductId).NotEmpty();
+			RuleFor(x => x.UserId).NotEmpty();
 
-			// UserId may be missing thus empty
+			RuleFor(x => x.ProductId).NotEmpty();
 		}
 	}
 }

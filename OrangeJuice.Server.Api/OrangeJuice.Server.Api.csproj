@@ -105,7 +105,9 @@
     <Compile Include="Logging\ElmahExceptionLogger.cs" />
     <Compile Include="Models\ProductSearchCriteria.cs" />
     <Compile Include="Models\RatingModel.cs" />
+    <Compile Include="Models\RatingsSearchCriteria.cs" />
     <Compile Include="Models\RatingSearchCriteria.cs" />
+    <Compile Include="Validation\RatingsSearchCriteriaValidator.cs" />
     <Compile Include="Validation\RatingSearchCriteriaValidator.cs" />
     <Compile Include="Policies\EnvironmentErrorDetailPolicyProvider.cs" />
     <Compile Include="Policies\IErrorDetailPolicyProvider.cs" />

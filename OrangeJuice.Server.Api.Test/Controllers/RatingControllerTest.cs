@@ -103,7 +103,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController();
 
 			// Act
-			IHttpActionResult result = await controller.GetRatings(new RatingSearchCriteria());
+			IHttpActionResult result = await controller.GetRatings(new RatingsSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<NotFoundResult>();
@@ -121,7 +121,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			await controller.GetRatings(new RatingSearchCriteria { ProductId = productId });
+			await controller.GetRatings(new RatingsSearchCriteria { ProductId = productId });
 
 			// Assert
 			repositoryMock.Verify(r => r.SearchAll(productId), Times.Once);
@@ -140,7 +140,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetRatings(new RatingSearchCriteria { ProductId = productId });
+			IHttpActionResult result = await controller.GetRatings(new RatingsSearchCriteria { ProductId = productId });
 			var actual = ((OkNegotiatedContentResult<ICollection<IRating>>)result).Content;
 
 			// Assert
@@ -157,7 +157,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			RatingController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.GetRatings(new RatingSearchCriteria());
+			IHttpActionResult result = await controller.GetRatings(new RatingsSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<ICollection<IRating>>>();

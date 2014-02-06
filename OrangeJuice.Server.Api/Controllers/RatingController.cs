@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		[Route("api/product/{productId}/rating")]
-		public async Task<IHttpActionResult> GetRatings([FromUri]RatingSearchCriteria searchCriteria)
+		public async Task<IHttpActionResult> GetRatings([FromUri]RatingsSearchCriteria searchCriteria)
 		{
 			var ratings = await _ratingRepository.SearchAll(searchCriteria.ProductId);
 			if (ratings == null)

@@ -2,9 +2,9 @@
 
 namespace OrangeJuice.Server.Api.Validation
 {
-	public class ProductSearchCriteriaValidator : AbstractValidator<Models.ProductSearchCriteria>
+	public class RatingsSearchCriteriaValidator : AbstractValidator<Models.RatingsSearchCriteria>
 	{
-		public ProductSearchCriteriaValidator()
+		public RatingsSearchCriteriaValidator()
 		{
 			RuleFor(x => x.ProductId).NotEmpty();
 		}

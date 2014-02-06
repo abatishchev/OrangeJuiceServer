@@ -1,12 +1,12 @@
-﻿using OrangeJuice.Server.Data;
+﻿using FluentValidation.Attributes;
 
 namespace OrangeJuice.Server.Api.Models
 {
-	[FluentValidation.Attributes.Validator(typeof(Validation.BarcodeSearchCriteriaValidator))]
+	[Validator(typeof(Validation.BarcodeSearchCriteriaValidator))]
 	public class BarcodeSearchCriteria
 	{
 		public string Barcode { get; set; }
 
-		public BarcodeType BarcodeType { get; set; }
+		public Data.BarcodeType BarcodeType { get; set; }
 	}
 }

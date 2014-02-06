@@ -1,11 +1,9 @@
 ﻿using FluentValidation;
 
-using OrangeJuice.Server.Api.Models;
-
 namespace OrangeJuice.Server.Api.Validation
 {
 	// ReSharper disable InconsistentNaming
-	public sealed class BarcodeSearchCriteriaValidator : AbstractValidator<BarcodeSearchCriteria>
+	public sealed class BarcodeSearchCriteriaValidator : AbstractValidator<Models.BarcodeSearchCriteria>
 	{
 		private const int EANLength = 13;
 		private const int UPCLength = 12;
