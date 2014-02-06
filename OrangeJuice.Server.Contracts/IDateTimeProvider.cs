@@ -6,6 +6,6 @@ namespace OrangeJuice.Server
 	{
 		DateTime GetNow();
 
-		string FormatToUniversal(DateTime dateTime);
+		string Format(DateTime dateTime);
 	}
 }

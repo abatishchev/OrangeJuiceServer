@@ -75,7 +75,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void BuildArgs_Should_Call_DateTimeProvider_FormatToUniversal()
+		public void BuildArgs_Should_Call_DateTimeProvider_Format()
 		{
 			// Arrange
 			var dateTimeProviderMock = CreateDateTimeProvider(DateTime.UtcNow);
@@ -86,11 +86,11 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildArgs(new StringDictionary());
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.FormatToUniversal(It.IsAny<DateTime>()), Times.Once);
+			dateTimeProviderMock.Verify(p => p.Format(It.IsAny<DateTime>()), Times.Once);
 		}
 
 		[TestMethod]
-		public void BuildArgs_Should_Pass_Result_Of_DateTimeProvider_GetNow_To_DateTimeProvider_FormatToUniversal()
+		public void BuildArgs_Should_Pass_Result_Of_DateTimeProvider_GetNow_To_DateTimeProvider_Format()
 		{
 			// Arrange
 			DateTime now = DateTime.UtcNow;
@@ -102,7 +102,7 @@ namespace OrangeJuice.Server.Test.Services
 			queryBuilder.BuildArgs(new StringDictionary());
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.FormatToUniversal(now), Times.Once);
+			dateTimeProviderMock.Verify(p => p.Format(now), Times.Once);
 		}
 		#endregion
 
@@ -118,7 +118,7 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			var dateTimeProviderMock = new Mock<IDateTimeProvider>();
 			dateTimeProviderMock.Setup(p => p.GetNow()).Returns(now);
-			dateTimeProviderMock.Setup(p => p.FormatToUniversal(It.IsAny<DateTime>())).Returns(Convert.ToString(now));
+			dateTimeProviderMock.Setup(p => p.Format(It.IsAny<DateTime>())).Returns(Convert.ToString(now));
 			return dateTimeProviderMock;
 		}
 		#endregion

@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Services
 		public IDictionary<string, string> BuildArgs(IDictionary<string, string> args)
 		{
 			DateTime now = _dateTimeProvider.GetNow();
-			string timestamp = _dateTimeProvider.FormatToUniversal(now);
+			string timestamp = _dateTimeProvider.Format(now);
 
 			// Ordering parameters in naturual byte order as required by AWS
 			return new SortedDictionary<string, string>(args, StringComparer.Ordinal)
