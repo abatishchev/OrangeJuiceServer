@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetProductId
 		[TestMethod]
-		public async Task GetProducId_Should_Return_Ok()
+		public async Task GetProducId_Should_Return_Status_Ok()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();
@@ -74,7 +74,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProducId_Should_Return_NotFound_When_ProductManager_Search_Returns_Null()
+		public async Task GetProducId_Should_Return_Status_NotFound_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();
@@ -92,7 +92,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetProductBarcode
 		[TestMethod]
-		public async Task GetProductBarcode_Should_Return_Ok()
+		public async Task GetProductBarcode_Should_Return_Status_Ok()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();
@@ -146,7 +146,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProductBarcode_Should_Return_NotFound_When_ProductManager_Search_Returns_Null()
+		public async Task GetProductBarcode_Should_Return_Status_NotFound_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
 			var productRepositoryMock = new Mock<IProductManager>();

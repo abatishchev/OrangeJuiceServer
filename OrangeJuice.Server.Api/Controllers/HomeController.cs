@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Web.Http;
+﻿using System.Web.Http;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
@@ -7,7 +6,7 @@ namespace OrangeJuice.Server.Api.Controllers
 	{
 		public IHttpActionResult Get()
 		{
-			return StatusCode(HttpStatusCode.Forbidden);
+			return NotFound();
 		}
 	}
 }

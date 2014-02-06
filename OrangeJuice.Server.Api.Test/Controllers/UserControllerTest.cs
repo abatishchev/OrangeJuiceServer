@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetUser
 		[TestMethod]
-		public async Task GetUser_Should_Return_NotFound_When_UserRepository_Returns_Null()
+		public async Task GetUser_Should_Return_Status_NotFound_When_UserRepository_Returns_Null()
 		{
 			//Arrange
 			var repositoryMock = new Mock<IUserRepository>();
@@ -57,7 +57,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetUser_Should_Return_User_By_Specified_UserGuid()
+		public async Task GetUser_Should_Return_User_Returned_By_UserRepository_Search()
 		{
 			// Arrange
 			Guid userId = Guid.NewGuid();
@@ -78,7 +78,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetUser_Should_Return_Ok()
+		public async Task GetUser_Should_Return_Status_Ok()
 		{
 			// Arrange
 			IUser user = CreateUser();
@@ -98,7 +98,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region PutUser
 		[TestMethod]
-		public async Task PutUser_Should_Return_InternalError_When_UserRepository_Register_Returns_Null()
+		public async Task PutUser_Should_Return_Status_InternalError_When_UserRepository_Register_Returns_Null()
 		{
 			// Arrange
 			var repositoryMock = new Mock<IUserRepository>();
@@ -154,7 +154,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_UserId()
+		public async Task PutUser_Should_Return_Status_Ok()
 		{
 			// Arrange
 			IUser user = CreateUser();

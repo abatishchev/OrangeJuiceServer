@@ -1,4 +1,3 @@
-using System.Net;
 using System.Web.Http;
 using System.Web.Http.Results;
 
@@ -14,7 +13,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	public class HomeControllerTest
 	{
 		[TestMethod]
-		public void Get_Should_Return_Status_403_Forbidden()
+		public void Get_Should_Return_Status_NotFound()
 		{
 			// Assign
 			HomeController controller = new HomeController();
@@ -23,8 +22,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = controller.Get();
 
 			// Assert
-			result.Should().BeOfType<StatusCodeResult>();
-			result.As<StatusCodeResult>().StatusCode.Should().Be(HttpStatusCode.Forbidden);
+			result.Should().BeOfType<NotFoundResult>();
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetRating
 		[TestMethod]
-		public async Task GetRating_Should_Return_NotFound_When_RatingRepository_Search_Returns_Null()
+		public async Task GetRating_Should_Return_Status_NotFound_When_RatingRepository_Search_Returns_Null()
 		{
 			//Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
@@ -76,7 +76,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetRating_Should_Return_Ok()
+		public async Task GetRating_Should_Return_Status_Ok()
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
@@ -94,7 +94,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region GetRatings
 		[TestMethod]
-		public async Task GetRatings_Should_Return_NotFound_When_RatingRepository_SearchAll_Returns_Null()
+		public async Task GetRatings_Should_Return_Status_NotFound_When_RatingRepository_SearchAll_Returns_Null()
 		{
 			//Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
@@ -148,7 +148,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetRatings_Should_Return_Ok()
+		public async Task GetRatings_Should_Return_Status_Ok()
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
@@ -186,7 +186,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PostRating_Should_Return_RatingSearchCriteria()
+		public async Task PostRating_Should_Return_Status_Ok()
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
@@ -222,7 +222,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task DeleteRating_Should_Return_Ok()
+		public async Task DeleteRating_Should_Return_Status_Ok()
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
