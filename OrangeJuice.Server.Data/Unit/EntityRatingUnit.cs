@@ -39,7 +39,7 @@ namespace OrangeJuice.Server.Data.Unit
 			return product != null ? product.Ratings : null;
 		}
 
-		public async Task Remove(Rating rating)
+		public async Task Delete(Rating rating)
 		{
 			_db.Ratings.Remove(rating);
 

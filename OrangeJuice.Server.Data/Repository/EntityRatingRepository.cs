@@ -51,7 +51,7 @@ namespace OrangeJuice.Server.Data.Repository
 				if (rating == null)
 					throw new ObjectNotFoundException();
 
-				await _ratingUnit.Remove(rating);
+				await _ratingUnit.Delete(rating);
 
 				scope.Complete();
 			}

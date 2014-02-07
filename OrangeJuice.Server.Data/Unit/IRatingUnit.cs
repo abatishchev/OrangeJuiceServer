@@ -12,6 +12,6 @@ namespace OrangeJuice.Server.Data.Unit
 
 		Task<ICollection<Rating>> Get(Guid productId);
 
-		Task Remove(Rating rating);
+		Task Delete(Rating rating);
 	}
 }
