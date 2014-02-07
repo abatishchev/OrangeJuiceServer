@@ -42,5 +42,14 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(descriptor);
 		}
 		#endregion
+
+		#region Methods
+		protected override void Dispose(bool disposing)
+		{
+			_productManager.Dispose();
+
+			base.Dispose(disposing);
+		}
+		#endregion
 	}
 }
