@@ -11,11 +11,6 @@ using Microsoft.Practices.Unity;
 
 using Newtonsoft.Json;
 
-using OrangeJuice.Server.Api.Filters;
-using OrangeJuice.Server.Api.Handlers;
-using OrangeJuice.Server.Api.Policies;
-using OrangeJuice.Server.Configuration;
-
 // ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
@@ -25,7 +20,7 @@ namespace OrangeJuice.Server.Api
 		{
 			ConfigureRoutes(GlobalConfiguration.Configuration.Routes);
 
-			ConfigureFilters(config.Filters);
+			ConfigureFilters(config.Filters, container);
 			ConfigureHandlers(config.MessageHandlers, container);
 			ConfigureServices(config.Services, container);
 
@@ -51,14 +46,22 @@ namespace OrangeJuice.Server.Api
 				defaults: new { controller = "Home", id = RouteParameter.Optional });
 		}
 
-		public static void ConfigureFilters(HttpFilterCollection filters)
+		public static void ConfigureFilters(HttpFilterCollection filters, IUnityContainer container)
 		{
-			filters.Add(new ValidModelActionFilter());
+			// TODO: use AddRange() later
+			foreach (IFilter filter in container.ResolveAll<IFilter>())
+			{
+				filters.Add(filter);
+			}
 		}
 
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)
 		{
-			handlers.Add(container.Resolve<AppVersionHandler>());
+			// TODO: use AddRange() later
+			foreach (DelegatingHandler handler in container.ResolveAll<DelegatingHandler>())
+			{
+				handlers.Add(handler);
+			}
 		}
 
 		private static void ConfigureServices(ServicesContainer services, IUnityContainer container)
@@ -70,9 +73,7 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)
 		{
-			IErrorDetailPolicyProvider errorDetailPolicyProvider = container.Resolve<IErrorDetailPolicyProvider>();
-			IEnvironmentProvider environmentProvider = container.Resolve<IEnvironmentProvider>();
-			config.IncludeErrorDetailPolicy = new ErrorDetailPolicyResolver(errorDetailPolicyProvider, environmentProvider).Resolve();
+			config.IncludeErrorDetailPolicy = container.Resolve<IncludeErrorDetailPolicy>();
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)

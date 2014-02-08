@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Web.Http;
+using System.Web.Http.Filters;
 using System.Web.Http.Validation;
 using System.Xml.Linq;
 
@@ -8,6 +10,7 @@ using FluentValidation.Attributes;
 
 using Microsoft.Practices.Unity;
 
+using OrangeJuice.Server.Api.Filters;
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Policies;
 using OrangeJuice.Server.Api.Validation.Infrustructure;
@@ -39,6 +42,14 @@ namespace OrangeJuice.Server.Api
 
 		private static void RegisterTypes(IUnityContainer container)
 		{
+			#region Web API
+			container.RegisterType<IFilter, ValidModelActionFilter>(
+				new ContainerControlledLifetimeManager());
+
+			container.RegisterType<DelegatingHandler, AppVersionHandler>(
+				new ContainerControlledLifetimeManager());
+			#endregion
+
 			#region Providers
 			container.RegisterType<IConfigurationProvider, ClouConfigurationProvider>(
 				new ContainerControlledLifetimeManager());
@@ -55,6 +66,13 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IErrorDetailPolicyProvider, EnvironmentErrorDetailPolicyProvider>(
 				new ContainerControlledLifetimeManager());
+
+			container.RegisterType<IFactory<IncludeErrorDetailPolicy>, ErrorDetailPolicyFactory>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IErrorDetailPolicyProvider), typeof(IEnvironmentProvider)));
+
+			container.RegisterFactory<IncludeErrorDetailPolicy>(
+				new ContainerControlledLifetimeManager());
 			#endregion
 
 			#region Web
@@ -62,9 +80,8 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IEnvironmentProvider)));
 
-			container.RegisterType<AppVersionHandler>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionFactory(c => c.Resolve<IFactory<AppVersionHandler>>().Create()));
+			container.RegisterFactory<AppVersionHandler>(
+				new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new ContainerControlledLifetimeManager(),
@@ -101,9 +118,8 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IAssemblyProvider), typeof(IEnvironmentProvider)));
 
-			container.RegisterType<ApiVersion>(
-				new HierarchicalLifetimeManager(),
-				new InjectionFactory(c => c.Resolve<IFactory<ApiVersion>>().Create()));
+			container.RegisterFactory<ApiVersion>(
+				new HierarchicalLifetimeManager());
 			#endregion
 
 			#region ProductController
@@ -111,9 +127,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IFactory<AzureOptions>, AzureOptionsFactory>(
 				new ContainerControlledLifetimeManager());
 
-			container.RegisterType<AzureOptions>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionFactory(c => c.Resolve<IFactory<AzureOptions>>().Create()));
+			container.RegisterFactory<AzureOptions>(
+				new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IBlobNameResolver, JsonBlobNameResolver>(
 				new ContainerControlledLifetimeManager());
@@ -137,9 +152,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IFactory<AwsOptions>, AwsOptionsFactory>(
 				new ContainerControlledLifetimeManager());
 
-			container.RegisterType<AwsOptions>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionFactory(c => c.Resolve<IFactory<AwsOptions>>().Create()));
+			container.RegisterFactory<AwsOptions>(
+				new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new ContainerControlledLifetimeManager(),
