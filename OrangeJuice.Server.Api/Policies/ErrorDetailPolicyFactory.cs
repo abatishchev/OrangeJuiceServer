@@ -1,11 +1,10 @@
-﻿using System;
-using System.Web.Http;
+﻿using System.Web.Http;
 
 using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Api.Policies
 {
-	public sealed class ErrorDetailPolicyResolver
+	public sealed class ErrorDetailPolicyFactory : IFactory<IncludeErrorDetailPolicy>
 	{
 		#region Fields
 		private readonly IErrorDetailPolicyProvider _detailPolicyProvider;
@@ -13,26 +12,25 @@ namespace OrangeJuice.Server.Api.Policies
 		#endregion
 
 		#region Ctor
-		public ErrorDetailPolicyResolver(IErrorDetailPolicyProvider detailPolicyProvider, IEnvironmentProvider environmentProvider)
+		public ErrorDetailPolicyFactory(IErrorDetailPolicyProvider detailPolicyProvider, IEnvironmentProvider environmentProvider)
 		{
 			_detailPolicyProvider = detailPolicyProvider;
 			_environmentProvider = environmentProvider;
 		}
 		#endregion
 
-		#region ErrorDetailPolicyResolver members
-		public IncludeErrorDetailPolicy Resolve()
+		#region IFactory members
+		public IncludeErrorDetailPolicy Create()
 		{
 			var policies = _detailPolicyProvider.GetPolicies();
 			string environment = _environmentProvider.GetCurrentEnvironment();
 
 			IncludeErrorDetailPolicy policy;
 			if (!policies.TryGetValue(environment, out policy))
-				throw new InvalidOperationException(String.Format("Evironment {0} is not supported", environment));
+				return IncludeErrorDetailPolicy.Default;
 
 			return policy;
 		}
 		#endregion
-
 	}
 }

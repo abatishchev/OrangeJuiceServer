@@ -13,49 +13,50 @@ using OrangeJuice.Server.Configuration;
 namespace OrangeJuice.Server.Api.Test.Policies
 {
 	[TestClass]
-	public class ErrorDetailPolicyResolverTest
+	public class ErrorDetailPolicyFactoryTest
 	{
 		#region Test methods
 		[TestMethod]
-		public void Resolve_Should_Call_ErrorDetailPolicyProvider_GetPolicies()
+		public void Create_Should_Call_ErrorDetailPolicyProvider_GetPolicies()
 		{
 			// Arrange
 			IErrorDetailPolicyProvider provider = CreateErrorDetailPolicyProvider();
-			ErrorDetailPolicyResolver resolver = CreateResolver(provider);
+			ErrorDetailPolicyFactory factory = CreateFactory(provider);
 
 			// Act
-			resolver.Resolve();
+			factory.Create();
 
 			// Assert
 			Mock.Get(provider).Verify(p => p.GetPolicies(), Times.Once);
 		}
 
 		[TestMethod]
-		public void Resolve_Should_Call_EnvironmentProvider_GetCurrentEnvironment()
+		public void Create_Should_Call_EnvironmentProvider_GetCurrentEnvironment()
 		{
 			// Arrange
 			IEnvironmentProvider provider = CreateEnvironmentProvider();
-			ErrorDetailPolicyResolver resolver = CreateResolver(environmentProvider: provider);
+			ErrorDetailPolicyFactory factory = CreateFactory(environmentProvider: provider);
 
 			// Act
-			resolver.Resolve();
+			factory.Create();
 
 			// Assert
 			Mock.Get(provider).Verify(p => p.GetCurrentEnvironment(), Times.Once);
 		}
 
 		[TestMethod]
-		public void Resolve_Should_Return_Policy_Based_On_Environment()
+		public void Create_Should_Return_Policy_Based_On_Environment()
 		{
 			// Arrange
-			const IncludeErrorDetailPolicy expected = IncludeErrorDetailPolicy.Default;
+			const string environment = Environment.Testing;
+			const IncludeErrorDetailPolicy expected = IncludeErrorDetailPolicy.Never;
 
-			IErrorDetailPolicyProvider errorDetailPolicyProvider = CreateErrorDetailPolicyProvider();
-			IEnvironmentProvider environmentProvider = CreateEnvironmentProvider();
-			ErrorDetailPolicyResolver resolver = CreateResolver(errorDetailPolicyProvider, environmentProvider);
+			IErrorDetailPolicyProvider errorDetailPolicyProvider = CreateErrorDetailPolicyProvider(environment, expected);
+			IEnvironmentProvider environmentProvider = CreateEnvironmentProvider(environment);
+			ErrorDetailPolicyFactory factory = CreateFactory(errorDetailPolicyProvider, environmentProvider);
 
 			// Act
-			IncludeErrorDetailPolicy actual = resolver.Resolve();
+			IncludeErrorDetailPolicy actual = factory.Create();
 
 			// Assert
 			actual.Should().Be(expected);
@@ -63,14 +64,14 @@ namespace OrangeJuice.Server.Api.Test.Policies
 		#endregion
 
 		#region Helper methods
-		private static ErrorDetailPolicyResolver CreateResolver(IErrorDetailPolicyProvider errorDetailPolicyProvider = null, IEnvironmentProvider environmentProvider = null)
+		private static ErrorDetailPolicyFactory CreateFactory(IErrorDetailPolicyProvider errorDetailPolicyProvider = null, IEnvironmentProvider environmentProvider = null)
 		{
-			return new ErrorDetailPolicyResolver(
+			return new ErrorDetailPolicyFactory(
 				errorDetailPolicyProvider ?? CreateErrorDetailPolicyProvider(),
 				environmentProvider ?? CreateEnvironmentProvider());
 		}
 
-		private static IErrorDetailPolicyProvider CreateErrorDetailPolicyProvider(string environment = "", IncludeErrorDetailPolicy policy = IncludeErrorDetailPolicy.Default)
+		private static IErrorDetailPolicyProvider CreateErrorDetailPolicyProvider(string environment = Environment.Testing, IncludeErrorDetailPolicy policy = IncludeErrorDetailPolicy.Default)
 		{
 			var errorDetailPolicyProvider = new Mock<IErrorDetailPolicyProvider>();
 			errorDetailPolicyProvider.Setup(p => p.GetPolicies()).Returns(
@@ -78,7 +79,7 @@ namespace OrangeJuice.Server.Api.Test.Policies
 			return errorDetailPolicyProvider.Object;
 		}
 
-		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = "")
+		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = Environment.Testing)
 		{
 			var environmentProviderMock = new Mock<IEnvironmentProvider>();
 			environmentProviderMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
