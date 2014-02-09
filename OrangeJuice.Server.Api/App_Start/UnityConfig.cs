@@ -44,9 +44,15 @@ namespace OrangeJuice.Server.Api
 		{
 			#region Web API
 			container.RegisterType<IFilter, ValidModelActionFilter>(
+				typeof(ValidModelActionFilter).Name,
 				new ContainerControlledLifetimeManager());
 
-			container.RegisterType<DelegatingHandler, AppVersionHandler>(
+			container.RegisterType<IFactory<AppVersionHandler>, AppVersionHandlerFactory>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IEnvironmentProvider)));
+
+			container.RegisterFactory<DelegatingHandler, AppVersionHandler>(
+				typeof(AppVersionHandler).Name,
 				new ContainerControlledLifetimeManager());
 			#endregion
 
@@ -72,27 +78,6 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IErrorDetailPolicyProvider), typeof(IEnvironmentProvider)));
 
 			container.RegisterFactory<IncludeErrorDetailPolicy>(
-				new ContainerControlledLifetimeManager());
-			#endregion
-
-			#region Web
-			container.RegisterType<IFactory<AppVersionHandler>, AppVersionHandlerFactory>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IEnvironmentProvider)));
-
-			container.RegisterFactory<AppVersionHandler>(
-				new ContainerControlledLifetimeManager());
-
-			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(
-					new PercentUrlEncodingPipeline()));
-
-			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IUrlEncoder)));
-
-			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(
 				new ContainerControlledLifetimeManager());
 			#endregion
 
@@ -163,6 +148,15 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(AwsOptions)));
 
+			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(
+					new PercentUrlEncodingPipeline()));
+
+			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(typeof(IUrlEncoder)));
+
 			container.RegisterType<IQuerySigner, AwsQuerySigner>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container.Resolve<IFactory<HashAlgorithm>>().Create()));
@@ -172,6 +166,9 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IArgumentBuilder), typeof(IQueryBuilder), typeof(IQuerySigner)));
 
 			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(
+				new ContainerControlledLifetimeManager());
+
+			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(
 				new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
