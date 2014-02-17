@@ -18,8 +18,6 @@ namespace OrangeJuice.Server.Api
 	{
 		public static void Configure(HttpConfiguration config, IUnityContainer container)
 		{
-			ConfigureRoutes(GlobalConfiguration.Configuration.Routes);
-
 			ConfigureFilters(config.Filters, container);
 			ConfigureHandlers(config.MessageHandlers, container);
 			ConfigureServices(config.Services, container);
@@ -36,14 +34,6 @@ namespace OrangeJuice.Server.Api
 
 			// To disable tracing in your application, please comment out or remove the following line of code
 			//config.EnableSystemDiagnosticsTracing();
-		}
-
-		private static void ConfigureRoutes(HttpRouteCollection routes)
-		{
-			routes.MapHttpRoute(
-				name: "DefaultApi",
-				routeTemplate: "api/{controller}/{id}",
-				defaults: new { controller = "Home", id = RouteParameter.Optional });
 		}
 
 		public static void ConfigureFilters(HttpFilterCollection filters, IUnityContainer container)
