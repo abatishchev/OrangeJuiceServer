@@ -1,10 +1,14 @@
-﻿namespace OrangeJuice.Server.Configuration
+﻿using System.Configuration;
+
+namespace OrangeJuice.Server.Configuration
 {
 	public class AppSettingsConfigurationProvider : IConfigurationProvider
 	{
+		#region IConfigurationProvider members
 		public virtual string GetValue(string key)
 		{
-			return System.Configuration.ConfigurationManager.AppSettings[key];
+			return ConfigurationManager.AppSettings[key];
 		}
+		#endregion
 	}
 }

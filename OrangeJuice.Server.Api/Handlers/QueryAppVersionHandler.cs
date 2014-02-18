@@ -7,8 +7,6 @@ namespace OrangeJuice.Server.Api.Handlers
 {
 	public sealed class QueryAppVersionHandler : AppVersionHandler
 	{
-		internal const string SegmentName = "appVer";
-
 		private readonly Version _appVersion;
 
 		public QueryAppVersionHandler(Version appVersion)
@@ -24,10 +22,10 @@ namespace OrangeJuice.Server.Api.Handlers
 		private IEnumerable<bool> GetRules(HttpRequestMessage request)
 		{
 			var query = request.RequestUri.ParseQueryString();
-			string appKey = query[SegmentName];
+			string appVer = query["appVer"];
 
 			Version version;
-			yield return Version.TryParse(appKey, out version);
+			yield return Version.TryParse(appVer, out version);
 
 			yield return version == _appVersion;
 		}

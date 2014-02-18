@@ -57,7 +57,7 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Providers
-			container.RegisterType<IConfigurationProvider, ClouConfigurationProvider>(
+			container.RegisterType<IConfigurationProvider, CloudConfigurationProvider>(
 				new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(

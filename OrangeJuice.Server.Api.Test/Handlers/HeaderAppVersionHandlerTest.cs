@@ -12,6 +12,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 	[TestClass]
 	public class HeaderAppVersionHandlerTest
 	{
+		#region Test methods
 		[TestMethod]
 		public void ValidateKey_Should_Return_True_When_Headers_Contains_AppVersion()
 		{
@@ -40,7 +41,9 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			// Assert
 			valid.Should().BeFalse();
 		}
+		#endregion
 
+		#region Helper methods
 		private static HeaderAppVersionHandler CreateHandler(Version appVersion = null)
 		{
 			return new HeaderAppVersionHandler(appVersion ?? new Version());
@@ -52,5 +55,6 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			request.Headers.Add(name, value.ToString());
 			return request;
 		}
+		#endregion
 	}
 }
