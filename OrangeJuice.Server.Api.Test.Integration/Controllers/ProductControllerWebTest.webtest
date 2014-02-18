@@ -79,7 +79,7 @@
     </Request>
   </Items>
   <DataSources>
-    <DataSource Name="SqlDev" Provider="System.Data.SqlClient" Connection="Data Source=sql.godfather.home\OrangeJuiceDev;Initial Catalog=OrangeJuiceDev;Integrated Security=True">
+    <DataSource Name="SqlDev" Provider="System.Data.SqlClient" Connection="Data Source=sql.godfather.home\OrangeJuiceDev;Initial Catalog=OrangeJuice;Integrated Security=True">
       <Tables>
         <DataSourceTable Name="Products" SelectColumns="SelectOnlyBoundColumns" AccessMethod="Sequential" />
       </Tables>

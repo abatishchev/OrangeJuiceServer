@@ -2,9 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<IncludeCompositeObjects>True</IncludeCompositeObjects>
-		<TargetDatabaseName>OrangeJuiceDev</TargetDatabaseName>
+		<TargetDatabaseName>OrangeJuice</TargetDatabaseName>
 		<DeployScriptFileName>OrangeJuice.Server.Data.Scheme.sql</DeployScriptFileName>
-		<TargetConnectionString>Data Source=tgqcn5cgi6.database.windows.net;Persist Security Info=True;User ID=OrangeJuiceDev;Pooling=False</TargetConnectionString>
+		<TargetConnectionString>Data Source=sql.godfather.home\OrangeJuiceDev;Integrated Security=True;Pooling=False</TargetConnectionString>
 		<ProfileVersionNumber>1</ProfileVersionNumber>
 		<ScriptDatabaseOptions>True</ScriptDatabaseOptions>
 		<BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
