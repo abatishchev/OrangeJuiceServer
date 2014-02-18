@@ -26,5 +26,10 @@ namespace OrangeJuice.Server
 			T item = source.FirstOrDefault();
 			return item != null ? selector(item) : null;
 		}
+
+		public static IEnumerable<T> Except<T>(this IEnumerable<T> source, T item)
+		{
+			return source.Except(new[] { item });
+		}
 	}
 }

@@ -7,7 +7,8 @@
 		<authors>OrangeJuice</authors>
 	</metadata>
 	<files>
-		<file src="bin\*.*" target="bin" />
+		<file src="bin\*.dll" target="bin" />
+		<file src="bin\*.pdb" target="bin" />
 		<file src="Global.*" target="" />
 		<file src="Web*.config" target="" />
 	</files>

@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -42,9 +45,9 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		}
 
 		[TestMethod]
-		public void Create_Should_Return_QueryAppKeyHandler_When_Environment_Is_Development_Staging()
+		public void Create_Should_Return_HeaderAppKeyHandler_When_Environment_Is_Not_Local()
 		{
-			foreach (string environment in new[] { Environment.Development, Environment.Staging })
+			foreach (string environment in GetAllEnvironments().Except(Environment.Local))
 			{
 				// Arrange
 				IEnvironmentProvider provider = CreateEnvironmentProvider(environment);
@@ -54,22 +57,8 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 				AppVersionHandler handler = factory.Create();
 
 				// Assert
-				handler.Should().BeOfType<QueryAppVersionHandler>();
+				handler.Should().BeOfType<HeaderAppVersionHandler>();
 			}
-		}
-
-		[TestMethod]
-		public void Create_Should_Return_HeaderAppKeyHandler_When_Environment_Is_Production()
-		{
-			// Arrange
-			IEnvironmentProvider provider = CreateEnvironmentProvider(Environment.Production);
-			AppVersionHandlerFactory factory = new AppVersionHandlerFactory(provider);
-
-			// Act
-			AppVersionHandler handler = factory.Create();
-
-			// Assert
-			handler.Should().BeOfType<HeaderAppVersionHandler>();
 		}
 		#endregion
 
@@ -79,6 +68,11 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			var providerMock = new Mock<IEnvironmentProvider>();
 			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
 			return providerMock.Object;
+		}
+
+		private static IEnumerable<string> GetAllEnvironments()
+		{
+			return typeof(Environment).GetFields().Select(f => (string)f.GetValue(null));
 		}
 		#endregion
 	}
