@@ -9,6 +9,6 @@
 	<files>
 		<file src="bin\*.*" target="bin" />
 		<file src="Global.*" target="" />
-		<file src="Web.config" target="" />
+		<file src="Web*.config" target="" />
 	</files>
 </package>
