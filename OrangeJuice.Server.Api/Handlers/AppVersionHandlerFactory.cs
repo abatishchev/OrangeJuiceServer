@@ -18,10 +18,8 @@ namespace OrangeJuice.Server.Api.Handlers
 			{
 				case Environment.Local:
 					return new EmptyAppVersionHandler();
-				case Environment.Production:
-					return new HeaderAppVersionHandler(AppVersion.Version0);
 				default:
-					return new QueryAppVersionHandler(AppVersion.Version0);
+					return new HeaderAppVersionHandler(AppVersion.Version0);
 			}
 		}
 	}
