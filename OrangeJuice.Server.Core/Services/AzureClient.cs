@@ -29,9 +29,9 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<string> GetBlobFromContainer(string containerName, string fileName)
 		{
-			ICloudBlob blob = await GetBlockReference(containerName, fileName);
+			ICloudBlob blob = GetBlockReference(containerName, fileName);
 
-			bool exists = await blob.ExistsAsync();
+			bool exists = blob.Exists();
 			if (!exists)
 				return null;
 
@@ -40,45 +40,50 @@ namespace OrangeJuice.Server.Services
 
 		public async Task PutBlobToContainer(string containerName, string fileName, string content)
 		{
-			ICloudBlob blob = await GetBlockReference(containerName, fileName);
-			blob.Properties.CacheControl = "public, max-age=31536000";
+			ICloudBlob blob = GetBlockReference(containerName, fileName);
+			blob.Properties.CacheControl = CreateCacheControl(TimeSpan.FromDays(365));
 			await _blobClient.Write(blob, content);
 		}
 
-		public async Task<Uri> GetBlobUrl(string containerName, string fileName)
+		public Uri GetBlobUrl(string containerName, string fileName)
 		{
-			ICloudBlob blob = await GetBlobReference(containerName, fileName);
+			ICloudBlob blob = GetBlobReference(containerName, fileName);
 			return blob.Uri;
 		}
 		#endregion
 
 		#region Methods
 		// TODO: refactor out?
-		private async Task<CloudBlobContainer> GetContainer(string containerName)
+		private CloudBlobContainer GetContainer(string containerName)
 		{
 			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_azureOptions.ConnectionString);
 			CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 
 			CloudBlobContainer container = blobClient.GetContainerReference(containerName);
-			bool exists = await container.ExistsAsync();
+			bool exists = container.Exists();
 			if (!exists)
 				throw new InvalidOperationException(String.Format("Container {0} doesn't exist", containerName));
 
 			return container;
 		}
 
-		private async Task<ICloudBlob> GetBlobReference(string containerName, string fileName)
+		private ICloudBlob GetBlobReference(string containerName, string fileName)
 		{
-			CloudBlobContainer container = await GetContainer(containerName);
+			CloudBlobContainer container = GetContainer(containerName);
 			string blobName = _blobNameResolver.Resolve(fileName);
-			return await container.GetBlobReferenceFromServerAsync(blobName);
+			return container.GetBlobReferenceFromServer(blobName);
 		}
 
-		private async Task<ICloudBlob> GetBlockReference(string containerName, string fileName)
+		private CloudBlockBlob GetBlockReference(string containerName, string fileName)
 		{
-			CloudBlobContainer container = await GetContainer(containerName);
+			CloudBlobContainer container = GetContainer(containerName);
 			string blobName = _blobNameResolver.Resolve(fileName);
 			return container.GetBlockBlobReference(blobName);
+		}
+
+		private static string CreateCacheControl(TimeSpan timeSpan)
+		{
+			return String.Format("public, max-age={0}", timeSpan.TotalMilliseconds);
 		}
 		#endregion
 	}
