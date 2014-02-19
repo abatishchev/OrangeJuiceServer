@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
@@ -24,6 +25,9 @@ namespace OrangeJuice.Server.Api.Controllers
 		[Route("api/product/id/{productId}")]
 		public async Task<IHttpActionResult> GetProductId([FromUri] ProductSearchCriteria searchCriteria)
 		{
+			if (searchCriteria == null)
+				throw new ArgumentNullException();
+
 			var descriptor = await _productManager.Get(searchCriteria.ProductId);
 			if (descriptor == null)
 				return NotFound();
@@ -35,6 +39,9 @@ namespace OrangeJuice.Server.Api.Controllers
 		[Route("api/product/barcode/{barcodeType}/{barcode}")]
 		public async Task<IHttpActionResult> GetProductBarcode([FromUri] BarcodeSearchCriteria searchCriteria)
 		{
+			if (searchCriteria == null)
+				throw new ArgumentNullException();
+
 			var descriptor = await _productManager.Search(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			if (descriptor == null)
 				return NotFound();

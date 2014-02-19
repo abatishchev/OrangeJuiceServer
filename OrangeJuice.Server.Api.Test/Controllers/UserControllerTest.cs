@@ -21,6 +21,19 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetUser
 		[TestMethod]
+		public void GetUser_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
+		{
+			// Arrange
+			UserController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.GetUser(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+
+		[TestMethod]
 		public async Task GetUser_Should_Return_Status_NotFound_When_UserRepository_Returns_Null()
 		{
 			//Arrange
@@ -97,6 +110,19 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region PutUser
+		[TestMethod]
+		public void PutUser_Should_Should_Throw_Exception_When_UserModel_Is_Null()
+		{
+			// Arrange
+			UserController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.PutUser(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+
 		[TestMethod]
 		public async Task PutUser_Should_Return_Status_InternalError_When_UserRepository_Register_Returns_Null()
 		{

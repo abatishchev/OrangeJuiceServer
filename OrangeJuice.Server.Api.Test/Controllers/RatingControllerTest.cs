@@ -22,6 +22,19 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetRating
 		[TestMethod]
+		public void GetRating_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
+		{
+			// Arrange
+			RatingController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.GetRating(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+
+		[TestMethod]
 		public async Task GetRating_Should_Return_Status_NotFound_When_RatingRepository_Search_Returns_Null()
 		{
 			//Arrange
@@ -93,6 +106,19 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region GetRatings
+		[TestMethod]
+		public void GetRatings_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
+		{
+			// Arrange
+			RatingController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.GetRatings(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+		
 		[TestMethod]
 		public async Task GetRatings_Should_Return_Status_NotFound_When_RatingRepository_SearchAll_Returns_Null()
 		{
@@ -166,6 +192,19 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 		#region PostRating
 		[TestMethod]
+		public void PostRating_Should_Should_Throw_Exception_When_RatingModel_Is_Null()
+		{
+			// Arrange
+			RatingController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.PostRating(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+		
+		[TestMethod]
 		public async Task PostRating_Should_Pass_UserId_And_ProductId_And_Value_To_RatingRepository_Delete()
 		{
 			// Arrange
@@ -203,6 +242,19 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region DeleteRating
+		[TestMethod]
+		public void DeleteRating_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
+		{
+			// Arrange
+			RatingController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.DeleteRating(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+		
 		[TestMethod]
 		public async Task DeleteRating_Should_Pass_UserId_And_ProductId_To_RatingRepository_Delete()
 		{

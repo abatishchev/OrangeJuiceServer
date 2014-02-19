@@ -21,6 +21,19 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region GetProductId
 		[TestMethod]
+		public void GetProducId_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
+		{
+			// Arrange
+			ProductController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.GetProductId(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+
+		[TestMethod]
 		public async Task GetProducId_Should_Return_Status_Ok()
 		{
 			// Arrange
@@ -91,6 +104,19 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region GetProductBarcode
+		[TestMethod]
+		public void GetProducBarcode_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
+		{
+			// Arrange
+			ProductController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.GetProductBarcode(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+
 		[TestMethod]
 		public async Task GetProductBarcode_Should_Return_Status_Ok()
 		{
