@@ -23,7 +23,6 @@ using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Validation;
 using OrangeJuice.Server.Web;
 
-// ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
 	internal static class UnityConfig

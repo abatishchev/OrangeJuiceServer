@@ -11,7 +11,6 @@ using Microsoft.Practices.Unity;
 
 using Newtonsoft.Json;
 
-// ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
 	internal static class WebApiConfig

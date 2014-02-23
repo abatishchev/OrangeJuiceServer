@@ -1,6 +1,5 @@
 ﻿using System.Web.Http;
 
-// ReSharper disable CheckNamespace
 namespace OrangeJuice.Server.Api
 {
 	internal static class RouteConfig
