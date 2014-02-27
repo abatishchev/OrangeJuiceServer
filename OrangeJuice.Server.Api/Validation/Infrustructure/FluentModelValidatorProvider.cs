@@ -23,20 +23,11 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 		#endregion
 
 		#region Methods
-		public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, IEnumerable<ModelValidatorProvider> validatorProviders)
+		public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, IEnumerable<ModelValidatorProvider> providers)
 		{
-			Type type = GeType(metadata);
-			if (type != null)
-			{
-				IValidator validator = _validatorFactory.GetValidator(type);
-				if (validator != null)
-					yield return _modelValidatorFactory.Create(validatorProviders, validator);
-			}
-		}
-
-		private static Type GeType(ModelMetadata metadata)
-		{
-			return metadata.ContainerType != null ? metadata.ContainerType.UnderlyingSystemType : null;
+			IValidator validator = _validatorFactory.GetValidator(metadata.ContainerType);
+			if (validator != null)
+				yield return _modelValidatorFactory.Create(providers, validator);
 		}
 		#endregion
 	}
