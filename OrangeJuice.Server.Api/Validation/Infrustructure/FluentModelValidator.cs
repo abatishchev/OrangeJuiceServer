@@ -20,13 +20,20 @@ namespace OrangeJuice.Server.Api.Validation.Infrustructure
 
 		public override IEnumerable<ModelValidationResult> Validate(ModelMetadata metadata, object container)
 		{
+			if (metadata.Model == null)
+				return Enumerable.Empty<ModelValidationResult>();
+
 			ValidationResult result = _validator.Validate(container);
+			if (result.IsValid)
+				return Enumerable.Empty<ModelValidationResult>();
+
 			return from error in result.Errors
 				   select new ModelValidationResult
 				   {
 					   Message = error.ErrorMessage,
 					   MemberName = error.PropertyName
 				   };
+
 		}
 	}
 }
