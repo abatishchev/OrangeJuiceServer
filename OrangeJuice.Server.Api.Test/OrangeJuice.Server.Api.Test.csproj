@@ -107,8 +107,6 @@
     <Compile Include="Handlers\AppVersionHandlerTest.cs" />
     <Compile Include="Policies\ErrorDetailPolicyFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validation\Infrustructure\FluentModelValidatorTest.cs" />
-    <Compile Include="Validation\Infrustructure\FluentModelValidatorProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Api\OrangeJuice.Server.Api.csproj">

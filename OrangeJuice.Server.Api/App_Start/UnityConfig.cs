@@ -7,13 +7,13 @@ using System.Xml.Linq;
 
 using FluentValidation;
 using FluentValidation.Attributes;
+using FluentValidation.WebApi;
 
 using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Api.Filters;
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Policies;
-using OrangeJuice.Server.Api.Validation.Infrustructure;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Container;
@@ -89,12 +89,9 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(
 				new ContainerControlledLifetimeManager());
 
-			container.RegisterType<IModelValidatorFactory, FluentModelValidatorFactory>(
-				new ContainerControlledLifetimeManager());
-
-			container.RegisterType<ModelValidatorProvider, FluentModelValidatorProvider>(
+			container.RegisterType<ModelValidatorProvider, FluentValidationModelValidatorProvider>(
 				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IValidatorFactory), typeof(IModelValidatorFactory)));
+				new InjectionConstructor(typeof(IValidatorFactory)));
 			#endregion
 
 			#region VersionController
