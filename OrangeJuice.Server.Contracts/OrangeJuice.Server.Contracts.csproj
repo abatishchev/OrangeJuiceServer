@@ -78,7 +78,7 @@
     <Compile Include="Services\IBlobNameResolver.cs" />
     <Compile Include="Services\IItemSelector.cs" />
     <Compile Include="Services\IAwsProductProvider.cs" />
-    <Compile Include="Services\IProductManager.cs" />
+    <Compile Include="Services\IProductService.cs" />
     <Compile Include="Services\IQuerySigner.cs" />
     <Compile Include="Services\IUrlBuilder.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />

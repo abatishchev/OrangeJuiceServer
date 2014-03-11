@@ -10,13 +10,13 @@ namespace OrangeJuice.Server.Api.Controllers
 	public sealed class ProductController : ApiController
 	{
 		#region Fields
-		private readonly IProductManager _productManager;
+		private readonly IProductService _productService;
 		#endregion
 
 		#region Ctor
-		public ProductController(IProductManager productManager)
+		public ProductController(IProductService productService)
 		{
-			_productManager = productManager;
+			_productService = productService;
 		}
 		#endregion
 
@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (searchCriteria == null)
 				throw new ArgumentNullException();
 
-			var descriptor = await _productManager.Get(searchCriteria.ProductId);
+			var descriptor = await _productService.Get(searchCriteria.ProductId);
 			if (descriptor == null)
 				return NotFound();
 
@@ -42,7 +42,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (searchCriteria == null)
 				throw new ArgumentNullException();
 
-			var descriptor = await _productManager.Search(searchCriteria.Barcode, searchCriteria.BarcodeType);
+			var descriptor = await _productService.Search(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			if (descriptor == null)
 				return NotFound();
 
@@ -53,7 +53,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		#region Methods
 		protected override void Dispose(bool disposing)
 		{
-			_productManager.Dispose();
+			_productService.Dispose();
 
 			base.Dispose(disposing);
 		}

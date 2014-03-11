@@ -37,10 +37,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetProducId_Should_Return_Status_Ok()
 		{
 			// Arrange
-			var productRepositoryMock = new Mock<IProductManager>();
-			productRepositoryMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(new ProductDescriptor());
+			var serviceMock = new Mock<IProductService>();
+			serviceMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(new ProductDescriptor());
 
-			ProductController controller = CreateController(productRepositoryMock.Object);
+			ProductController controller = CreateController(serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
@@ -55,16 +55,16 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			Guid productId = Guid.NewGuid();
 
-			var productRepositoryMock = new Mock<IProductManager>();
-			productRepositoryMock.Setup(r => r.Get(productId)).ReturnsAsync(new ProductDescriptor());
+			var serviceMock = new Mock<IProductService>();
+			serviceMock.Setup(r => r.Get(productId)).ReturnsAsync(new ProductDescriptor());
 
-			ProductController controller = CreateController(productRepositoryMock.Object);
+			ProductController controller = CreateController(serviceMock.Object);
 
 			// Act
 			await controller.GetProductId(new ProductSearchCriteria { ProductId = productId });
 
 			// Assert
-			productRepositoryMock.Verify(r => r.Get(productId), Times.Once);
+			serviceMock.Verify(r => r.Get(productId), Times.Once);
 		}
 
 		[TestMethod]
@@ -73,10 +73,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
 
-			var productRepositoryMock = new Mock<IProductManager>();
-			productRepositoryMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(expected);
+			var serviceMock = new Mock<IProductService>();
+			serviceMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(expected);
 
-			ProductController controller = CreateController(productRepositoryMock.Object);
+			ProductController controller = CreateController(serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
@@ -90,10 +90,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetProducId_Should_Return_Status_NotFound_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
-			var productRepositoryMock = new Mock<IProductManager>();
-			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
+			var serviceMock = new Mock<IProductService>();
+			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
 
-			ProductController controller = CreateController(productRepositoryMock.Object);
+			ProductController controller = CreateController(serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
@@ -121,10 +121,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetProductBarcode_Should_Return_Status_Ok()
 		{
 			// Arrange
-			var productRepositoryMock = new Mock<IProductManager>();
-			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(new ProductDescriptor());
+			var serviceMock = new Mock<IProductService>();
+			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(new ProductDescriptor());
 
-			ProductController controller = CreateController(productRepositoryMock.Object);
+			ProductController controller = CreateController(serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
@@ -140,16 +140,16 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
-			var productRepositoryMock = new Mock<IProductManager>();
-			productRepositoryMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor());
+			var serviceMock = new Mock<IProductService>();
+			serviceMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor());
 
-			ProductController controller = CreateController(productRepositoryMock.Object);
+			ProductController controller = CreateController(serviceMock.Object);
 
 			// Act
 			await controller.GetProductBarcode(new BarcodeSearchCriteria { Barcode = barcode, BarcodeType = barcodeType });
 
 			// Assert
-			productRepositoryMock.Verify(r => r.Search(barcode, barcodeType), Times.Once);
+			serviceMock.Verify(r => r.Search(barcode, barcodeType), Times.Once);
 		}
 
 		[TestMethod]
@@ -158,10 +158,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
 
-			var productRepositoryMock = new Mock<IProductManager>();
-			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
+			var serviceMock = new Mock<IProductService>();
+			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
 
-			ProductController controller = CreateController(productRepositoryMock.Object);
+			ProductController controller = CreateController(serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
@@ -175,10 +175,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetProductBarcode_Should_Return_Status_NotFound_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
-			var productRepositoryMock = new Mock<IProductManager>();
-			productRepositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
+			var serviceMock = new Mock<IProductService>();
+			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
 
-			ProductController controller = CreateController(productRepositoryMock.Object);
+			ProductController controller = CreateController(serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
@@ -189,9 +189,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static ProductController CreateController(IProductManager manager = null)
+		private static ProductController CreateController(IProductService service = null)
 		{
-			return ControllerFactory.Create<ProductController>(manager ?? new Mock<IProductManager>().Object);
+			return ControllerFactory.Create<ProductController>(service ?? new Mock<IProductService>().Object);
 		}
 		#endregion
 	}

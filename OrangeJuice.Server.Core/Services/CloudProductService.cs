@@ -6,7 +6,7 @@ using OrangeJuice.Server.Data.Repository;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class CloudProductManager : IProductManager
+	public sealed class CloudProductService : IProductService
 	{
 		#region Fields
 		private readonly IProductRepository _productRepository;
@@ -15,7 +15,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public CloudProductManager(IProductRepository productRepository, IAzureProductProvider azureProvider, IAwsProductProvider awsProvider)
+		public CloudProductService(IProductRepository productRepository, IAzureProductProvider azureProvider, IAwsProductProvider awsProvider)
 		{
 			_productRepository = productRepository;
 			_azureProvider = azureProvider;
@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Services
 		}
 		#endregion
 
-		#region IProductManager members
+		#region IProductService members
 		public Task<ProductDescriptor> Get(Guid productId)
 		{
 			return  _azureProvider.Get(productId);

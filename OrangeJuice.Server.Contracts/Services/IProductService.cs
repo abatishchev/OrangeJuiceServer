@@ -5,7 +5,7 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Services
 {
-	public interface IProductManager : IDisposable
+	public interface IProductService : IDisposable
 	{
 		Task<ProductDescriptor> Get(Guid productId);
 
