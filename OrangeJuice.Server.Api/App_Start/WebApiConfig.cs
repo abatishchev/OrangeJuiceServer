@@ -57,7 +57,7 @@ namespace OrangeJuice.Server.Api
 		{
 			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
 
-			services.Add(typeof(IExceptionLogger), new Logging.ElmahExceptionLogger());
+			services.Add(typeof(IExceptionLogger), new Elmah.Contrib.WebApi.ElmahExceptionLogger());
 		}
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)
