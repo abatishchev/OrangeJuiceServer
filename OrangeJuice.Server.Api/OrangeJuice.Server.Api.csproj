@@ -41,6 +41,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="Elmah.Contrib.EntityFramework">
+      <HintPath>..\packages\Elmah.Contrib.EntityFramework.1.0.1.0\lib\net45\Elmah.Contrib.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah.Contrib.WebApi">
       <HintPath>..\packages\Elmah.Contrib.WebApi.1.0.9.0\lib\net45\Elmah.Contrib.WebApi.dll</HintPath>
     </Reference>
@@ -128,7 +131,6 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Diagnostics\EntityErrorLog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
