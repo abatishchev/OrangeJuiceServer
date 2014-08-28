@@ -4,8 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 using OrangeJuice.Server.Api.Handlers;
 
@@ -19,8 +19,13 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		public void SendAsync_Should_Return_Status_Forbidden_When_IsValid_Returns_False()
 		{
 			// Arrange
+			const bool isValid = false;
 			const HttpStatusCode expected = HttpStatusCode.Forbidden;
-			HandlerStub handler = new HandlerStub(false);
+
+			var validatorMock = new Mock<IValidator<HttpRequestMessage>>();
+			validatorMock.Setup(v => v.IsValid(It.IsAny<HttpRequestMessage>())).Returns(isValid);
+
+			HandlerStub handler = new HandlerStub(validatorMock.Object);
 			HttpRequestMessage request = new HttpRequestMessage();
 
 			// Act
@@ -35,16 +40,9 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		#region Helper classes
 		private class HandlerStub : AppVersionHandler
 		{
-			private readonly bool _isValid;
-
-			public HandlerStub(bool isValid)
+			public HandlerStub(IValidator<HttpRequestMessage> requestValidator)
+				: base(requestValidator)
 			{
-				_isValid = isValid;
-			}
-
-			internal override bool IsValid(HttpRequestMessage request)
-			{
-				return _isValid;
 			}
 
 			public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)

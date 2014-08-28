@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-namespace OrangeJuice.Server.Api.Handlers
+namespace OrangeJuice.Server.Api.Handlers.Validation
 {
-	public sealed class HeaderAppVersionHandler : AppVersionHandler
+	public sealed class HeaderAppVersionValidator : IValidator<HttpRequestMessage>
 	{
 		internal const string HeaderName = "X-AppVer";
 
 		private readonly Version _appVersion;
 
-		public HeaderAppVersionHandler(Version appVersion)
+		public HeaderAppVersionValidator(Version appVersion)
 		{
 			_appVersion = appVersion;
 		}
 
-		internal override bool IsValid(HttpRequestMessage request)
+		public bool IsValid(HttpRequestMessage request)
 		{
 			return GetRules(request).All(b => b);
 		}

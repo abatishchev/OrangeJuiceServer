@@ -2,23 +2,22 @@
 using System.Net.Http;
 
 using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Handlers.Validation;
 
-namespace OrangeJuice.Server.Api.Test.Handlers
+namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
 	[TestClass]
-	public class QueryAppVersionHandlerTest
+	public class QueryAppVersionValidatorTest
 	{
 		#region Test methods
 		[TestMethod]
-		public void ValidateKey_Should_Return_True_When_Query_Contains_AppVersion()
+		public void IsValid_Should_Return_True_When_Query_Contains_AppVersion()
 		{
 			// Arrange
 			Version appVersion = new Version();
-			QueryAppVersionHandler handler = CreateHandler(appVersion);
+			QueryAppVersionValidator handler = CreateHandler(appVersion);
 			HttpRequestMessage request = CreateRequest("appVer", appVersion);
 
 			// Act
@@ -29,10 +28,10 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		}
 
 		[TestMethod]
-		public void ValidateKey_Should_Return_False_When_Query_Does_Not_Contain_AppVersion()
+		public void IsValid_Should_Return_False_When_Query_Does_Not_Contain_AppVersion()
 		{
 			// Arrange
-			QueryAppVersionHandler handler = CreateHandler();
+			QueryAppVersionValidator handler = CreateHandler();
 			HttpRequestMessage request = CreateRequest("any-name", "any-value");
 
 			// Act
@@ -44,9 +43,9 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		#endregion
 
 		#region Helper methods
-		private static QueryAppVersionHandler CreateHandler(Version appVersion = null)
+		private static QueryAppVersionValidator CreateHandler(Version appVersion = null)
 		{
-			return new QueryAppVersionHandler(appVersion ?? new Version());
+			return new QueryAppVersionValidator(appVersion ?? new Version());
 		}
 
 		private static HttpRequestMessage CreateRequest(string name, object value)

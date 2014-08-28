@@ -2,26 +2,24 @@
 using System.Linq;
 
 using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
-using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Configuration;
 
-namespace OrangeJuice.Server.Api.Test.Handlers
+namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
 	[TestClass]
-	public class AppVersionHandlerFactoryTest
+	public class AppVersionValidatorFactoryTest
 	{
 		#region Test methods
 		[TestMethod]
 		public void Create_Should_Call_EnvironmentProvider_GetCurrentEnvironment()
 		{
 			// Arrange
-			IEnvironmentProvider provider = CreateEnvironmentProvider();
-			AppVersionHandlerFactory factory = new AppVersionHandlerFactory(provider);
+			var provider = CreateEnvironmentProvider();
+			var factory = new AppVersionValidatorFactory(provider);
 
 			// Act
 			factory.Create();
@@ -34,14 +32,14 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		public void Create_Should_Return_EmptyAppKeyHandler_When_Environment_Is_Local()
 		{
 			// Arrange
-			IEnvironmentProvider provider = CreateEnvironmentProvider(Environment.Local);
-			AppVersionHandlerFactory factory = new AppVersionHandlerFactory(provider);
+			var provider = CreateEnvironmentProvider(Environment.Local);
+			var factory = new AppVersionValidatorFactory(provider);
 
 			// Act
-			AppVersionHandler handler = factory.Create();
+			var handler = factory.Create();
 
 			// Assert
-			handler.Should().BeOfType<EmptyAppVersionHandler>();
+			handler.Should().BeOfType<EmptyAppVersionValidator>();
 		}
 
 		[TestMethod]
@@ -50,14 +48,14 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 			foreach (string environment in GetAllEnvironments().Except(Environment.Local))
 			{
 				// Arrange
-				IEnvironmentProvider provider = CreateEnvironmentProvider(environment);
-				AppVersionHandlerFactory factory = new AppVersionHandlerFactory(provider);
+				var provider = CreateEnvironmentProvider(environment);
+				var factory = new AppVersionValidatorFactory(provider);
 
 				// Act
-				AppVersionHandler handler = factory.Create();
+				var handler = factory.Create();
 
 				// Assert
-				handler.Should().BeOfType<HeaderAppVersionHandler>();
+				handler.Should().BeOfType<HeaderAppVersionValidator>();
 			}
 		}
 		#endregion

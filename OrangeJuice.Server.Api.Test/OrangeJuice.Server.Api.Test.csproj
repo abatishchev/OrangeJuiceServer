@@ -95,9 +95,9 @@
     <Compile Include="Controllers\RatingControllerTest.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
     <Compile Include="Filters\ValidModelActionFilterTest.cs" />
-    <Compile Include="Handlers\QueryAppVersionHandlerTest.cs" />
-    <Compile Include="Handlers\HeaderAppVersionHandlerTest.cs" />
-    <Compile Include="Handlers\AppVersionHandlerFactoryTest.cs" />
+    <Compile Include="Handlers\Validation\QueryAppVersionValidatorTest.cs" />
+    <Compile Include="Handlers\Validation\HeaderAppVersionValidatorTest.cs" />
+    <Compile Include="Handlers\Validation\AppVersionValidatorFactoryTest.cs" />
     <Compile Include="Handlers\AppVersionHandlerTest.cs" />
     <Compile Include="Policies\ErrorDetailPolicyFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

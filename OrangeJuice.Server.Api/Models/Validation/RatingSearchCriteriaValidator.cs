@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-namespace OrangeJuice.Server.Api.Validation
+namespace OrangeJuice.Server.Api.Models.Validation
 {
-	public class RatingSearchCriteriaValidator : AbstractValidator<Models.RatingSearchCriteria>
+	public class RatingSearchCriteriaValidator : AbstractValidator<RatingSearchCriteria>
 	{
 		public RatingSearchCriteriaValidator()
 		{

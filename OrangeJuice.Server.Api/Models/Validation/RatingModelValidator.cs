@@ -1,8 +1,8 @@
 using FluentValidation;
 
-namespace OrangeJuice.Server.Api.Validation
+namespace OrangeJuice.Server.Api.Models.Validation
 {
-	public sealed class RatingModelValidator : AbstractValidator<Models.RatingModel>
+	public sealed class RatingModelValidator : AbstractValidator<RatingModel>
 	{
 		public RatingModelValidator()
 		{

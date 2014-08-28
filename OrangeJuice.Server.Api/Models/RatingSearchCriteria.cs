@@ -1,8 +1,7 @@
 ﻿using System;
 
 using FluentValidation.Attributes;
-
-using OrangeJuice.Server.Api.Validation;
+using OrangeJuice.Server.Api.Models.Validation;
 
 namespace OrangeJuice.Server.Api.Models
 {

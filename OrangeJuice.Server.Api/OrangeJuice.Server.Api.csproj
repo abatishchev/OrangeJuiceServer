@@ -129,7 +129,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="App_Start\ContaineConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Extensions\UnityContainerExtensions.cs" />
     <Compile Include="Filters\ValidModelActionFilter.cs" />
@@ -137,14 +137,14 @@
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RatingsSearchCriteria.cs" />
     <Compile Include="Models\RatingSearchCriteria.cs" />
-    <Compile Include="Validation\RatingsSearchCriteriaValidator.cs" />
-    <Compile Include="Validation\RatingSearchCriteriaValidator.cs" />
+    <Compile Include="Models\Validation\RatingsSearchCriteriaValidator.cs" />
+    <Compile Include="Models\Validation\RatingSearchCriteriaValidator.cs" />
     <Compile Include="Policies\EnvironmentErrorDetailPolicyProvider.cs" />
     <Compile Include="Policies\IErrorDetailPolicyProvider.cs" />
     <Compile Include="Controllers\RatingController.cs" />
-    <Compile Include="Handlers\AppVersionHandlerFactory.cs" />
+    <Compile Include="Handlers\Validation\AppVersionValidatorFactory.cs" />
     <Compile Include="Handlers\AppVersionHandler.cs" />
-    <Compile Include="Handlers\EmptyAppVersionHandler.cs" />
+    <Compile Include="Handlers\Validation\EmptyAppVersionValidator.cs" />
     <Compile Include="Models\BarcodeSearchCriteria.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -152,22 +152,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\HeaderAppVersionHandler.cs" />
-    <Compile Include="Handlers\QueryAppVersionHandler.cs" />
+    <Compile Include="Handlers\Validation\HeaderAppVersionValidator.cs" />
+    <Compile Include="Handlers\Validation\QueryAppVersionValidator.cs" />
     <Compile Include="Models\UserSearchCriteria.cs" />
     <Compile Include="Models\UserModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Policies\ErrorDetailPolicyFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validation\BarcodeSearchCriteriaValidator.cs" />
-    <Compile Include="Validation\ProductSearchCriteriaValidator.cs" />
-    <Compile Include="Validation\RatingModelValidator.cs" />
-    <Compile Include="Validation\UserModelValidator.cs" />
-    <Compile Include="Validation\UserSearchCriteriaValidator.cs" />
+    <Compile Include="Models\Validation\BarcodeSearchCriteriaValidator.cs" />
+    <Compile Include="Models\Validation\ProductSearchCriteriaValidator.cs" />
+    <Compile Include="Models\Validation\RatingModelValidator.cs" />
+    <Compile Include="Models\Validation\UserModelValidator.cs" />
+    <Compile Include="Models\Validation\UserSearchCriteriaValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -210,6 +209,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

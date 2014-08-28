@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
 
-using OrangeJuice.Server.Api.Models;
-
-namespace OrangeJuice.Server.Api.Validation
+namespace OrangeJuice.Server.Api.Models.Validation
 {
 	public sealed class UserModelValidator : AbstractValidator<UserModel>
 	{

@@ -2,24 +2,23 @@
 using System.Net.Http;
 
 using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Handlers.Validation;
 
-namespace OrangeJuice.Server.Api.Test.Handlers
+namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
 	[TestClass]
-	public class HeaderAppVersionHandlerTest
+	public class HeaderAppVersionValidatorTest
 	{
 		#region Test methods
 		[TestMethod]
-		public void ValidateKey_Should_Return_True_When_Headers_Contains_AppVersion()
+		public void IsValid_Should_Return_True_When_Headers_Contains_AppVersion()
 		{
 			// Arrange
 			Version appVersion = new Version();
-			HeaderAppVersionHandler handler = CreateHandler(appVersion);
-			HttpRequestMessage request = CreateRequest(HeaderAppVersionHandler.HeaderName, appVersion);
+			HeaderAppVersionValidator handler = CreateHandler(appVersion);
+			HttpRequestMessage request = CreateRequest(HeaderAppVersionValidator.HeaderName, appVersion);
 
 			// Act
 			bool valid = handler.IsValid(request);
@@ -29,10 +28,10 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		}
 
 		[TestMethod]
-		public void ValidateKey_Should_Return_False_When_Headers_Does_Not_Contain_AppVersion()
+		public void IsValid_Should_Return_False_When_Headers_Does_Not_Contain_AppVersion()
 		{
 			// Arrange
-			HeaderAppVersionHandler handler = CreateHandler();
+			HeaderAppVersionValidator handler = CreateHandler();
 			HttpRequestMessage request = CreateRequest("any-name", "any-value");
 
 			// Act
@@ -44,9 +43,9 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		#endregion
 
 		#region Helper methods
-		private static HeaderAppVersionHandler CreateHandler(Version appVersion = null)
+		private static HeaderAppVersionValidator CreateHandler(Version appVersion = null)
 		{
-			return new HeaderAppVersionHandler(appVersion ?? new Version());
+			return new HeaderAppVersionValidator(appVersion ?? new Version());
 		}
 
 		private static HttpRequestMessage CreateRequest(string name, object value)

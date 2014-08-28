@@ -5,11 +5,18 @@ using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Api.Handlers
 {
-	public abstract class AppVersionHandler : DelegatingHandler
+	public class AppVersionHandler : DelegatingHandler
 	{
-		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+	    private readonly IValidator<HttpRequestMessage> _requestValidator;
+
+	    public AppVersionHandler(IValidator<HttpRequestMessage> requestValidator)
+	    {
+	        _requestValidator = requestValidator;
+	    }
+
+	    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
-			if (IsValid(request))
+            if (_requestValidator.IsValid(request))
 				return base.SendAsync(request, cancellationToken);
 
 			var response = new HttpResponseMessage(HttpStatusCode.Forbidden);
@@ -17,7 +24,5 @@ namespace OrangeJuice.Server.Api.Handlers
 			tsc.SetResult(response);
 			return tsc.Task;
 		}
-
-		internal abstract bool IsValid(HttpRequestMessage request);
 	}
 }

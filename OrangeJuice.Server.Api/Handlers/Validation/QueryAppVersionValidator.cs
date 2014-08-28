@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-namespace OrangeJuice.Server.Api.Handlers
+namespace OrangeJuice.Server.Api.Handlers.Validation
 {
-	public sealed class QueryAppVersionHandler : AppVersionHandler
+	public sealed class QueryAppVersionValidator : IValidator<HttpRequestMessage>
 	{
 		private readonly Version _appVersion;
 
-		public QueryAppVersionHandler(Version appVersion)
+		public QueryAppVersionValidator(Version appVersion)
 		{
 			_appVersion = appVersion;
 		}
 
-		internal override bool IsValid(HttpRequestMessage request)
+		public bool IsValid(HttpRequestMessage request)
 		{
 			return GetRules(request).All(b => b);
 		}
 
 		private IEnumerable<bool> GetRules(HttpRequestMessage request)
 		{
-			var query = request.RequestUri.ParseQueryString();
-			string appVer = query["appVer"];
+			string appVer = request.RequestUri.ParseQueryString()["appVer"];
 
 			Version version;
 			yield return Version.TryParse(appVer, out version);
