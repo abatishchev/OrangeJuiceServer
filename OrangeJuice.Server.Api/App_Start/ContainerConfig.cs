@@ -15,7 +15,6 @@ using Microsoft.Practices.Unity;
 using OrangeJuice.Server.Api.Filters;
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Handlers.Validation;
-using OrangeJuice.Server.Api.Policies;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Container;
@@ -27,7 +26,7 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Api
 {
-	internal static class ContaineConfig
+	internal static class ContainerConfig
 	{
 		public static IUnityContainer CreateContainer()
 		{
@@ -74,16 +73,6 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(
-				new ContainerControlledLifetimeManager());
-
-			container.RegisterType<IErrorDetailPolicyProvider, EnvironmentErrorDetailPolicyProvider>(
-				new ContainerControlledLifetimeManager());
-
-			container.RegisterType<IFactory<IncludeErrorDetailPolicy>, ErrorDetailPolicyFactory>(
-				new ContainerControlledLifetimeManager(),
-				new InjectionConstructor(typeof(IErrorDetailPolicyProvider), typeof(IEnvironmentProvider)));
-
-			container.RegisterFactory<IncludeErrorDetailPolicy>(
 				new ContainerControlledLifetimeManager());
 			#endregion
 

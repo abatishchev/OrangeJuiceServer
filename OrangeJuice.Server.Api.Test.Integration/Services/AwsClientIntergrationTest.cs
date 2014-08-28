@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 		[TestMethod]
 		public async Task GetItems_Should_Return_Sequnce_Of_XElement()
 		{
-			using (IUnityContainer container = ContaineConfig.CreateContainer())
+			using (IUnityContainer container = ContainerConfig.CreateContainer())
 			{
 				// Arrange
 				IAwsClient client = container.Resolve<IAwsClient>();

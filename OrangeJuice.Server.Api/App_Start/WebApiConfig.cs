@@ -22,11 +22,9 @@ namespace OrangeJuice.Server.Api
 			ConfigureFilters(config.Filters, container);
 			ConfigureHandlers(config.MessageHandlers, container);
 			ConfigureServices(config.Services, container);
-
-			ConfigureErrorDetailPolicy(config, container);
 			ConfigureFormatters(config.Formatters);
 
-            config.UseWebConfigCustomErrors();
+			config.UseWebConfigCustomErrors();
 
 			config.MapHttpAttributeRoutes();
 
@@ -41,12 +39,11 @@ namespace OrangeJuice.Server.Api
 
 		public static void ConfigureFilters(HttpFilterCollection filters, IUnityContainer container)
 		{
-            filters.AddRange(container.ResolveAll<IFilter>());
+			filters.AddRange(container.ResolveAll<IFilter>());
 		}
 
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)
 		{
-			// TODO: use AddRange() later
 			foreach (DelegatingHandler handler in container.ResolveAll<DelegatingHandler>())
 			{
 				handlers.Add(handler);
@@ -57,15 +54,10 @@ namespace OrangeJuice.Server.Api
 		{
 			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
 
-		    services.Add(typeof(IExceptionLogger), container.Resolve<IExceptionLogger>());
+			services.Add(typeof(IExceptionLogger), container.Resolve<IExceptionLogger>());
 		}
 
-		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)
-		{
-			config.IncludeErrorDetailPolicy = container.Resolve<IncludeErrorDetailPolicy>();
-		}
-
-        private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
+		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
 		{
 			formatters.Remove(formatters.XmlFormatter);
 			formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
