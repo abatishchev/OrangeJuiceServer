@@ -99,7 +99,6 @@
     <Compile Include="Handlers\Validation\HeaderAppVersionValidatorTest.cs" />
     <Compile Include="Handlers\Validation\AppVersionValidatorFactoryTest.cs" />
     <Compile Include="Handlers\AppVersionHandlerTest.cs" />
-    <Compile Include="Policies\ErrorDetailPolicyFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

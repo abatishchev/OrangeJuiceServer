@@ -11,6 +11,8 @@ using Microsoft.Practices.Unity;
 
 using Newtonsoft.Json;
 
+using WebApiContrib.Configuration;
+
 namespace OrangeJuice.Server.Api
 {
 	internal static class WebApiConfig
@@ -23,6 +25,8 @@ namespace OrangeJuice.Server.Api
 
 			ConfigureErrorDetailPolicy(config, container);
 			ConfigureFormatters(config.Formatters);
+
+            config.UseWebConfigCustomErrors();
 
 			config.MapHttpAttributeRoutes();
 
@@ -61,7 +65,7 @@ namespace OrangeJuice.Server.Api
 			config.IncludeErrorDetailPolicy = container.Resolve<IncludeErrorDetailPolicy>();
 		}
 
-		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
+        private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
 		{
 			formatters.Remove(formatters.XmlFormatter);
 			formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
