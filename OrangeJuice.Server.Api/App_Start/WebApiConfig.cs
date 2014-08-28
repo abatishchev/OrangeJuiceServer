@@ -37,11 +37,7 @@ namespace OrangeJuice.Server.Api
 
 		public static void ConfigureFilters(HttpFilterCollection filters, IUnityContainer container)
 		{
-			// TODO: use AddRange() later
-			foreach (IFilter filter in container.ResolveAll<IFilter>())
-			{
-				filters.Add(filter);
-			}
+            filters.AddRange(container.ResolveAll<IFilter>());
 		}
 
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)
@@ -57,7 +53,7 @@ namespace OrangeJuice.Server.Api
 		{
 			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
 
-			services.Add(typeof(IExceptionLogger), new Elmah.Contrib.WebApi.ElmahExceptionLogger());
+		    services.Add(typeof(IExceptionLogger), container.Resolve<IExceptionLogger>());
 		}
 
 		private static void ConfigureErrorDetailPolicy(HttpConfiguration config, IUnityContainer container)

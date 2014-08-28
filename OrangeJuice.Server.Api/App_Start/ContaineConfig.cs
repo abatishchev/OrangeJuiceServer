@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Validation;
 using System.Xml.Linq;
@@ -13,6 +14,7 @@ using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Api.Filters;
 using OrangeJuice.Server.Api.Handlers;
+using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Api.Policies;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
@@ -25,9 +27,9 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Api
 {
-	internal static class UnityConfig
+	internal static class ContaineConfig
 	{
-		public static IUnityContainer InitializeContainer()
+		public static IUnityContainer CreateContainer()
 		{
 			IUnityContainer container = new UnityContainer();
 
@@ -42,16 +44,21 @@ namespace OrangeJuice.Server.Api
 		private static void RegisterTypes(IUnityContainer container)
 		{
 			#region Web API
+			// Filters
 			container.RegisterType<IFilter, ValidModelActionFilter>(
 				typeof(ValidModelActionFilter).Name,
 				new ContainerControlledLifetimeManager());
 
-			container.RegisterType<IFactory<AppVersionHandler>, AppVersionHandlerFactory>(
+			// Handlers
+			container.RegisterType<IFactory<IValidator<HttpRequestMessage>>, AppVersionValidatorFactory>(
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(typeof(IEnvironmentProvider)));
 
-			container.RegisterFactory<DelegatingHandler, AppVersionHandler>(
-				typeof(AppVersionHandler).Name,
+			container.RegisterType<DelegatingHandler, AppVersionHandler>(
+				new ContainerControlledLifetimeManager());
+
+			// Services
+			container.RegisterType<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>(
 				new ContainerControlledLifetimeManager());
 			#endregion
 
