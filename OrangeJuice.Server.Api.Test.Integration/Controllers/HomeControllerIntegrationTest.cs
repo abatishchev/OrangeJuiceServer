@@ -1,35 +1,52 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Net;
+using System.Threading.Tasks;
+
+using FluentAssertions;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {
-    /*
-<WebTest Name="HomeControllerWebTest" Id="045da075-b58e-46e5-95ec-b7fe8f4548ad" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
-  <Items>
-    <Request Method="GET" Guid="373c8903-4437-41d2-a8bf-1315e36b7783" Version="1.1" Url="{{host}}/api/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="404" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
-      <Headers>
-        <Header Name="X-AppVer" Value="{{appVer}}" />
-      </Headers>
-    </Request>
-    <Request Method="GET" Guid="373c8903-4437-41d2-a8bf-1315e36b7783" Version="1.1" Url="{{host}}/api/home/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="404" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
-      <Headers>
-        <Header Name="X-AppVer" Value="{{appVer}}" />
-      </Headers>
-    </Request>
-    <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/home/version/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
-      <Headers>
-        <Header Name="X-AppVer" Value="{{appVer}}" />
-      </Headers>
-    </Request>
-  </Items>
-  <ContextParameters>
-    <ContextParameter Name="host" Value="http://dev.api.orangejuice.mobi" />
-    <ContextParameter Name="appVer" Value="0.0.0.0" />
-  </ContextParameters>
-</WebTest>
-    */
-
     [TestClass]
     public class HomeControllerIntegrationTest
     {
+        [TestMethod]
+        public async Task Get_Root_Should_Return_Forbidden()
+        {
+            // Arrange
+            var client = HttpClientFactory.Create();
+
+            // Act
+            var response = await client.GetAsync("/api");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [TestMethod]
+        public async Task Get_Root_Home_Should_Return_Forbidden()
+        {
+            // Arrange
+            var client = HttpClientFactory.Create();
+
+            // Act
+            var response = await client.GetAsync("/api/home");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [TestMethod]
+        public async Task Get_Root_Home_Version_Should_Return_Forbidden()
+        {
+            // Arrange
+            var client = HttpClientFactory.Create();
+
+            // Act
+            var response = await client.GetAsync("/api/home/version");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
     }
 }

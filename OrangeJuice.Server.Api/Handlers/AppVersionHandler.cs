@@ -12,7 +12,7 @@ namespace OrangeJuice.Server.Api.Handlers
 			if (IsValid(request))
 				return base.SendAsync(request, cancellationToken);
 
-			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Forbidden);
+			var response = new HttpResponseMessage(HttpStatusCode.Forbidden);
 			var tsc = new TaskCompletionSource<HttpResponseMessage>();
 			tsc.SetResult(response);
 			return tsc.Task;
