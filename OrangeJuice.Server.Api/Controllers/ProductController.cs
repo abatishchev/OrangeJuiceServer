@@ -21,7 +21,6 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		[Route("api/product/id")]
 		[Route("api/product/id/{productId}")]
 		public async Task<IHttpActionResult> GetProductId([FromUri] ProductSearchCriteria searchCriteria)
 		{
@@ -35,7 +34,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(descriptor);
 		}
 
-		[Route("api/product/barcode")]
 		[Route("api/product/barcode/{barcodeType}/{barcode}")]
 		public async Task<IHttpActionResult> GetProductBarcode([FromUri] BarcodeSearchCriteria searchCriteria)
 		{
