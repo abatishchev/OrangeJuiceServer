@@ -1,4 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace OrangeJuice.Server.Api.Test.Integration.Controllers
+{
+    /*
 <WebTest Name="ProductControllerWebTest" Id="71f1dbbe-1856-4a08-acb0-ba86aab86038" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
   <Items>
     <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/barcode" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="400" ExpectedResponseUrl="" ReportingName="Barcode is empty" IgnoreHttpStatusCode="False">
@@ -101,3 +105,10 @@
     </WebTestPlugin>
   </WebTestPlugins>
 </WebTest>
+    */
+
+    [TestClass]
+    public class ProductControllerIntegrationTest
+    {
+    }
+}

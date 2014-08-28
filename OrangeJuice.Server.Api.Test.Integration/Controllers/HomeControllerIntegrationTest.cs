@@ -1,4 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace OrangeJuice.Server.Api.Test.Integration.Controllers
+{
+    /*
 <WebTest Name="HomeControllerWebTest" Id="045da075-b58e-46e5-95ec-b7fe8f4548ad" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
   <Items>
     <Request Method="GET" Guid="373c8903-4437-41d2-a8bf-1315e36b7783" Version="1.1" Url="{{host}}/api/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="404" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
@@ -22,3 +26,10 @@
     <ContextParameter Name="appVer" Value="0.0.0.0" />
   </ContextParameters>
 </WebTest>
+    */
+
+    [TestClass]
+    public class HomeControllerIntegrationTest
+    {
+    }
+}

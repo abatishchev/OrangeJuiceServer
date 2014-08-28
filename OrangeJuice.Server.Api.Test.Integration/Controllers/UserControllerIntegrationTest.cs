@@ -1,4 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace OrangeJuice.Server.Api.Test.Integration.Controllers
+{
+    /*
 <WebTest Name="UserControllerWebTest" Id="25aa26f6-e12c-48ed-bbda-3a38c9c81dd2" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
   <ContextParameters>
     <ContextParameter Name="host" Value="http://dev.api.orangejuice.mobi" />
@@ -14,3 +18,10 @@
     </WebTestPlugin>
   </WebTestPlugins>
 </WebTest>
+    */
+
+    [TestClass]
+    public class UserControllerIntegrationTest
+    {
+    }
+}
