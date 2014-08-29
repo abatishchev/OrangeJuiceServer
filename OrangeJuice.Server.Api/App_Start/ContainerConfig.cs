@@ -40,6 +40,10 @@ namespace OrangeJuice.Server.Api
 			return container;
 		}
 
+        /// <remarks>
+        /// ContainerControlledLifetimeManager = singleton
+        /// HierarchicalLifetimeManager = child container
+        /// </remarks>
 		private static void RegisterTypes(IUnityContainer container)
 		{
 			#region Web API
@@ -54,7 +58,8 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IEnvironmentProvider)));
 
 			container.RegisterType<DelegatingHandler, AppVersionHandler>(
-				new ContainerControlledLifetimeManager());
+				new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(typeof(IValidator<HttpRequestMessage>)));
 
 			// Services
 			container.RegisterType<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>(
@@ -91,20 +96,14 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region VersionController
-			container.RegisterType<IFactory<ApiVersion>, ApiVersionFactory>(
-				new HierarchicalLifetimeManager(),
+			container.RegisterFactory<ApiVersion, ApiVersionFactory>(
+				new HierarchicalLifetimeManager(), // create every time, don't need to keep it in memory
 				new InjectionConstructor(typeof(IAssemblyProvider), typeof(IEnvironmentProvider)));
-
-			container.RegisterFactory<ApiVersion>(
-				new HierarchicalLifetimeManager());
 			#endregion
 
 			#region ProductController
 			#region Azure
-			container.RegisterType<IFactory<AzureOptions>, AzureOptionsFactory>(
-				new ContainerControlledLifetimeManager());
-
-			container.RegisterFactory<AzureOptions>(
+			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(
 				new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IBlobNameResolver, JsonBlobNameResolver>(
@@ -126,10 +125,7 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Aws
-			container.RegisterType<IFactory<AwsOptions>, AwsOptionsFactory>(
-				new ContainerControlledLifetimeManager());
-
-			container.RegisterFactory<AwsOptions>(
+			container.RegisterFactory<AwsOptions, AwsOptionsFactory>(
 				new ContainerControlledLifetimeManager());
 
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
@@ -211,6 +207,18 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IRatingUnit)));
 			#endregion
+		}
+	}
+
+	internal static class UnityContainerExtensions
+	{
+		public static IUnityContainer RegisterFactory<T, TFactory>(this IUnityContainer container, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
+			where TFactory : IFactory<T>
+		{
+			return container.RegisterType<IFactory<T>, TFactory>(new ContainerControlledLifetimeManager(), injectionMembers)
+							.RegisterType<T>(
+								lifetimeManager,
+								new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));
 		}
 	}
 }
