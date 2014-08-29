@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -41,10 +40,12 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
         public async Task Get_Api_User_Should_Return_Ok_When_User_Exists()
         {
             // Arrange
-            Guid? userId = await GetFirstUserId();
+            Guid? userId = GetFirstUserId();
+            if (!userId.HasValue)
+                Assert.Inconclusive("Database contains no users");
 
             var query = HttpUtility.ParseQueryString(String.Empty);
-            query.Add("userId", userId.ToString());
+            query.Add("userId", userId.Value.ToString());
 
             var client = HttpClientFactory.Create();
             var url = new UriBuilder(client.BaseAddress);
@@ -61,11 +62,11 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
         #endregion
 
         #region Helper methods
-        private static Task<Guid?> GetFirstUserId()
+        private static Guid? GetFirstUserId()
         {
             using (var container = new ModelContainer())
             {
-                return container.Users.Select(u => (Guid?)u.UserId).FirstAsync();
+                return container.Users.Select(u => (Guid?)u.UserId).FirstOrDefault();
             }
         }
         #endregion
