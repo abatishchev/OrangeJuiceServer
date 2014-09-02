@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,29 +20,19 @@ namespace OrangeJuice.Server.Web
 		#region IQueryBuilder members
 		public string BuildQuery(IEnumerable<KeyValuePair<string, string>> args)
 		{
-			return SpltParameters(args.Select(a => SplitNameValue(a.Key, a.Value)));
+			var coll = HttpUtility.ParseQueryString(String.Empty, _urlEncoder);
+			foreach (var arg in args)
+			{
+				coll.Add(arg.Key, arg.Value);
+			}
+			return coll.ToString();
 		}
 
 		public string SignQuery(string query, string signature)
 		{
-			return SpltParameters(query, SplitNameValue("Signature", signature));
-		}
-		#endregion
-
-		#region Methods
-		private string SplitNameValue(string name, string value)
-		{
-			return String.Format("{0}={1}", name, _urlEncoder.Encode(value));
-		}
-
-		private static string SpltParameters(params string[] parameters)
-		{
-			return SpltParameters((IEnumerable<string>)parameters);
-		}
-
-		private static string SpltParameters(IEnumerable<string> parameters)
-		{
-			return String.Join("&", parameters);
+			var coll = HttpUtility.ParseQueryString(query, _urlEncoder);
+			coll.Add("Signature", signature);
+			return coll.ToString();
 		}
 		#endregion
 	}

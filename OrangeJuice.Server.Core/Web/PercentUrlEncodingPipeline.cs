@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace OrangeJuice.Server.Web
 {
@@ -31,7 +30,7 @@ namespace OrangeJuice.Server.Web
 		/// </remarks>
 		public IEnumerable<Func<string, string>> GetOperations()
 		{
-			yield return HttpUtility.UrlEncode;
+			yield return System.Web.HttpUtility.UrlEncode;
 			yield return PercentEncode;
 			yield return ToUpperCase;
 		}

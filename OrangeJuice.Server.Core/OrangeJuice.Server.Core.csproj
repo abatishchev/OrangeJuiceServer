@@ -110,8 +110,10 @@
     <Compile Include="UtcDateTimeProvider.cs" />
     <Compile Include="Web\EncodedQueryBuilder.cs" />
     <Compile Include="Web\HttpDocumentLoader.cs" />
+    <Compile Include="Web\HttpUtility.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
     <Compile Include="Web\PercentUrlEncodingPipeline.cs" />
+    <Compile Include="Web\QueryStringNameValueCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
