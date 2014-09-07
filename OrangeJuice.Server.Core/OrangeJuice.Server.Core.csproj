@@ -97,7 +97,6 @@
     <Compile Include="Services\AzureBlobClient.cs" />
     <Compile Include="Services\AwsAlgorithmFactory.cs" />
     <Compile Include="Services\AwsArgumentBuilder.cs" />
-    <Compile Include="Services\AwsClient.cs" />
     <Compile Include="Services\AwsProductProvider.cs" />
     <Compile Include="Services\AwsQuerySigner.cs" />
     <Compile Include="Services\AwsUrlBuilder.cs" />
@@ -105,11 +104,13 @@
     <Compile Include="Services\AzureProductProvider.cs" />
     <Compile Include="Services\CloudProductService.cs" />
     <Compile Include="Services\JsonBlobNameResolver.cs" />
+    <Compile Include="Services\XmlAwsClient.cs" />
+    <Compile Include="Services\XmlDocumentLoader.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
     <Compile Include="Validation\XmlRequestValidator.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
     <Compile Include="Web\EncodedQueryBuilder.cs" />
-    <Compile Include="Web\HttpDocumentLoader.cs" />
+    <Compile Include="Web\HttpClient.cs" />
     <Compile Include="Web\HttpUtility.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
     <Compile Include="Web\PercentUrlEncodingPipeline.cs" />

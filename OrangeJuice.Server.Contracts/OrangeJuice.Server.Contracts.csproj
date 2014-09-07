@@ -82,6 +82,7 @@
     <Compile Include="Data\IRating.cs" />
     <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\ProductDescriptor.cs" />
+    <Compile Include="Data\ProductDescriptorSearchCriteria.cs" />
     <Compile Include="Data\Repository\IProductRepository.cs" />
     <Compile Include="Data\Repository\IRatingRepository.cs" />
     <Compile Include="Data\Repository\IUserRepository.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Services\IQuerySigner.cs" />
     <Compile Include="Services\IUrlBuilder.cs" />
     <Compile Include="Web\IDocumentLoader.cs" />
+    <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="Web\IQueryBuilder.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
   </ItemGroup>
