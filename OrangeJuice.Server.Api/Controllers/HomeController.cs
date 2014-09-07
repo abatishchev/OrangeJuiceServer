@@ -13,6 +13,8 @@ namespace OrangeJuice.Server.Api.Controllers
 			_apiVersion = apiVersion;
 		}
 
+		[Route("api")]
+		[Route("api/home")]
 		public IHttpActionResult Get()
 		{
 			return NotFound();
