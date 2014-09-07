@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Test
 					 where typeof(ApiController).IsAssignableFrom(t)
 					 from m in t.GetMethods()
 					 where m.ReturnType == typeof(IHttpActionResult)
-					 select m.GetCustomAttribute<RouteAttribute>();
+					 select m.GetCustomAttributes<RouteAttribute>().FirstOrDefault();
 
 			// Assert
 			attributes.Should().Contain(a => a != null);
