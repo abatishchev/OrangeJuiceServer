@@ -150,13 +150,10 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IHttpClient, HttpClient>(
+			container.RegisterType<IHttpClient, Web.HttpClient>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(
-				new DefaultLifetimeManager());
-
-			container.RegisterType<IDocumentLoader, XmlDocumentLoader>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(

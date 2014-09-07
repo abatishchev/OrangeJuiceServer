@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Xml.Linq;
 
 namespace OrangeJuice.Server.Services
@@ -13,18 +14,19 @@ namespace OrangeJuice.Server.Services
 			_itemValidator = itemValidator;
 		}
 
-		public IEnumerable<XElement> SelectItems(XDocument doc)
+		public IEnumerable<XElement> SelectItems(Stream stream)
 		{
+			XDocument doc = XDocument.Load(stream);
 			if (doc.Root == null)
-				throw new HttpRequestException();
+				throw new ArgumentException();
 
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			XElement items = doc.Root.Element(ns + "Items");
 			if (items == null)
-				throw new HttpRequestException();
+				throw new ArgumentException();
 			if (!_itemValidator.IsValid(items))
-				throw new HttpRequestException();
+				throw new ArgumentException();
 
 			return items.Elements(ns + "Item");
 		}

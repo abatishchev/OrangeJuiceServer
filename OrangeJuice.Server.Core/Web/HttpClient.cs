@@ -12,11 +12,11 @@ namespace OrangeJuice.Server.Web
 	public sealed class HttpClient : IHttpClient
 	{
 
-		public Task<Stream> ParseQueryString(Uri url)
+		public Task<Stream> GetStreamAsync(Uri url)
 
 		{
 
-			using (var client = new HttpClient())
+			using (var client = new System.Net.Http.HttpClient())
 			{
 				return client.GetStreamAsync(url);
 			}

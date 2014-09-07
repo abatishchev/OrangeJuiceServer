@@ -105,7 +105,6 @@
     <Compile Include="Services\CloudProductService.cs" />
     <Compile Include="Services\JsonBlobNameResolver.cs" />
     <Compile Include="Services\XmlAwsClient.cs" />
-    <Compile Include="Services\XmlDocumentLoader.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
     <Compile Include="Validation\XmlRequestValidator.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />

@@ -12,7 +12,7 @@ namespace OrangeJuice.Server.Web
 	public interface IHttpClient
 	{
 
-		Task<Stream> ParseQueryString(Uri url);
+		Task<Stream> GetStreamAsync(Uri url);
 	}
 
 }
