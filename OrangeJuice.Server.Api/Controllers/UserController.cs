@@ -22,6 +22,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
+		[Route("api/user/{userId}")]
 		public async Task<IHttpActionResult> GetUser([FromUri]UserSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
@@ -34,6 +35,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(user);
 		}
 
+		[Route("api/user")]
 		public async Task<IHttpActionResult> PutUser(UserModel userModel)
 		{
 			if (userModel == null)

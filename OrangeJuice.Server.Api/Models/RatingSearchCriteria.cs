@@ -1,11 +1,10 @@
 ﻿using System;
 
 using FluentValidation.Attributes;
-using OrangeJuice.Server.Api.Models.Validation;
 
 namespace OrangeJuice.Server.Api.Models
 {
-	[Validator(typeof(RatingSearchCriteriaValidator))]
+	[Validator(typeof(Validation.RatingSearchCriteriaValidator))]
 	public class RatingSearchCriteria
 	{
 		public Guid UserId { get; set; }

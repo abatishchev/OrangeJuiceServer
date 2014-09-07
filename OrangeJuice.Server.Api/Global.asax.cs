@@ -9,8 +9,6 @@ namespace OrangeJuice.Server.Api
 			var container = ContainerConfig.CreateContainer();
 
 			GlobalConfiguration.Configure(c => WebApiConfig.Configure(c, container));
-
-			RouteConfig.ConfigureRoutes(GlobalConfiguration.Configuration.Routes);
 		}
 	}
 }

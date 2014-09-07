@@ -22,6 +22,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
+		[Route("api/raiting/{ratingId}")]
 		public async Task<IHttpActionResult> GetRating([FromUri]RatingSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
@@ -47,6 +48,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(ratings);
 		}
 
+		[Route("api/rating")]
 		public async Task<IHttpActionResult> PostRating(RatingModel ratingModel)
 		{
 			if (ratingModel == null)
@@ -57,6 +59,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok();
 		}
 
+		[Route("api/rating")]
 		public async Task<IHttpActionResult> DeleteRating([FromUri]RatingSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
