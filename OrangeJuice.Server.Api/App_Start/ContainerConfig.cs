@@ -42,11 +42,11 @@ namespace OrangeJuice.Server.Api
 			return container;
 		}
 
-        /// <remarks>
-        /// TransientLifetimeManager = new instance every time
-        /// ContainerControlledLifetimeManager  = singleton
-        /// HierarchicalLifetimeManager = child container
-        /// </remarks>
+		/// <remarks>
+		/// TransientLifetimeManager = new instance every time
+		/// ContainerControlledLifetimeManager  = singleton
+		/// HierarchicalLifetimeManager = child container
+		/// </remarks>
 		private static void RegisterTypes(IUnityContainer container)
 		{
 			#region Web API
@@ -62,7 +62,7 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<DelegatingHandler, AppVersionHandler>(
 				new DefaultLifetimeManager(),
-                new InjectionConstructor(typeof(IValidator<HttpRequestMessage>)));
+				new InjectionConstructor(typeof(IValidator<HttpRequestMessage>)));
 
 			// Services
 			container.RegisterType<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>(
@@ -93,8 +93,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(
 				new DefaultLifetimeManager());
 
-            container.RegisterType<ModelValidatorProvider, FluentValidationModelValidatorProvider>(
-                new DefaultLifetimeManager());
+		  		container.RegisterType<ModelValidatorProvider, FluentValidationModelValidatorProvider>(
+				new DefaultLifetimeManager());
 			#endregion
 
 			#region VersionController
@@ -114,13 +114,13 @@ namespace OrangeJuice.Server.Api
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IAzureClient, AzureClient>(
-                new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
 
 			container.RegisterType<IConverter<string, ProductDescriptor>, StringProductDescriptorConverter>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IAzureProductProvider, AzureProductProvider>(
-                new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
 			#endregion
 
 			#region Aws
@@ -128,55 +128,58 @@ namespace OrangeJuice.Server.Api
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
-                new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
 
-            container.RegisterType<IPipeline<string>, PercentUrlEncodingPipeline>(
-                "percent",
-                new DefaultLifetimeManager());
+			container.RegisterType<IPipeline<string>, PercentUrlEncodingPipeline>(
+				"percent",
+				new DefaultLifetimeManager());
 
-            container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
-                new DefaultLifetimeManager(),
-                new InjectionConstructor(container.Resolve(typeof(IPipeline<string>), "percent")));
+			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
+				new DefaultLifetimeManager(),
+				new InjectionConstructor(container.Resolve(typeof(IPipeline<string>), "percent")));
 
 			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
-                new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
 
-            container.RegisterFactory<HashAlgorithm, AwsAlgorithmFactory>(
-                new DefaultLifetimeManager());
+			container.RegisterFactory<HashAlgorithm, AwsAlgorithmFactory>(
+				new DefaultLifetimeManager());
 
-            container.RegisterType<IQuerySigner, AwsQuerySigner>(
-                new DefaultLifetimeManager());
+			container.RegisterType<IQuerySigner, AwsQuerySigner>(
+				new DefaultLifetimeManager());
 
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
-                new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
+
+			container.RegisterType<IHttpClient, HttpClient>(
+				new DefaultLifetimeManager());
 
 			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IDocumentLoader, HttpDocumentLoader>(
+			container.RegisterType<IDocumentLoader, XmlDocumentLoader>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IItemSelector, XmlItemSelector>(
-                new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
 
 			container.RegisterType<IAwsClient, AwsClient>(
-                new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
 
 			container.RegisterType<IFactory<XElement, ProductDescriptor>, XmlProductDescriptorFactory>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IAwsProductProvider, AwsProductProvider>(
-                new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
 			#endregion
 
-            container.RegisterType<IProductUnit, EntityProductUnit>(
-                new HierarchicalLifetimeManager());
+			container.RegisterType<IProductUnit, EntityProductUnit>(
+				new HierarchicalLifetimeManager());
 
-            container.RegisterType<IProductRepository, EntityProductRepository>(
-                new HierarchicalLifetimeManager());
+			container.RegisterType<IProductRepository, EntityProductRepository>(
+				new HierarchicalLifetimeManager());
 
-            container.RegisterType<IProductService, CloudProductService>(
-                new HierarchicalLifetimeManager());
+			container.RegisterType<IProductService, CloudProductService>(
+				new HierarchicalLifetimeManager());
 			#endregion
 
 			#region UserController
@@ -191,11 +194,11 @@ namespace OrangeJuice.Server.Api
 
 			#region RatingController
 			container.RegisterType<IRatingUnit, EntityRatingUnit>(
-                new HierarchicalLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IModelContainer)));
 
 			container.RegisterType<IRatingRepository, EntityRatingRepository>(
-                new HierarchicalLifetimeManager(),
+				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IRatingUnit)));
 			#endregion
 		}
@@ -207,8 +210,8 @@ namespace OrangeJuice.Server.Api
 			where TFactory : IFactory<T>
 		{
 			return container.RegisterType<IFactory<T>, TFactory>(
-                new ContainerControlledLifetimeManager(), // singleton
-                injectionMembers)
+				new ContainerControlledLifetimeManager(), // singleton
+				injectionMembers)
 							.RegisterType<T>(
 								lifetimeManager,
 								new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));
