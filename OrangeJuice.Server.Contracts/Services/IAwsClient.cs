@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using OrangeJuice.Server.Data;
+
 namespace OrangeJuice.Server.Services
 {
 	public interface IAwsClient
 	{
-		Task<IEnumerable<XElement>> GetItems(IDictionary<string, string> args);
+		Task<IEnumerable<ProductDescriptor>> GetItems(ProductDescriptorSearchCriteria searchCriteria);
 	}
 }

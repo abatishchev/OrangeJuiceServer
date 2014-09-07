@@ -23,14 +23,19 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IArgumentBuilder members
-		public IDictionary<string, string> BuildArgs(IDictionary<string, string> args)
+		public IDictionary<string, string> BuildArgs(Data.ProductDescriptorSearchCriteria searchCriteria)
 		{
 			DateTime now = _dateTimeProvider.GetNow();
 			string timestamp = _dateTimeProvider.Format(now);
 
 			// Ordering parameters in naturual byte order as required by AWS
-			return new SortedDictionary<string, string>(args, StringComparer.Ordinal)
+			return new SortedDictionary<string, string>(StringComparer.Ordinal)
 			{
+				{ "Operation", searchCriteria.Operation },
+				{ "SearchIndex", searchCriteria.SearchIndex },
+				{ "ResponseGroup", String.Join(",", searchCriteria.ResponseGroups) },
+				{ "IdType", searchCriteria.IdType },
+				{ "ItemId", searchCriteria.ItemId },
 				{ "AWSAccessKeyId", _accessKey },
 				{ "AssociateTag", _associateTag },
 				{ "Service", "AWSECommerceService" },

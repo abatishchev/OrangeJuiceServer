@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using OrangeJuice.Server.Data;
 
@@ -10,31 +9,29 @@ namespace OrangeJuice.Server.Services
 	{
 		#region Fields
 		private readonly IAwsClient _client;
-		private readonly IFactory<XElement, ProductDescriptor> _factory;
 		#endregion
 
 		#region Ctor
-		public AwsProductProvider(IAwsClient client, IFactory<XElement, ProductDescriptor> factory)
+		public AwsProductProvider(IAwsClient client)
 		{
 			_client = client;
-			_factory = factory;
 		}
 		#endregion
 
 		#region IAwsProductProvider members
 		public async Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)
 		{
-			var args = new Dictionary<string, string>
+			var searchCriteria = new ProductDescriptorSearchCriteria
 			{
-				{ "Operation", "ItemLookup" },
-				{ "SearchIndex", "Grocery" },
-				{ "ResponseGroup", "Images,ItemAttributes" },
-				{ "IdType", barcodeType.ToString() },
-				{ "ItemId", barcode }
+				Operation = "ItemLookup",
+				SearchIndex = "Grocery",
+				ResponseGroups = new[] { "Images", "ItemAttributes" },
+				IdType = barcodeType.ToString(),
+				ItemId = barcode
 			};
 
-			var items = await _client.GetItems(args);
-			return items.FirstOrDefaultNotNull(_factory.Create);
+			var items = await _client.GetItems(searchCriteria);
+			return items.FirstOrDefault();
 		}
 		#endregion
 	}

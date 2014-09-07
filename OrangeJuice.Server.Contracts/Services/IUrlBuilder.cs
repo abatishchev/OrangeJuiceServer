@@ -5,6 +5,6 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IUrlBuilder
 	{
-		Uri BuildUrl(IDictionary<string, string> args);
+		Uri BuildUrl(Data.ProductDescriptorSearchCriteria searchCriteria);
 	}
 }

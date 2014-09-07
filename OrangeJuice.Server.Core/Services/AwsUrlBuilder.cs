@@ -28,10 +28,9 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IUrlBuilder members
-		public Uri BuildUrl(IDictionary<string, string> args)
+		public Uri BuildUrl(Data.ProductDescriptorSearchCriteria searchCriteria)
 		{
-			args = _argumentBuilder.BuildArgs(args);
-
+			var args = _argumentBuilder.BuildArgs(searchCriteria);
 			string query = _queryBuilder.BuildQuery(args);
 			string signature = _querySigner.CreateSignature(RequestHost, RequestPath, query);
 			string singedQuery = _queryBuilder.SignQuery(query, signature);
