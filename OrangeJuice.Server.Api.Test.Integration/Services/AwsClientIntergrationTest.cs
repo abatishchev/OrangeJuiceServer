@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
@@ -20,12 +21,12 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			{
 				// Arrange
 				IAwsClient client = container.Resolve<IAwsClient>();
-				var args = new Dictionary<string, string>
+				var searchCriteria = new ProductDescriptorSearchCriteria
 				{
-					{ "Operation", "ItemSearch" },
-					{ "SearchIndex", "Grocery" },
-					{ "ResponseGroup", "Small" },
-					{ "Title", "Coca-Cola" }
+					Operation = "ItemSearch",
+					SearchIndex = "Grocery",
+					ResponseGroup = new[] { "Small" },
+					Title = "Coca-Cola"
 				};
 
 				// Act
