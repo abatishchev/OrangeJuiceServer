@@ -7,8 +7,6 @@ namespace OrangeJuice.Server.Api.Handlers.Validation
 {
 	public sealed class HeaderAppVersionValidator : IValidator<HttpRequestMessage>
 	{
-		internal const string HeaderName = "X-AppVer";
-
 		private readonly Version _appVersion;
 
 		public HeaderAppVersionValidator(Version appVersion)
@@ -24,7 +22,7 @@ namespace OrangeJuice.Server.Api.Handlers.Validation
 		private IEnumerable<bool> GetRules(HttpRequestMessage request)
 		{
 			IEnumerable<string> values;
-			yield return request.Headers.TryGetValues(HeaderName, out values);
+			yield return request.Headers.TryGetValues(AppVersion.ElementName, out values);
 
 			Version version;
 			yield return Version.TryParse(values.FirstOrDefault(), out version);

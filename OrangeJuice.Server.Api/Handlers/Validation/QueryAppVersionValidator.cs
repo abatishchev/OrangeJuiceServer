@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Api.Handlers.Validation
 
 		private IEnumerable<bool> GetRules(HttpRequestMessage request)
 		{
-			string appVer = request.RequestUri.ParseQueryString()["appVer"];
+			string appVer = request.RequestUri.ParseQueryString()[AppVersion.ElementName];
 
 			Version version;
 			yield return Version.TryParse(appVer, out version);

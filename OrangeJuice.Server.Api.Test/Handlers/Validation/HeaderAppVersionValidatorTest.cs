@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 			// Arrange
 			Version appVersion = new Version();
 			HeaderAppVersionValidator handler = CreateHandler(appVersion);
-			HttpRequestMessage request = CreateRequest(HeaderAppVersionValidator.HeaderName, appVersion);
+			HttpRequestMessage request = CreateRequest(AppVersion.ElementName, appVersion);
 
 			// Act
 			bool valid = handler.IsValid(request);

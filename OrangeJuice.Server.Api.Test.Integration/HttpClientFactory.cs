@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Api.Test.Integration
 		{
 			var client = new HttpClient { BaseAddress = new Uri(Url) };
 			
-			client.DefaultRequestHeaders.TryAddWithoutValidation(HeaderAppVersionValidator.HeaderName, AppVersion.Version0.ToString());
+			client.DefaultRequestHeaders.TryAddWithoutValidation(AppVersion.ElementName, AppVersion.Version0.ToString());
 
 			return client;
 		}
