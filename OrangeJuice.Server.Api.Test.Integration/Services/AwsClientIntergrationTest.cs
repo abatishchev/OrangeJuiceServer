@@ -25,12 +25,12 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 				{
 					Operation = "ItemSearch",
 					SearchIndex = "Grocery",
-					ResponseGroup = new[] { "Small" },
+					ResponseGroups = new[] { "Small" },
 					Title = "Coca-Cola"
 				};
 
 				// Act
-				var items = await client.GetItems(args);
+				var items = await client.GetItems(searchCriteria);
 
 				// Assert
 				items.Should().NotBeEmpty();

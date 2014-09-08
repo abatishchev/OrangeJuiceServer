@@ -91,12 +91,12 @@
     <Compile Include="ProxyFactoryTest.cs" />
     <Compile Include="Services\AwsAlgorithmFactoryTest.cs" />
     <Compile Include="Services\AwsArgumentBuilderTest.cs" />
-    <Compile Include="Services\AwsClientTest.cs" />
     <Compile Include="Services\AwsProductProviderTest.cs" />
     <Compile Include="Services\AwsUrlBuilderTest.cs" />
     <Compile Include="Services\AzureProductProviderTest.cs" />
     <Compile Include="Services\CloudProductServiceTest.cs" />
     <Compile Include="Services\JsonBlobNameResolverTest.cs" />
+    <Compile Include="Services\XmlAwsClientTest.cs" />
     <Compile Include="Services\XmlItemSelectorTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
     <Compile Include="Validation\XmlRequestValidatorTest.cs" />
