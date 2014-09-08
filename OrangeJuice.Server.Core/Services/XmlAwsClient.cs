@@ -10,7 +10,7 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class AwsClient : IAwsClient
+	public sealed class XmlAwsClient : IAwsClient
 	{
 		#region Fields
 		private readonly IUrlBuilder _urlBuilder;
@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public AwsClient(IUrlBuilder urlBuilder, IHttpClient httpClient, IItemSelector itemSelector, IFactory<XElement, ProductDescriptor> factory)
+		public XmlAwsClient(IUrlBuilder urlBuilder, IHttpClient httpClient, IItemSelector itemSelector, IFactory<XElement, ProductDescriptor> factory)
 		{
 			_urlBuilder = urlBuilder;
 			_httpClient = httpClient;

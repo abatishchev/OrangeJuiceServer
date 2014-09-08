@@ -159,7 +159,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IItemSelector, XmlItemSelector>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IAwsClient, AwsClient>(
+			container.RegisterType<IAwsClient, XmlAwsClient>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IFactory<XElement, ProductDescriptor>, XmlProductDescriptorFactory>(

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net.Http;
 
@@ -9,11 +10,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Configuration;
+using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
-
-using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
-using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Services
 {
@@ -22,38 +21,21 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Test methods
 		[TestMethod]
-		public void BuildUrl_Should_Pass_Arguments_To_ArgumentBuilder()
+		public void BuildUrl_Should_Pass_SearchCriteria_To_ArgumentBuilder()
 		{
 			// Arrange
-			IStringDictionary args = new StringDictionary();
+			ProductDescriptorSearchCriteria searchCriteria = new ProductDescriptorSearchCriteria();
 
 			var argumentBuilderMock = new Mock<IArgumentBuilder>();
-			argumentBuilderMock.Setup(b => b.BuildArgs(It.IsAny<IStringDictionary>())).Returns(args);
+			argumentBuilderMock.Setup(b => b.BuildArgs(searchCriteria)).Returns(new Dictionary<string, string>());
 
 			IUrlBuilder urlBuilder = CreateUrlBuilder(argumentBuilderMock.Object);
 
 			// Act
-			urlBuilder.BuildUrl(args);
+			urlBuilder.BuildUrl(searchCriteria);
 
 			// Assert
-			argumentBuilderMock.Verify(b => b.BuildArgs(args), Times.Once);
-		}
-
-		[TestMethod]
-		public void BuildUrl_Should_Return_Url_Having_Arguments()
-		{
-			// Arrange
-			const string key = "key";
-			const string value = "value";
-
-			IUrlBuilder urlBuilder = CreateUrlBuilder();
-
-			// Act
-			Uri url = urlBuilder.BuildUrl(new StringDictionary { { key, value } });
-
-			// Assert
-			NameValueCollection collection = url.ParseQueryString();
-			collection[key].Should().Be(value);
+			argumentBuilderMock.VerifyAll();
 		}
 
 		[TestMethod]
@@ -66,7 +48,7 @@ namespace OrangeJuice.Server.Test.Services
 			IUrlBuilder urlBuilder = CreateUrlBuilder(querySigner: querySigner);
 
 			// Act
-			Uri url = urlBuilder.BuildUrl(new StringDictionary());
+			Uri url = urlBuilder.BuildUrl(new ProductDescriptorSearchCriteria());
 
 			// Assert
 			url.Query.Should().EndWith(String.Format("Signature={0}", signature));

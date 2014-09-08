@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -9,60 +11,59 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
-
-using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
-using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class AwsClientTest
+	public class XmlAwsClientTest
 	{
 		#region SelectItems
 		[TestMethod]
-		public async Task GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_DocumentLoader_Load()
+		public async Task GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_HttpClient_GetStreamAsync()
 		{
 			// Arrange
 			Uri url = CreateUrl();
 
 			var builderMock = CreateUrlBuilder(url);
 
-			var loaderMock = new Mock<IDocumentLoader>();
-			loaderMock.Setup(l => l.Load(url)).ReturnsAsync(new XDocument());
+			var httpClientMock = new Mock<IHttpClient>();
+			httpClientMock.Setup(c => c.GetStreamAsync(url)).ReturnsAsync(new MemoryStream());
 
-			IAwsClient client = CreateClient(builderMock, loaderMock.Object);
+			IAwsClient client = CreateClient(builderMock, httpClientMock.Object);
 
 			// Act
-			await client.GetItems(new StringDictionary());
+			await client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
-			loaderMock.Verify(l => l.Load(url), Times.Once);
+			httpClientMock.VerifyAll();
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Pass_Document_Returned_By_DocumentLoader_To_ItemSelector_GetItems()
+		public async Task GetItems_Should_Pass_Stream_Returned_By_HttpClient_To_ItemSelector_SelectItems()
 		{
 			// Arrange
-			XDocument doc = new XDocument();
+			Stream stream = new MemoryStream();
 
-			var loaderMock = new Mock<IDocumentLoader>();
-			loaderMock.Setup(l => l.Load(It.IsAny<Uri>())).ReturnsAsync(doc);
+			var httpClientMock = new Mock<IHttpClient>();
+			httpClientMock.Setup(c => c.GetStreamAsync(It.IsAny<Uri>())).ReturnsAsync(stream);
 
 			var selectorMock = new Mock<IItemSelector>();
+			selectorMock.Setup(s => s.SelectItems(stream)).Returns(Enumerable.Empty<XElement>());
 
-			IAwsClient client = CreateClient(documentLoader: loaderMock.Object, itemSelector: selectorMock.Object);
+			IAwsClient client = CreateClient(httpClient: httpClientMock.Object, itemSelector: selectorMock.Object);
 
 			// Act
-			await client.GetItems(new StringDictionary());
+			await client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
-			selectorMock.Verify(s => s.SelectItems(doc), Times.Once);
+			selectorMock.VerifyAll();
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Return_Elements_Returned_By_ItemSelector_GetItems()
+		public async Task GetItems_Should_Return_Elements_Returned_By_ItemSelector_SelectItems()
 		{
 			// Arrange
 			var expected = new[] { new XElement("Items") };
@@ -71,11 +72,53 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = CreateClient(itemSelector: selectorMock);
 
 			// Act
-			var actual = await client.GetItems(new StringDictionary());
+			var actual = await client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
 			actual.Should().BeEquivalentTo(expected);
 		}
+
+/*
+		[TestMethod]
+		public async Task GetItems_Should_Pass_First_Item_To_ProductDescriptorFactory_Create()
+		{
+			// Arrange
+			XElement[] elements = { new XElement("Item"), new XElement("Item") };
+
+			IAwsClient client = CreateClient(elements);
+
+			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
+			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new ProductDescriptor());
+
+			IAwsProductProvider provider = CreateProvider(client, factoryMock.Object);
+
+			// Act
+			await provider.Search("barcode", BarcodeType.EAN);
+
+			// Assert
+			factoryMock.Verify(f => f.Create(elements.First()), Times.Once);
+		}
+
+		[TestMethod]
+		public async Task GetItems_Should_Return_Descriptor_Returned_By_ProductDescriptorFactory_Create()
+		{
+			// Arrange
+			ProductDescriptor expected = new ProductDescriptor();
+
+			IAwsClient client = CreateClient();
+
+			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
+			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(expected);
+
+			IAwsProductProvider provider = CreateProvider(client, factoryMock.Object);
+
+			// Act
+			ProductDescriptor actual = await provider.Search("barcode", BarcodeType.EAN);
+
+			// Assert
+			actual.Should().Be(expected);
+		}
+*/
 		#endregion
 
 		#region Helper methods
@@ -84,32 +127,33 @@ namespace OrangeJuice.Server.Test.Services
 			return new Uri("http://example.com");
 		}
 
-		private static IAwsClient CreateClient(IUrlBuilder urlBuilder = null, IDocumentLoader documentLoader = null, IItemSelector itemSelector = null)
+		private static IAwsClient CreateClient(IUrlBuilder urlBuilder = null, IHttpClient httpClient = null, IItemSelector itemSelector = null, IFactory<XElement, ProductDescriptor> factory = null)
 		{
-			return new AwsClient(
+			return new XmlAwsClient(
 				urlBuilder ?? CreateUrlBuilder(),
-				documentLoader ?? CreateDocumentLoader(),
-				itemSelector ?? CreateItemSelector());
+				httpClient ?? CreateHttpClient(),
+				itemSelector ?? CreateItemSelector(),
+				factory);
 		}
 
 		private static IUrlBuilder CreateUrlBuilder(Uri url = null)
 		{
 			var builderMock = new Mock<IUrlBuilder>();
-			builderMock.Setup(b => b.BuildUrl(It.IsAny<IStringDictionary>())).Returns(url ?? CreateUrl());
+			builderMock.Setup(b => b.BuildUrl(It.IsAny<ProductDescriptorSearchCriteria>())).Returns(url ?? CreateUrl());
 			return builderMock.Object;
 		}
 
-		private static IDocumentLoader CreateDocumentLoader(XDocument doc = null)
+		private static IHttpClient CreateHttpClient(Stream stream = null)
 		{
-			var loaderMock = new Mock<IDocumentLoader>();
-			loaderMock.Setup(l => l.Load(It.IsAny<Uri>())).ReturnsAsync(doc ?? new XDocument());
-			return loaderMock.Object;
+			var httpClientMock = new Mock<IHttpClient>();
+			httpClientMock.Setup(l => l.GetStreamAsync(It.IsAny<Uri>())).ReturnsAsync(stream ?? new MemoryStream());
+			return httpClientMock.Object;
 		}
 
 		private static IItemSelector CreateItemSelector(IEnumerable<XElement> elements = null)
 		{
 			var selectorMock = new Mock<IItemSelector>();
-			selectorMock.Setup(s => s.SelectItems(It.IsAny<XDocument>())).Returns(elements ?? new[] { new XElement("Item") });
+			selectorMock.Setup(s => s.SelectItems(It.IsAny<Stream>())).Returns(elements ?? new[] { new XElement("Item") });
 			return selectorMock.Object;
 		}
 		#endregion

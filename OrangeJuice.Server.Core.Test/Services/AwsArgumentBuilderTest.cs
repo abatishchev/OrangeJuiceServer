@@ -7,10 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Configuration;
+using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
-
-using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
-using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Services
 {
@@ -32,7 +30,7 @@ namespace OrangeJuice.Server.Test.Services
 			var argumentBuilder = CreateArgumentBuilder(new AwsOptions { AccessKey = accessKey, AssociateTag = associateTag }, dateTimeProvider.Object);
 
 			// Act
-			var args = argumentBuilder.BuildArgs(new StringDictionary());
+			var args = argumentBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
 
 			// Assert
 			args.Should().Contain("AWSAccessKeyId", accessKey)
@@ -43,35 +41,18 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public void BuildArgs_Should_Add_Arguments()
-		{
-			// Arange
-			const string key = "key";
-			const string value = "value";
-
-			var queryBuilder = CreateArgumentBuilder();
-
-			// Act
-			var args = queryBuilder.BuildArgs(new StringDictionary { { key, value } });
-
-			// Assert
-			args.Should().Contain(key, value);
-		}
-
-		[TestMethod]
 		public void BuildArgs_Should_Call_DateTimeProvider_GetNow()
 		{
 			// Arrange
 			var dateTimeProviderMock = CreateDateTimeProvider(DateTime.UtcNow);
 
 			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
-			var args = new StringDictionary();
 
 			// Act
-			queryBuilder.BuildArgs(args);
+			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.GetNow(), Times.Once);
+			dateTimeProviderMock.VerifyAll();
 		}
 
 		[TestMethod]
@@ -83,10 +64,10 @@ namespace OrangeJuice.Server.Test.Services
 			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
 
 			// Act
-			queryBuilder.BuildArgs(new StringDictionary());
+			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.Format(It.IsAny<DateTime>()), Times.Once);
+			dateTimeProviderMock.VerifyAll();
 		}
 
 		[TestMethod]
@@ -99,10 +80,10 @@ namespace OrangeJuice.Server.Test.Services
 			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
 
 			// Act
-			queryBuilder.BuildArgs(new StringDictionary());
+			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
 
 			// Assert
-			dateTimeProviderMock.Verify(p => p.Format(now), Times.Once);
+			dateTimeProviderMock.VerifyAll();
 		}
 		#endregion
 
