@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Xml.Linq;
 
 using FluentAssertions;
@@ -31,7 +30,7 @@ namespace OrangeJuice.Server.Test.Services
 			Action action = () => selector.SelectItems(stream);
 
 			// Assert
-			action.ShouldThrow<HttpRequestException>();
+			action.ShouldThrow<ArgumentException>();
 		}
 
 		[TestMethod]
@@ -48,7 +47,7 @@ namespace OrangeJuice.Server.Test.Services
 			Action action = () => selector.SelectItems(stream);
 
 			// Assert
-			action.ShouldThrow<HttpRequestException>();
+			action.ShouldThrow<ArgumentException>();
 		}
 
 		[TestMethod]
@@ -67,7 +66,7 @@ namespace OrangeJuice.Server.Test.Services
 			Action action = () => selector.SelectItems(stream);
 
 			// Assert
-			action.ShouldThrow<HttpRequestException>();
+			action.ShouldThrow<ArgumentException>();
 		}
 
 		[TestMethod]
