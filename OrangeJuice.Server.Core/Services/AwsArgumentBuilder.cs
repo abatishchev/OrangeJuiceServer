@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using OrangeJuice.Server.Configuration;
 
@@ -33,7 +34,7 @@ namespace OrangeJuice.Server.Services
 			{
 				{ "Operation", searchCriteria.Operation },
 				{ "SearchIndex", searchCriteria.SearchIndex },
-				{ "ResponseGroup", String.Join(",", searchCriteria.ResponseGroups) },
+				{ "ResponseGroup", String.Join(",", searchCriteria.ResponseGroups ?? Enumerable.Empty<string>()) },
 				{ "IdType", searchCriteria.IdType },
 				{ "ItemId", searchCriteria.ItemId },
 				{ "AWSAccessKeyId", _accessKey },

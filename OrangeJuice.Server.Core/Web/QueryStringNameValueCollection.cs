@@ -1,4 +1,5 @@
 using System;
+
 using System.Collections.Generic;
 
 using System.Collections.Specialized;
@@ -51,8 +52,7 @@ namespace OrangeJuice.Server.Web
 	    			       .Select(k => new KeyValuePair<string, string>(k, _urlEncoder.Encode(this[k])))
 
 				       .Select(p => String.Format("{0}={1}", p.Key, p.Value));
-
-	    		return String.Join("&", args);
+	    		return String.Join("&", args ?? Enumerable.Empty<string>());
 
 	    	}
 

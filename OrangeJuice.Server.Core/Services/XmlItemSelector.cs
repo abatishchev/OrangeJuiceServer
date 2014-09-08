@@ -17,9 +17,6 @@ namespace OrangeJuice.Server.Services
 		public IEnumerable<XElement> SelectItems(Stream stream)
 		{
 			XDocument doc = XDocument.Load(stream);
-			if (doc.Root == null)
-				throw new ArgumentException();
-
 			XNamespace ns = doc.Root.Name.Namespace;
 
 			XElement items = doc.Root.Element(ns + "Items");

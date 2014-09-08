@@ -63,62 +63,43 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Return_Elements_Returned_By_ItemSelector_SelectItems()
+		public async Task GetItems_Should_Pass_Items_Returned_By_ItemSelector_SelectItems_To_ProductDescriptorFactory_Create()
 		{
 			// Arrange
-			var expected = new[] { new XElement("Items") };
-			var selectorMock = CreateItemSelector(expected);
+			XElement[] elements = { new XElement("Item"), new XElement("Item") };
 
-			IAwsClient client = CreateClient(itemSelector: selectorMock);
+			var selectorMock = new Mock<IItemSelector>();
+			selectorMock.Setup(s => s.SelectItems(It.IsAny<Stream>())).Returns(elements);
+
+			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
+			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new ProductDescriptor());
+
+			IAwsClient client = CreateClient(itemSelector: selectorMock.Object, factory: factoryMock.Object);
+
+			// Act
+			await client.GetItems(new ProductDescriptorSearchCriteria());
+
+			// Assert
+			factoryMock.VerifyAll();
+		}
+
+		[TestMethod]
+		public async Task GetItems_Should_Return_ProductDescriptor_Returned_By_ProductDescriptorFactory_Create()
+		{
+			// Arrange
+			ProductDescriptor expected = new ProductDescriptor();
+
+			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
+			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(expected);
+
+			IAwsClient client = CreateClient(factory: factoryMock.Object);
 
 			// Act
 			var actual = await client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
-			actual.Should().BeEquivalentTo(expected);
+			actual.Single().Should().Be(expected);
 		}
-
-/*
-		[TestMethod]
-		public async Task GetItems_Should_Pass_First_Item_To_ProductDescriptorFactory_Create()
-		{
-			// Arrange
-			XElement[] elements = { new XElement("Item"), new XElement("Item") };
-
-			IAwsClient client = CreateClient(elements);
-
-			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
-			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new ProductDescriptor());
-
-			IAwsProductProvider provider = CreateProvider(client, factoryMock.Object);
-
-			// Act
-			await provider.Search("barcode", BarcodeType.EAN);
-
-			// Assert
-			factoryMock.Verify(f => f.Create(elements.First()), Times.Once);
-		}
-
-		[TestMethod]
-		public async Task GetItems_Should_Return_Descriptor_Returned_By_ProductDescriptorFactory_Create()
-		{
-			// Arrange
-			ProductDescriptor expected = new ProductDescriptor();
-
-			IAwsClient client = CreateClient();
-
-			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
-			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(expected);
-
-			IAwsProductProvider provider = CreateProvider(client, factoryMock.Object);
-
-			// Act
-			ProductDescriptor actual = await provider.Search("barcode", BarcodeType.EAN);
-
-			// Assert
-			actual.Should().Be(expected);
-		}
-*/
 		#endregion
 
 		#region Helper methods
@@ -133,7 +114,7 @@ namespace OrangeJuice.Server.Test.Services
 				urlBuilder ?? CreateUrlBuilder(),
 				httpClient ?? CreateHttpClient(),
 				itemSelector ?? CreateItemSelector(),
-				factory);
+				factory ?? CreateFactory());
 		}
 
 		private static IUrlBuilder CreateUrlBuilder(Uri url = null)
@@ -155,6 +136,13 @@ namespace OrangeJuice.Server.Test.Services
 			var selectorMock = new Mock<IItemSelector>();
 			selectorMock.Setup(s => s.SelectItems(It.IsAny<Stream>())).Returns(elements ?? new[] { new XElement("Item") });
 			return selectorMock.Object;
+		}
+
+		private static IFactory<XElement, ProductDescriptor> CreateFactory(ProductDescriptor descriptor = null)
+		{
+			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
+			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(descriptor ?? new ProductDescriptor());
+			return factoryMock.Object;
 		}
 		#endregion
 	}

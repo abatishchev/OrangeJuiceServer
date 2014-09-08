@@ -18,22 +18,6 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Test Methods
 		[TestMethod]
-		public void SelectItems_Should_Throw_Exception_When_Doc_Has_No_Root()
-		{
-			// Arrange
-			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"));
-			Stream stream = CreateStream(doc);
-
-			IItemSelector selector = CreateSelector();
-
-			// Act
-			Action action = () => selector.SelectItems(stream);
-
-			// Assert
-			action.ShouldThrow<ArgumentException>();
-		}
-
-		[TestMethod]
 		public void SelectItems_Should_Throw_Exception_When_Doc_Has_No_Items()
 		{
 			// Arrange
