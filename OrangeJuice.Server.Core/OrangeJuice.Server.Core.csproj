@@ -79,6 +79,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AggregatePipeline.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationProvider.cs" />
     <Compile Include="Configuration\AwsOptions.cs" />
     <Compile Include="Configuration\AwsOptionsFactory.cs" />

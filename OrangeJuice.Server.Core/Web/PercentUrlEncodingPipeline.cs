@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace OrangeJuice.Server.Web
 {
-	public sealed class PercentUrlEncodingPipeline : IPipeline<string>
+	public sealed class PercentUrlEncodingPipeline : AggregatePipeline<string>
 	{
 		#region Fields
 		internal static readonly IDictionary<string, string> CharDictionary = new Dictionary<string, string>
@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Web
 		};
 		#endregion
 
-		#region IPipeline members
+		#region Pipeline members
 		/// <summary>
 		/// Percent-encodes according to RFC 3986 as required by Amazon
 		/// </summary>
@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Web
 		/// This is necessary because .NET's HttpUtility.UrlEncode does not encode according to the above standard.
 		/// Also it returns lower-case encoding by default and Amazon requires upper-case encoding.
 		/// </remarks>
-		public IEnumerable<Func<string, string>> GetOperations()
+		public override IEnumerable<Func<string, string>> GetOperations()
 		{
 			yield return System.Web.HttpUtility.UrlEncode;
 			yield return PercentEncode;

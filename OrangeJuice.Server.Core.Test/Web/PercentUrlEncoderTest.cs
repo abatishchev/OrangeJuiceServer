@@ -24,7 +24,7 @@ namespace OrangeJuice.Server.Test.Web
 					return s;
 				};
 
-			var pipelineMock = new Mock<IPipeline<string>>();
+			var pipelineMock = new Mock<AggregatePipeline<string>>();
 			pipelineMock.Setup(p => p.GetOperations()).Returns(new[] { operation });
 
 			IUrlEncoder urlEncoder = new PercentUrlEncoder(pipelineMock.Object);
