@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OrangeJuice.Server
 {
-	public abstract class AggregatePipeline<T> : IPipeline<T>
+	public abstract class AggregatePipeline<T> : IPipeline<T, T>
 	{
 
 		public abstract IEnumerable<Func<T, T>> GetOperations();

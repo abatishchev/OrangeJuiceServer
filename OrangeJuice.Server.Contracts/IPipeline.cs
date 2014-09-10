@@ -2,10 +2,9 @@
 
 namespace OrangeJuice.Server
 {
-	public interface IPipeline<T>
+	public interface IPipeline<T, TResult>
 	{
-		// System.Collections.Generic.IEnumerable<Func<T, T>> GetOperations();
-		T Run(T input);
+		TResult Run(T input);
 	}
 
 }

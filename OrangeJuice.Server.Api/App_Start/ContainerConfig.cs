@@ -130,13 +130,13 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IPipeline<string>, PercentUrlEncodingPipeline>(
+			container.RegisterType<IPipeline<string, string>, PercentUrlEncodingPipeline>(
 				"percent",
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new DefaultLifetimeManager(),
-				new InjectionConstructor(container.Resolve(typeof(IPipeline<string>), "percent")));
+				new InjectionConstructor(container.Resolve(typeof(IPipeline<string, string>), "percent")));
 
 			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
 				new DefaultLifetimeManager());
