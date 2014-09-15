@@ -58,7 +58,7 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			// Arrange
 			XNamespace ns = "test";
-			object[] expected = { new XElement(ns + "Item") };
+			XElement expected = new XElement(ns + "Item");
 			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"),
 				new XElement(ns + "Root",
 					new XElement(ns + "Items", expected)));
@@ -67,7 +67,7 @@ namespace OrangeJuice.Server.Test.Services
 			IItemSelector selector = CreateSelector();
 
 			// Act
-			XElement[] actual = selector.SelectItems(stream).ToArray();
+			XElement actual = selector.SelectItems(stream).First();
 
 			// Assert
 			actual.Should().BeEquivalentTo(expected);

@@ -77,7 +77,7 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = CreateClient(itemSelector: selectorMock.Object, factory: factoryMock.Object);
 
 			// Act
-			await client.GetItems(new ProductDescriptorSearchCriteria());
+			(await client.GetItems(new ProductDescriptorSearchCriteria())).ToArray();
 
 			// Assert
 			factoryMock.VerifyAll();

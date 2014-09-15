@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-
-using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,11 +22,12 @@ namespace OrangeJuice.Server.Test.Services
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
-			Func<ProductDescriptorSearchCriteria, bool> verify = c => c.Operation == "ItemLookup" &&
-										 c.SearchIndex == "Grocery" &&
-										 c.ResponseGroups == new[] { "Images", "ItemAttributes" } &&
-										 c.IdType == barcodeType.ToString() &&
-										 c.ItemId == barcode;
+			Func<ProductDescriptorSearchCriteria, bool> verify = c =>
+			    c.Operation == "ItemLookup" &&
+			    c.SearchIndex == "Grocery" &&
+			    c.ResponseGroups.SequenceEqual(new[] { "Images", "ItemAttributes" }) &&
+			    c.IdType == barcodeType.ToString() &&
+			    c.ItemId == barcode;
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.Is<ProductDescriptorSearchCriteria>(p => verify(p)))).ReturnsAsync(new[] { new ProductDescriptor() });
 
