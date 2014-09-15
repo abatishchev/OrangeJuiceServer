@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -22,7 +23,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		[Route("api/user/{userId}")]
+		[Route("api/user")]
 		public async Task<IHttpActionResult> GetUser([FromUri]UserSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
@@ -42,8 +43,6 @@ namespace OrangeJuice.Server.Api.Controllers
 				throw new ArgumentNullException();
 
 			IUser user = await _userRepository.Register(userModel.Email, userModel.Name);
-			if (user == null)
-				return InternalServerError();
 
 			return Ok(user.UserId);
 		}

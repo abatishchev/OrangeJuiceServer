@@ -19,13 +19,11 @@ namespace OrangeJuice.Server.Data.Unit
 		#endregion
 
 		#region IUserUnit members
-		public async Task<User> Add(User user)
+		public Task Add(User user)
 		{
-			user = _container.Users.Add(user);
+			_container.Users.Add(user);
 
-			await _container.SaveChangesAsync();
-
-			return user;
+			return _container.SaveChangesAsync();
 		}
 
 		public Task<User> Get(Guid userId)

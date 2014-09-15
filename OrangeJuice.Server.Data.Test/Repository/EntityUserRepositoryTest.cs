@@ -22,15 +22,13 @@ namespace OrangeJuice.Server.Data.Test.Repository
 			// Arrange
 			User expected = new User { Name = "name", Email = "email" };
 
-			var userUnitMock = CreateUserUnit(expected);
-
-			IUserRepository repository = CreateRepository(userUnitMock.Object);
+			IUserRepository repository = CreateRepository();
 
 			// Act
-			IUser actual = await repository.Register(expected.Name, expected.Email);
+			IUser actual = await repository.Register(expected.Email, expected.Name);
 
 			// Assert
-			actual.Should().Be(expected);
+			actual.ShouldBeEquivalentTo(expected);
 		}
 
 		[TestMethod]
@@ -40,9 +38,7 @@ namespace OrangeJuice.Server.Data.Test.Repository
 			const string email = "email";
 			const string name = "name";
 
-			var userUnitMock = CreateUserUnit();
-
-			IUserRepository repository = CreateRepository(userUnitMock.Object);
+			IUserRepository repository = CreateRepository();
 
 			// Act
 			IUser user = await repository.Register(name, email);
@@ -68,21 +64,22 @@ namespace OrangeJuice.Server.Data.Test.Repository
 		}
 
 		[TestMethod]
-		public async Task Register_Should_Return_Pass_User_To_User_Add_Having_Properties_Set_From_Parameters()
+		public async Task Register_Should_Pass_User_To_UserUnit_Add_Having_Properties_Set_From_Parameters()
 		{
 			// Arrange
 			const string email = "email";
 			const string name = "name";
 
-			var userUnitMock = CreateUserUnit();
+			var userUnitMock = new Mock<IUserUnit>();
+			userUnitMock.Setup(u => u.Add(It.Is<User>(user => user.Name == name && user.Email == email))).Returns(Task.Delay(0));
 
 			IUserRepository repository = CreateRepository(userUnitMock.Object);
 
 			// Act
-			await repository.Register(name, email);
+			await repository.Register(email, name);
 
 			// Assert
-			userUnitMock.Verify(unit => unit.Add(It.Is<User>(u => u.Name == name && u.Email == email)), Times.Once);
+			userUnitMock.VerifyAll();
 		}
 		#endregion
 
@@ -144,13 +141,13 @@ namespace OrangeJuice.Server.Data.Test.Repository
 		#region Helper methods
 		private static IUserRepository CreateRepository(IUserUnit userUnit = null)
 		{
-			return new EntityUserRepository(userUnit ?? new Mock<IUserUnit>().Object);
+			return new EntityUserRepository(userUnit ?? CreateUserUnit().Object);
 		}
 
-		private static Mock<IUserUnit> CreateUserUnit(User user = null)
+		private static Mock<IUserUnit> CreateUserUnit()
 		{
 			var userUnitMock = new Mock<IUserUnit>();
-			userUnitMock.Setup(u => u.Add(It.IsAny<User>())).Returns<User>(u => Task.FromResult(user ?? u));
+			userUnitMock.Setup(u => u.Add(It.IsAny<User>())).Returns(Task.Delay(0));
 			return userUnitMock;
 		}
 
