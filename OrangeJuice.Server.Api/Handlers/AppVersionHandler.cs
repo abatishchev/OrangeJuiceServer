@@ -7,16 +7,16 @@ namespace OrangeJuice.Server.Api.Handlers
 {
 	public class AppVersionHandler : DelegatingHandler
 	{
-	    private readonly IValidator<HttpRequestMessage> _requestValidator;
+		private readonly IValidator<HttpRequestMessage> _requestValidator;
 
-	    public AppVersionHandler(IValidator<HttpRequestMessage> requestValidator)
-	    {
-	        _requestValidator = requestValidator;
-	    }
-
-	    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+		public AppVersionHandler(IValidator<HttpRequestMessage> requestValidator)
 		{
-            if (_requestValidator.IsValid(request))
+			_requestValidator = requestValidator;
+		}
+
+		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+		{
+			if (_requestValidator.IsValid(request))
 				return base.SendAsync(request, cancellationToken);
 
 			var response = new HttpResponseMessage(HttpStatusCode.Forbidden);

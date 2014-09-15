@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using OrangeJuice.Server.Web;
 
@@ -35,7 +34,6 @@ namespace OrangeJuice.Server.Services
 			string signature = _querySigner.CreateSignature(RequestHost, RequestPath, query);
 			string singedQuery = _queryBuilder.SignQuery(query, signature);
 
-			// TODO: remove ?
 			return new UriBuilder(Uri.UriSchemeHttp, RequestHost, 80, RequestPath, '?' + singedQuery).Uri;
 		}
 		#endregion
