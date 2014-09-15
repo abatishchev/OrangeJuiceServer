@@ -93,7 +93,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(
 				new DefaultLifetimeManager());
 
-		  		container.RegisterType<ModelValidatorProvider, FluentValidationModelValidatorProvider>(
+		  	container.RegisterType<ModelValidatorProvider, FluentValidationModelValidatorProvider>(
 				new DefaultLifetimeManager());
 			#endregion
 
@@ -209,9 +209,9 @@ namespace OrangeJuice.Server.Api
 			return container.RegisterType<IFactory<T>, TFactory>(
 				new ContainerControlledLifetimeManager(), // singleton
 				injectionMembers)
-					.RegisterType<T>(
-						lifetimeManager,
-						new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));
+							.RegisterType<T>(
+								lifetimeManager,
+								new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -121,22 +122,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Assert
 			task.ShouldThrow<ArgumentNullException>();
-		}
-
-		[TestMethod]
-		public async Task PutUser_Should_Return_Status_InternalError_When_UserRepository_Register_Returns_Null()
-		{
-			// Arrange
-			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(null);
-
-			UserController controller = CreateController(repositoryMock.Object);
-
-			// Act
-			IHttpActionResult result = await controller.PutUser(new UserModel());
-
-			// Assert
-			result.Should().BeOfType<InternalServerErrorResult>();
 		}
 
 		[TestMethod]
