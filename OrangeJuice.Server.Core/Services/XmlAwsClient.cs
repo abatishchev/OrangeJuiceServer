@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -33,8 +32,8 @@ namespace OrangeJuice.Server.Services
 		public async Task<IEnumerable<ProductDescriptor>> GetItems(ProductDescriptorSearchCriteria searchCriteria)
 		{
 			Uri url = _urlBuilder.BuildUrl(searchCriteria);
-			Stream stream = await _httpClient.GetStreamAsync(url);
-			var items = _itemSelector.SelectItems(stream);
+			string response = await _httpClient.GetStringAsync(url);
+			var items = _itemSelector.SelectItems(response);
 			return items.Select(_factory.Create);
 		}
 		#endregion

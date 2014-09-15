@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -23,12 +22,10 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"),
 				new XElement("Root"));
-			Stream stream = CreateStream(doc);
-
 			IItemSelector selector = CreateSelector();
 
 			// Act
-			Action action = () => selector.SelectItems(stream);
+			Action action = () => selector.SelectItems(doc.ToString());
 
 			// Assert
 			action.ShouldThrow<ArgumentException>();
@@ -41,20 +38,19 @@ namespace OrangeJuice.Server.Test.Services
 			XNamespace ns = "test";
 			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"),
 				new XElement(ns + "Root"));
-			Stream stream = CreateStream(doc);
 
 			IValidator<XElement> validator = CreateValidator(false);
 			IItemSelector selector = CreateSelector(validator);
 
 			// Act
-			Action action = () => selector.SelectItems(stream);
+			Action action = () => selector.SelectItems(doc.ToString());
 
 			// Assert
 			action.ShouldThrow<ArgumentException>();
 		}
 
 		[TestMethod]
-		public void SelectItems_Should_Return_Items_From_Document()
+		public void SelectItems_Should_Return_Items_From_String()
 		{
 			// Arrange
 			XNamespace ns = "test";
@@ -62,12 +58,11 @@ namespace OrangeJuice.Server.Test.Services
 			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"),
 				new XElement(ns + "Root",
 					new XElement(ns + "Items", expected)));
-			Stream stream = CreateStream(doc);
 
 			IItemSelector selector = CreateSelector();
 
 			// Act
-			XElement actual = selector.SelectItems(stream).First();
+			XElement actual = selector.SelectItems(doc.ToString()).First();
 
 			// Assert
 			actual.Should().BeEquivalentTo(expected);
@@ -85,14 +80,6 @@ namespace OrangeJuice.Server.Test.Services
 			var validator = new Mock<IValidator<XElement>>();
 			validator.Setup(v => v.IsValid(It.IsAny<XElement>())).Returns(isValid);
 			return validator.Object;
-		}
-
-		private static Stream CreateStream(XDocument doc)
-		{
-			Stream stream = new MemoryStream();
-			doc.Save(stream);
-			stream.Seek(0, SeekOrigin.Begin);
-			return stream;
 		}
 		#endregion
 	}

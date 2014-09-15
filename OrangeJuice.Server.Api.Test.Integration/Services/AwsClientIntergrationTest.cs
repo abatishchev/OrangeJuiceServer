@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 	public class AwsClientIntergrationTest
 	{
 		[TestMethod]
-		public async Task GetItems_Should_Return_Sequnce_Of_XElement()
+		public async Task GetItems_Should_Return_Sequnce_Of_ProductDescriptor()
 		{
 			using (IUnityContainer container = ContainerConfig.CreateContainer())
 			{
@@ -22,10 +22,11 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 				IAwsClient client = container.Resolve<IAwsClient>();
 				var searchCriteria = new ProductDescriptorSearchCriteria
 				{
-					Operation = "ItemSearch",
-					SearchIndex = "Grocery",
+					Operation = "ItemLookup",
 					ResponseGroups = new[] { "Small" },
-					Title = "Coca-Cola"
+					SearchIndex = "Grocery",
+					ItemId = "0747599330971",
+					IdType = "EAN"
 				};
 
 				// Act

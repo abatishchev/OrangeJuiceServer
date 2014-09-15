@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 	public class AwsProductProviderIntegrationTest
 	{
 		[TestMethod]
-		public async Task Lookup_Should_Return_ProductDescriptor()
+		public async Task Search_Should_Return_ProductDescriptor()
 		{
 			using (IUnityContainer container = ContainerConfig.CreateContainer())
 			{
