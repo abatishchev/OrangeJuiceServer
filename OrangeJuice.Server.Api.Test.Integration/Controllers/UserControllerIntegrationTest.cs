@@ -8,6 +8,7 @@ using System.Web;
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 
@@ -18,7 +19,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 	{
 		#region Tests
 		[TestMethod]
-		public async Task GetUser_Should_Return_Ok_When_User_Exists()
+		public async Task GetUser_Should_Return_Status_Ok_When_User_Exists()
 		{
 			// Arrange
 			var user = GetFirstUser();
@@ -42,7 +43,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetUser_Should_Return_NotFound_When_User_Does_Not_Exist()
+		public async Task GetUser_Should_Return_Status_NoContent_When_User_Does_Not_Exist()
 		{
 			// Arrange
 			Guid userId = Guid.NewGuid();
@@ -59,11 +60,11 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			var response = await client.GetAsync(url.Uri);
 
 			// Assert
-			response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+			response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Ok_When_User_Was_Created()
+		public async Task PutUser_Should_Return_Status_Created()
 		{
 			// Arrange
 			var user = NewUser();
@@ -76,7 +77,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			var response = await client.PutAsJsonAsync(url.Uri, user);
 
 			// Assert
-			response.StatusCode.Should().Be(HttpStatusCode.OK);
+			response.StatusCode.Should().Be(HttpStatusCode.Created);
 		}
 		#endregion
 

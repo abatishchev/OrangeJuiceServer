@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Drum">
+      <HintPath>..\packages\Drum.0.2.0\lib\net45\Drum.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -135,6 +138,7 @@
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Filters\ValidModelActionFilter.cs" />
+    <Compile Include="Handlers\CurrentRequestHandler.cs" />
     <Compile Include="Models\ProductSearchCriteria.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RatingsSearchCriteria.cs" />

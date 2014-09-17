@@ -3,7 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
-
+using System.Web.Http.Routing;
+using Drum;
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,7 +36,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetUser_Should_Return_Status_NotFound_When_UserRepository_Returns_Null()
+		public async Task GetUser_Should_Return_Status_NoContent_When_UserRepository_Returns_Null()
 		{
 			//Arrange
 			var repositoryMock = new Mock<IUserRepository>();
@@ -47,7 +48,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetUser(new UserSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<NotFoundResult>();
+			result.Should().BeOfType<StatusCodeResult>()
+				  .Which.StatusCode.Should().Be(HttpStatusCode.NoContent);
 		}
 
 		[TestMethod]
@@ -145,27 +147,26 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Guid_Returned_By_UserRepository_Register()
+		public async Task PutUser_Should_Return_User_Returned_By_UserRepository_Register()
 		{
 			// Arrange
-			Guid expected = Guid.NewGuid();
-			IUser user = CreateUser(expected);
+			IUser expected = CreateUser();
 
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(user);
+			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(expected);
 
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.PutUser(new UserModel());
-			Guid actual = ((OkNegotiatedContentResult<Guid>)result).Content;
+			IUser actual = ((CreatedNegotiatedContentResult<IUser>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);
 		}
 
 		[TestMethod]
-		public async Task PutUser_Should_Return_Status_Ok()
+		public async Task PutUser_Should_Return_Status_Created()
 		{
 			// Arrange
 			IUser user = CreateUser();
@@ -178,14 +179,16 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.PutUser(new UserModel());
 
 			// Assert
-			result.Should().BeOfType<OkNegotiatedContentResult<Guid>>();
+			result.Should().BeOfType<CreatedNegotiatedContentResult<IUser>>();
 		}
 		#endregion
 
 		#region Helper methods
 		private static UserController CreateController(IUserRepository userRepository = null)
 		{
-			return ControllerFactory.Create<UserController>(userRepository ?? new Mock<IUserRepository>().Object);
+			return ControllerFactory<UserController>.Create(
+				userRepository ?? Mock.Of<IUserRepository>(),
+				ControllerFactory<UserController>.CreateUriMaker());
 		}
 
 		private static IUser CreateUser(Guid? userId = null)

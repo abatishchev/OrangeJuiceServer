@@ -1,10 +1,11 @@
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Validation;
 using System.Xml.Linq;
+
+using Drum;
 
 using FluentValidation;
 using FluentValidation.Attributes;
@@ -24,7 +25,7 @@ using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Validation;
 using OrangeJuice.Server.Web;
 
-using DefaultLifetimeManager = Microsoft.Practices.Unity.TransientLifetimeManager;
+using DefaultLifetimeManager = Microsoft.Practices.Unity.HierarchicalLifetimeManager;
 
 namespace OrangeJuice.Server.Api
 {
@@ -44,29 +45,40 @@ namespace OrangeJuice.Server.Api
 
 		/// <remarks>
 		/// TransientLifetimeManager = new instance every time
-		/// ContainerControlledLifetimeManager  = singleton
-		/// HierarchicalLifetimeManager = child container
+		/// ContainerControlledLifetimeManager = singleton
+		/// HierarchicalLifetimeManager = per request
 		/// </remarks>
 		private static void RegisterTypes(IUnityContainer container)
 		{
 			#region Web API
 			// Filters
 			container.RegisterType<IFilter, ValidModelActionFilter>(
-				typeof(ValidModelActionFilter).Name,
+				typeof(ValidModelActionFilter).Name, // named registration
 				new DefaultLifetimeManager());
 
 			// Handlers
-			container.RegisterType<IFactory<IValidator<HttpRequestMessage>>, AppVersionValidatorFactory>(
-				new DefaultLifetimeManager(),
-				new InjectionConstructor(typeof(IEnvironmentProvider)));
+			container.RegisterType<CurrentRequest>(
+				new DefaultLifetimeManager());
+			container.RegisterType<DelegatingHandler, CurrentRequestHandler>(
+				typeof(CurrentRequestHandler).Name, // named registration
+				new DefaultLifetimeManager());
 
+			container.RegisterFactory<IValidator<HttpRequestMessage>, AppVersionValidatorFactory>(
+				new DefaultLifetimeManager());
 			container.RegisterType<DelegatingHandler, AppVersionHandler>(
-				new DefaultLifetimeManager(),
-				new InjectionConstructor(typeof(IValidator<HttpRequestMessage>)));
+				typeof(AppVersionHandler).Name, // named registration
+				new DefaultLifetimeManager());
 
 			// Services
 			container.RegisterType<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>(
 				new DefaultLifetimeManager());
+
+			container.RegisterType<HttpRequestMessage>(
+				new DefaultLifetimeManager(),
+				new InjectionFactory(c => c.Resolve<CurrentRequest>().Value));
+			container.RegisterType(typeof(UriMaker<>),
+				new DefaultLifetimeManager(),
+				new InjectionConstructor(typeof(UriMakerContext), typeof(HttpRequestMessage)));
 			#endregion
 
 			#region Providers
@@ -93,13 +105,13 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IValidatorFactory, AttributedValidatorFactory>(
 				new DefaultLifetimeManager());
 
-		  	container.RegisterType<ModelValidatorProvider, FluentValidationModelValidatorProvider>(
+			container.RegisterType<ModelValidatorProvider, FluentValidationModelValidatorProvider>(
 				new DefaultLifetimeManager());
 			#endregion
 
 			#region VersionController
 			container.RegisterFactory<ApiVersion, ApiVersionFactory>(
-				new TransientLifetimeManager()); // create every time, don't need to keep it in memory
+				new TransientLifetimeManager()); // new instance every time
 			#endregion
 
 			#region ProductController
@@ -131,17 +143,17 @@ namespace OrangeJuice.Server.Api
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IPipeline<string, string>, PercentUrlEncodingPipeline>(
-				"percent",
+				typeof(PercentUrlEncodingPipeline).Name, // named registration
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new DefaultLifetimeManager(),
-				new InjectionConstructor(container.Resolve(typeof(IPipeline<string, string>), "percent")));
+				new InjectionConstructor(container.Resolve(typeof(IPipeline<string, string>), typeof(PercentUrlEncodingPipeline).Name)));  // named registration
 
 			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
 				new DefaultLifetimeManager());
 
-			container.RegisterFactory<HashAlgorithm, AwsAlgorithmFactory>(
+			container.RegisterFactory<System.Security.Cryptography.HashAlgorithm, AwsAlgorithmFactory>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IQuerySigner, AwsQuerySigner>(
@@ -162,7 +174,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IAwsClient, XmlAwsClient>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IFactory<XElement, ProductDescriptor>, XmlProductDescriptorFactory>(
+			container.RegisterFactory<XElement, ProductDescriptor, XmlProductDescriptorFactory>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IAwsProductProvider, AwsProductProvider>(
@@ -199,6 +211,12 @@ namespace OrangeJuice.Server.Api
 				new InjectionConstructor(typeof(IRatingUnit)));
 			#endregion
 		}
+
+		internal static void RegisterUriMaker(IUnityContainer container, UriMakerContext uriMakerContext)
+		{
+			container.RegisterInstance(uriMakerContext,
+				new ExternallyControlledLifetimeManager());
+		}
 	}
 
 	internal static class UnityContainerExtensions
@@ -207,8 +225,19 @@ namespace OrangeJuice.Server.Api
 			where TFactory : IFactory<T>
 		{
 			return container.RegisterType<IFactory<T>, TFactory>(
-				new ContainerControlledLifetimeManager(), // singleton
-				injectionMembers)
+								new ContainerControlledLifetimeManager(), // singleton
+								injectionMembers)
+							.RegisterType<T>(
+								lifetimeManager,
+								new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));
+		}
+
+		public static IUnityContainer RegisterFactory<T, TArg, TFactory>(this IUnityContainer container, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
+			where TFactory : IFactory<T, TArg>
+		{
+			return container.RegisterType<IFactory<T, TArg>, TFactory>(
+								new ContainerControlledLifetimeManager(), // singleton
+								injectionMembers)
 							.RegisterType<T>(
 								lifetimeManager,
 								new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));

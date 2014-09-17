@@ -23,11 +23,11 @@ namespace OrangeJuice.Server.Test.Services
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
 			Func<ProductDescriptorSearchCriteria, bool> verify = c =>
-			    c.Operation == "ItemLookup" &&
-			    c.SearchIndex == "Grocery" &&
-			    c.ResponseGroups.SequenceEqual(new[] { "Images", "ItemAttributes" }) &&
-			    c.IdType == barcodeType.ToString() &&
-			    c.ItemId == barcode;
+				c.Operation == "ItemLookup" &&
+				c.SearchIndex == "Grocery" &&
+				c.ResponseGroups.SequenceEqual(new[] { "Images", "ItemAttributes" }) &&
+				c.IdType == barcodeType.ToString() &&
+				c.ItemId == barcode;
 			var clientMock = new Mock<IAwsClient>();
 			clientMock.Setup(b => b.GetItems(It.Is<ProductDescriptorSearchCriteria>(p => verify(p)))).ReturnsAsync(new[] { new ProductDescriptor() });
 
