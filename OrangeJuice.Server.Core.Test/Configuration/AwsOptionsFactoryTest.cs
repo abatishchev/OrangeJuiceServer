@@ -13,7 +13,7 @@ namespace OrangeJuice.Server.Test.Configuration
 		public void Create_Should_Return_AwsOptions_Having_All_Properties()
 		{
 			// Arrange
-			IFactory<AwsOptions> factory = new AwsOptionsFactory();
+			var factory = new AwsOptionsFactory();
 
 			// Act
 			AwsOptions options = factory.Create();

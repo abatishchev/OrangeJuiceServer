@@ -1,6 +1,6 @@
 ﻿namespace OrangeJuice.Server.Configuration
 {
-	public class AzureOptionsFactory : IFactory<AzureOptions>
+	public class AzureOptionsFactory : Factory.IFactory<AzureOptions>
 	{
 		#region Constants
 		// TODO: support environments!

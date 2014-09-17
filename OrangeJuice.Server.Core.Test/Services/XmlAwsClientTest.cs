@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using Factory;
+
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -70,7 +72,7 @@ namespace OrangeJuice.Server.Test.Services
 			var selectorMock = new Mock<IItemSelector>();
 			selectorMock.Setup(s => s.SelectItems(It.IsAny<string>())).Returns(elements);
 
-			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
+			var factoryMock = new Mock<IFactory<ProductDescriptor, XElement>>();
 			factoryMock.Setup(f => f.Create(It.IsIn(elements))).Returns(new ProductDescriptor());
 
 			IAwsClient client = CreateClient(itemSelector: selectorMock.Object, factory: factoryMock.Object);
@@ -88,7 +90,7 @@ namespace OrangeJuice.Server.Test.Services
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
 
-			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
+			var factoryMock = new Mock<IFactory<ProductDescriptor, XElement>>();
 			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(expected);
 
 			IAwsClient client = CreateClient(factory: factoryMock.Object);
@@ -107,7 +109,7 @@ namespace OrangeJuice.Server.Test.Services
 			return new Uri("http://example.com");
 		}
 
-		private static IAwsClient CreateClient(IUrlBuilder urlBuilder = null, IHttpClient httpClient = null, IItemSelector itemSelector = null, IFactory<XElement, ProductDescriptor> factory = null)
+		private static IAwsClient CreateClient(IUrlBuilder urlBuilder = null, IHttpClient httpClient = null, IItemSelector itemSelector = null, IFactory<ProductDescriptor, XElement> factory = null)
 		{
 			return new XmlAwsClient(
 				urlBuilder ?? CreateUrlBuilder(),
@@ -137,9 +139,9 @@ namespace OrangeJuice.Server.Test.Services
 			return selectorMock.Object;
 		}
 
-		private static IFactory<XElement, ProductDescriptor> CreateFactory(ProductDescriptor descriptor = null)
+		private static IFactory<ProductDescriptor, XElement> CreateFactory(ProductDescriptor descriptor = null)
 		{
-			var factoryMock = new Mock<IFactory<XElement, ProductDescriptor>>();
+			var factoryMock = new Mock<IFactory<ProductDescriptor, XElement>>();
 			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(descriptor ?? new ProductDescriptor());
 			return factoryMock.Object;
 		}

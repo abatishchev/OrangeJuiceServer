@@ -90,7 +90,6 @@
     <Compile Include="IAssemblyProvider.cs" />
     <Compile Include="IConverter.cs" />
     <Compile Include="IDateTimeProvider.cs" />
-    <Compile Include="IFactory.cs" />
     <Compile Include="IPipeline.cs" />
     <Compile Include="IValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

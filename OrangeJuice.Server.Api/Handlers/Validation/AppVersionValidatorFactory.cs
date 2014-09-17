@@ -4,7 +4,7 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Api.Handlers.Validation
 {
-	public sealed class AppVersionValidatorFactory : IFactory<IValidator<HttpRequestMessage>>
+	public sealed class AppVersionValidatorFactory : Factory.IFactory<IValidator<HttpRequestMessage>>
 	{
 		private readonly IEnvironmentProvider _environmentProvider;
 

@@ -13,7 +13,7 @@ namespace OrangeJuice.Server.Test.Configuration
 		public void Create_Should_Return_AzureOptions_Having_All_Properties()
 		{
 			// Arrange
-			IFactory<AzureOptions> factory = new AzureOptionsFactory();
+			var factory = new AzureOptionsFactory();
 
 			// Act
 			AzureOptions options = factory.Create();

@@ -48,7 +48,7 @@ namespace OrangeJuice.Server.Test.Data
 		#endregion
 
 		#region Helper methods
-		private static IFactory<ApiVersion> CreateFactory(IAssemblyProvider assemblyProvider = null, IEnvironmentProvider environmentProvider = null)
+		private static Factory.IFactory<ApiVersion> CreateFactory(IAssemblyProvider assemblyProvider = null, IEnvironmentProvider environmentProvider = null)
 		{
 			return new ApiVersionFactory(
 				assemblyProvider ?? CreateAssemblyProvider(),

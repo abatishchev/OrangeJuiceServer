@@ -7,6 +7,8 @@ using System.Xml.Linq;
 
 using Drum;
 
+using Factory;
+
 using FluentValidation;
 using FluentValidation.Attributes;
 using FluentValidation.WebApi;
@@ -174,7 +176,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IAwsClient, XmlAwsClient>(
 				new DefaultLifetimeManager());
 
-			container.RegisterFactory<XElement, ProductDescriptor, XmlProductDescriptorFactory>(
+			container.RegisterFactory<ProductDescriptor, XElement, XmlProductDescriptorFactory>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IAwsProductProvider, AwsProductProvider>(
