@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using Factory;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Web;
 
@@ -15,11 +16,11 @@ namespace OrangeJuice.Server.Services
 		private readonly IUrlBuilder _urlBuilder;
 		private readonly IHttpClient _httpClient;
 		private readonly IItemSelector _itemSelector;
-		private readonly IFactory<XElement, ProductDescriptor> _factory;
+		private readonly IFactory<ProductDescriptor, XElement> _factory;
 		#endregion
 
 		#region Ctor
-		public XmlAwsClient(IUrlBuilder urlBuilder, IHttpClient httpClient, IItemSelector itemSelector, IFactory<XElement, ProductDescriptor> factory)
+		public XmlAwsClient(IUrlBuilder urlBuilder, IHttpClient httpClient, IItemSelector itemSelector, IFactory<ProductDescriptor, XElement> factory)
 		{
 			_urlBuilder = urlBuilder;
 			_httpClient = httpClient;

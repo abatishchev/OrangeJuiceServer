@@ -1,6 +1,6 @@
 ﻿namespace OrangeJuice.Server.Configuration
 {
-	public class AwsOptionsFactory : IFactory<AwsOptions>
+	public class AwsOptionsFactory : Factory.IFactory<AwsOptions>
 	{
 		private const string AwsAccess = "AKIAICFWNOWCE42LO7BQ";
 		private const string AwsAssociate = "orang04-20";

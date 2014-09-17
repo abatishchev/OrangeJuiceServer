@@ -4,7 +4,7 @@ using System.Xml.XPath;
 
 namespace OrangeJuice.Server.Data
 {
-	public sealed class XmlProductDescriptorFactory : IFactory<XElement, ProductDescriptor>
+	public sealed class XmlProductDescriptorFactory : Factory.IFactory<ProductDescriptor, XElement>
 	{
 		#region IParamFactory members
 		public ProductDescriptor Create(XElement element)

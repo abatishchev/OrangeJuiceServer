@@ -5,7 +5,7 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class AwsAlgorithmFactory : IFactory<HashAlgorithm>
+	public sealed class AwsAlgorithmFactory : Factory.IFactory<HashAlgorithm>
 	{
 		private readonly string _secretKey;
 

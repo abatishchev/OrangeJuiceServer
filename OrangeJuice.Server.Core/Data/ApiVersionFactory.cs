@@ -4,7 +4,7 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Data
 {
-	public sealed class ApiVersionFactory : IFactory<ApiVersion>
+	public sealed class ApiVersionFactory : Factory.IFactory<ApiVersion>
 	{
 		#region Fields
 		private readonly IAssemblyProvider _assemblyProvider;

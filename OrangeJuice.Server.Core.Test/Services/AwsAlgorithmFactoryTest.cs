@@ -17,7 +17,7 @@ namespace OrangeJuice.Server.Test.Services
 		public void CreateHashAlgorithm_Should_Return_HMACSHA256()
 		{
 			// Arrange
-			IFactory<HashAlgorithm> factory = new AwsAlgorithmFactory(new AwsOptions { SecretKey = "Key" });
+			var factory = new AwsAlgorithmFactory(new AwsOptions { SecretKey = "Key" });
 
 			// Act
 			HashAlgorithm hashAlgorithm = factory.Create();
