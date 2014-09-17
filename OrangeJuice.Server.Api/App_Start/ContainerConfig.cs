@@ -1,12 +1,12 @@
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
-using System.Web.Http.Routing;
 using System.Web.Http.Validation;
 using System.Xml.Linq;
+
 using Drum;
+
 using FluentValidation;
 using FluentValidation.Attributes;
 using FluentValidation.WebApi;
@@ -76,10 +76,6 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<HttpRequestMessage>(
 				new DefaultLifetimeManager(),
 				new InjectionFactory(c => c.Resolve<CurrentRequest>().Value));
-			container.RegisterType<UrlHelper>(
-				new DefaultLifetimeManager(),
-				new InjectionConstructor(typeof(HttpRequestMessage)));
-			
 			container.RegisterType(typeof(UriMaker<>),
 				new DefaultLifetimeManager(),
 				new InjectionConstructor(typeof(UriMakerContext), typeof(HttpRequestMessage)));
@@ -157,7 +153,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
 				new DefaultLifetimeManager());
 
-			container.RegisterFactory<HashAlgorithm, AwsAlgorithmFactory>(
+			container.RegisterFactory<System.Security.Cryptography.HashAlgorithm, AwsAlgorithmFactory>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IQuerySigner, AwsQuerySigner>(
