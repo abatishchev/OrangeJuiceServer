@@ -191,7 +191,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#region Helper methods
 		private static ProductController CreateController(IProductService service = null)
 		{
-			return ControllerFactory.Create<ProductController>(service ?? new Mock<IProductService>().Object);
+			return ControllerFactory<ProductController>.Create(service ?? new Mock<IProductService>().Object);
 		}
 		#endregion
 	}

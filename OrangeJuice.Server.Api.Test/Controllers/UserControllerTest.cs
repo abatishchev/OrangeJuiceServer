@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using System.Web.Http.Routing;
-
+using Drum;
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -186,14 +186,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#region Helper methods
 		private static UserController CreateController(IUserRepository userRepository = null)
 		{
-			return ControllerFactory.Create<UserController>(userRepository ?? Mock.Of<IUserRepository>(), CreateUrlHelper());
-		}
-
-		private static UrlHelper CreateUrlHelper()
-		{
-			var urlHelperMock = new Mock<UrlHelper>();
-			urlHelperMock.Setup(h => h.Link(It.IsAny<string>(), It.IsAny<object>())).Returns("http://example.com");
-			return urlHelperMock.Object;
+			return ControllerFactory<UserController>.Create(
+				userRepository ?? Mock.Of<IUserRepository>(),
+				ControllerFactory<UserController>.CreateUriMaker());
 		}
 
 		private static IUser CreateUser(Guid? userId = null)

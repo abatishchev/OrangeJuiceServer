@@ -47,7 +47,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#region Helper methods
 		private static HomeController CreateController(ApiVersion apiVersion = null)
 		{
-			return ControllerFactory.Create<HomeController>(apiVersion ?? new ApiVersion());
+			return ControllerFactory<HomeController>.Create(apiVersion ?? new ApiVersion());
 		}
 		#endregion
 	}
