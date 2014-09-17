@@ -7,6 +7,8 @@ using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Validation;
 
+using Drum;
+
 using Microsoft.Practices.Unity;
 
 using Newtonsoft.Json;
@@ -26,7 +28,9 @@ namespace OrangeJuice.Server.Api
 
 			config.UseWebConfigCustomErrors();
 
-			config.MapHttpAttributeRoutes();
+			//config.MapHttpAttributeRoutes();
+			var uriMaker = config.MapHttpAttributeRoutesAndUseUriMaker();
+			ContainerConfig.RegisterUriMaker(container, uriMaker);
 
 			// Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
 			// To avoid processing unexpected or malicious queries, use the validation settings on QueryableAttribute to validate incoming queries.

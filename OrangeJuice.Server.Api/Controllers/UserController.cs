@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Routing;
+
+using Drum;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
@@ -15,15 +15,15 @@ namespace OrangeJuice.Server.Api.Controllers
 	{
 		#region Fields
 		private readonly IUserRepository _userRepository;
-		private readonly UrlHelper _urlHelper;
+		private readonly UriMaker<UserController> _urlMaker;
 
 		#endregion
 
 		#region Ctor
-		public UserController(IUserRepository userRepository, UrlHelper urlHelper)
+		public UserController(IUserRepository userRepository, UriMaker<UserController> urlMaker)
 		{
 			_userRepository = userRepository;
-			_urlHelper = urlHelper;
+			_urlMaker = urlMaker;
 		}
 
 		#endregion
@@ -51,8 +51,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			// TODO: handle duplication
 			IUser user = await _userRepository.Register(userModel.Email, userModel.Name);
 
-			// TODO: make type-safe
-			var url = _urlHelper.Link("GetUser", new { userid = user.UserId });
+			var url = _urlMaker.UriFor(c => c.GetUser(new UserSearchCriteria { UserId = user.UserId }));
 
 			return Created(url, user);
 		}

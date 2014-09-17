@@ -6,7 +6,7 @@ using System.Web.Http.Filters;
 using System.Web.Http.Routing;
 using System.Web.Http.Validation;
 using System.Xml.Linq;
-
+using Drum;
 using FluentValidation;
 using FluentValidation.Attributes;
 using FluentValidation.WebApi;
@@ -79,6 +79,10 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<UrlHelper>(
 				new DefaultLifetimeManager(),
 				new InjectionConstructor(typeof(HttpRequestMessage)));
+			
+			container.RegisterType(typeof(UriMaker<>),
+				new DefaultLifetimeManager(),
+				new InjectionConstructor(typeof(UriMakerContext), typeof(HttpRequestMessage)));
 			#endregion
 
 			#region Providers
@@ -210,6 +214,12 @@ namespace OrangeJuice.Server.Api
 				new HierarchicalLifetimeManager(),
 				new InjectionConstructor(typeof(IRatingUnit)));
 			#endregion
+		}
+
+		internal static void RegisterUriMaker(IUnityContainer container, UriMakerContext uriMakerContext)
+		{
+			container.RegisterInstance(uriMakerContext,
+				new ExternallyControlledLifetimeManager());
 		}
 	}
 
