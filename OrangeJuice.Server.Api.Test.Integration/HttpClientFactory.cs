@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-
-using OrangeJuice.Server.Api.Handlers.Validation;
+using System.Net.Http.Headers;
 
 namespace OrangeJuice.Server.Api.Test.Integration
 {
@@ -17,7 +16,8 @@ namespace OrangeJuice.Server.Api.Test.Integration
 		public static HttpClient Create()
 		{
 			var client = new HttpClient { BaseAddress = new Uri(Url) };
-			
+
+			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			client.DefaultRequestHeaders.TryAddWithoutValidation(AppVersion.ElementName, AppVersion.Version0.ToString());
 
 			return client;

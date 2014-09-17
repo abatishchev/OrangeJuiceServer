@@ -11,7 +11,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 	public class HomeControllerIntegrationTest
 	{
 		[TestMethod]
-		public async Task Get_Root_Should_Return_NotFound()
+		public async Task GetRoot_Should_Return_Status_NotFound()
 		{
 			// Arrange
 			var client = HttpClientFactory.Create();
@@ -24,7 +24,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		}
 
 		[TestMethod]
-		public async Task Get_Root_Home_Version_Should_Return_NotFound()
+		public async Task GetVersion_Should_Return_Status_Ok()
 		{
 			// Arrange
 			var client = HttpClientFactory.Create();

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Routing;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
@@ -13,17 +15,21 @@ namespace OrangeJuice.Server.Api.Controllers
 	{
 		#region Fields
 		private readonly IUserRepository _userRepository;
+		private readonly UrlHelper _urlHelper;
+
 		#endregion
 
 		#region Ctor
-		public UserController(IUserRepository userRepository)
+		public UserController(IUserRepository userRepository, UrlHelper urlHelper)
 		{
 			_userRepository = userRepository;
+			_urlHelper = urlHelper;
 		}
+
 		#endregion
 
 		#region HTTP methods
-		[Route("api/user")]
+		[Route("api/user", Name = "GetUser")]
 		public async Task<IHttpActionResult> GetUser([FromUri]UserSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
@@ -31,7 +37,7 @@ namespace OrangeJuice.Server.Api.Controllers
 
 			IUser user = await _userRepository.Search(searchCriteria.UserId);
 			if (user == null)
-				return NotFound();
+				return StatusCode(HttpStatusCode.NoContent);
 
 			return Ok(user);
 		}
@@ -42,10 +48,13 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (userModel == null)
 				throw new ArgumentNullException();
 
+			// TODO: handle duplication
 			IUser user = await _userRepository.Register(userModel.Email, userModel.Name);
 
-			// TODO: return Created
-			return Ok(user.UserId);
+			// TODO: make type-safe
+			var url = _urlHelper.Link("GetUser", new { userid = user.UserId });
+
+			return Created(url, user);
 		}
 		#endregion
 
