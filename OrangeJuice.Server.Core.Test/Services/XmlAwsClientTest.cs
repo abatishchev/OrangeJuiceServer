@@ -21,7 +21,7 @@ namespace OrangeJuice.Server.Test.Services
 	[TestClass]
 	public class XmlAwsClientTest
 	{
-		#region SelectItems
+		#region GetItems
 		[TestMethod]
 		public async Task GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_HttpClient_GetStreamAsync()
 		{
@@ -78,9 +78,10 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = CreateClient(itemSelector: selectorMock.Object, factory: factoryMock.Object);
 
 			// Act
-			var items = (await client.GetItems(new ProductDescriptorSearchCriteria())).ToArray();
+			var items = await client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
+			items.ToArray();
 			factoryMock.VerifyAll();
 		}
 
@@ -125,10 +126,10 @@ namespace OrangeJuice.Server.Test.Services
 			return builderMock.Object;
 		}
 
-		private static IHttpClient CreateHttpClient(string xml = "")
+		private static IHttpClient CreateHttpClient(string content = "")
 		{
 			var httpClientMock = new Mock<IHttpClient>();
-			httpClientMock.Setup(l => l.GetStringAsync(It.IsAny<Uri>())).ReturnsAsync(xml);
+			httpClientMock.Setup(c => c.GetStringAsync(It.IsAny<Uri>())).ReturnsAsync(content);
 			return httpClientMock.Object;
 		}
 
