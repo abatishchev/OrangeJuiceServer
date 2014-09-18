@@ -164,7 +164,10 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IHttpClient, Web.HttpClient>(
+			container.RegisterType<IAwsApiProvider, ThrottlingAwsApiProvider>(
+				new ContainerControlledLifetimeManager()); // singleton
+
+			container.RegisterType<IHttpClient, ThrottlingHttpClient>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(
@@ -189,7 +192,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IProductRepository, EntityProductRepository>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IProductService, CloudProductService>(
+			container.RegisterType<IProductService, AwsProductService>(
 				new HierarchicalLifetimeManager());
 			#endregion
 
