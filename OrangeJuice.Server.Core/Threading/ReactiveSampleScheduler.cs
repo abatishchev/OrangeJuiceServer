@@ -6,16 +6,23 @@ using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Threading
 {
-	public sealed class ReactiveSampleScheduler : TaskScheduler
+	// TODO: dispose?
+	public sealed class ReactiveSampleScheduler : TaskScheduler, IDisposable
 	{
+		#region Fields
 		private readonly Subject<Task> _tasks = new Subject<Task>();
+		private readonly IDisposable _observable;
+		#endregion
 
+		#region Ctor
 		public ReactiveSampleScheduler(TimeSpan interval)
 		{
-			_tasks.Sample(interval)
-				  .Subscribe(t => TryExecuteTask(t));
+			_observable = _tasks.Sample(interval)
+				.Subscribe(t => TryExecuteTask(t));
 		}
+		#endregion
 
+		#region TaskScheduler members
 		protected override void QueueTask(Task task)
 		{
 			_tasks.OnNext(task);
@@ -30,5 +37,15 @@ namespace OrangeJuice.Server.Threading
 		{
 			yield break;
 		}
+
+		#endregion
+
+		#region IDisposable members
+		public void Dispose()
+		{
+			_tasks.Dispose();
+			_observable.Dispose();
+		}
+		#endregion
 	}
 }
