@@ -266,9 +266,23 @@ namespace OrangeJuice.Server.Test.Services
 		private static IProductService CreateService(IProductRepository repository, IAzureProductProvider azureProvider = null, IAwsProductProvider awsProvider = null)
 		{
 			return new CloudProductService(
-				repository,
+				awsProvider ?? CreateAwsProvider(new ProductDescriptor()),
 				azureProvider ?? CreateAzureProvider(),
-				awsProvider ?? CreateAwsProvider(new ProductDescriptor()));
+				repository);
+		}
+
+		private static IAwsProductProvider CreateAwsProvider(ProductDescriptor descriptor)
+		{
+			var awsProvider = new Mock<IAwsProductProvider>();
+			awsProvider.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(descriptor);
+			return awsProvider.Object;
+		}
+
+		private static IAzureProductProvider CreateAzureProvider(ProductDescriptor descriptor = null)
+		{
+			var azureProviderMock = new Mock<IAzureProductProvider>();
+			azureProviderMock.Setup(p => p.Save(descriptor ?? It.IsAny<ProductDescriptor>())).Returns(Task.Delay(0));
+			return azureProviderMock.Object;
 		}
 
 		private static IProductRepository CreateRepository(IProduct product)
@@ -283,20 +297,6 @@ namespace OrangeJuice.Server.Test.Services
 			var productMock = new Mock<IProduct>();
 			productMock.SetupGet(p => p.ProductId).Returns(productId ?? Guid.NewGuid());
 			return productMock.Object;
-		}
-
-		private static IAzureProductProvider CreateAzureProvider(ProductDescriptor descriptor = null)
-		{
-			var azureProviderMock = new Mock<IAzureProductProvider>();
-			azureProviderMock.Setup(p => p.Save(descriptor ?? It.IsAny<ProductDescriptor>())).Returns(Task.Delay(0));
-			return azureProviderMock.Object;
-		}
-
-		private static IAwsProductProvider CreateAwsProvider(ProductDescriptor descriptor)
-		{
-			var awsProvider = new Mock<IAwsProductProvider>();
-			awsProvider.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(descriptor);
-			return awsProvider.Object;
 		}
 		#endregion
 	}

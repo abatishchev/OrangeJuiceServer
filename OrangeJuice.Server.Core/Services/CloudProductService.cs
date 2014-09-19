@@ -15,7 +15,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public CloudProductService(IProductRepository productRepository, IAzureProductProvider azureProvider, IAwsProductProvider awsProvider)
+		public CloudProductService(IAwsProductProvider awsProvider, IAzureProductProvider azureProvider, IProductRepository productRepository)
 		{
 			_productRepository = productRepository;
 			_azureProvider = azureProvider;
@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Services
 		#region IProductService members
 		public Task<ProductDescriptor> Get(Guid productId)
 		{
-			return  _azureProvider.Get(productId);
+			return _azureProvider.Get(productId);
 		}
 
 		public async Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)
@@ -50,7 +50,7 @@ namespace OrangeJuice.Server.Services
 		#region IDisposable members
 		public void Dispose()
 		{
-			_productRepository.Dispose();;
+			_productRepository.Dispose();
 		}
 		#endregion
 	}
