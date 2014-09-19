@@ -164,9 +164,6 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IAwsApiProvider, ThrottlingAwsApiProvider>(
-				new ContainerControlledLifetimeManager()); // singleton
-
 			container.RegisterType<IHttpClient, ThrottlingHttpClient>(
 				new DefaultLifetimeManager());
 

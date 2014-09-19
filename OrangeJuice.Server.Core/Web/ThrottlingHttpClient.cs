@@ -1,21 +1,31 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Web
 {
 	public sealed class ThrottlingHttpClient : HttpClient
 	{
-		private readonly IAwsApiProvider _provider;
+		#region Fields
+		private static readonly TaskFactory TaskFactory = CreateTaskFactory();
 
-		public ThrottlingHttpClient(IAwsApiProvider provider)
+		private static TaskFactory CreateTaskFactory()
 		{
-			_provider = provider;
+			return new TaskFactory(CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskContinuationOptions.None, new ReactiveSampleScheduler());
 		}
+		#endregion
 
+		#region Ctor
+		public ThrottlingHttpClient()
+		{
+		}
+		#endregion
+
+		#region IHttpClient members
 		public override Task<string> GetStringAsync(Uri url)
 		{
-			return _provider.ScheduleRequest(base.GetStringAsync(url));
+			return TaskFactory.StartNew(async () => await base.GetStringAsync(url)).Unwrap();
 		}
+		#endregion
 	}
 }

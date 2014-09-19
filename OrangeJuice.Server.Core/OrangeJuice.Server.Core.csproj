@@ -120,7 +120,6 @@
     <Compile Include="Services\AzureProductProvider.cs" />
     <Compile Include="Services\CloudProductService.cs" />
     <Compile Include="Services\JsonBlobNameResolver.cs" />
-    <Compile Include="Services\ThrottlingAwsApiProvider.cs" />
     <Compile Include="Services\XmlAwsClient.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
     <Compile Include="Validation\XmlRequestValidator.cs" />
@@ -130,6 +129,7 @@
     <Compile Include="Web\HttpUtility.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
     <Compile Include="Web\PercentUrlEncodingPipeline.cs" />
+    <Compile Include="Web\ReactiveSampleScheduler.cs" />
     <Compile Include="Web\ThrottlingHttpClient.cs" />
     <Compile Include="Web\QueryStringNameValueCollection.cs" />
   </ItemGroup>
