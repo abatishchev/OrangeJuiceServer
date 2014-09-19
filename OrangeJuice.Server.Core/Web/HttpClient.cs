@@ -1,14 +1,17 @@
 using System;
 using System.Threading.Tasks;
 
+using SystemHttpClient  = System.Net.Http.HttpClient;
+
 namespace OrangeJuice.Server.Web
 {
-	public sealed class HttpClient : IHttpClient
+	public class HttpClient : IHttpClient
 	{
-		public Task<string> GetStringAsync(Uri url)
+		private readonly SystemHttpClient _client = new SystemHttpClient();
+
+		public virtual Task<string> GetStringAsync(Uri url)
 		{
-			var client = new System.Net.Http.HttpClient();
-			return client.GetStringAsync(url);
+			return _client.GetStringAsync(url);
 		}
 	}
 }

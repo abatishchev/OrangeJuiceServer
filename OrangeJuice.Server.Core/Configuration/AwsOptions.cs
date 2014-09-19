@@ -1,4 +1,6 @@
-﻿namespace OrangeJuice.Server.Configuration
+﻿using System;
+
+namespace OrangeJuice.Server.Configuration
 {
 	public class AwsOptions
 	{
@@ -7,5 +9,7 @@
 		public string AssociateTag { get; set; }
 
 		public string SecretKey { get; set; }
+		
+		public TimeSpan RequestLimit { get; set; }
 	}
 }

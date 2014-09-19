@@ -24,6 +24,7 @@ using OrangeJuice.Server.Data.Container;
 using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Data.Unit;
 using OrangeJuice.Server.Services;
+using OrangeJuice.Server.Threading;
 using OrangeJuice.Server.Validation;
 using OrangeJuice.Server.Web;
 
@@ -164,7 +165,10 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IHttpClient, Web.HttpClient>(
+			container.RegisterType<IRequestScheduler, IntervalRequestScheduler>(
+				new ContainerControlledLifetimeManager()); // singleton
+
+			container.RegisterType<IHttpClient, ThrottlingHttpClient>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(
@@ -189,7 +193,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IProductRepository, EntityProductRepository>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IProductService, CloudProductService>(
+			container.RegisterType<IProductService, AwsProductService>(
 				new HierarchicalLifetimeManager());
 			#endregion
 

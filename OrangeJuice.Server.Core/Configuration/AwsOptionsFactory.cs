@@ -1,4 +1,6 @@
-﻿namespace OrangeJuice.Server.Configuration
+﻿using System;
+
+namespace OrangeJuice.Server.Configuration
 {
 	public class AwsOptionsFactory : Factory.IFactory<AwsOptions>
 	{
@@ -12,7 +14,8 @@
 			{
 				AccessKey = AwsAccess,
 				AssociateTag = AwsAssociate,
-				SecretKey = AwsSecret
+				SecretKey = AwsSecret,
+				RequestLimit = TimeSpan.FromMilliseconds(1000)
 			};
 		}
 	}

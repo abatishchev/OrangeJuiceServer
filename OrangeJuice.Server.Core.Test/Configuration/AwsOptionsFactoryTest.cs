@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+
+using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,6 +24,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			options.AccessKey.Should().NotBeNullOrEmpty();
 			options.AssociateTag.Should().NotBeNullOrEmpty();
 			options.SecretKey.Should().NotBeNullOrEmpty();
+			options.RequestLimit.Should().NotBe(TimeSpan.Zero);
 		}
 	}
 }

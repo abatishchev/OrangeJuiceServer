@@ -104,6 +104,7 @@
     <Compile Include="Services\IProductService.cs" />
     <Compile Include="Services\IQuerySigner.cs" />
     <Compile Include="Services\IUrlBuilder.cs" />
+    <Compile Include="Threading\IRequestScheduler.cs" />
     <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="Web\IQueryBuilder.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
