@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
@@ -163,6 +164,9 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new DefaultLifetimeManager());
+
+			container.RegisterFactory<TaskFactory, TaskFactoryFactory>(
+				new ContainerControlledLifetimeManager()); // singleton
 
 			container.RegisterType<IHttpClient, ThrottlingHttpClient>(
 				new DefaultLifetimeManager());
