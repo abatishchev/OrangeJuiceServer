@@ -122,7 +122,7 @@
     <Compile Include="Services\JsonBlobNameResolver.cs" />
     <Compile Include="Services\XmlAwsClient.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
-    <Compile Include="Threading\ReactiveSampleScheduler.cs" />
+    <Compile Include="Threading\IntervalRequestScheduler.cs" />
     <Compile Include="Validation\XmlRequestValidator.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
     <Compile Include="Web\EncodedQueryBuilder.cs" />
@@ -130,7 +130,6 @@
     <Compile Include="Web\HttpUtility.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
     <Compile Include="Web\PercentUrlEncodingPipeline.cs" />
-    <Compile Include="Web\TaskFactoryFactory.cs" />
     <Compile Include="Web\ThrottlingHttpClient.cs" />
     <Compile Include="Web\QueryStringNameValueCollection.cs" />
   </ItemGroup>

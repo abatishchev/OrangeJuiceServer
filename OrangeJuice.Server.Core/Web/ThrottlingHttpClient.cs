@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using OrangeJuice.Server.Threading;
+
 namespace OrangeJuice.Server.Web
 {
 	public sealed class ThrottlingHttpClient : HttpClient
 	{
 		#region Fields
-		private readonly TaskFactory _taskFactory;
+		private readonly IRequestScheduler _scheduler;
 
 		#endregion
 
 		#region Ctor
-		public ThrottlingHttpClient(TaskFactory taskFactory)
+		public ThrottlingHttpClient(IRequestScheduler scheduler)
 		{
-			_taskFactory = taskFactory;
+			_scheduler = scheduler;
 		}
 
 		#endregion
@@ -21,7 +23,7 @@ namespace OrangeJuice.Server.Web
 		#region IHttpClient members
 		public override Task<string> GetStringAsync(Uri url)
 		{
-			return _taskFactory.StartNew(async () => await base.GetStringAsync(url)).Unwrap();
+			return _scheduler.ScheduleRequest(() => base.GetStringAsync(url));
 		}
 		#endregion
 	}
