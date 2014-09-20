@@ -168,8 +168,19 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IRequestScheduler, IntervalRequestScheduler>(
 				new ContainerControlledLifetimeManager()); // singleton
 
-			container.RegisterType<IHttpClient, ThrottlingHttpClient>(
+			container.RegisterType<HttpClient>(
+				new TransientLifetimeManager(), // new instance
+				new InjectionFactory(c => HttpClientFactory.Create()));
+
+			container.RegisterType<IHttpClient, HttpClientAdapter>(
+				typeof(HttpClientAdapter).Name, // named registration
 				new DefaultLifetimeManager());
+
+			container.RegisterType<IHttpClient, ThrottlingHttpClient>(
+				new DefaultLifetimeManager(),
+				new InjectionConstructor(
+					new ResolvedParameter(typeof(IHttpClient), (typeof(HttpClientAdapter).Name)),
+					typeof(IRequestScheduler))); // named resolving
 
 			container.RegisterType<IValidator<XElement>, XmlRequestValidator>(
 				new DefaultLifetimeManager());

@@ -128,7 +128,7 @@
     <Compile Include="Validation\XmlRequestValidator.cs" />
     <Compile Include="UtcDateTimeProvider.cs" />
     <Compile Include="Web\EncodedQueryBuilder.cs" />
-    <Compile Include="Web\HttpClient.cs" />
+    <Compile Include="Web\HttpClientAdapter.cs" />
     <Compile Include="Web\HttpUtility.cs" />
     <Compile Include="Web\PercentUrlEncoder.cs" />
     <Compile Include="Web\PercentUrlEncodingPipeline.cs" />
