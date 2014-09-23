@@ -51,8 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
-    <Reference Include="IFactory">
-      <HintPath>..\packages\IFactory.0.1.0\lib\net45\IFactory.dll</HintPath>
+    <Reference Include="IFactory, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IFactory.0.1.2\lib\net45\IFactory.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
