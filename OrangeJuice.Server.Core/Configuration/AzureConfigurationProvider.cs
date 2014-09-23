@@ -1,6 +1,6 @@
 ﻿namespace OrangeJuice.Server.Configuration
 {
-	public sealed class CloudConfigurationProvider : IConfigurationProvider
+	public sealed class AzureConfigurationProvider : IConfigurationProvider
 	{
 		public string GetValue(string key)
 		{

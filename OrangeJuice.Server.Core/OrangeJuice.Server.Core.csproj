@@ -93,7 +93,7 @@
     <Compile Include="Configuration\AwsOptionsFactory.cs" />
     <Compile Include="Configuration\AzureOptions.cs" />
     <Compile Include="Configuration\AzureOptionsFactory.cs" />
-    <Compile Include="Configuration\CloudConfigurationProvider.cs" />
+    <Compile Include="Configuration\AzureConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
