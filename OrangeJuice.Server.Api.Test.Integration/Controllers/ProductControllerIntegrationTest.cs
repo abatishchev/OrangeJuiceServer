@@ -175,16 +175,6 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 		}
 
-		/* 
-						 <Request Method="GET" Guid="5b80b806-31a4-41b2-8d63-d0d7a9cc7037" Version="1.1" Url="{{host}}/api/product/id" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="Id is from DB" IgnoreHttpStatusCode="False">
-						   <Headers>
-							 <Header Name="X-AppVer" Value="{{appVer}}" />
-						   </Headers>
-						   <QueryStringParameters>
-							 <QueryStringParameter Name="productId" Value="{{SqlDev.Products.ProductId}}" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
-						   </QueryStringParameters>
-						 </Request>
-						 */
 		[TestMethod]
 		public async Task GetProductId_Should_Return_Status_Ok()
 		{
