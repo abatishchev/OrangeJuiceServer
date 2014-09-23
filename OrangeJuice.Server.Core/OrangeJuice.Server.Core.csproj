@@ -120,7 +120,7 @@
     <Compile Include="Services\AwsUrlBuilder.cs" />
     <Compile Include="Services\AzureClient.cs" />
     <Compile Include="Services\AzureProductProvider.cs" />
-    <Compile Include="Services\CloudProductService.cs" />
+    <Compile Include="Services\CachingCloudProductService.cs" />
     <Compile Include="Services\JsonBlobNameResolver.cs" />
     <Compile Include="Services\XmlAwsClient.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
