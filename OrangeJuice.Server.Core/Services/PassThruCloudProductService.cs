@@ -5,23 +5,27 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class AwsProductService : IProductService
+	public sealed class PassThruCloudProductService : IProductService
 	{
 		#region Fields
 		private readonly IAwsProductProvider _awsProvider;
+		private readonly IAzureProductProvider _azureProvider;
+
 		#endregion
 
 		#region Ctor
-		public AwsProductService(IAwsProductProvider awsProvider)
+		public PassThruCloudProductService(IAwsProductProvider awsProvider, IAzureProductProvider azureProvider)
 		{
 			_awsProvider = awsProvider;
+			_azureProvider = azureProvider;
 		}
+
 		#endregion
 
 		#region IProductService members
 		public Task<ProductDescriptor> Get(Guid productId)
 		{
-			throw new NotSupportedException();
+			return _azureProvider.Get(productId);
 		}
 
 		public Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)

@@ -14,7 +14,7 @@ using OrangeJuice.Server.Services;
 namespace OrangeJuice.Server.Test.Services
 {
 	[TestClass]
-	public class CloudProductServiceTest
+	public class CachingCloudProductServiceTest
 	{
 		#region Search
 		[TestMethod]
@@ -265,7 +265,7 @@ namespace OrangeJuice.Server.Test.Services
 		#region Helper methods
 		private static IProductService CreateService(IProductRepository repository, IAzureProductProvider azureProvider = null, IAwsProductProvider awsProvider = null)
 		{
-			return new CloudProductService(
+			return new CachingCloudProductService(
 				awsProvider ?? CreateAwsProvider(new ProductDescriptor()),
 				azureProvider ?? CreateAzureProvider(),
 				repository);

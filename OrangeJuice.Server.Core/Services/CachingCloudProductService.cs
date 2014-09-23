@@ -6,7 +6,7 @@ using OrangeJuice.Server.Data.Repository;
 
 namespace OrangeJuice.Server.Services
 {
-	public sealed class CloudProductService : IProductService
+	public sealed class CachingCloudProductService : IProductService
 	{
 		#region Fields
 		private readonly IProductRepository _productRepository;
@@ -15,7 +15,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region Ctor
-		public CloudProductService(IAwsProductProvider awsProvider, IAzureProductProvider azureProvider, IProductRepository productRepository)
+		public CachingCloudProductService(IAwsProductProvider awsProvider, IAzureProductProvider azureProvider, IProductRepository productRepository)
 		{
 			_productRepository = productRepository;
 			_azureProvider = azureProvider;
