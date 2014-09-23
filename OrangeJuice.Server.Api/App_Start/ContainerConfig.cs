@@ -204,7 +204,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IProductRepository, EntityProductRepository>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IProductService, AwsProductService>(
+			container.RegisterType<IProductService, PassThruCloudProductService>(
 				new HierarchicalLifetimeManager());
 			#endregion
 
