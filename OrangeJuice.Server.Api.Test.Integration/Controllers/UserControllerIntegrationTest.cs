@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {
@@ -22,13 +20,10 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		public async Task GetUser_Should_Return_Status_Ok_When_User_Exists()
 		{
 			// Arrange
-			var user = GetFirstUser();
-			if (user == null)
-				Assert.Inconclusive("Database contains no users");
-			Guid? userId = GetFirstUser().UserId;
+			Guid userId = Data.Test.EntityFactory.Get<Data.User>().UserId;
 
 			var query = HttpUtility.ParseQueryString(String.Empty);
-			query.Add("userId", userId.Value.ToString());
+			query.Add("userId", userId.ToString());
 
 			var client = HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
@@ -67,7 +62,11 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		public async Task PutUser_Should_Return_Status_Created()
 		{
 			// Arrange
-			var user = NewUser();
+			var user = new UserModel
+			{
+				Name = Guid.NewGuid().ToString(),
+				Email = String.Format("{0}@example.com", Guid.NewGuid())
+			};
 
 			var client = HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
@@ -78,42 +77,6 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 
 			// Assert
 			response.StatusCode.Should().Be(HttpStatusCode.Created);
-		}
-		#endregion
-
-		#region Helper methods
-		private static UserModel NewUser()
-		{
-			return new UserModel
-			{
-				Name = Guid.NewGuid().ToString(),
-				Email = String.Format("{0}@example.com", Guid.NewGuid())
-			};
-		}
-
-		private static UserModel NewUser(User user)
-		{
-			return new UserModel
-			{
-				Name = user.Name,
-				Email = user.Email
-			};
-		}
-
-		private static User GetFirstUser()
-		{
-			try
-			{
-				using (var container = new ModelContainer())
-				{
-					return container.Users.FirstOrDefault();
-				}
-			}
-			catch (Exception ex)
-			{
-				Assert.Inconclusive(ex.Message);
-			}
-			return null;
 		}
 		#endregion
 	}

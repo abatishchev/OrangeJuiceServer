@@ -8,6 +8,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Test;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {
@@ -188,7 +189,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		public async Task GetProductId_Should_Return_Status_Ok()
 		{
 			// Arrange
-			Guid productId = ProductFactory.GetProduct().ProductId;
+			Guid productId = EntityFactory.Get<Product>().ProductId;
 
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("productid", productId.ToString());
