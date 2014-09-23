@@ -3,7 +3,5 @@
 	public interface IConfigurationProvider
 	{
 		string GetValue(string key);
-
-		bool IsAzure { get; }
 	}
 }
