@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		[Route("api/raiting/{ratingId}")]
+		[Route("api/raiting")]
 		public async Task<IHttpActionResult> GetRating([FromUri]RatingSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)

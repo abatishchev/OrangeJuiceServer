@@ -37,7 +37,7 @@ namespace OrangeJuice.Server.Api.Controllers
 
 			IUser user = await _userRepository.Search(searchCriteria.UserId);
 			if (user == null)
-				return StatusCode(HttpStatusCode.NoContent);
+				return this.NoContent();
 
 			return Ok(user);
 		}

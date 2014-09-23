@@ -21,28 +21,30 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		[Route("api/product/id/{productId}")]
-		public async Task<IHttpActionResult> GetProductId([FromUri] ProductSearchCriteria searchCriteria)
+		[Route("api/product/id", Name = "GetProductId")]
+		//[Route("api/product/id/{productId}")]
+		public async Task<IHttpActionResult> GetProductId([FromUri]ProductSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
 				throw new ArgumentNullException();
 
 			var descriptor = await _productService.Get(searchCriteria.ProductId);
 			if (descriptor == null)
-				return NotFound();
+				return this.NoContent();
 
 			return Ok(descriptor);
 		}
 
-		[Route("api/product/barcode/{barcodeType}/{barcode}")]
-		public async Task<IHttpActionResult> GetProductBarcode([FromUri] BarcodeSearchCriteria searchCriteria)
+		[Route("api/product/barcode", Name = "GetProductBarcode")]
+		//[Route("api/product/barcode/{barcodeType}/{barcode}", Name = "GetProductBarcodeRpc")]
+		public async Task<IHttpActionResult> GetProductBarcode([FromUri]BarcodeSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
 				throw new ArgumentNullException();
 
 			var descriptor = await _productService.Search(searchCriteria.Barcode, searchCriteria.BarcodeType);
 			if (descriptor == null)
-				return NotFound();
+				return this.NoContent();
 
 			return Ok(descriptor);
 		}

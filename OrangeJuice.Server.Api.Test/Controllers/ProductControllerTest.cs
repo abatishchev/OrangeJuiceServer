@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -87,7 +88,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProducId_Should_Return_Status_NotFound_When_ProductManager_Search_Returns_Null()
+		public async Task GetProducId_Should_Return_Status_NoContent_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
@@ -99,7 +100,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<NotFoundResult>();
+			result.Should().BeOfType<StatusCodeResult>()
+			      .Which.StatusCode.Should().Be(HttpStatusCode.NoContent);
 		}
 		#endregion
 
@@ -172,7 +174,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[TestMethod]
-		public async Task GetProductBarcode_Should_Return_Status_NotFound_When_ProductManager_Search_Returns_Null()
+		public async Task GetProductBarcode_Should_Return_Status_NoContent_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
@@ -184,7 +186,8 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<NotFoundResult>();
+			result.Should().BeOfType<StatusCodeResult>()
+			      .Which.StatusCode.Should().Be(HttpStatusCode.NoContent);
 		}
 		#endregion
 
