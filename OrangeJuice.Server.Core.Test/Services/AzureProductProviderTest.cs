@@ -61,8 +61,8 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task Get_Should_Return_ProductDescriptor_Returned_By_Converter()
 		{
 			// Arrange
-			ProductDescriptor expected = new ProductDescriptor();
 			const string content = "content";
+			ProductDescriptor expected = new ProductDescriptor();
 
 			IAzureClient client = CreateClient(content);
 

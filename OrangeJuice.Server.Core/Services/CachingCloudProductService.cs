@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data;
@@ -29,22 +31,28 @@ namespace OrangeJuice.Server.Services
 			return _azureProvider.Get(productId);
 		}
 
-		public async Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)
+		public async Task<IEnumerable<Task<ProductDescriptor>>> Search(string barcode, BarcodeType barcodeType)
 		{
-			IProduct product = await _productRepository.Search(barcode, barcodeType);
-			if (product != null)
-				return await _azureProvider.Get(product.ProductId);
+			IProduct[] products = _productRepository.Search(barcode, barcodeType).ToArray();
+			if (products.Any())
+				return products.Select(p => _azureProvider.Get(p.ProductId));
 
-			ProductDescriptor descriptor = await _awsProvider.Search(barcode, barcodeType);
-			if (descriptor == null)
+			ProductDescriptor[] descriptors = (await _awsProvider.Search(barcode, barcodeType)).ToArray();
+			if (!descriptors.Any())
 				return null;
 
+			return descriptors.Select(d => Save(d, barcode, barcodeType));
+		}
+
+		private async Task<ProductDescriptor> Save(ProductDescriptor descriptor, string barcode, BarcodeType barcodeType)
+		{
 			Guid productId = await _productRepository.Save(barcode, barcodeType);
 			descriptor.ProductId = productId;
 			await _azureProvider.Save(descriptor);
 
 			return descriptor;
 		}
+
 		#endregion
 
 		#region IDisposable members

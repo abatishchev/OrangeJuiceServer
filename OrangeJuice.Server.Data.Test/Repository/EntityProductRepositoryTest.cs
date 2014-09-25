@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
 
 using FluentAssertions;
 
@@ -16,28 +16,28 @@ namespace OrangeJuice.Server.Data.Test.Repository
 	{
 		#region Search
 		[TestMethod]
-		public async Task Search_Should_Return_Rating_Returned_By_ProductUnit_Get()
+		public void Search_Should_Return_Productss_Returned_By_ProductUnit_Search()
 		{
 			// Arrange
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
-			Product expected = new Product();
+			var expected = new[] { new Product(), new Product() }.AsQueryable();
 
 			var productUnitMock = new Mock<IProductUnit>();
-			productUnitMock.Setup(u => u.Get(barcode, barcodeType)).ReturnsAsync(expected);
+			productUnitMock.Setup(u => u.Search(barcode, barcodeType)).Returns(expected);
 
-			IProductRepository repository = CreateRepository(productUnitMock.Object);
+			IProductRepository repository = new EntityProductRepository(productUnitMock.Object);
 
 			// Act
-			IProduct actual = await repository.Search(barcode, barcodeType);
+			var actual = repository.Search(barcode, barcodeType);
 
 			// Assert
-			actual.Should().Be(expected);
+			actual.Should().BeEquivalentTo(expected);
 		}
 
 		[TestMethod]
-		public async Task Search_Should_Call_ProductUnit_Get()
+		public void Search_Should_Call_ProductUnit_Search()
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -45,13 +45,13 @@ namespace OrangeJuice.Server.Data.Test.Repository
 
 			var productUnitMock = new Mock<IProductUnit>();
 
-			IProductRepository repository = CreateRepository(productUnitMock.Object);
+			IProductRepository repository = new EntityProductRepository(productUnitMock.Object);
 
 			// Act
-			await repository.Search(barcode, barcodeType);
+			repository.Search(barcode, barcodeType);
 
 			// Assert
-			productUnitMock.Verify(u => u.Get(barcode, barcodeType), Times.Once);
+			productUnitMock.Verify(u => u.Search(barcode, barcodeType), Times.Once);
 		}
 		#endregion
 
@@ -62,21 +62,13 @@ namespace OrangeJuice.Server.Data.Test.Repository
 			// Arrange
 			var productUnitMock = new Mock<IProductUnit>();
 
-			IProductRepository repository = CreateRepository(productUnitMock.Object);
+			IProductRepository repository = new EntityProductRepository(productUnitMock.Object);
 
 			// Act
 			repository.Dispose();
 
 			// Assert
 			productUnitMock.Verify(u => u.Dispose(), Times.Once);
-		}
-		#endregion
-
-		#region Helper methods
-		private static IProductRepository CreateRepository(IProductUnit productUnit)
-		{
-			return new EntityProductRepository(
-				productUnit ?? new Mock<IProductUnit>().Object);
 		}
 		#endregion
 	}

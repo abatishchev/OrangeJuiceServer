@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using FluentAssertions;
 
@@ -22,7 +23,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 				IAwsProductProvider provider = container.Resolve<IAwsProductProvider>();
 
 				// Act
-				ProductDescriptor descriptor = await provider.Search("0747599330971", BarcodeType.EAN);
+				ProductDescriptor descriptor = (await provider.Search("0747599330971", BarcodeType.EAN)).FirstOrDefault();
 
 				// Assert
 				descriptor.Should().NotBeNull();

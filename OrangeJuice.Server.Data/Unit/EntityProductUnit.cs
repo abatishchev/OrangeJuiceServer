@@ -1,4 +1,4 @@
-using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data.Container;
@@ -33,9 +33,9 @@ namespace OrangeJuice.Server.Data.Unit
 			return Task.FromResult(product);
 		}
 
-		public Task<Product> Get(string barcode, BarcodeType barcodeType)
+		public IQueryable<Product> Search(string barcode, BarcodeType barcodeType)
 		{
-			return _container.Products.FirstOrDefaultAsync(p => p.Barcode == barcode && p.BarcodeType == barcodeType);
+			return _container.Products.Where(p => p.Barcode == barcode && p.BarcodeType == barcodeType);
 		}
 		#endregion
 

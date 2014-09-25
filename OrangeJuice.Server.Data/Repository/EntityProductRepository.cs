@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data.Unit;
@@ -19,9 +21,9 @@ namespace OrangeJuice.Server.Data.Repository
 		#endregion
 
 		#region IProductRepository members
-		public async Task<IProduct> Search(string barcode, BarcodeType barcodeType)
+		public IEnumerable<IProduct> Search(string barcode, BarcodeType barcodeType)
 		{
-			return await _productUnit.Get(barcode, barcodeType);
+			return _productUnit.Search(barcode, barcodeType).ToArray();
 		}
 
 		public async Task<Guid> Save(string barcode, BarcodeType barcodeType)

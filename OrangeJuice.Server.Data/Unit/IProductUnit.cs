@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Data.Unit
@@ -7,6 +8,6 @@ namespace OrangeJuice.Server.Data.Unit
 	{
 		Task<Product> Add(string barcode, BarcodeType barcodeType);
 
-		Task<Product> Get(string barcode, BarcodeType barcodeType);
+		IQueryable<Product> Search(string barcode, BarcodeType barcodeType);
 	}
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data;
@@ -28,9 +30,10 @@ namespace OrangeJuice.Server.Services
 			return _azureProvider.Get(productId);
 		}
 
-		public Task<ProductDescriptor> Search(string barcode, BarcodeType barcodeType)
+		public async Task<IEnumerable<Task<ProductDescriptor>>> Search(string barcode, BarcodeType barcodeType)
 		{
-			return _awsProvider.Search(barcode, barcodeType);
+			IEnumerable<ProductDescriptor> descriptors = await _awsProvider.Search(barcode, barcodeType);
+			return descriptors.Select(Task.FromResult);
 		}
 		#endregion
 

@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Controllers
 
 		#region HTTP methods
 		[Route("api/product/id", Name = "GetProductId")]
-		//[Route("api/product/id/{productId}")]
+		//[Route("api/product/id/{productId}", Name = "GetProductIdRpc")]
 		public async Task<IHttpActionResult> GetProductId([FromUri]ProductSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
