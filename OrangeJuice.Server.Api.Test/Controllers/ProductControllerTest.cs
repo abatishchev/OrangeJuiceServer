@@ -126,7 +126,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
-			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(Enumerable.Empty<Task<ProductDescriptor>>());
+			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(Enumerable.Empty<ProductDescriptor>());
 
 			ProductController controller = CreateController(serviceMock.Object);
 
@@ -134,7 +134,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<OkNegotiatedContentResult<IEnumerable<Task<ProductDescriptor>>>>();
+			result.Should().BeOfType<OkNegotiatedContentResult<IEnumerable<ProductDescriptor>>>();
 		}
 
 		[TestMethod]
@@ -145,7 +145,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
 			var serviceMock = new Mock<IProductService>();
-			serviceMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(Enumerable.Empty<Task<ProductDescriptor>>());
+			serviceMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(Enumerable.Empty<ProductDescriptor>());
 
 			ProductController controller = CreateController(serviceMock.Object);
 
@@ -160,7 +160,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetProductBarcode_Should_Return_ProductDescriptors_Returned_By_ProductManager_Search()
 		{
 			// Arrange
-			var expected = new[] { Task.FromResult(new ProductDescriptor()), Task.FromResult(new ProductDescriptor()) };
+			var expected = new[] { new ProductDescriptor(), new ProductDescriptor() };
 
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
@@ -169,7 +169,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
-			var actual = ((OkNegotiatedContentResult<IEnumerable<Task<ProductDescriptor>>>)result).Content;
+			var actual = ((OkNegotiatedContentResult<IEnumerable<ProductDescriptor>>)result).Content;
 
 			// Assert
 			actual.Should().BeEquivalentTo(expected);

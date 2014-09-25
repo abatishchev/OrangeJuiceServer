@@ -31,17 +31,17 @@ namespace OrangeJuice.Server.Services
 			return _azureProvider.Get(productId);
 		}
 
-		public async Task<IEnumerable<Task<ProductDescriptor>>> Search(string barcode, BarcodeType barcodeType)
+		public async Task<IEnumerable<ProductDescriptor>> Search(string barcode, BarcodeType barcodeType)
 		{
 			IProduct[] products = _productRepository.Search(barcode, barcodeType).ToArray();
 			if (products.Any())
-				return products.Select(p => _azureProvider.Get(p.ProductId));
+				return products.Select(async p => await _azureProvider.Get(p.ProductId)).Select(t => t.Result);
 
 			ProductDescriptor[] descriptors = (await _awsProvider.Search(barcode, barcodeType)).ToArray();
 			if (!descriptors.Any())
 				return null;
 
-			return descriptors.Select(d => Save(d, barcode, barcodeType));
+			return descriptors.Select(async d => await Save(d, barcode, barcodeType)).Select(t => t.Result);
 		}
 
 		private async Task<ProductDescriptor> Save(ProductDescriptor descriptor, string barcode, BarcodeType barcodeType)

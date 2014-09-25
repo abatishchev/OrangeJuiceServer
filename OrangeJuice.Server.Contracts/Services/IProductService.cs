@@ -10,6 +10,6 @@ namespace OrangeJuice.Server.Services
 	{
 		Task<ProductDescriptor> Get(Guid productId);
 
-		Task<IEnumerable<Task<ProductDescriptor>>> Search(string barcode, BarcodeType barcodeType);
+		Task<IEnumerable<ProductDescriptor>> Search(string barcode, BarcodeType barcodeType);
 	}
 }

@@ -61,14 +61,14 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Not_Empty_Sequence()
 		{
 			// Arrange
-			var expected = Task.FromResult(new ProductDescriptor());
+			ProductDescriptor expected = new ProductDescriptor();
 			Guid productId = Guid.NewGuid();
 
 			var repositoryMock = new Mock<IProductRepository>();
 			repositoryMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).Returns(new[] { CreateProduct(productId) });
 
 			var azureProviderMock = new Mock<IAzureProductProvider>();
-			azureProviderMock.Setup(p => p.Get(productId)).Returns(expected);
+			azureProviderMock.Setup(p => p.Get(productId)).ReturnsAsync(expected);
 
 			IProductService productService = CreateService(azureProvider: azureProviderMock.Object, repository: repositoryMock.Object);
 
@@ -238,7 +238,7 @@ namespace OrangeJuice.Server.Test.Services
 			var actual = await productService.Search("barcode", BarcodeType.EAN);
 
 			// Assert
-			actual.Select(t => t.Result).Should().BeEquivalentTo(expected);
+			actual.Should().BeEquivalentTo(expected);
 		}
 		#endregion
 
