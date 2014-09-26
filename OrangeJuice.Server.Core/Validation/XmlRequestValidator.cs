@@ -8,6 +8,9 @@ namespace OrangeJuice.Server.Validation
 	{
 		public bool IsValid(XElement item)
 		{
+			if (item == null)
+				return false;
+
 			XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
 			nm.AddNamespace("x", item.Name.Namespace.ToString());
 

@@ -43,7 +43,9 @@ namespace OrangeJuice.Server.Services
 
 			return descriptors.Select(async d => await Save(d, barcode, barcodeType)).Select(t => t.Result);
 		}
+		#endregion
 
+		#region Methods
 		private async Task<ProductDescriptor> Save(ProductDescriptor descriptor, string barcode, BarcodeType barcodeType)
 		{
 			Guid productId = await _productRepository.Save(barcode, barcodeType);
@@ -52,7 +54,6 @@ namespace OrangeJuice.Server.Services
 
 			return descriptor;
 		}
-
 		#endregion
 
 		#region IDisposable members

@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace OrangeJuice.Server
+﻿namespace OrangeJuice.Server
 {
-	public interface IPipeline<T, TResult>
+	// TODO: extract to a nuget package
+	public interface IPipeline<in T, out TResult>
 	{
 		TResult Run(T input);
 	}
-
 }

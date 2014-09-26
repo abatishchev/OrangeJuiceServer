@@ -2,7 +2,7 @@
 
 namespace OrangeJuice.Server.Api.Models.Validation
 {
-	public sealed class BarcodeSearchCriteriaValidator : AbstractValidator<Models.BarcodeSearchCriteria>
+	public sealed class BarcodeSearchCriteriaValidator : AbstractValidator<BarcodeSearchCriteria>
 	{
 		private const int EANLength = 13;
 		private const int UPCLength = 12;

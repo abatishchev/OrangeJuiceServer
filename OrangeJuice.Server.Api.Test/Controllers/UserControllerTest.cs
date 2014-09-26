@@ -3,8 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
-using System.Web.Http.Routing;
-using Drum;
+
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -63,13 +62,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Search(userId)).ReturnsAsync(user);
 
 			UserController controller = CreateController(repositoryMock.Object);
-			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserId = userId };
 
 			// Act
-			await controller.GetUser(searchCriteria);
+			await controller.GetUser(new UserSearchCriteria { UserId = userId });
 
 			// Assert
-			repositoryMock.Verify(r => r.Search(userId), Times.Once);
+			repositoryMock.VerifyAll();
 		}
 
 		[TestMethod]
@@ -83,11 +81,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Search(userId)).ReturnsAsync(expected);
 
 			UserController controller = CreateController(repositoryMock.Object);
-			UserSearchCriteria searchCriteria = new UserSearchCriteria { UserId = userId };
 
 			// Act
-			var result = (OkNegotiatedContentResult<IUser>)await controller.GetUser(searchCriteria);
-			IUser actual = result.Content;
+			var result = await controller.GetUser(new UserSearchCriteria { UserId = userId });
+			IUser actual = ((OkNegotiatedContentResult<IUser>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -102,10 +99,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Search(It.IsAny<Guid>())).ReturnsAsync(user);
 
 			UserController controller = CreateController(repositoryMock.Object);
-			UserSearchCriteria searchCriteria = new UserSearchCriteria();
 
 			// Act
-			IHttpActionResult result = await controller.GetUser(searchCriteria);
+			IHttpActionResult result = await controller.GetUser(new UserSearchCriteria());
 
 			// Assert
 			result.Should().BeOfType<OkNegotiatedContentResult<IUser>>();
@@ -137,13 +133,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Setup(r => r.Register(email, name)).ReturnsAsync(Mock.Of<IUser>());
 
 			UserController controller = CreateController(repositoryMock.Object);
-			UserModel userModel = new UserModel { Email = email, Name = name };
 
 			// Act
-			await controller.PutUser(userModel);
+			await controller.PutUser(new UserModel { Email = email, Name = name });
 
 			// Assert
-			repositoryMock.Verify(r => r.Register(email, name), Times.Once);
+			repositoryMock.VerifyAll();
 		}
 
 		[TestMethod]

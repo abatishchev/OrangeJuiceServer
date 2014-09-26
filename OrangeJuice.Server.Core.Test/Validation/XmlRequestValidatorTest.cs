@@ -13,6 +13,21 @@ namespace OrangeJuice.Server.Test.Validation
 	public class XmlRequestValidatorTest
 	{
 		[TestMethod]
+		public void IsValid_Should_Return_False_When_Item_Is_Null()
+		{
+			// Arange
+			const XElement item = null;
+
+			IValidator<XElement> validator = new XmlRequestValidator();
+
+			// Act
+			bool actual = validator.IsValid(item);
+
+			// Assert
+			actual.Should().BeFalse();
+		}
+
+		[TestMethod]
 		public void IsValid_Should_Return_Request_IsValid_Element_Value()
 		{
 			// Arange
