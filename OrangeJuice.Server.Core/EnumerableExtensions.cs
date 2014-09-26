@@ -7,29 +7,20 @@ namespace OrangeJuice.Server
 {
 	public static class EnumerableExtensions
 	{
-		public static async Task<T> FirstOrDefaultAsync<T>(this IEnumerable<Task<T>> sources, Func<T, bool> predicate)
-			where T : class
+		public static IEnumerable<T> Except<T>(this IEnumerable<T> sequence, T item)
 		{
-			foreach (Task<T> item in sources)
+			return sequence.Except(new[] { item });
+		}
+
+		public static async Task<IEnumerable<TResult>> SelectAsync<T, TResult>(this ICollection<T> sequence, Func<T, Task<TResult>> selector)
+		{
+			var list = new List<TResult>(sequence.Count);
+			foreach (T item in sequence)
 			{
-				T result = await item;
-				if (predicate(result))
-					return result;
+				TResult result = await selector(item);
+				list.Add(result);
 			}
-			return null;
-		}
-
-		public static TResult FirstOrDefaultNotNull<T, TResult>(this IEnumerable<T> source, Func<T, TResult> selector)
-			where T : class
-			where TResult : class
-		{
-			T item = source.FirstOrDefault();
-			return item != null ? selector(item) : null;
-		}
-
-		public static IEnumerable<T> Except<T>(this IEnumerable<T> source, T item)
-		{
-			return source.Except(new[] { item });
+			return list;
 		}
 	}
 }
