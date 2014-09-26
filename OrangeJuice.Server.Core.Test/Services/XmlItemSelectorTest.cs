@@ -17,27 +17,13 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Test Methods
 		[TestMethod]
-		public void SelectItems_Should_Throw_Exception_When_Doc_Has_No_Items()
-		{
-			// Arrange
-			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"),
-				new XElement("Root"));
-			IItemSelector selector = CreateSelector();
-
-			// Act
-			Action action = () => selector.SelectItems(doc.ToString());
-
-			// Assert
-			action.ShouldThrow<ArgumentException>();
-		}
-
-		[TestMethod]
 		public void SelectItems_Should_Throw_Exception_When_ItemValidator_Returns_False()
 		{
 			// Arrange
 			XNamespace ns = "test";
 			XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", "false"),
-				new XElement(ns + "Root"));
+				new XElement(ns + "Root",
+					new XElement(ns + "Error", "error")));
 
 			IValidator<XElement> validator = CreateValidator(false);
 			IItemSelector selector = CreateSelector(validator);
