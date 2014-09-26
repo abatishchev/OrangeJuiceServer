@@ -35,13 +35,13 @@ namespace OrangeJuice.Server.Services
 		{
 			IProduct[] products = _productRepository.Search(barcode, barcodeType).ToArray();
 			if (products.Any())
-				return await products.SelectAsync(p => _azureProvider.Get(p.ProductId));
+				return await Task.WhenAll(products.Select(p => _azureProvider.Get(p.ProductId)));
 
 			ProductDescriptor[] descriptors = (await _awsProvider.Search(barcode, barcodeType)).ToArray();
 			if (!descriptors.Any())
 				return null;
 
-			return await descriptors.SelectAsync(d => Save(d, barcode, barcodeType));
+			return await Task.WhenAll(descriptors.Select(d => Save(d, barcode, barcodeType)));
 		}
 		#endregion
 
