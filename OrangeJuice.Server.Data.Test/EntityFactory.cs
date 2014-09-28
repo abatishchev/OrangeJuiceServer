@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,9 +16,7 @@ namespace OrangeJuice.Server.Data.Test
 				{
 					var entity = container.Set<T>().FirstOrDefault();
 					if (entity == null)
-					{
-						Assert.Inconclusive("Database contains no entities of given type");
-					}
+                        throw new DataException("Database contains no entities of given type");
 					return entity;
 				}
 			}
