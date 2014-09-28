@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			// Arrange
 			const string containerName = "containerName";
-			AzureOptions azureOptions = new AzureOptions { ProductContainer = containerName };
+			AzureOptions azureOptions = new AzureOptions { ProductsContainer = containerName };
 			Guid productId = Guid.NewGuid();
 
 			IAzureClient client = CreateClient(containerName, productId.ToString());
@@ -41,7 +41,7 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			// Arrange
 			const string content = "content";
-			AzureOptions azureOptions = new AzureOptions { ProductContainer = "containerName" };
+			AzureOptions azureOptions = new AzureOptions { ProductsContainer = "containerName" };
 
 			IAzureClient client = CreateClient(content);
 
@@ -139,7 +139,7 @@ namespace OrangeJuice.Server.Test.Services
 		{
 			// Arrange
 			const string containerName = "containerName";
-			AzureOptions azureOptions = new AzureOptions { ProductContainer = containerName };
+			AzureOptions azureOptions = new AzureOptions { ProductsContainer = containerName };
 
 			Guid productId = Guid.NewGuid();
 			ProductDescriptor descriptor = new ProductDescriptor { ProductId = productId };

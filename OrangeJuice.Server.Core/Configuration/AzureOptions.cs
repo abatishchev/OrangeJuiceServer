@@ -4,6 +4,6 @@ namespace OrangeJuice.Server.Configuration
 	{
 		public string ConnectionString { get; set; }
 
-		public string ProductContainer { get; set; }
+		public string ProductsContainer { get; set; }
 	}
 }

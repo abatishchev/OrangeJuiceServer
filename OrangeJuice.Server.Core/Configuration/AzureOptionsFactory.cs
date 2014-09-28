@@ -2,22 +2,20 @@
 {
 	public class AzureOptionsFactory : Factory.IFactory<AzureOptions>
 	{
-		#region Constants
-		// TODO: support environments!
-		private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=orangejuicedev;AccountKey=Hc+ThPW3d5Sokm2mMiIG8FCaoKpuUrncJlihwy7Gzf+Pu7b0fAa9NEmQMPKr48bdUnx3uKvyqJaKWj843RrwNw==";
+		private readonly IConfigurationProvider _configurationProvider;
 
-		private const string ProductContainer = "products";
-		#endregion
+		public AzureOptionsFactory(IConfigurationProvider configurationProvider)
+		{
+			_configurationProvider = configurationProvider;
+		}
 
-		#region IFactory members
 		public AzureOptions Create()
 		{
 			return new AzureOptions
 			{
-				ConnectionString = ConnectionString,
-				ProductContainer = ProductContainer
+				ConnectionString = _configurationProvider.GetValue("blob:ConnectionString"),
+				ProductsContainer = _configurationProvider.GetValue("blob:Products"),
 			};
 		}
-		#endregion
 	}
 }

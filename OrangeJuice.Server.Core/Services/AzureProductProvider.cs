@@ -26,19 +26,19 @@ namespace OrangeJuice.Server.Services
 		#region IAzureProductProvider members
 		public async Task<ProductDescriptor> Get(Guid productId)
 		{
-			string content = await _client.GetBlobFromContainer(_azureOptions.ProductContainer, productId.ToString());
+			string content = await _client.GetBlobFromContainer(_azureOptions.ProductsContainer, productId.ToString());
 			return content != null ? _converter.Convert(content) : null;
 		}
 
 		public async Task Save(ProductDescriptor descriptor)
 		{
 			string content = _converter.ConvertBack(descriptor);
-			await _client.PutBlobToContainer(_azureOptions.ProductContainer, descriptor.ProductId.ToString(), content);
+			await _client.PutBlobToContainer(_azureOptions.ProductsContainer, descriptor.ProductId.ToString(), content);
 		}
 
 		public Uri GetUrl(Guid productId)
 		{
-			return _client.GetBlobUrl(_azureOptions.ProductContainer, productId.ToString());
+			return _client.GetBlobUrl(_azureOptions.ProductsContainer, productId.ToString());
 		}
 		#endregion
 	}
