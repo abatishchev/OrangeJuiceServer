@@ -4,6 +4,8 @@ using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using OrangeJuice.Server.Configuration;
+
 namespace OrangeJuice.Server.Data.Test
 {
 	public static class EntityFactory
@@ -12,7 +14,7 @@ namespace OrangeJuice.Server.Data.Test
 		{
 			try
 			{
-				using (var container = new ModelContainer())
+				using (var container = new ModelContainer(new AppSettingsConfigurationProvider()))
 				{
 					var entity = container.Set<T>().FirstOrDefault();
 					if (entity == null)

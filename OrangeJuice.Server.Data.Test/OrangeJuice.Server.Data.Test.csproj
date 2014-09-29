@@ -99,6 +99,10 @@
       <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Name>OrangeJuice.Server.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrangeJuice.Server.Core\OrangeJuice.Server.Core.csproj">
+      <Project>{1A416347-6B6C-4551-BFDB-FBE19B121D74}</Project>
+      <Name>OrangeJuice.Server.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Data\OrangeJuice.Server.Data.csproj">
       <Project>{209ccef8-9d7a-4ab4-b7e5-9f5c8efe603a}</Project>
       <Name>OrangeJuice.Server.Data</Name>

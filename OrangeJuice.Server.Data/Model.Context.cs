@@ -16,11 +16,6 @@ namespace OrangeJuice.Server.Data
     
     public partial class ModelContainer : DbContext
     {
-        public ModelContainer()
-            : base("name=ModelContainer")
-        {
-        }
-    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
