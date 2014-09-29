@@ -19,6 +19,8 @@
     </LocalResources>
     <ConfigurationSettings>
       <Setting name="Environment" />
+			<Setting name="sqlConnectionString" />
+			<Setting name="blobConnectionString" />
     </ConfigurationSettings>
   </WebRole>
 </ServiceDefinition>

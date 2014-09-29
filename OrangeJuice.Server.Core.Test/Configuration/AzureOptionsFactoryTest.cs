@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			const string expected = "connectionString";
 			
 			var providerMock = new Mock<IConfigurationProvider>();
-			providerMock.Setup(p => p.GetValue("blob:ConnectionString")).Returns(expected);
+			providerMock.Setup(p => p.GetValue("blobConnectionString")).Returns(expected);
 
 			var factory = new AzureOptionsFactory(providerMock.Object);
 
@@ -37,7 +37,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			const string expected = "products";
 
 			var providerMock = new Mock<IConfigurationProvider>();
-			providerMock.Setup(p => p.GetValue("blob:Products")).Returns(expected);
+			providerMock.Setup(p => p.GetValue("blobProducts")).Returns(expected);
 
 			var factory = new AzureOptionsFactory(providerMock.Object);
 
