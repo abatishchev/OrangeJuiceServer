@@ -7,7 +7,7 @@ namespace OrangeJuice.Server.Data
 	public partial class ModelContainer : IModelContainer
 	{
 	    public ModelContainer(IConfigurationProvider configurationProvider)
-            : base(configurationProvider.GetValue("sqlConnectionString"))
+            : base(configurationProvider.GetValue("sql:ConnectionString"))
 	    {
 	    }
 	}

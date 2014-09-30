@@ -18,9 +18,6 @@
       <LocalStorage name="DiagnosticStore" sizeInMB="20000" cleanOnRoleRecycle="false" />
     </LocalResources>
     <ConfigurationSettings>
-      <Setting name="Environment" />
-			<Setting name="sqlConnectionString" />
-			<Setting name="blobConnectionString" />
     </ConfigurationSettings>
   </WebRole>
 </ServiceDefinition>
