@@ -68,4 +68,13 @@
     <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v12.0\Windows Azure Tools\2.4\</CloudExtensionsDir>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
+  <PropertyGroup>
+    <TransformRunnerExecutable>..\packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe</TransformRunnerExecutable>
+    <SourceTransformFile>..\OrangeJuice.Server.Api\Web.config</SourceTransformFile>
+    <TransformFile>..\OrangeJuice.Server.Api\Web.Prod.config</TransformFile>
+    <DestinationTransformFile>..\OrangeJuice.Server.Api\Web.config</DestinationTransformFile>
+  </PropertyGroup>
+  <Target Name="Transform" BeforeTargets="BeforeBuild" Condition="'$(TEAMCITY_VERSION)' != ''">
+    <Exec Command="&quot;$(TransformRunnerExecutable)&quot; &quot;$(SourceTransformFile)&quot; &quot;$(TransformFile)&quot; &quot;$(DestinationTransformFile)&quot;" />
+  </Target>
 </Project>
