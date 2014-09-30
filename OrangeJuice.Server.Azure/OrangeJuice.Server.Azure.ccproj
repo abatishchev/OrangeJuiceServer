@@ -68,6 +68,7 @@
     <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v12.0\Windows Azure Tools\2.4\</CloudExtensionsDir>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v12.0\Web\Microsoft.Web.Publishing.Tasks.dll" />
   <PropertyGroup>
     <TransformRunnerExecutable>..\packages\WebConfigTransformRunner.1.0.0.1\Tools\WebConfigTransformRunner.exe</TransformRunnerExecutable>
     <SourceTransformFile>..\OrangeJuice.Server.Api\Web.config</SourceTransformFile>
@@ -75,6 +76,6 @@
     <DestinationTransformFile>..\OrangeJuice.Server.Api\Web.config</DestinationTransformFile>
   </PropertyGroup>
   <Target Name="Transform" BeforeTargets="BeforeBuild" Condition="'$(TEAMCITY_VERSION)' != ''">
-    <Exec Command="&quot;$(TransformRunnerExecutable)&quot; &quot;$(SourceTransformFile)&quot; &quot;$(TransformFile)&quot; &quot;$(DestinationTransformFile)&quot;" />
+    <TransformXml Source="$(SourceTransformFile)" Transform="$(TransformFile)" Destination="$(DestinationTransformFile)" StackTrace="true" />
   </Target>
 </Project>
