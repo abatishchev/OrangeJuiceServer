@@ -91,7 +91,9 @@
     <Compile Include="IAssemblyProvider.cs" />
     <Compile Include="IConverter.cs" />
     <Compile Include="IDateTimeProvider.cs" />
+    <Compile Include="IPipelineFilter.cs" />
     <Compile Include="IPipeline.cs" />
+    <Compile Include="IPipeline2.cs" />
     <Compile Include="IValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IArgumentBuilder.cs" />
