@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +12,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 	public class AwsClientIntergrationTest
 	{
 		[TestMethod]
-		public async Task GetItems_Should_Return_Sequnce_Of_ProductDescriptor()
+		public void GetItems_Should_Return_Sequnce_Of_ProductDescriptor()
 		{
 			using (IUnityContainer container = ContainerConfig.CreateContainer())
 			{
@@ -30,7 +28,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 				};
 
 				// Act
-				var items = await client.GetItems(searchCriteria);
+				var items = client.GetItems(searchCriteria);
 
 				// Assert
 				items.Should().NotBeEmpty();

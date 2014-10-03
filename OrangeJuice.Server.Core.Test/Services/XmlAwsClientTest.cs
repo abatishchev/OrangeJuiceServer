@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using Factory;
@@ -23,7 +22,7 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region GetItems
 		[TestMethod]
-		public async Task GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_HttpClient_GetStreamAsync()
+		public void GetItems_Should_Pass_Query_Returned_By_QueryBuilder_To_HttpClient_GetStreamAsync()
 		{
 			// Arrange
 			Uri url = CreateUrl();
@@ -36,14 +35,14 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = CreateClient(builderMock, httpClientMock.Object);
 
 			// Act
-			await client.GetItems(new ProductDescriptorSearchCriteria());
+			client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
 			httpClientMock.VerifyAll();
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Pass_Stream_Returned_By_HttpClient_To_ItemSelector_SelectItems()
+		public void GetItems_Should_Pass_Stream_Returned_By_HttpClient_To_ItemSelector_SelectItems()
 		{
 			// Arrange
 			const string xml = "";
@@ -57,14 +56,14 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = CreateClient(httpClient: httpClientMock.Object, itemSelector: selectorMock.Object);
 
 			// Act
-			await client.GetItems(new ProductDescriptorSearchCriteria());
+			client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
 			selectorMock.VerifyAll();
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Pass_Items_Returned_By_ItemSelector_SelectItems_To_ProductDescriptorFactory_Create()
+		public void GetItems_Should_Pass_Items_Returned_By_ItemSelector_SelectItems_To_ProductDescriptorFactory_Create()
 		{
 			// Arrange
 			XElement[] elements = { new XElement("Item"), new XElement("Item") };
@@ -78,7 +77,7 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = CreateClient(itemSelector: selectorMock.Object, factory: factoryMock.Object);
 
 			// Act
-			var items = await client.GetItems(new ProductDescriptorSearchCriteria());
+			var items = client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
 			items.ToArray();
@@ -86,7 +85,7 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[TestMethod]
-		public async Task GetItems_Should_Return_ProductDescriptor_Returned_By_ProductDescriptorFactory_Create()
+		public void GetItems_Should_Return_ProductDescriptor_Returned_By_ProductDescriptorFactory_Create()
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
@@ -97,7 +96,7 @@ namespace OrangeJuice.Server.Test.Services
 			IAwsClient client = CreateClient(factory: factoryMock.Object);
 
 			// Act
-			var actual = await client.GetItems(new ProductDescriptorSearchCriteria());
+			var actual = client.GetItems(new ProductDescriptorSearchCriteria());
 
 			// Assert
 			actual.Single().Should().Be(expected);

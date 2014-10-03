@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Data.Test
 				{
 					var entity = container.Set<T>().FirstOrDefault();
 					if (entity == null)
-                        throw new DataException("Database contains no entities of given type");
+						throw new DataException("Database contains no entities of given type");
 					return entity;
 				}
 			}

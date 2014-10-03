@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Services
 
 		public Task<IEnumerable<ProductDescriptor>> Search(string barcode, BarcodeType barcodeType)
 		{
-			return _awsProvider.Search(barcode, barcodeType);
+			return Task.FromResult(_awsProvider.Search(barcode, barcodeType));
 		}
 		#endregion
 

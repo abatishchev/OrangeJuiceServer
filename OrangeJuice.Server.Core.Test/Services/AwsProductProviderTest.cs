@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,7 +15,7 @@ namespace OrangeJuice.Server.Test.Services
 	{
 		#region Search
 		[TestMethod]
-		public async Task Search_Should_Pass_SearchCriteria_To_Client()
+		public void Search_Should_Pass_SearchCriteria_To_Client()
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -29,12 +28,12 @@ namespace OrangeJuice.Server.Test.Services
 				c.IdType == barcodeType.ToString() &&
 				c.ItemId == barcode;
 			var clientMock = new Mock<IAwsClient>();
-			clientMock.Setup(b => b.GetItems(It.Is<ProductDescriptorSearchCriteria>(p => verify(p)))).ReturnsAsync(new[] { new ProductDescriptor() });
+			clientMock.Setup(b => b.GetItems(It.Is<ProductDescriptorSearchCriteria>(p => verify(p)))).Returns(new[] { new ProductDescriptor() });
 
 			IAwsProductProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			await provider.Search(barcode, barcodeType);
+			provider.Search(barcode, barcodeType);
 
 			// Assert
 			clientMock.VerifyAll();
