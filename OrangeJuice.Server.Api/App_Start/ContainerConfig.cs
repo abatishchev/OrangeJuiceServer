@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Reactive.Concurrency;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
@@ -164,6 +165,10 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new DefaultLifetimeManager());
+
+            container.RegisterType<IScheduler>(
+		        new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => Scheduler.Default));
 
 			container.RegisterType<IRequestScheduler, IntervalRequestScheduler>(
 				new ContainerControlledLifetimeManager()); // singleton

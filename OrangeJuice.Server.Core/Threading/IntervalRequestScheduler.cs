@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Threading
 		#region Ctor
 		public IntervalRequestScheduler(AwsOptions awsOptions, IScheduler scheduler)
 		{
-            _observable = _requests.Sample(awsOptions.RequestLimit, scheduler ?? Scheduler.Default)
+            _observable = _requests.Sample(awsOptions.RequestLimit, scheduler)
 								   .Subscribe(action => action());
 		}
 		#endregion
