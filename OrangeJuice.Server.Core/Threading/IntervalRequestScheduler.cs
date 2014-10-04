@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
@@ -7,7 +8,6 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Threading
 {
-	// TODO: dispose?
 	public sealed class IntervalRequestScheduler : IRequestScheduler
 	{
 		#region Fields
@@ -16,9 +16,9 @@ namespace OrangeJuice.Server.Threading
 		#endregion
 
 		#region Ctor
-		public IntervalRequestScheduler(AwsOptions awsOptions)
+		public IntervalRequestScheduler(AwsOptions awsOptions, IScheduler scheduler)
 		{
-			_observable = _requests.Sample(awsOptions.RequestLimit)
+            _observable = _requests.Sample(awsOptions.RequestLimit, scheduler ?? Scheduler.Default)
 								   .Subscribe(action => action());
 		}
 		#endregion

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
 using FluentAssertions;
 
+using Microsoft.Reactive.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using OrangeJuice.Server.Configuration;
@@ -17,32 +16,28 @@ namespace OrangeJuice.Server.Test.Threading
 	public class IntervalRequestSchedulerTest
 	{
 		[TestMethod]
-		public void ScheduleRequest_Should_Process_Requests_Not_Faster_Than_AwsOptions_RequestLimit()
+		public void ScheduleRequest_Should_Call_Sample_On_Scheduler()
 		{
 			// Arrange
-			TimeSpan requestLimit = TimeSpan.FromMilliseconds(1000);
+			var scheduler = new TestScheduler();
 
-			IRequestScheduler scheduler = new IntervalRequestScheduler(new AwsOptions { RequestLimit = requestLimit });
-
-		    Stopwatch sw = Stopwatch.StartNew();
-		    var list = new List<TimeSpan>();
+			TimeSpan requestLimit = TimeSpan.FromMilliseconds(250);
+			IRequestScheduler requestScheduler = new IntervalRequestScheduler(new AwsOptions { RequestLimit = requestLimit }, scheduler);
 
 			// Act
-		    var tasks = Enumerable.Range(0, 10)
-		                          .Select(_ => scheduler.ScheduleRequest(
-		                              () =>
-		                              {
-		                                  list.Add(sw.Elapsed);
-		                                  return Task.FromResult(new object());
-		                              }));
-		    Task.WaitAll(tasks.ToArray());
-            sw.Stop();
+			var tasks = Enumerable.Range(0, 10).Select(CreateRequest)
+								  .Select(requestScheduler.ScheduleRequest)
+								  .ToArray();
+
+			scheduler.AdvanceBy(requestLimit.Ticks);
 
 			//Assert
-		    list.Skip(1).Aggregate((x, y) =>
-		                           {
-		                               return x;
-		                           });
-		}	
+			tasks.Count(t => t.IsCompleted).Should().Be(1);
+		}
+
+		private static Func<Task<int>> CreateRequest(int i)
+		{
+			return () => Task.FromResult(i);
+		}
 	}
 }
