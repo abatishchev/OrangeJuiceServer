@@ -104,6 +104,7 @@
     <Compile Include="Services\JsonBlobNameResolverTest.cs" />
     <Compile Include="Services\XmlAwsClientTest.cs" />
     <Compile Include="Services\XmlItemSelectorTest.cs" />
+    <Compile Include="Threading\IntervalRequestSchedulerTest.cs" />
     <Compile Include="UtcDateTimeProviderTest.cs" />
     <Compile Include="Validation\XmlRequestValidatorTest.cs" />
     <Compile Include="Web\EncodedQueryBuilderTest.cs" />
