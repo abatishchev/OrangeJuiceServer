@@ -1,8 +1,9 @@
 ﻿namespace OrangeJuice.Server
 {
-	// TODO: extract to a nuget package
-	public interface IPipeline<in T, out TResult>
+	public interface IPipeline
 	{
-		TResult Run(T input);
+		object Execute(object param);
+
+		IPipeline Register<TParam, TResult>(IPipelineFilter<TParam, TResult> filter);
 	}
 }
