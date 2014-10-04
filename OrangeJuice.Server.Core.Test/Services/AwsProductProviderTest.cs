@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Test.Services
 				c.IdType == barcodeType.ToString() &&
 				c.ItemId == barcode;
 			var clientMock = new Mock<IAwsClient>();
-			clientMock.Setup(b => b.GetItems(It.Is<ProductDescriptorSearchCriteria>(p => verify(p)))).Returns(new[] { new ProductDescriptor() });
+			clientMock.Setup(b => b.GetItems(It.Is<ProductDescriptorSearchCriteria>(p => verify(p)))).ReturnsAsync(new[] { new ProductDescriptor() });
 
 			IAwsProductProvider provider = CreateProvider(clientMock.Object);
 

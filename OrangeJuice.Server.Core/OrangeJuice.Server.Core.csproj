@@ -116,7 +116,7 @@
     <Compile Include="Services\CachingCloudProductService.cs" />
     <Compile Include="Services\JsonBlobNameResolver.cs" />
     <Compile Include="Services\XmlAwsClient.cs" />
-    <Compile Include="Services\XmlAwsClinetPipeline.cs" />
+    <Compile Include="Services\XmlAwsClientPipeline.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
     <Compile Include="Threading\IntervalRequestScheduler.cs" />
     <Compile Include="Validation\XmlRequestValidator.cs" />

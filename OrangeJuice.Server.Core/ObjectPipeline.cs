@@ -9,7 +9,7 @@ namespace OrangeJuice.Server
 
 		public object Execute(object param)
 		{
-			return _filters.Aggregate(param, (p, f) => f.Execute(p));
+            return GetFilters().Aggregate(param, (p, f) => f.Execute(p));
 		}
 
 		protected virtual IEnumerable<IPipelineFilter> GetFilters()

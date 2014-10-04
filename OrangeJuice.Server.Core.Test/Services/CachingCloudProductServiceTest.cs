@@ -140,7 +140,7 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task Search_Should_Return_Null_When_AwsProvider_Search_Returns_Empty_Sequence()
 		{
 			var awsProviderMock = new Mock<IAwsProductProvider>();
-			awsProviderMock.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).Returns(Enumerable.Empty<ProductDescriptor>());
+			awsProviderMock.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(Enumerable.Empty<ProductDescriptor>());
 
 			IProductService productService = CreateService(awsProviderMock.Object);
 
@@ -187,7 +187,7 @@ namespace OrangeJuice.Server.Test.Services
 			IAzureProductProvider azureProvider = CreateAzureProvider(descriptor);
 
 			var awsProvider = new Mock<IAwsProductProvider>();
-			awsProvider.Setup(p => p.Search(barcode, barcodeType)).Returns(new[] { descriptor });
+			awsProvider.Setup(p => p.Search(barcode, barcodeType)).ReturnsAsync(new[] { descriptor });
 
 			IProductService productService = CreateService(awsProvider.Object, azureProvider, repositoryMock.Object);
 
@@ -277,7 +277,7 @@ namespace OrangeJuice.Server.Test.Services
 		private static IAwsProductProvider CreateAwsProvider(IEnumerable<ProductDescriptor> descriptors = null)
 		{
 			var awsProvider = new Mock<IAwsProductProvider>();
-			awsProvider.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).Returns(descriptors ?? new[] { new ProductDescriptor() });
+			awsProvider.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(descriptors ?? new[] { new ProductDescriptor() });
 			return awsProvider.Object;
 		}
 
