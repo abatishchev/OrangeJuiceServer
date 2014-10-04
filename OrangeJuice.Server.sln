@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeJuice.Server.Api.Test
 EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "OrangeJuice.Server.Azure", "OrangeJuice.Server.Azure\OrangeJuice.Server.Azure.ccproj", "{6111EED1-270A-4D7A-A724-FBC247DDC93D}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OrangeJuice.Server.Core.FSharp", "OrangeJuice.Server.Core.FSharp\OrangeJuice.Server.Core.FSharp.fsproj", "{B4F40D09-A483-49B7-AA29-CD14D188736F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,10 @@ Global
 		{6111EED1-270A-4D7A-A724-FBC247DDC93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6111EED1-270A-4D7A-A724-FBC247DDC93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6111EED1-270A-4D7A-A724-FBC247DDC93D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4F40D09-A483-49B7-AA29-CD14D188736F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4F40D09-A483-49B7-AA29-CD14D188736F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4F40D09-A483-49B7-AA29-CD14D188736F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4F40D09-A483-49B7-AA29-CD14D188736F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +117,7 @@ Global
 		{1979B465-E5E3-4BB9-847E-CB96FC3372E3} = {C0DFCAA5-A540-43BC-A417-9504CEFEADA9}
 		{43F3E5C0-B471-40E4-BAE2-64D97F1853E8} = {297041D9-4186-49F5-BB79-37653390A91F}
 		{6111EED1-270A-4D7A-A724-FBC247DDC93D} = {297041D9-4186-49F5-BB79-37653390A91F}
+		{B4F40D09-A483-49B7-AA29-CD14D188736F} = {C0DFCAA5-A540-43BC-A417-9504CEFEADA9}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = OrangeJuice.Server.vsmdi
