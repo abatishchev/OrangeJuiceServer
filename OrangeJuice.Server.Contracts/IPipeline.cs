@@ -3,7 +3,10 @@
 	public interface IPipeline
 	{
 		object Execute(object param);
+	}
 
-		IPipeline Register<TParam, TResult>(IPipelineFilter<TParam, TResult> filter);
+	public interface IPipeline<T>
+	{
+		T Execute(T param);
 	}
 }
