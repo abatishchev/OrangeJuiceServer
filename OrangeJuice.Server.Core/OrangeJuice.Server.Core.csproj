@@ -100,6 +100,7 @@
     <Compile Include="Data\StringProductDescriptorConverter.cs" />
     <Compile Include="Data\XmlProductDescriptorFactory.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="GenericPipeline.cs" />
     <Compile Include="ObjectPipeline.cs" />
     <Compile Include="PipelineFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

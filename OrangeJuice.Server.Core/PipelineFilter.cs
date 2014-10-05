@@ -21,4 +21,12 @@ namespace OrangeJuice.Server
             return _func(param);
         }
     }
+
+	public static class PipelineFilter
+	{
+		public static PipelineFilter<TParam, TResult> Create<TParam, TResult>(Func<TParam, TResult> func)
+		{
+			return new PipelineFilter<TParam, TResult>(func);
+		}
+	}
 }
