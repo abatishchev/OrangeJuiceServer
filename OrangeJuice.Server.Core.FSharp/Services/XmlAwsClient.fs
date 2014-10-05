@@ -14,9 +14,9 @@ type XmlAwsClient(urlBuilder : IUrlBuilder, httpClient : IHttpClient, itemSelect
         member this.GetItems(searchCriteria : ProductDescriptorSearchCriteria) = this.GetItems(searchCriteria) |> Async.StartAsTask
 
     member this.GetItems(searchCriteria : ProductDescriptorSearchCriteria) = async {
-            let url = urlBuilder.BuildUrl(searchCriteria)
-            let! response = httpClient.GetStringAsync(url) |> Async.AwaitTask
-            let items = itemSelector.SelectItems(response)
-            let arr = Seq.map factory.Create items
-            return arr
-        }
+        let url = urlBuilder.BuildUrl(searchCriteria)
+        let! response = httpClient.GetStringAsync(url) |> Async.AwaitTask
+        let items = itemSelector.SelectItems(response)
+        let arr = Seq.map factory.Create items
+        return arr
+    }

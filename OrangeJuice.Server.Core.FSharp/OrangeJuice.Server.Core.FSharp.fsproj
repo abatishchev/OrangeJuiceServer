@@ -51,9 +51,9 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <Compile Include="Services\CachingCloudProductService.fs" />
     <Compile Include="Services\XmlAwsClient.fs" />
     <Content Include="packages.config" />
-    <None Include="Script.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="IFactory">
