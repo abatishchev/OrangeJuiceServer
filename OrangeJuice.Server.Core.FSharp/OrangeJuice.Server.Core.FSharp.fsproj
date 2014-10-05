@@ -50,9 +50,9 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
-    <None Include="Script.fsx" />
-    <Compile Include="XmlAwsClientPipeline.fs" />
+    <Compile Include="Services\XmlAwsClient.fs" />
     <Content Include="packages.config" />
+    <None Include="Script.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="IFactory">
@@ -71,6 +71,7 @@
       <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
