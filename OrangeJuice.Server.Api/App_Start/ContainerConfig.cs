@@ -41,7 +41,6 @@ namespace OrangeJuice.Server.Api
 
 			RegisterTypes(container);
 
-			// Web API
 			GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
 
 			return container;
@@ -146,13 +145,13 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IPipeline<string, string>, PercentUrlEncodingPipeline>(
+			container.RegisterType<IPipeline<string>, PercentUrlEncodingPipeline>(
 				typeof(PercentUrlEncodingPipeline).Name, // named registration
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new DefaultLifetimeManager(),
-				new InjectionConstructor(container.Resolve(typeof(IPipeline<string, string>), typeof(PercentUrlEncodingPipeline).Name)));  // named registration
+				new InjectionConstructor(container.Resolve(typeof(IPipeline<string>), typeof(PercentUrlEncodingPipeline).Name)));  // named registration
 
 			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
 				new DefaultLifetimeManager());
@@ -193,11 +192,19 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IItemSelector, XmlItemSelector>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IAwsClient, XmlAwsClient>(
-				new DefaultLifetimeManager());
-
 			container.RegisterFactory<ProductDescriptor, XElement, XmlProductDescriptorFactory>(
 				new DefaultLifetimeManager());
+
+			container.RegisterType<IPipeline, XmlAwsClientPipeline>(
+				typeof(XmlAwsClientPipeline).Name, // named registration
+				new DefaultLifetimeManager());
+
+			container.RegisterType<IAwsClient, XmlAwsClient>(
+				new DefaultLifetimeManager(),
+				new InjectionConstructor(container.Resolve(typeof(IPipeline), typeof(XmlAwsClientPipeline).Name)));  // named registration
+				
+			//container.RegisterType<IAwsClient, Services.FSharp.XmlAwsClient>(
+			//	new DefaultLifetimeManager());
 
 			container.RegisterType<IAwsProductProvider, AwsProductProvider>(
 				new DefaultLifetimeManager());

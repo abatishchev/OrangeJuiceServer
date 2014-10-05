@@ -211,6 +211,10 @@
       <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Name>OrangeJuice.Server.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrangeJuice.Server.Core.FSharp\OrangeJuice.Server.Core.FSharp.fsproj">
+      <Project>{b4f40d09-a483-49b7-aa29-cd14d188736f}</Project>
+      <Name>OrangeJuice.Server.Core.FSharp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Core\OrangeJuice.Server.Core.csproj">
       <Project>{1a416347-6b6c-4551-bfdb-fbe19b121d74}</Project>
       <Name>OrangeJuice.Server.Core</Name>

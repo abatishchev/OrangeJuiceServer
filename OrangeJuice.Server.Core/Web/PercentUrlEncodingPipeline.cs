@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace OrangeJuice.Server.Web
 {
-	public sealed class PercentUrlEncodingPipeline : AggregatePipeline<string>
+	public sealed class PercentUrlEncodingPipeline : GenericPipeline<string>
 	{
 		#region Fields
-		internal static readonly IDictionary<string, string> CharDictionary = new Dictionary<string, string>
+		private static readonly IDictionary<string, string> CharDictionary = new Dictionary<string, string>
 		{
 			{ "'", "%27" },
 			{ "(", "%28" },
@@ -20,7 +19,7 @@ namespace OrangeJuice.Server.Web
 		};
 		#endregion
 
-		#region Pipeline members
+		#region ObjectPipeline members
 		/// <summary>
 		/// Percent-encodes according to RFC 3986 as required by Amazon
 		/// </summary>
@@ -28,13 +27,13 @@ namespace OrangeJuice.Server.Web
 		/// This is necessary because .NET's HttpUtility.UrlEncode does not encode according to the above standard.
 		/// Also it returns lower-case encoding by default and Amazon requires upper-case encoding.
 		/// </remarks>
-		public override IEnumerable<Func<string, string>> GetOperations()
+	    protected override IEnumerable<IPipelineFilter<string, string>> GetFilters()
 		{
-			yield return System.Web.HttpUtility.UrlEncode;
-			yield return PercentEncode;
-			yield return ToUpperCase;
-		}
-		#endregion
+			yield return PipelineFilter.Create((string s) => System.Web.HttpUtility.UrlEncode(s));
+			yield return PipelineFilter.Create((string s) => PercentEncode(s));
+			yield return PipelineFilter.Create((string s) => ToUpperCase(s));
+	    }
+	    #endregion
 
 		#region Methods
 		internal static string PercentEncode(string url)

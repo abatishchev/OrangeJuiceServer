@@ -14,18 +14,19 @@ namespace OrangeJuice.Server.Test.Web
 	public class PercentUrlEncoderTest
 	{
 		[TestMethod]
-		public void Encode_Should_Execute_EncodingPipeline()
+		public void Encode_Should_Execute_Pipeline()
 		{
 			// Arrange
 			bool called = false;
-			Func<string, string> operation = s =>
+			Action callback = () =>
 				{
 					called = true;
-					return s;
 				};
 
-			var pipelineMock = new Mock<AggregatePipeline<string>> { CallBase = true };
-			pipelineMock.Setup(p => p.GetOperations()).Returns(new[] { operation });
+			var pipelineMock = new Mock<IPipeline<string>>();
+			pipelineMock.Setup(p => p.Execute(It.IsAny<string>()))
+						.Returns(String.Empty)
+						.Callback(callback);
 
 			IUrlEncoder urlEncoder = new PercentUrlEncoder(pipelineMock.Object);
 
@@ -33,6 +34,7 @@ namespace OrangeJuice.Server.Test.Web
 			urlEncoder.Encode("anyUrl");
 
 			// Assert
+			pipelineMock.VerifyAll();
 			called.Should().BeTrue();
 		}
 	}
