@@ -2,12 +2,12 @@
 {
 	public sealed class PercentUrlEncoder : IUrlEncoder
 	{
-        private readonly IPipeline _pipeline;
+        private readonly IPipeline<string> _pipeline;
         #region Fields
 		#endregion
 
 		#region Ctor
-		public PercentUrlEncoder(IPipeline pipeline)
+		public PercentUrlEncoder(IPipeline<string> pipeline)
 		{
 			_pipeline = pipeline;
 		}
@@ -16,7 +16,7 @@
 		#region IUrlEncoder members
 		public string Encode(string url)
 		{
-			return (string)_pipeline.Execute(url);
+			return _pipeline.Execute(url);
 		}
 		#endregion
 	}

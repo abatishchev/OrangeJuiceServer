@@ -23,8 +23,8 @@ namespace OrangeJuice.Server.Test.Web
 					called = true;
 				};
 
-			var pipelineMock = new Mock<IPipeline>();
-			pipelineMock.Setup(p => p.Execute(It.IsAny<object>()))
+			var pipelineMock = new Mock<IPipeline<string>>();
+			pipelineMock.Setup(p => p.Execute(It.IsAny<string>()))
 						.Returns(String.Empty)
 						.Callback(callback);
 

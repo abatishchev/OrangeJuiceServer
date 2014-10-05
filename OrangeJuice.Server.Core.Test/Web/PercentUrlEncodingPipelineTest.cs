@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+
+using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,7 +15,16 @@ namespace OrangeJuice.Server.Test.Web
 		public void PercentEncode_Should_Encode_Special_Characters_Using_Dictionary()
 		{
 			// Arrange
-			var charDir = PercentUrlEncodingPipeline.CharDictionary;
+			var charDir = new Dictionary<string, string>
+			{
+				{ "'", "%27" },
+				{ "(", "%28" },
+				{ ")", "%29" },
+				{ "*", "%2A" },
+				{ "!", "%21" },
+				{ "~", "%7E" },
+				{ "+", "%20" }
+			};
 
 			foreach (var pair in charDir)
 			{
