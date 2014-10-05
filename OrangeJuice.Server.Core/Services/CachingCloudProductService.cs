@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,7 +30,7 @@ namespace OrangeJuice.Server.Services
 			return _azureProvider.Get(productId);
 		}
 
-		public async Task<IEnumerable<ProductDescriptor>> Search(string barcode, BarcodeType barcodeType)
+		public async Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
 		{
 			IProduct[] products = _productRepository.Search(barcode, barcodeType).ToArray();
 			if (products.Any())
@@ -41,7 +40,7 @@ namespace OrangeJuice.Server.Services
 			if (!descriptors.Any())
 				return null;
 
-			return await Task.WhenAll(descriptors.Select(d => Save(d, barcode, barcodeType)));
+			return await Task.WhenAll(descriptors.Select(d => Save(d, barcode, barcodeType)).ToArray());
 		}
 		#endregion
 

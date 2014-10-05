@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data;
 
@@ -14,9 +13,9 @@ namespace OrangeJuice.Server.Services
 			_pipeline = pipeline;
 		}
 
-		public async Task<IEnumerable<ProductDescriptor>> GetItems(ProductDescriptorSearchCriteria searchCriteria)
+		public async Task<ProductDescriptor[]> GetItems(ProductDescriptorSearchCriteria searchCriteria)
 		{
-			return await (Task<IEnumerable<ProductDescriptor>>)_pipeline.Execute(searchCriteria);
+			return await (Task<ProductDescriptor[]>)_pipeline.Execute(searchCriteria);
 		}
 	}
 }

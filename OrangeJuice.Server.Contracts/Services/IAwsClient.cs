@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data;
 
@@ -7,6 +6,6 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IAwsClient
 	{
-		Task<IEnumerable<ProductDescriptor>> GetItems(ProductDescriptorSearchCriteria searchCriteria);
+		Task<ProductDescriptor[]> GetItems(ProductDescriptorSearchCriteria searchCriteria);
 	}
 }

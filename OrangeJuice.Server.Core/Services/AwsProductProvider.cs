@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Services
@@ -18,7 +19,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsProductProvider members
-		public async Task<IEnumerable<ProductDescriptor>> Search(string barcode, BarcodeType barcodeType)
+		public async Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
 		{
 			var searchCriteria = new ProductDescriptorSearchCriteria
 			{

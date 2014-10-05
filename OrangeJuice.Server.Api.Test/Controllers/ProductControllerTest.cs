@@ -126,7 +126,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
-			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(Enumerable.Empty<ProductDescriptor>());
+			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(new ProductDescriptor[0]);
 
 			ProductController controller = CreateController(serviceMock.Object);
 
@@ -134,7 +134,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<OkNegotiatedContentResult<IEnumerable<ProductDescriptor>>>();
+			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor[]>>();
 		}
 
 		[TestMethod]
@@ -145,7 +145,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
 			var serviceMock = new Mock<IProductService>();
-			serviceMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(Enumerable.Empty<ProductDescriptor>());
+			serviceMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor[0]);
 
 			ProductController controller = CreateController(serviceMock.Object);
 
@@ -169,7 +169,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
-			var actual = ((OkNegotiatedContentResult<IEnumerable<ProductDescriptor>>)result).Content;
+			var actual = ((OkNegotiatedContentResult<ProductDescriptor[]>)result).Content;
 
 			// Assert
 			actual.Should().BeEquivalentTo(expected);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data;
@@ -10,6 +9,6 @@ namespace OrangeJuice.Server.Services
 	{
 		Task<ProductDescriptor> Get(Guid productId);
 
-		Task<IEnumerable<ProductDescriptor>> Search(string barcode, BarcodeType barcodeType);
+		Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType);
 	}
 }

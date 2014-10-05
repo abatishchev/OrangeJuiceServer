@@ -12,6 +12,6 @@ namespace OrangeJuice.Server.Data.Repository
 
 		Task<IRating> Search(Guid userId, Guid productId);
 
-		Task<ICollection<IRating>> SearchAll(Guid productId);
+		Task<IRating[]> SearchAll(Guid productId);
 	}
 }

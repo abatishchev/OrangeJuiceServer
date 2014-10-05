@@ -1,6 +1,7 @@
 ﻿namespace OrangeJuice.Server.FSharp.Services
 
 open System
+open System.Collections.Generic
 open System.Threading.Tasks
 
 open Factory
@@ -11,9 +12,11 @@ open OrangeJuice.Server.Services
 
 type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider : IAzureProductProvider, productRepository : IProductRepository) =
     interface IProductService with
-        member this.Get(productId : Guid) = azureProvider.Get(productId)
-        member this.Search(barcode : string, barcodeType : BarcodeType) = this.Search(barcode, barcodeType) |> Async.StartAsTask
-        member this.Dispose() =
+        member this.Get(productId : Guid) : Task<ProductDescriptor> =
+            azureProvider.Get(productId)
+        member this.Search(barcode : string, barcodeType : BarcodeType) : Task<ProductDescriptor[]> =
+            this.Search(barcode, barcodeType) |> Async.StartAsTask
+        member this.Dispose() : unit =
             productRepository.Dispose()
 
     member this.Search(barcode : string, barcodeType : BarcodeType) = async {
@@ -33,9 +36,9 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
                                }
                                let seq = Seq.map (fun d -> save(d) |> Async.StartAsTask) descriptors
                                let! t = Task.WhenAll(seq) |> Async.AwaitTask
-                               return t |> Seq.ofArray
+                               return t
             // if not empty
             | _ -> let seq = Seq.map (fun (p : IProduct) -> azureProvider.Get(p.ProductId)) products
                    let! t = Task.WhenAll(seq) |> Async.AwaitTask
-                   return t |> Seq.ofArray
+                   return t
     }

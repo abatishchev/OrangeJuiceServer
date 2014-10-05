@@ -140,7 +140,7 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task Search_Should_Return_Null_When_AwsProvider_Search_Returns_Empty_Sequence()
 		{
 			var awsProviderMock = new Mock<IAwsProductProvider>();
-			awsProviderMock.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(Enumerable.Empty<ProductDescriptor>());
+			awsProviderMock.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(new ProductDescriptor[0]);
 
 			IProductService productService = CreateService(awsProviderMock.Object);
 
@@ -274,7 +274,7 @@ namespace OrangeJuice.Server.Test.Services
 				repository ?? CreateRepository(Enumerable.Empty<IProduct>()));
 		}
 
-		private static IAwsProductProvider CreateAwsProvider(IEnumerable<ProductDescriptor> descriptors = null)
+		private static IAwsProductProvider CreateAwsProvider(ProductDescriptor[] descriptors = null)
 		{
 			var awsProvider = new Mock<IAwsProductProvider>();
 			awsProvider.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(descriptors ?? new[] { new ProductDescriptor() });
