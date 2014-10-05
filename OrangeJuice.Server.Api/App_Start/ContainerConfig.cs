@@ -195,16 +195,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterFactory<ProductDescriptor, XElement, XmlProductDescriptorFactory>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IPipeline, XmlAwsClientPipeline>(
-				typeof(XmlAwsClientPipeline).Name, // named registration
+			container.RegisterType<IAwsClient, FSharp.Services.XmlAwsClient>(
 				new DefaultLifetimeManager());
-
-			container.RegisterType<IAwsClient, XmlAwsClient>(
-				new DefaultLifetimeManager(),
-				new InjectionConstructor(container.Resolve(typeof(IPipeline), typeof(XmlAwsClientPipeline).Name)));  // named registration
-				
-			//container.RegisterType<IAwsClient, Services.FSharp.XmlAwsClient>(
-			//	new DefaultLifetimeManager());
 
 			container.RegisterType<IAwsProductProvider, AwsProductProvider>(
 				new DefaultLifetimeManager());
@@ -216,7 +208,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IProductRepository, EntityProductRepository>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IProductService, CachingCloudProductService>(
+			container.RegisterType<IProductService, FSharp.Services.CachingCloudProductService>(
 				new HierarchicalLifetimeManager());
 			#endregion
 
