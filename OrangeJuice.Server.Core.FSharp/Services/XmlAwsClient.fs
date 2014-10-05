@@ -1,4 +1,4 @@
-﻿namespace OrangeJuice.Server.Services.FSharp
+﻿namespace OrangeJuice.Server.FSharp.Services
 
 open System.Threading.Tasks
 open System.Xml.Linq

@@ -1,4 +1,4 @@
-﻿namespace OrangeJuice.Server.Services.FSharp
+﻿namespace OrangeJuice.Server.FSharp.Services
 
 open System
 open System.Threading.Tasks
@@ -17,11 +17,11 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
             productRepository.Dispose()
 
     member this.Search(barcode : string, barcodeType : BarcodeType) = async {
-        let products = productRepository.Search(barcode, barcodeType) |> List.ofSeq
-        match products with
+        let products = productRepository.Search(barcode, barcodeType)
+        match products |> List.ofSeq with
             // if empty
             | [] -> let! descriptors = awsProvider.Search(barcode, barcodeType) |> Async.AwaitTask
-                    match products with
+                    match descriptors |> List.ofSeq with
                         // if empty
                         | [] -> return null
                         // if not empty
