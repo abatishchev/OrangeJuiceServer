@@ -122,7 +122,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IBlobNameResolver, JsonBlobNameResolver>(
+			container.RegisterType<IBlobNameResolver, FSharp.Services.JsonBlobNameResolver>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IBlobClient, AzureBlobClient>(
