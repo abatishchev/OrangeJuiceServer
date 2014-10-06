@@ -29,7 +29,7 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
                         | [] -> return null
                         // if not empty
                         | _ -> let save = fun (descriptor : ProductDescriptor) -> async {
-                                          let! productId = productRepository.Save(barcode, barcodeType) |> Async.AwaitTask
+                                          let! productId = productRepository.Save(barcode, barcodeType, descriptor.SourceProductId) |> Async.AwaitTask
                                           descriptor.ProductId <- productId
                                           azureProvider.Save(descriptor) |> Async.AwaitIAsyncResult |> Async.Ignore |> ignore
                                           return descriptor

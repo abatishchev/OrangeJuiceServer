@@ -153,17 +153,20 @@ namespace OrangeJuice.Server.FSharp.Test.Services
 		}
 
 		[TestMethod]
-		public async Task Search_Should_Pass_Barcode_BarcodeType_To_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence()
+		public async Task Search_Should_Pass_Barcode_BarcodeType_SourceProductId_To_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence()
 		{
 			// Arrange
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
+			const string sourceProductId = "ASIN";
+
+			IAwsProductProvider awsProvider = CreateAwsProvider(new[] { new ProductDescriptor { SourceProductId = sourceProductId } });
 
 			var repositoryMock = new Mock<IProductRepository>();
 			repositoryMock.Setup(r => r.Search(barcode, barcodeType)).Returns(Enumerable.Empty<IProduct>());
-			repositoryMock.Setup(r => r.Save(barcode, barcodeType)).ReturnsAsync(Guid.NewGuid());
+			repositoryMock.Setup(r => r.Save(barcode, barcodeType, sourceProductId)).ReturnsAsync(Guid.NewGuid());
 
-			IProductService productService = CreateService(repository: repositoryMock.Object);
+			IProductService productService = CreateService(awsProvider, repository: repositoryMock.Object);
 
 			// Act
 			(await productService.Search(barcode, barcodeType)).ToArray();
@@ -178,12 +181,13 @@ namespace OrangeJuice.Server.FSharp.Test.Services
 			// Arrange
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
+			const string sourceProductId = "ASIN";
 
 			ProductDescriptor descriptor = new ProductDescriptor();
 
 			var repositoryMock = new Mock<IProductRepository>();
 			repositoryMock.Setup(r => r.Search(barcode, barcodeType)).Returns(Enumerable.Empty<IProduct>);
-			repositoryMock.Setup(r => r.Save(barcode, barcodeType)).ReturnsAsync(Guid.NewGuid());
+			repositoryMock.Setup(r => r.Save(barcode, barcodeType, sourceProductId)).ReturnsAsync(Guid.NewGuid());
 
 			IAzureProductProvider azureProvider = CreateAzureProvider(descriptor);
 
@@ -205,11 +209,13 @@ namespace OrangeJuice.Server.FSharp.Test.Services
 			// Arrange
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
+			const string sourceProductId = "ASIN";
+
 			Guid productId = Guid.NewGuid();
 
 			var repositoryMock = new Mock<IProductRepository>();
 			repositoryMock.Setup(r => r.Search(barcode, barcodeType)).Returns(Enumerable.Empty<IProduct>);
-			repositoryMock.Setup(r => r.Save(barcode, barcodeType)).ReturnsAsync(productId);
+			repositoryMock.Setup(r => r.Save(barcode, barcodeType, sourceProductId)).ReturnsAsync(productId);
 
 			var azureProviderMock = new Mock<IAzureProductProvider>();
 

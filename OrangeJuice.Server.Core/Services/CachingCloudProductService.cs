@@ -36,7 +36,7 @@ namespace OrangeJuice.Server.Services
 			if (products.Any())
 				return await Task.WhenAll(products.Select(p => _azureProvider.Get(p.ProductId)));
 
-			ProductDescriptor[] descriptors = (await _awsProvider.Search(barcode, barcodeType)).ToArray();
+			ProductDescriptor[] descriptors = await _awsProvider.Search(barcode, barcodeType);
 			if (!descriptors.Any())
 				return null;
 

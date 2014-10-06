@@ -159,11 +159,13 @@ namespace OrangeJuice.Server.Test.Services
 			const BarcodeType barcodeType = BarcodeType.EAN;
 			const string sourceProductId = "ASIN";
 
+			IAwsProductProvider awsProvider = CreateAwsProvider(new[] { new ProductDescriptor { SourceProductId = sourceProductId } });
+
 			var repositoryMock = new Mock<IProductRepository>();
 			repositoryMock.Setup(r => r.Search(barcode, barcodeType)).Returns(Enumerable.Empty<IProduct>());
 			repositoryMock.Setup(r => r.Save(barcode, barcodeType, sourceProductId)).ReturnsAsync(Guid.NewGuid());
 
-			IProductService productService = CreateService(repository: repositoryMock.Object);
+			IProductService productService = CreateService(awsProvider, repository: repositoryMock.Object);
 
 			// Act
 			(await productService.Search(barcode, barcodeType)).ToArray();
