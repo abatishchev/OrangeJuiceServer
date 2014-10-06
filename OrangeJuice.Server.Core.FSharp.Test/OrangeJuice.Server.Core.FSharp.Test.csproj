@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1979B465-E5E3-4BB9-847E-CB96FC3372E3}</ProjectGuid>
+    <ProjectGuid>{4F4FFF53-F268-4624-AD9E-56BEF3FCBAA3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OrangeJuice.Server.Test</RootNamespace>
-    <AssemblyName>OrangeJuice.Server.Core.Test</AssemblyName>
+    <RootNamespace>OrangeJuice.Server.FSharp.Test</RootNamespace>
+    <AssemblyName>OrangeJuice.Server.Core.FSharp.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -107,27 +107,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Configuration\AwsOptionsFactoryTest.cs" />
-    <Compile Include="Configuration\AzureOptionsFactoryTest.cs" />
-    <Compile Include="Configuration\ConfigurationEnvironmentProviderTest.cs" />
-    <Compile Include="Data\ApiVersionFactoryTest.cs" />
-    <Compile Include="Data\XmlProductDescriptorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AwsAlgorithmFactoryTest.cs" />
-    <Compile Include="Services\AwsArgumentBuilderTest.cs" />
-    <Compile Include="Services\AwsProductProviderTest.cs" />
-    <Compile Include="Services\AwsUrlBuilderTest.cs" />
-    <Compile Include="Services\AzureProductProviderTest.cs" />
-    <Compile Include="Services\CachingCloudProductServiceTest.cs" />
-    <Compile Include="Services\JsonBlobNameResolverTest.cs" />
-    <Compile Include="Services\XmlAwsClientTest.cs" />
-    <Compile Include="Services\XmlItemSelectorTest.cs" />
-    <Compile Include="Threading\IntervalRequestSchedulerTest.cs" />
-    <Compile Include="UtcDateTimeProviderTest.cs" />
-    <Compile Include="Validation\XmlRequestValidatorTest.cs" />
-    <Compile Include="Web\EncodedQueryBuilderTest.cs" />
-    <Compile Include="Web\PercentUrlEncoderTest.cs" />
-    <Compile Include="Web\PercentUrlEncodingPipelineTest.cs" />
+    <Compile Include="Services\CachingCloudProductServiceFSharpTest.cs" />
+    <Compile Include="Services\JsonBlobNameResolverFSharpTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -138,9 +120,13 @@
       <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Name>OrangeJuice.Server.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OrangeJuice.Server.Core\OrangeJuice.Server.Core.csproj">
-      <Project>{1a416347-6b6c-4551-bfdb-fbe19b121d74}</Project>
-      <Name>OrangeJuice.Server.Core</Name>
+    <ProjectReference Include="..\OrangeJuice.Server.Core.FSharp\OrangeJuice.Server.Core.FSharp.fsproj">
+      <Project>{b4f40d09-a483-49b7-aa29-cd14d188736f}</Project>
+      <Name>OrangeJuice.Server.Core.FSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrangeJuice.Server.Core.Test\OrangeJuice.Server.Core.Test.csproj">
+      <Project>{1979B465-E5E3-4BB9-847E-CB96FC3372E3}</Project>
+      <Name>OrangeJuice.Server.Core.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

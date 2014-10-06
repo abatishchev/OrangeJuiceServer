@@ -2,12 +2,13 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using OrangeJuice.Server.FSharp.Services;
 using OrangeJuice.Server.Services;
 
-namespace OrangeJuice.Server.Test.Services
+namespace OrangeJuice.Server.FSharp.Test.Services
 {
 	[TestClass]
-	public class JsonBlobNameResolverTest
+	public class JsonBlobNameResolverFSharpTest
 	{
 		[TestMethod]
 		public void Resolve_Should_Append_Json()
