@@ -48,8 +48,9 @@ namespace OrangeJuice.Server.Services
 		#region Methods
 		private async Task<ProductDescriptor> Save(ProductDescriptor descriptor, string barcode, BarcodeType barcodeType)
 		{
-			Guid productId = await _productRepository.Save(barcode, barcodeType);
+			Guid productId = await _productRepository.Save(barcode, barcodeType, descriptor.SourceProductId);
 			descriptor.ProductId = productId;
+			
 			await _azureProvider.Save(descriptor);
 
 			return descriptor;
