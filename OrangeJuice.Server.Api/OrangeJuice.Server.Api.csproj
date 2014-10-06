@@ -64,6 +64,9 @@
     <Reference Include="FluentValidation.WebApi">
       <HintPath>..\packages\FluentValidation.WebApi.5.4.0.0\lib\Net45\FluentValidation.WebApi.dll</HintPath>
     </Reference>
+    <Reference Include="FSharp.Core, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="IFactory, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IFactory.0.1.2\lib\net45\IFactory.dll</HintPath>
