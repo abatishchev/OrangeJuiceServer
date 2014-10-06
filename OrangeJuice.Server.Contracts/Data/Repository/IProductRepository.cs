@@ -8,6 +8,6 @@ namespace OrangeJuice.Server.Data.Repository
 	{
 		IEnumerable<IProduct> Search(string barcode, BarcodeType barcodeType);
 
-		Task<Guid> Save(string barcode, BarcodeType barcodeType);
+		Task<Guid> Save(string barcode, BarcodeType barcodeType, string sourceProductId);
 	}
 }

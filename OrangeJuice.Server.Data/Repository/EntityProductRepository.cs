@@ -26,9 +26,9 @@ namespace OrangeJuice.Server.Data.Repository
 			return _productUnit.Search(barcode, barcodeType).ToArray();
 		}
 
-		public async Task<Guid> Save(string barcode, BarcodeType barcodeType)
+		public async Task<Guid> Save(string barcode, BarcodeType barcodeType, string sourceProductId)
 		{
-			Product product = await _productUnit.Add(barcode, barcodeType);
+			Product product = await _productUnit.Add(barcode, barcodeType, sourceProductId);
 			return product.ProductId;
 		}
 		#endregion

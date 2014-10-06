@@ -103,8 +103,9 @@
     <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_GetErrorXml.sql" />
     <Build Include="Schemas\dbo\Programmability\Stored Procedures\ELMAH_LogError.sql" />
     <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_ELMAH_Error_ErrorId.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_Products_ProductId.sql" />
     <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_Users_UserId.sql" />
-    <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
+    <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Products_SourceProductId.sql" />
     <Build Include="Schemas\dbo\Tables\Constraints\Unique\UX_Users_Email.sql" />
     <Build Include="Schemas\dbo\Tables\ELMAH_Error.sql" />
     <Build Include="Schemas\dbo\Tables\Indexes\IX_ELMAH_Error_App_Time_Seq.sql" />
@@ -118,6 +119,5 @@
     <Build Include="Schemas\dbo\Tables\Products.sql" />
     <Build Include="Schemas\dbo\Tables\Ratings.sql" />
     <Build Include="Schemas\dbo\Tables\Users.sql" />
-    <Build Include="Schemas\dbo\Tables\Constraints\Default\DF_Products_ProductId.sql" />
   </ItemGroup>
 </Project>

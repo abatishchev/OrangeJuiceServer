@@ -19,13 +19,14 @@ namespace OrangeJuice.Server.Data.Unit
 		#endregion
 
 		#region IProductUnit members
-		public Task<Product> Add(string barcode, BarcodeType barcodeType)
+		public Task<Product> Add(string barcode, BarcodeType barcodeType, string sourceProductId)
 		{
 			Product product = _container.Products.Add(
 				new Product
 				{
 					Barcode = barcode,
-					BarcodeType = barcodeType
+					BarcodeType = barcodeType,
+					SourceProductId = sourceProductId
 				});
 
 			_container.SaveChanges();

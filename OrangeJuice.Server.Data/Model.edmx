@@ -12,6 +12,7 @@
           <Property Name="ProductId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Barcode" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="BarcodeType" Type="tinyint" Nullable="false" />
+          <Property Name="SourceProductId" Type="char" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="Ratings">
           <Key>
@@ -93,6 +94,7 @@
           <Property Name="Barcode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
           <Property Name="BarcodeType" Type="Model.BarcodeType" Nullable="false" />
           <NavigationProperty Name="Ratings" Relationship="Model.FK_Ratings_Products" FromRole="Product" ToRole="Rating" cg:SetterAccess="Internal" />
+          <Property Name="SourceProductId" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -151,6 +153,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="Model.Product">
               <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="SourceProductId" ColumnName="SourceProductId" />
                 <ScalarProperty Name="BarcodeType" ColumnName="BarcodeType" />
                 <ScalarProperty Name="Barcode" ColumnName="Barcode" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />

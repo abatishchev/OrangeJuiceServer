@@ -6,8 +6,10 @@ namespace OrangeJuice.Server.Data
 	{
 		Guid ProductId { get; }
 
-		string Barcode { get; set; }
+		string Barcode { get; }
 
-		BarcodeType BarcodeType { get; set; }
+		BarcodeType BarcodeType { get; }
+
+		string SourceProductId { get; }
 	}
 }
