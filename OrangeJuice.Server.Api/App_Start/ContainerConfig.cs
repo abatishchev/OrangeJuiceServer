@@ -31,6 +31,10 @@ using OrangeJuice.Server.Web;
 
 using DefaultLifetimeManager = Microsoft.Practices.Unity.HierarchicalLifetimeManager;
 
+using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
+using JsonBlobNameResolver = OrangeJuice.Server.FSharp.Services.JsonBlobNameResolver;
+using XmlAwsClient = OrangeJuice.Server.FSharp.Services.XmlAwsClient;
+
 namespace OrangeJuice.Server.Api
 {
 	internal static class ContainerConfig
@@ -122,7 +126,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IBlobNameResolver, FSharp.Services.JsonBlobNameResolver>(
+			container.RegisterType<IBlobNameResolver, JsonBlobNameResolver>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IBlobClient, AzureBlobClient>(
@@ -195,7 +199,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterFactory<ProductDescriptor, XElement, XmlProductDescriptorFactory>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IAwsClient, FSharp.Services.XmlAwsClient>(
+			container.RegisterType<IAwsClient, XmlAwsClient>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IAwsProductProvider, AwsProductProvider>(
@@ -208,7 +212,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IProductRepository, EntityProductRepository>(
 				new HierarchicalLifetimeManager());
 
-			container.RegisterType<IProductService, FSharp.Services.CachingCloudProductService>(
+			container.RegisterType<IProductService, CachingCloudProductService>(
 				new HierarchicalLifetimeManager());
 			#endregion
 
