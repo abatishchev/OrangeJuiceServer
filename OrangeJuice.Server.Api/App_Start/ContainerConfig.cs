@@ -23,7 +23,6 @@ using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Container;
 using OrangeJuice.Server.Data.Repository;
-using OrangeJuice.Server.Data.Unit;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
 using OrangeJuice.Server.Validation;
@@ -92,9 +91,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IConfigurationProvider, AzureConfigurationProvider>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
-				new DefaultLifetimeManager(),
-				new InjectionConstructor(typeof(IConfigurationProvider)));
+		    container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
+		        new DefaultLifetimeManager());
 
 			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(
 				new DefaultLifetimeManager());
@@ -155,7 +153,9 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new DefaultLifetimeManager(),
-				new InjectionConstructor(container.Resolve(typeof(IPipeline<string>), typeof(PercentUrlEncodingPipeline).Name)));  // named registration
+				new InjectionConstructor(
+                    container.Resolve(typeof(IPipeline<string>),
+                    typeof(PercentUrlEncodingPipeline).Name)));  // named registration
 
 			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
 				new DefaultLifetimeManager());
@@ -206,9 +206,6 @@ namespace OrangeJuice.Server.Api
 				new DefaultLifetimeManager());
 			#endregion
 
-			container.RegisterType<IProductUnit, EntityProductUnit>(
-				new HierarchicalLifetimeManager());
-
 			container.RegisterType<IProductRepository, EntityProductRepository>(
 				new HierarchicalLifetimeManager());
 
@@ -217,23 +214,13 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region UserController
-			container.RegisterType<IUserUnit, EntityUserUnit>(
-				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IModelContainer)));
-
-			container.RegisterType<IUserRepository, EntityUserRepository>(
-				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IUserUnit)));
+		    container.RegisterType<IUserRepository, EntityUserRepository>(
+		        new HierarchicalLifetimeManager());
 			#endregion
 
 			#region RatingController
-			container.RegisterType<IRatingUnit, EntityRatingUnit>(
-				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IModelContainer)));
-
 			container.RegisterType<IRatingRepository, EntityRatingRepository>(
-				new HierarchicalLifetimeManager(),
-				new InjectionConstructor(typeof(IRatingUnit)));
+				new HierarchicalLifetimeManager());
 			#endregion
 		}
 

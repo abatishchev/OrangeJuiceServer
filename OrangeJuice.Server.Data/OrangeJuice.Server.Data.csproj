@@ -83,12 +83,6 @@
     <Compile Include="Repository\EntityProductRepository.cs" />
     <Compile Include="Repository\EntityRatingRepository.cs" />
     <Compile Include="Repository\EntityUserRepository.cs" />
-    <Compile Include="Unit\EntityProductUnit.cs" />
-    <Compile Include="Unit\IProductUnit.cs" />
-    <Compile Include="Unit\EntityUserUnit.cs" />
-    <Compile Include="Unit\EntityRatingUnit.cs" />
-    <Compile Include="Unit\IRatingUnit.cs" />
-    <Compile Include="Unit\IUserUnit.cs" />
     <Compile Include="User.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

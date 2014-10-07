@@ -1,47 +1,47 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using OrangeJuice.Server.Data.Unit;
+using OrangeJuice.Server.Data.Container;
 
 namespace OrangeJuice.Server.Data.Repository
 {
 	public sealed class EntityUserRepository : IUserRepository
 	{
 		#region Fields
-		private readonly IUserUnit _userUnit;
+		private readonly IModelContainer _db;
 		#endregion
 
 		#region Ctor
-		public EntityUserRepository(IUserUnit userUnit)
+		public EntityUserRepository(IModelContainer db)
 		{
-			_userUnit = userUnit;
+			_db = db;
 		}
 		#endregion
 
 		#region IUserRepository members
 		public async Task<IUser> Register(string email, string name)
 		{
-			User user = new User
-			{
-				Email = email,
-				Name = name
-			};
+			User user = _db.Users.Add(
+				new User
+				{
+					Email = email,
+					Name = name
+				});
 
-			await _userUnit.Add(user);
-
+			await _db.SaveChangesAsync();
 			return user;
 		}
 
-		public async Task<IUser> Search(Guid userGuid)
+		public async Task<IUser> Search(Guid userId)
 		{
-			return await _userUnit.Get(userGuid);
+			return await _db.Users.FindAsync(userId);
 		}
 		#endregion
 
 		#region IDisposable members
 		public void Dispose()
 		{
-			_userUnit.Dispose();
+			_db.Dispose();
 		}
 		#endregion
 	}

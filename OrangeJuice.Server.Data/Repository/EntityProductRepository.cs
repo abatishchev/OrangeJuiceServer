@@ -3,32 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using OrangeJuice.Server.Data.Unit;
+using OrangeJuice.Server.Data.Container;
 
 namespace OrangeJuice.Server.Data.Repository
 {
 	public sealed class EntityProductRepository : IProductRepository
 	{
 		#region Fields
-		private readonly IProductUnit _productUnit;
+		private readonly IModelContainer _db;
 		#endregion
 
 		#region Ctor
-		public EntityProductRepository(IProductUnit productUnit)
+		public EntityProductRepository(IModelContainer db)
 		{
-			_productUnit = productUnit;
+			_db = db;
 		}
 		#endregion
 
 		#region IProductRepository members
 		public IEnumerable<IProduct> Search(string barcode, BarcodeType barcodeType)
 		{
-			return _productUnit.Search(barcode, barcodeType).ToArray();
+			return _db.Products.Where(p => p.Barcode == barcode && p.BarcodeType == barcodeType);
 		}
 
 		public async Task<Guid> Save(string barcode, BarcodeType barcodeType, string sourceProductId)
 		{
-			Product product = await _productUnit.Add(barcode, barcodeType, sourceProductId);
+			Product product = _db.Products.Add(
+				new Product
+				{
+					Barcode = barcode,
+					BarcodeType = barcodeType,
+					SourceProductId = sourceProductId
+				});
+
+			await _db.SaveChangesAsync();
+
 			return product.ProductId;
 		}
 		#endregion
@@ -36,7 +45,7 @@ namespace OrangeJuice.Server.Data.Repository
 		#region IDisposable members
 		public void Dispose()
 		{
-			_productUnit.Dispose();
+			_db.Dispose();
 		}
 		#endregion
 	}

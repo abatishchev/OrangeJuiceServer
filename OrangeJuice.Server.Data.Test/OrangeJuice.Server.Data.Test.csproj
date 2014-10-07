@@ -91,9 +91,6 @@
     <Compile Include="EntityFactory.cs" />
     <Compile Include="ModelContainerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\EntityRatingRepositoryTest.cs" />
-    <Compile Include="Repository\EntityUserRepositoryTest.cs" />
-    <Compile Include="Repository\EntityProductRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
