@@ -12,13 +12,13 @@ namespace OrangeJuice.Server.Test.Configuration
 	public class ConfigurationEnvironmentProviderTest
 	{
 		[TestMethod]
-		public void GetCurrentEnvironment_Should_Pass_KeyName_Environment_To_ConfigurationProvider_GetValue()
+		public void GetCurrentEnvironment_Should_Pass_KeyName_EnvironmentName_To_ConfigurationProvider_GetValue()
 		{
 			// Arrange
 			const string environment = Environment.Testing;
 
 			var configurationProviderMock = new Mock<IConfigurationProvider>();
-			configurationProviderMock.Setup(p => p.GetValue("Environment")).Returns(environment);
+			configurationProviderMock.Setup(p => p.GetValue("environment:Name")).Returns(environment);
 
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			environmentProvider.GetCurrentEnvironment();
 
 			// Assert
-			configurationProviderMock.Verify(p => p.GetValue("Environment"));
+			configurationProviderMock.VerifyAll();
 		}
 
 		[TestMethod]
@@ -36,7 +36,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			const string expected = Environment.Testing;
 
 			var configurationProviderMock = new Mock<IConfigurationProvider>();
-			configurationProviderMock.Setup(p => p.GetValue("Environment")).Returns(expected);
+			configurationProviderMock.Setup(p => p.GetValue(It.IsAny<string>())).Returns(expected);
 
 			IEnvironmentProvider environmentProvider = new ConfigurationEnvironmentProvider(configurationProviderMock.Object);
 
