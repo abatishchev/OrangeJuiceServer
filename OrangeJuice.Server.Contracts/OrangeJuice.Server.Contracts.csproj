@@ -75,6 +75,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppVersion.cs" />
+    <Compile Include="Configuration\AwsOptions.cs" />
+    <Compile Include="Configuration\AzureOptions.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\ApiVersion.cs" />
