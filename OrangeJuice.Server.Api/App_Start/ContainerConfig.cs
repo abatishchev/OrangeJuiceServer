@@ -75,6 +75,12 @@ namespace OrangeJuice.Server.Api
 				typeof(AppVersionHandler).Name, // named registration
 				new DefaultLifetimeManager());
 
+			container.RegisterType<ITraceRequestRepository, EntityTraceRequestRepository>(
+			  new DefaultLifetimeManager());
+			container.RegisterType<DelegatingHandler, TraceRequestHandler>(
+				typeof(TraceRequestHandler).Name, // named registration
+				new DefaultLifetimeManager());
+
 			// Services
 			container.RegisterType<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>(
 				new DefaultLifetimeManager());
@@ -91,8 +97,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IConfigurationProvider, AzureConfigurationProvider>(
 				new DefaultLifetimeManager());
 
-		    container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
-		        new DefaultLifetimeManager());
+			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
+				new DefaultLifetimeManager());
 
 			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(
 				new DefaultLifetimeManager());
@@ -154,8 +160,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlEncoder, PercentUrlEncoder>(
 				new DefaultLifetimeManager(),
 				new InjectionConstructor(
-                    container.Resolve(typeof(IPipeline<string>),
-                    typeof(PercentUrlEncodingPipeline).Name)));  // named registration
+					container.Resolve(typeof(IPipeline<string>),
+					typeof(PercentUrlEncodingPipeline).Name)));  // named registration
 
 			container.RegisterType<IQueryBuilder, EncodedQueryBuilder>(
 				new DefaultLifetimeManager());
@@ -169,9 +175,9 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IUrlBuilder, AwsUrlBuilder>(
 				new DefaultLifetimeManager());
 
-            container.RegisterType<IScheduler>(
-		        new ContainerControlledLifetimeManager(),
-                new InjectionFactory(c => Scheduler.Default));
+			container.RegisterType<IScheduler>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionFactory(c => Scheduler.Default));
 
 			container.RegisterType<IRequestScheduler, IntervalRequestScheduler>(
 				new ContainerControlledLifetimeManager()); // singleton
@@ -214,8 +220,8 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region UserController
-		    container.RegisterType<IUserRepository, EntityUserRepository>(
-		        new HierarchicalLifetimeManager());
+			container.RegisterType<IUserRepository, EntityUserRepository>(
+				new HierarchicalLifetimeManager());
 			#endregion
 
 			#region RatingController

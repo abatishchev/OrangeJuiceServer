@@ -153,6 +153,7 @@
     <Compile Include="Controllers\ControllerExtensions.cs" />
     <Compile Include="Filters\ValidModelActionFilter.cs" />
     <Compile Include="Handlers\CurrentRequestHandler.cs" />
+    <Compile Include="Handlers\TraceRequestHandler.cs" />
     <Compile Include="Models\ProductSearchCriteria.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RatingsSearchCriteria.cs" />

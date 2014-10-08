@@ -86,6 +86,7 @@
     <Compile Include="Data\ProductDescriptorSearchCriteria.cs" />
     <Compile Include="Data\Repository\IProductRepository.cs" />
     <Compile Include="Data\Repository\IRatingRepository.cs" />
+    <Compile Include="Data\Repository\ITraceRequestRepository.cs" />
     <Compile Include="Data\Repository\IUserRepository.cs" />
     <Compile Include="Filters\IFilter.cs" />
     <Compile Include="IAssemblyProvider.cs" />
