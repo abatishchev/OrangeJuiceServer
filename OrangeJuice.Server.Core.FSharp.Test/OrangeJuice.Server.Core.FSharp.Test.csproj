@@ -85,6 +85,7 @@
     <Compile Include="Services\AzureProductProviderFSharpTest.cs" />
     <Compile Include="Services\CachingCloudProductServiceFSharpTest.cs" />
     <Compile Include="Services\JsonBlobNameResolverFSharpTest.cs" />
+    <Compile Include="Validation\XmlRequestValidatorFSharpTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

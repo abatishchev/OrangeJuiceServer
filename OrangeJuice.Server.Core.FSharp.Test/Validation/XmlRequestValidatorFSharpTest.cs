@@ -5,12 +5,12 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using OrangeJuice.Server.Validation;
+using OrangeJuice.Server.FSharp.Validation;
 
-namespace OrangeJuice.Server.Test.Validation
+namespace OrangeJuice.Server.FSharp.Test.Validation
 {
 	[TestClass]
-	public class XmlRequestValidatorTest
+	public class XmlRequestValidatorFSharpTest
 	{
 		[TestMethod]
 		public void IsValid_Should_Return_False_When_Item_Is_Null()
