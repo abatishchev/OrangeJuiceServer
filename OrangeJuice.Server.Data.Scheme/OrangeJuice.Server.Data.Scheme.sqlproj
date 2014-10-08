@@ -59,6 +59,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v12.0\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Schemas" />
     <Folder Include="Schemas\dbo" />
     <Folder Include="Schemas\dbo\Programmability" />
@@ -66,17 +67,17 @@
     <Folder Include="Schemas\dbo\Programmability\Stored Procedures" />
     <Folder Include="Schemas\dbo\Tables" />
     <Folder Include="Schemas\dbo\Tables\Constraints" />
+    <Folder Include="Schemas\dbo\Tables\Constraints\Unique" />
+    <Folder Include="Schemas\dbo\Tables\Constraints\Default" />
     <Folder Include="Schemas\dbo\Tables\Indexes" />
     <Folder Include="Schemas\dbo\Tables\Keys" />
     <Folder Include="Schemas\dbo\Tables\Keys\Foregin" />
     <Folder Include="Schemas\dbo\Tables\Keys\Primary" />
     <Folder Include="Schemas\dbo\Views" />
     <Folder Include="Schemas\dbo\Views\Indexes" />
+    <Folder Include="Schemas\dm" />
     <Folder Include="Scripts" />
     <Folder Include="Security" />
-    <Folder Include="Schemas\dbo\Tables\Constraints\Unique" />
-    <Folder Include="Schemas\dbo\Tables\Constraints\Default" />
-    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -119,5 +120,7 @@
     <Build Include="Schemas\dbo\Tables\Products.sql" />
     <Build Include="Schemas\dbo\Tables\Ratings.sql" />
     <Build Include="Schemas\dbo\Tables\Users.sql" />
+    <Build Include="Schemas\dm\Requests.sql" />
+    <Build Include="Schemas\dm.sql" />
   </ItemGroup>
 </Project>
