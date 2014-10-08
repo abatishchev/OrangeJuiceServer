@@ -30,6 +30,7 @@ using OrangeJuice.Server.Web;
 
 using DefaultLifetimeManager = Microsoft.Practices.Unity.HierarchicalLifetimeManager;
 
+using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProvider;
 using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
 using JsonBlobNameResolver = OrangeJuice.Server.FSharp.Services.JsonBlobNameResolver;
 using XmlAwsClient = OrangeJuice.Server.FSharp.Services.XmlAwsClient;

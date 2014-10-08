@@ -51,6 +51,7 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <Compile Include="Services\AzureProductProvider.fs" />
     <Compile Include="Services\CachingCloudProductService.fs" />
     <Compile Include="Services\JsonBlobNameResolver.fs" />
     <Compile Include="Services\XmlAwsClient.fs" />

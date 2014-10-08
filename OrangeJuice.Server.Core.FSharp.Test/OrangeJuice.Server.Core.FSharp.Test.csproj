@@ -82,6 +82,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AzureProductProviderFSharpTest.cs" />
     <Compile Include="Services\CachingCloudProductServiceFSharpTest.cs" />
     <Compile Include="Services\JsonBlobNameResolverFSharpTest.cs" />
   </ItemGroup>
