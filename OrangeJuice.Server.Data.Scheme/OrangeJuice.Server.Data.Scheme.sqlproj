@@ -60,6 +60,8 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Scripts" />
+    <Folder Include="Security" />
     <Folder Include="Schemas" />
     <Folder Include="Schemas\dbo" />
     <Folder Include="Schemas\dbo\Programmability" />
@@ -76,8 +78,13 @@
     <Folder Include="Schemas\dbo\Views" />
     <Folder Include="Schemas\dbo\Views\Indexes" />
     <Folder Include="Schemas\dm" />
-    <Folder Include="Scripts" />
-    <Folder Include="Security" />
+    <Folder Include="Schemas\dm\Tables\Constraints" />
+    <Folder Include="Schemas\dm\Tables\Constraints\Defaults" />
+    <Folder Include="Schemas\dm\Tables\Constraints\Keys" />
+    <Folder Include="Schemas\dm\Tables" />
+    <Folder Include="Schemas\dm\Tables\Indexes" />
+    <Folder Include="Schemas\dm\Tables\Keys" />
+    <Folder Include="Schemas\dm\Tables\Keys\Primary" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -120,7 +127,9 @@
     <Build Include="Schemas\dbo\Tables\Products.sql" />
     <Build Include="Schemas\dbo\Tables\Ratings.sql" />
     <Build Include="Schemas\dbo\Tables\Users.sql" />
-    <Build Include="Schemas\dm\Requests.sql" />
     <Build Include="Schemas\dm.sql" />
+    <Build Include="Schemas\dm\Tables\Constraints\Keys\PK_Requests.sql" />
+    <Build Include="Schemas\dm\Tables\Constraints\Defaults\DF_Requests_RequestId.sql" />
+    <Build Include="Schemas\dm\Tables\Requests.sql" />
   </ItemGroup>
 </Project>
