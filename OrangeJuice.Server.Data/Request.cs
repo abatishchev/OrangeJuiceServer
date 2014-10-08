@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Data
     
     public partial class Request
     {
-        public System.Guid RequestId { get; set; }
+        public System.Guid RequestId { get; internal set; }
         public string Url { get; set; }
         public string HttpMethod { get; set; }
         public string IpAddress { get; set; }
