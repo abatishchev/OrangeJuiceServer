@@ -40,7 +40,7 @@ namespace OrangeJuice.Server.Services
 			if (!descriptors.Any())
 				return null;
 
-			return await Task.WhenAll(descriptors.Select(d => Save(d, barcode, barcodeType)));
+			return await Task.WhenAll(descriptors.Select(async d => await Save(d, barcode, barcodeType)));
 		}
 		#endregion
 
