@@ -4,7 +4,7 @@ namespace OrangeJuice.Server.Configuration
 {
 	public sealed class ConfigurationEnvironmentProvider : IEnvironmentProvider
 	{
-		private const string KeyName = "Environment";
+		private const string KeyName = "environment:Name";
 
 		private readonly IConfigurationProvider _configurationProvider;
 

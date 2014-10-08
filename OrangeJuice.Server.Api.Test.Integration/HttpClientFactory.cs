@@ -10,7 +10,7 @@ namespace OrangeJuice.Server.Api.Test.Integration
 
 		private static string GetUrl()
 		{
-			return System.Configuration.ConfigurationManager.AppSettings["test:EnvironmentUrl"];
+			return System.Configuration.ConfigurationManager.AppSettings["environment:Url"];
 		}
 
 		public static HttpClient Create()

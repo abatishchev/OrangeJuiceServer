@@ -51,9 +51,12 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <Compile Include="Services\AwsAlgorithmFactory.fs" />
+    <Compile Include="Services\AzureProductProvider.fs" />
     <Compile Include="Services\CachingCloudProductService.fs" />
     <Compile Include="Services\JsonBlobNameResolver.fs" />
     <Compile Include="Services\XmlAwsClient.fs" />
+    <Compile Include="Services\XmlRequestValidator.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -76,11 +79,4 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

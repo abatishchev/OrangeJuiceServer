@@ -25,14 +25,16 @@ using OrangeJuice.Server.Data.Context;
 using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
-using OrangeJuice.Server.Validation;
 using OrangeJuice.Server.Web;
 
 using DefaultLifetimeManager = Microsoft.Practices.Unity.HierarchicalLifetimeManager;
 
+using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFactory;
+using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProvider;
 using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
 using JsonBlobNameResolver = OrangeJuice.Server.FSharp.Services.JsonBlobNameResolver;
 using XmlAwsClient = OrangeJuice.Server.FSharp.Services.XmlAwsClient;
+using XmlRequestValidator = OrangeJuice.Server.FSharp.Validation.XmlRequestValidator;
 
 namespace OrangeJuice.Server.Api
 {
