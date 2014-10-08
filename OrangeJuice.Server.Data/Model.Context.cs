@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Data
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ModelContainer : DbContext
+    public partial class ModelContext : DbContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -24,5 +24,6 @@ namespace OrangeJuice.Server.Data
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
     }
 }

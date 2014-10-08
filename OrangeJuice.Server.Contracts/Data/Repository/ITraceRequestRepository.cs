@@ -1,7 +1,9 @@
-﻿namespace OrangeJuice.Server.Data.Repository
+﻿using System.Threading.Tasks;
+
+namespace OrangeJuice.Server.Data.Repository
 {
 	public interface ITraceRequestRepository
 	{
-		void Add(string url, string method, string ipAddress, string userAgent);
+		Task Add(string url, string httpMethod, string ipAddress, string userAgent);
 	}
 }

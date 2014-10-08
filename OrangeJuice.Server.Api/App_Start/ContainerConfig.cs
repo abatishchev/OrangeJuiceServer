@@ -21,7 +21,7 @@ using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Container;
+using OrangeJuice.Server.Data.Context;
 using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
@@ -108,7 +108,7 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Data
-			container.RegisterType<IModelContainer, ModelContainer>(
+			container.RegisterType<IModelContext, ModelContext>(
 				new HierarchicalLifetimeManager());
 			#endregion
 

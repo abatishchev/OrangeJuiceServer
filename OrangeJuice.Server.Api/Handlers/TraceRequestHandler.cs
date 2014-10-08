@@ -19,14 +19,14 @@ namespace OrangeJuice.Server.Api.Handlers
 
 		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
-			Task.Factory.StartNew(() => TraceRequest(request), cancellationToken);
+			Task.Factory.StartNew(async () => await TraceRequest(request), cancellationToken);
 
 			return base.SendAsync(request, cancellationToken);
 		}
 
-		private void TraceRequest(HttpRequestMessage request)
+		private Task TraceRequest(HttpRequestMessage request)
 		{
-			_repository.Add(request.RequestUri.ToString(),
+			return _repository.Add(request.RequestUri.ToString(),
 				request.Method.Method,
 				((System.Web.HttpContextWrapper)request.Properties[MsHttpContextKey]).Request.UserHostAddress,
 				request.Headers.UserAgent.ToString());

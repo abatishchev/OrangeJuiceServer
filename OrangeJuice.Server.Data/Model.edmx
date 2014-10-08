@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Products">
           <Key>
             <PropertyRef Name="ProductId" />
@@ -31,6 +31,16 @@
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="varchar" MaxLength="254" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="254" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Requests">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Url" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="HttpMethod" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="IpAddress" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="UserAgent" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <Association Name="FK_Ratings_Products">
           <End Role="Products" Type="Self.Products" Multiplicity="1" />
@@ -60,6 +70,7 @@
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dm" store:Type="Tables" />
           <AssociationSet Name="FK_Ratings_Products" Association="Self.FK_Ratings_Products">
             <End Role="Products" EntitySet="Products" />
             <End Role="Ratings" EntitySet="Ratings" />
@@ -73,7 +84,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
-        <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true" cg:TypeAccess="Public">
+        <EntityContainer Name="ModelContext" annotation:LazyLoadingEnabled="true" cg:TypeAccess="Public">
           <EntitySet Name="Products" EntityType="Model.Product" />
           <EntitySet Name="Ratings" EntityType="Model.Rating" />
           <EntitySet Name="Users" EntityType="Model.User" />
@@ -85,6 +96,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Rating" EntitySet="Ratings" />
           </AssociationSet>
+          <EntitySet Name="Requests" EntityType="Model.Request" />
         </EntityContainer>
         <EntityType Name="Product">
           <Key>
@@ -142,6 +154,16 @@
           </ReferentialConstraint>
         </Association>
         <EnumType Name="BarcodeType" UnderlyingType="Byte" cg:ExternalTypeName="OrangeJuice.Server.Data.BarcodeType" />
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="Guid" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="HttpMethod" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="IpAddress" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="UserAgent" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -149,7 +171,7 @@
       <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
         <Alias Key="Model" Value="Model" />
         <Alias Key="Target" Value="Model.Store" />
-        <EntityContainerMapping CdmEntityContainer="ModelContainer" StorageEntityContainer="ModelStoreContainer">
+        <EntityContainerMapping CdmEntityContainer="ModelContext" StorageEntityContainer="ModelStoreContainer">
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="Model.Product">
               <MappingFragment StoreEntitySet="Products">
@@ -176,6 +198,17 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requests">
+            <EntityTypeMapping TypeName="Model.Request">
+              <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
+                <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
+                <ScalarProperty Name="HttpMethod" ColumnName="HttpMethod" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

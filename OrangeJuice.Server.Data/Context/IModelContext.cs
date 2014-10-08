@@ -3,11 +3,11 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 
-namespace OrangeJuice.Server.Data.Container
+namespace OrangeJuice.Server.Data.Context
 {
-	public interface IModelContainer : IDisposable
+	public interface IModelContext : IDisposable
 	{
-		#region Properties
+		#region Schema dbo
 		DbSet<Product> Products { get; }
 
 		DbSet<Rating> Ratings { get; }
@@ -15,10 +15,12 @@ namespace OrangeJuice.Server.Data.Container
 		DbSet<User> Users { get; }
 		#endregion
 
+		#region Schema dm
+		DbSet<Request> Requests { get; }
+		#endregion
+
 		#region Methods
 		DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
-
-		int SaveChanges();
 
 		Task<int> SaveChangesAsync();
 		#endregion

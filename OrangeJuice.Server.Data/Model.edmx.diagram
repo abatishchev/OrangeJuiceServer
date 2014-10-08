@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="Model.User" Width="1.5" PointX="5.375" PointY="0.5" />
         <AssociationConnector Association="Model.FK_Ratings_Products" />
         <AssociationConnector Association="Model.FK_Ratings_Users" />
+        <EntityTypeShape EntityType="Model.Request" Width="1.5" PointX="0.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

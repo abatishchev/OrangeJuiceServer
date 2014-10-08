@@ -53,8 +53,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Container\IModelContainer.cs" />
-    <Compile Include="Container\ModelContainer.cs" />
+    <Compile Include="Context\IModelContext.cs" />
+    <Compile Include="Context\ModelContext.cs" />
     <Compile Include="Entities\Rating.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\User.cs" />
@@ -83,6 +83,10 @@
     <Compile Include="Repository\EntityProductRepository.cs" />
     <Compile Include="Repository\EntityRatingRepository.cs" />
     <Compile Include="Repository\EntityUserRepository.cs" />
+    <Compile Include="Repository\EntityTraceRequestRepository.cs" />
+    <Compile Include="Request.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

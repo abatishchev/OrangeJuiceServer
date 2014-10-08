@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Data.Test
 			providerMock.Setup(p => p.GetValue("sql:ConnectionString")).Returns("name=Test");
 
 			// Act
-			DbContext context = new ModelContainer(providerMock.Object);
+			DbContext context = new ModelContext(providerMock.Object);
 
 			// Assert
 			providerMock.VerifyAll();

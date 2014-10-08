@@ -5,18 +5,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
-using OrangeJuice.Server.Data.Container;
+using OrangeJuice.Server.Data.Context;
 
 namespace OrangeJuice.Server.Data.Repository
 {
 	public sealed class EntityRatingRepository : IRatingRepository
 	{
 		#region Fields
-		private readonly IModelContainer _db;
+		private readonly IModelContext _db;
 		#endregion
 
 		#region Ctor
-		public EntityRatingRepository(IModelContainer db)
+		public EntityRatingRepository(IModelContext db)
 		{
 			_db = db;
 		}
