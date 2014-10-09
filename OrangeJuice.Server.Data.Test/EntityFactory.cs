@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Data.Test
 		{
 			try
 			{
-				using (var container = new ModelContext(new AppSettingsConfigurationProvider()))
+				using (var container = new ModelContext(new ConfigurationConnectionStringProvider(new AppSettingsConfigurationProvider())))
 				{
 					var entity = container.Set<T>().FirstOrDefault();
 					if (entity == null)

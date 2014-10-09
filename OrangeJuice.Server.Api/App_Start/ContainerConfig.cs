@@ -93,9 +93,8 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container));
 			ServiceCenter.Current = c => container.Resolve<IServiceProvider>();
-			container.RegisterType<ErrorLog, ConfigurationEntityErrorLog>(
-				new DefaultLifetimeManager(),
-				new InjectionConstructor(typeof(IConfigurationProvider)));
+			container.RegisterFactory<ErrorLog, ErrorLogFactory>(
+				new DefaultLifetimeManager());
 
 			container.RegisterType<HttpRequestMessage>(
 				new DefaultLifetimeManager(),
@@ -110,6 +109,9 @@ namespace OrangeJuice.Server.Api
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
+				new DefaultLifetimeManager());
+
+			container.RegisterType<IConnectionStringProvider, ConfigurationConnectionStringProvider>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(

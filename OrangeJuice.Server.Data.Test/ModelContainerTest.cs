@@ -12,11 +12,11 @@ namespace OrangeJuice.Server.Data.Test
 	public class ModelContainerTest
 	{
 		[TestMethod]
-		public void Ctor_Should_Call_ConfigurationProvider_Get()
+		public void Ctor_Should_Call_ConnectionStringProvider_GetDefaultConnectionString()
 		{
 			// Arrange
-			var providerMock = new Mock<IConfigurationProvider>();
-			providerMock.Setup(p => p.GetValue("sql:ConnectionString")).Returns("name=Test");
+			var providerMock = new Mock<IConnectionStringProvider>();
+			providerMock.Setup(p => p.GetDefaultConnectionString()).Returns("connectionString");
 
 			// Act
 			DbContext context = new ModelContext(providerMock.Object);

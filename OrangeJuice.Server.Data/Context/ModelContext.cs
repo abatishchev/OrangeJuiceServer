@@ -6,8 +6,8 @@ namespace OrangeJuice.Server.Data
 {
 	public partial class ModelContext : IModelContext
 	{
-		public ModelContext(IConfigurationProvider configurationProvider)
-			: base(configurationProvider.GetValue("sql:ConnectionString"))
+		public ModelContext(IConnectionStringProvider connectionStringProvider)
+			: base(connectionStringProvider.GetDefaultConnectionString())
 		{
 		}
 	}
