@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Web.Http;
@@ -7,7 +8,7 @@ using System.Web.Http.Validation;
 using System.Xml.Linq;
 
 using Drum;
-
+using Elmah;
 using Factory;
 
 using FluentValidation;
@@ -22,6 +23,7 @@ using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Context;
+using OrangeJuice.Server.Data.Logging;
 using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
@@ -86,6 +88,14 @@ namespace OrangeJuice.Server.Api
 			// Services
 			container.RegisterType<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>(
 				new DefaultLifetimeManager());
+
+			container.RegisterType<IServiceProvider, ContainerServiceProvider>(
+				new ContainerControlledLifetimeManager(),
+				new InjectionConstructor(container));
+			ServiceCenter.Current = c => container.Resolve<IServiceProvider>();
+			container.RegisterType<ErrorLog, ConfigurationEntityErrorLog>(
+				new DefaultLifetimeManager(),
+				new InjectionConstructor(typeof(IConfigurationProvider)));
 
 			container.RegisterType<HttpRequestMessage>(
 				new DefaultLifetimeManager(),
@@ -261,6 +271,22 @@ namespace OrangeJuice.Server.Api
 							.RegisterType<T>(
 								lifetimeManager,
 								new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));
+		}
+	}
+
+	// TODO: extract into nuget package
+	internal class ContainerServiceProvider : IServiceProvider
+	{
+		private readonly IUnityContainer _container;
+
+		public ContainerServiceProvider(IUnityContainer container)
+		{
+			_container = container;
+		}
+
+		public object GetService(Type serviceType)
+		{
+			return _container.Resolve(serviceType);
 		}
 	}
 }

@@ -36,6 +36,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Contrib.EntityFramework">
+      <HintPath>..\packages\Elmah.Contrib.EntityFramework.1.1.1\lib\net45\Elmah.Contrib.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -95,6 +101,7 @@
     <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
     <Compile Include="Data\Configuration\AzureDbConfiguration.cs" />
+    <Compile Include="Data\Logging\ConfigurationEntityErrorLog.cs" />
     <Compile Include="Data\StringProductDescriptorConverter.cs" />
     <Compile Include="Data\XmlProductDescriptorFactory.cs" />
     <Compile Include="EnumerableExtensions.cs" />
