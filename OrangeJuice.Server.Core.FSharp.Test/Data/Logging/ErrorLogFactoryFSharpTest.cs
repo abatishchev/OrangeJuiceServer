@@ -8,12 +8,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using OrangeJuice.Server.Configuration;
-using OrangeJuice.Server.Data.Logging;
+using OrangeJuice.Server.FSharp.Data.Logging;
 
-namespace OrangeJuice.Server.Test.Data.Logging
+namespace OrangeJuice.Server.FSharp.Test.Data.Logging
 {
 	[TestClass]
-	public class ErrorLogFactoryTest
+	public class ErrorLogFactoryFSharpTest
 	{
 		#region Test methods
 		[TestMethod]

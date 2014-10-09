@@ -36,6 +36,7 @@ namespace OrangeJuice.Server.Data
 			return _assemblyProvider.GetExecutingAssembly()
 									.GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
 		}
+		
 		private string GetEnvironment()
 		{
 			return _environmentProvider.GetCurrentEnvironment();

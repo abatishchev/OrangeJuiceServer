@@ -14,8 +14,10 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
     interface IProductService with
         member this.Get(productId : Guid) : Task<ProductDescriptor> =
             azureProvider.Get(productId)
+        
         member this.Search(barcode : string, barcodeType : BarcodeType) : Task<ProductDescriptor[]> =
             this.Search(barcode, barcodeType) |> Async.StartAsTask
+        
         member this.Dispose() : unit =
             productRepository.Dispose()
 

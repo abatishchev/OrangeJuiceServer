@@ -9,17 +9,14 @@ open OrangeJuice.Server
 type XmlRequestValidator() =
     interface IValidator<XElement> with
         member this.IsValid(item : XElement) : bool =
-            this.IsValid(item)
+            if item = null then false
+            else
+                let nm = new XmlNamespaceManager(new NameTable())
+                nm.AddNamespace("x", item.Name.Namespace.ToString()) |> ignore
 
-    member this.IsValid(item : XElement) =
-        if item = null then false
-        else
-            let nm = new XmlNamespaceManager(new NameTable())
-            nm.AddNamespace("x", item.Name.Namespace.ToString()) |> ignore
-            let toBool e =
-                match e with
-                | null -> None
-                | e -> Some(XElement.op_Explicit e : bool)
+                let toBool e =
+                    match e with
+                    | null -> None
+                    | e -> Some(XElement.op_Explicit e : bool)
 
-            let isValid = item.XPathSelectElement("x:Request/x:IsValid", nm) |> toBool
-            isValid.Value
+                (item.XPathSelectElement("x:Request/x:IsValid", nm) |> toBool).Value
