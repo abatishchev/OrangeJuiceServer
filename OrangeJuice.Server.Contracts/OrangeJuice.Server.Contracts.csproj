@@ -92,6 +92,7 @@
     <Compile Include="Data\Repository\IRatingRepository.cs" />
     <Compile Include="Data\Repository\ITraceRequestRepository.cs" />
     <Compile Include="Data\Repository\IUserRepository.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Filters\IFilter.cs" />
     <Compile Include="IAssemblyProvider.cs" />
     <Compile Include="IConverter.cs" />
