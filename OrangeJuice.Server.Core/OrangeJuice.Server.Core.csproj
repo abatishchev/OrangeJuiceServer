@@ -99,7 +99,6 @@
     <Compile Include="Configuration\AzureConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationConnectionStringProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
-    <Compile Include="Configuration\Environment.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
     <Compile Include="Data\Configuration\AzureDbConfiguration.cs" />
     <Compile Include="Data\Logging\ErrorLogFactory.cs" />
