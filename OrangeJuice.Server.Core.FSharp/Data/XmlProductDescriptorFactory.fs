@@ -16,14 +16,15 @@ type XmlProductDescriptorFactory() =
         nm.AddNamespace("x", element.Name.Namespace.ToString()) |> ignore
 
         let toString e =
-            match e with
+            let o = match e with
                 | null -> None
                 | e -> Some(XElement.op_Explicit e : string)
+            if o.IsSome then o.Value else null
 
         new ProductDescriptor(
-            SourceProductId = (element.XPathSelectElement("x:ASIN", nm) |> toString).Value,
-            Title = (element.XPathSelectElement("x:ItemAttributes/x:Title", nm) |> toString).Value,
-            Brand = (element.XPathSelectElement("x:ItemAttributes/x:Brand", nm) |> toString).Value,
-            SmallImageUrl =  (element.XPathSelectElement("x:SmallImage/x:URL", nm) |> toString).Value,
-            MediumImageUrl = (element.XPathSelectElement("x:MediumImage/x:URL", nm) |> toString).Value,
-            LargeImageUrl = (element.XPathSelectElement("x:LargeImage/x:URL", nm) |> toString).Value)
+            SourceProductId = (element.XPathSelectElement("x:ASIN", nm) |> toString),
+            Title = (element.XPathSelectElement("x:ItemAttributes/x:Title", nm) |> toString),
+            Brand = (element.XPathSelectElement("x:ItemAttributes/x:Brand", nm) |> toString),
+            SmallImageUrl =  (element.XPathSelectElement("x:SmallImage/x:URL", nm) |> toString),
+            MediumImageUrl = (element.XPathSelectElement("x:MediumImage/x:URL", nm) |> toString),
+            LargeImageUrl = (element.XPathSelectElement("x:LargeImage/x:URL", nm) |> toString))
