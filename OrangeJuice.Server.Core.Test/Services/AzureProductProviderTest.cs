@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -13,11 +13,10 @@ using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class AzureProductProviderTest
 	{
 		#region Get
-		[TestMethod]
+		[Fact]
 		public async Task Get_Should_Pass_AzureOptions_ProductContainer_And_ProductId_To_AzureClient_GetBlobFromContainer()
 		{
 			// Arrange
@@ -36,7 +35,7 @@ namespace OrangeJuice.Server.Test.Services
 			Mock.Get(client).Verify(c => c.GetBlobFromContainer(containerName, productId.ToString()), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Get_Should_Pass_Content_Returned_By_AzureClient_GetBlobFromContainer_To_Converter_ConvertBack()
 		{
 			// Arrange
@@ -57,7 +56,7 @@ namespace OrangeJuice.Server.Test.Services
 			converterMock.Verify(c => c.Convert(content), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Get_Should_Return_ProductDescriptor_Returned_By_Converter()
 		{
 			// Arrange
@@ -78,7 +77,7 @@ namespace OrangeJuice.Server.Test.Services
 			actual.Should().Be(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Get_Should_Return_Null_When_AzureClient_GetBlobFromContainer_Returns_Null()
 		{
 			// Arrange
@@ -96,7 +95,7 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Save
-		[TestMethod]
+		[Fact]
 		public async Task Save_Should_Pass_ProductDescriptor_To_Converter_ConvertBack()
 		{
 			// Arrange
@@ -113,7 +112,7 @@ namespace OrangeJuice.Server.Test.Services
 			Mock.Get(converter).Verify(c => c.ConvertBack(descriptor), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Set_Should_Pass_Content_Returned_By_Converter_ConvertBack_To_AzureClient_PutBlobToContainer()
 		{
 			// Arrange
@@ -134,7 +133,7 @@ namespace OrangeJuice.Server.Test.Services
 			Mock.Get(client).Verify(c => c.PutBlobToContainer(It.IsAny<string>(), It.IsAny<string>(), content), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Set_Should_Pass_AzureOptions_ProductContainer_ProductId_And_ProductDescriptor_ProductId_To_AzureClient_PutBlobToContainer()
 		{
 			// Arrange

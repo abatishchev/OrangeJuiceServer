@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Data.Logging
 		{
 			switch (_environmentProvider.GetCurrentEnvironment())
 			{
-				case Environment.Production:
+				case EnvironmentName.Production:
 					return new Elmah.Contrib.EntityFramework.EntityErrorLog(_connectionStringProvider.GetDefaultConnectionString());
 				default:
 					return new TraceErrorLog();

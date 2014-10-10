@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 using Moq;
 
@@ -6,10 +6,9 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Test.Configuration
 {
-	[TestClass]
 	public class ConfigurationConnectionStringProviderTest
 	{
-		[TestMethod]
+		[Fact]
 		public void GetDefaultConnectionString_Should_Call_ConfigurationProvider_Get()
 		{
 			// Arrange
@@ -25,7 +24,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			configurationProviderMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void GetDefaultConnectionString_Should_Pass_Sql_ConnectionString_ConfigurationProvider_Get()
 		{
 			// Arrange

@@ -77,7 +77,7 @@
     <Compile Include="AppVersion.cs" />
     <Compile Include="Configuration\AwsOptions.cs" />
     <Compile Include="Configuration\AzureOptions.cs" />
-    <Compile Include="Configuration\Environment.cs" />
+    <Compile Include="Configuration\EnvironmentName.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IConnectionStringProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />

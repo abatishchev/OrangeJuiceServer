@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -14,11 +14,10 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class AwsUrlBuilderTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void BuildUrl_Should_Pass_SearchCriteria_To_ArgumentBuilder()
 		{
 			// Arrange
@@ -36,7 +35,7 @@ namespace OrangeJuice.Server.Test.Services
 			argumentBuilderMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void BuildUrl_Should_Return_Url_Having_Signature()
 		{
 			// Arrange

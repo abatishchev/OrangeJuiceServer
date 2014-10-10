@@ -2,7 +2,7 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -12,11 +12,10 @@ using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class AwsArgumentBuilderTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void BuildArgs_Should_Add_Default_Arguments()
 		{
 			// Arrange
@@ -40,7 +39,7 @@ namespace OrangeJuice.Server.Test.Services
 				.And.Contain("Timestamp", timestamp);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void BuildArgs_Should_Call_DateTimeProvider_GetNow()
 		{
 			// Arrange
@@ -55,7 +54,7 @@ namespace OrangeJuice.Server.Test.Services
 			dateTimeProviderMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void BuildArgs_Should_Call_DateTimeProvider_Format()
 		{
 			// Arrange
@@ -70,7 +69,7 @@ namespace OrangeJuice.Server.Test.Services
 			dateTimeProviderMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void BuildArgs_Should_Pass_Result_Of_DateTimeProvider_GetNow_To_DateTimeProvider_Format()
 		{
 			// Arrange

@@ -2,16 +2,15 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Test.Configuration
 {
-	[TestClass]
 	public class AwsOptionsFactoryTest
 	{
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_AwsOptions_Having_All_Properties()
 		{
 			// Arrange

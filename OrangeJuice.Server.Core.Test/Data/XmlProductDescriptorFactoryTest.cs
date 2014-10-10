@@ -3,17 +3,16 @@ using System.Xml.Linq;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Test.Data
 {
-	[TestClass]
 	public class XmlProductDescriptorFactoryTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_ProductDescriptor_Having_SourceProductId()
 		{
 			// Arrange
@@ -30,7 +29,7 @@ namespace OrangeJuice.Server.Test.Data
 			descriptor.SourceProductId.Should().Be(id);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_ProductDescriptor_Having_Attributes()
 		{
 			// Arrange
@@ -49,7 +48,7 @@ namespace OrangeJuice.Server.Test.Data
 			descriptor.Brand.Should().Be(brand);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_ProductDescriptor_Having_Images()
 		{
 			// Arrange

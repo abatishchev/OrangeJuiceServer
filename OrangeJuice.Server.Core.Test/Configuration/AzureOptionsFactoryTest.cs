@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -8,10 +8,9 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Test.Configuration
 {
-	[TestClass]
 	public class AzureOptionsFactoryTest
 	{
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_AzureOptions_Having_BlobConnectionString_Returnd_By_ConfigurationProvider_Get()
 		{
 			// Arrange
@@ -30,7 +29,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			actual.Should().Be(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_AzureOptions_Having_ProductContainerName_Returnd_By_ConfigurationProvider_Get()
 		{
 			// Arrange
@@ -49,7 +48,7 @@ namespace OrangeJuice.Server.Test.Configuration
 			actual.Should().Be(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_AzureOptions_Having_All_Properties()
 		{
 			// Arrange

@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Linq;
 
-
 using FluentAssertions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 
+using Xunit;
+
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class XmlAwsClientTest
 	{
-	    [TestMethod]
+	    [Fact]
 	    public void GetItems_Should_Execute_Pipeline()
 	    {
 	        // Arrange

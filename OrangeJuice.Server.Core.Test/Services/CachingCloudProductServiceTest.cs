@@ -4,23 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using FluentAssertions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Services;
 
+using Xunit.Extensions;
+
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class CachingCloudProductServiceTest
 	{
 		#region Search
-		[TestMethod]
-		public async Task Search_Should_Pass_Barcode_BarcodeType_To_ProductRepository_Search()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Pass_Barcode_BarcodeType_To_ProductRepository_Search(Type type)
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -29,7 +29,7 @@ namespace OrangeJuice.Server.Test.Services
 			var repositoryMock = new Mock<IProductRepository>();
 			repositoryMock.Setup(r => r.Search(barcode, barcodeType)).Returns(Enumerable.Empty<IProduct>());
 
-			IProductService productService = CreateService(repository: repositoryMock.Object);
+			IProductService productService = CreateService(type, repository: repositoryMock.Object);
 
 			// Act
 			await productService.Search(barcode, barcodeType);
@@ -38,8 +38,10 @@ namespace OrangeJuice.Server.Test.Services
 			repositoryMock.VerifyAll();
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Pass_ProductId_Of_Product_Returned_By_ProductRepository_Search_To_AzureProductProvider_Get()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Pass_ProductId_Of_Product_Returned_By_ProductRepository_Search_To_AzureProductProvider_Get(Type type)
 		{
 			// Arrange
 			Guid productId = Guid.NewGuid();
@@ -48,7 +50,7 @@ namespace OrangeJuice.Server.Test.Services
 			var azureProviderMock = new Mock<IAzureProductProvider>();
 			azureProviderMock.Setup(p => p.Get(productId)).ReturnsAsync(new ProductDescriptor());
 
-			IProductService productService = CreateService(azureProvider: azureProviderMock.Object, repository: repository);
+			IProductService productService = CreateService(type, azureProvider: azureProviderMock.Object, repository: repository);
 
 			// Act
 			(await productService.Search("barcode", BarcodeType.EAN)).ToArray();
@@ -57,8 +59,10 @@ namespace OrangeJuice.Server.Test.Services
 			azureProviderMock.VerifyAll();
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Not_Empty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Not_Empty_Sequence(Type type)
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
@@ -70,7 +74,7 @@ namespace OrangeJuice.Server.Test.Services
 			var azureProviderMock = new Mock<IAzureProductProvider>();
 			azureProviderMock.Setup(p => p.Get(productId)).ReturnsAsync(expected);
 
-			IProductService productService = CreateService(azureProvider: azureProviderMock.Object, repository: repositoryMock.Object);
+			IProductService productService = CreateService(type, azureProvider: azureProviderMock.Object, repository: repositoryMock.Object);
 
 			// Act
 			var actual = await productService.Search("barcode", BarcodeType.EAN);
@@ -79,8 +83,10 @@ namespace OrangeJuice.Server.Test.Services
 			actual.Should().BeEquivalentTo(new[] { expected });
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Not_Call_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Not_Empty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Not_Call_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Not_Empty_Sequence(Type type)
 		{
 			// Arrange
 			var repositoryMock = new Mock<IProductRepository>();
@@ -88,7 +94,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			var awsProvider = new Mock<IAwsProductProvider>();
 
-			IProductService productService = CreateService(awsProvider.Object, repository: repositoryMock.Object);
+			IProductService productService = CreateService(type, awsProvider.Object, repository: repositoryMock.Object);
 
 			// Act
 			await productService.Search("barcode", BarcodeType.EAN);
@@ -97,8 +103,10 @@ namespace OrangeJuice.Server.Test.Services
 			awsProvider.Verify(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>()), Times.Never);
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Not_Call_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Empty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Not_Call_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
 			var repositoryMock = new Mock<IProductRepository>();
@@ -106,7 +114,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			var azureProviderMock = new Mock<IAzureProductProvider>();
 
-			IProductService productService = CreateService(azureProvider: azureProviderMock.Object, repository: repositoryMock.Object);
+			IProductService productService = CreateService(type, azureProvider: azureProviderMock.Object, repository: repositoryMock.Object);
 
 			// Act
 			await productService.Search("Barcode", BarcodeType.EAN);
@@ -115,8 +123,10 @@ namespace OrangeJuice.Server.Test.Services
 			azureProviderMock.Verify(p => p.Get(It.IsAny<Guid>()), Times.Never);
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Pass_Barcode_BarcodeType_To_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Empty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Pass_Barcode_BarcodeType_To_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -127,7 +137,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			IAwsProductProvider awsProvider = CreateAwsProvider();
 
-			IProductService productService = CreateService(awsProvider, repository: repositoryMock.Object);
+			IProductService productService = CreateService(type, awsProvider, repository: repositoryMock.Object);
 
 			// Act
 			await productService.Search(barcode, barcodeType);
@@ -136,13 +146,15 @@ namespace OrangeJuice.Server.Test.Services
 			Mock.Get(awsProvider).VerifyAll();
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Return_Null_When_AwsProvider_Search_Returns_Empty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Return_Null_When_AwsProvider_Search_Returns_Empty_Sequence(Type type)
 		{
 			var awsProviderMock = new Mock<IAwsProductProvider>();
 			awsProviderMock.Setup(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(new ProductDescriptor[0]);
 
-			IProductService productService = CreateService(awsProviderMock.Object);
+			IProductService productService = CreateService(type, awsProviderMock.Object);
 
 			// Act
 			var descriptors = await productService.Search("barcode", BarcodeType.EAN);
@@ -151,8 +163,10 @@ namespace OrangeJuice.Server.Test.Services
 			descriptors.Should().BeNull();
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Pass_Barcode_BarcodeType_SourceProductId_To_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Pass_Barcode_BarcodeType_SourceProductId_To_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -165,7 +179,7 @@ namespace OrangeJuice.Server.Test.Services
 			repositoryMock.Setup(r => r.Search(barcode, barcodeType)).Returns(Enumerable.Empty<IProduct>());
 			repositoryMock.Setup(r => r.Save(barcode, barcodeType, sourceProductId)).ReturnsAsync(Guid.NewGuid());
 
-			IProductService productService = CreateService(awsProvider, repository: repositoryMock.Object);
+			IProductService productService = CreateService(type, awsProvider, repository: repositoryMock.Object);
 
 			// Act
 			(await productService.Search(barcode, barcodeType)).ToArray();
@@ -174,8 +188,10 @@ namespace OrangeJuice.Server.Test.Services
 			repositoryMock.VerifyAll();
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Pass_ProductDescriptor_Returned_By_AwsProductProvider_Search_To_AzureProductProvider_Save_When_ProductRepository_Search_ReturnsEmpty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Pass_ProductDescriptor_Returned_By_AwsProductProvider_Search_To_AzureProductProvider_Save_When_ProductRepository_Search_ReturnsEmpty_Sequence(Type type)
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -193,7 +209,7 @@ namespace OrangeJuice.Server.Test.Services
 			var awsProvider = new Mock<IAwsProductProvider>();
 			awsProvider.Setup(p => p.Search(barcode, barcodeType)).ReturnsAsync(new[] { descriptor });
 
-			IProductService productService = CreateService(awsProvider.Object, azureProvider, repositoryMock.Object);
+			IProductService productService = CreateService(type, awsProvider.Object, azureProvider, repositoryMock.Object);
 
 			// Act
 			(await productService.Search(barcode, barcodeType)).ToArray();
@@ -202,8 +218,10 @@ namespace OrangeJuice.Server.Test.Services
 			Mock.Get(azureProvider).VerifyAll();
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Pass_Product_To_AzureProductProvider_Save_Having_ProductId_Returned_By_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Pass_Product_To_AzureProductProvider_Save_Having_ProductId_Returned_By_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -218,7 +236,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			var azureProviderMock = new Mock<IAzureProductProvider>();
 
-			IProductService productService = CreateService(azureProvider: azureProviderMock.Object, repository: repositoryMock.Object);
+			IProductService productService = CreateService(type, azureProvider: azureProviderMock.Object, repository: repositoryMock.Object);
 
 			// Act
 			await productService.Search(barcode, barcodeType);
@@ -227,8 +245,10 @@ namespace OrangeJuice.Server.Test.Services
 			azureProviderMock.VerifyAll();
 		}
 
-		[TestMethod]
-		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Empty_Sequence()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
 			var expected = new[] { new ProductDescriptor(), new ProductDescriptor() };
@@ -238,7 +258,7 @@ namespace OrangeJuice.Server.Test.Services
 
 			var awsProvider = CreateAwsProvider(expected);
 
-			IProductService productService = CreateService(awsProvider, repository: repositoryMock.Object);
+			IProductService productService = CreateService(type, awsProvider, repository: repositoryMock.Object);
 
 			// Act
 			var actual = await productService.Search("barcode", BarcodeType.EAN);
@@ -249,8 +269,10 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Get
-		[TestMethod]
-		public async Task Get_Should_Return_ProductDescriptor_Returned_By_AzureProductProvider_Get()
+		[Theory]
+		[InlineData(typeof(CachingCloudProductService))]
+		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		public async Task Get_Should_Return_ProductDescriptor_Returned_By_AzureProductProvider_Get(Type type)
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
@@ -261,7 +283,7 @@ namespace OrangeJuice.Server.Test.Services
 			var azureProviderMock = new Mock<IAzureProductProvider>();
 			azureProviderMock.Setup(p => p.Get(productId)).ReturnsAsync(expected);
 
-			IProductService productService = CreateService(azureProvider: azureProviderMock.Object, repository: repository);
+			IProductService productService = CreateService(type, azureProvider: azureProviderMock.Object, repository: repository);
 
 			// Act
 			ProductDescriptor actual = await productService.Get(productId);
@@ -272,9 +294,9 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IProductService CreateService(IAwsProductProvider awsProvider = null, IAzureProductProvider azureProvider = null, IProductRepository repository = null)
+		private static IProductService CreateService(Type type, IAwsProductProvider awsProvider = null, IAzureProductProvider azureProvider = null, IProductRepository repository = null)
 		{
-			return new CachingCloudProductService(
+			return (IProductService)Activator.CreateInstance(type,
 				awsProvider ?? CreateAwsProvider(new[] { new ProductDescriptor() }),
 				azureProvider ?? CreateAzureProvider(),
 				repository ?? CreateRepository(Enumerable.Empty<IProduct>()));

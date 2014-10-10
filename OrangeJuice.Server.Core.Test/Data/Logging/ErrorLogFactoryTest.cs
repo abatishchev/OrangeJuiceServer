@@ -1,29 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-
+using Elmah;
+using Factory;
 using FluentAssertions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 using OrangeJuice.Server.Configuration;
+using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Logging;
+
+using Xunit.Extensions;
 
 namespace OrangeJuice.Server.Test.Data.Logging
 {
-	[TestClass]
 	public class ErrorLogFactoryTest
 	{
-		#region Test methods
-		[TestMethod]
-		public void Create_Should_Return_EntityErrorLog_When_Environment_Is_Production()
+		#region Tests
+		[Theory]
+		[InlineData(typeof(ErrorLogFactory))]
+		[InlineData(typeof(FSharp.Data.Logging.ErrorLogFactory))]
+		public void Create_Should_Return_EntityErrorLog_When_Environment_Is_Production(Type type)
 		{
 			// Arrange
-			var environmentProvider = CreateEnvironmentProvider(Environment.Production);
+			var environmentProvider = CreateEnvironmentProvider(EnvironmentName.Production);
 			var connectionStringProvider = CreateConnectionStringProvider();
 
-			var factory = new ErrorLogFactory(environmentProvider, connectionStringProvider);
+			var factory = CreateFactory(type, environmentProvider, connectionStringProvider);
 
 			// Act
 			var errorLog = factory.Create();
@@ -32,16 +35,18 @@ namespace OrangeJuice.Server.Test.Data.Logging
 			errorLog.Should().BeOfType<Elmah.Contrib.EntityFramework.EntityErrorLog>();
 		}
 
-		[TestMethod]
-		public void Create_Should_Return_TraceErrorLog_When_Environment_Is_Not_Production()
+		[Theory]
+		[InlineData(typeof(ErrorLogFactory))]
+		[InlineData(typeof(FSharp.Data.Logging.ErrorLogFactory))]
+		public void Create_Should_Return_TraceErrorLog_When_Environment_Is_Not_Production(Type type)
 		{
-			foreach (string environment in GetAllEnvironments().Except(Environment.Production))
+			foreach (string environment in GetAllEnvironments().Except(EnvironmentName.Production))
 			{
 				// Arrange
 				var environmentProvider = CreateEnvironmentProvider(environment);
 				var connectionStringProvider = Mock.Of<IConnectionStringProvider>();
 
-				var factory = new ErrorLogFactory(environmentProvider, connectionStringProvider);
+				var factory = CreateFactory(type, environmentProvider, connectionStringProvider);
 
 				// Act
 				var errorLog = factory.Create();
@@ -53,7 +58,13 @@ namespace OrangeJuice.Server.Test.Data.Logging
 		#endregion
 
 		#region Helper methods
-		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = Environment.Testing)
+		private static IFactory<ErrorLog> CreateFactory(Type type, IEnvironmentProvider environmentProvider, IConnectionStringProvider connectionStringProvider)
+		{
+			return (IFactory<ErrorLog>)Activator.CreateInstance(type,
+				environmentProvider, connectionStringProvider);
+		}
+
+		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = EnvironmentName.Testing)
 		{
 			var providerMock = new Mock<IEnvironmentProvider>();
 			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);

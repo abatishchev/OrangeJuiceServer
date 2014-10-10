@@ -1,43 +1,49 @@
-﻿using FluentAssertions;
+﻿using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Factory;
 
+using FluentAssertions;
 using Moq;
 
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 
+using Xunit.Extensions;
+
 namespace OrangeJuice.Server.Test.Data
 {
-	[TestClass]
 	public class ApiVersionFactoryTest
 	{
 		#region Create
-		[TestMethod]
-		public void Create_Should_Call_AssemblyProvider_GetExecutingAssembly()
+		[Theory]
+		[InlineData(typeof(ApiVersionFactory))]
+		[InlineData(typeof(FSharp.Data.ApiVersionFactory))]
+		public void Create_Should_Call_AssemblyProvider_GetExecutingAssembly(Type type)
 		{
 			// Arrange
 			var providerMock = new Mock<IAssemblyProvider>();
 			providerMock.Setup(p => p.GetExecutingAssembly()).Returns(typeof(ApiVersionFactoryTest).Assembly);
 
-			var factory = CreateFactory(providerMock.Object);
+			var factory = CreateFactory(type, providerMock.Object);
 
 			// Act
 			factory.Create();
 
 			// Assert
-			providerMock.Verify(p => p.GetExecutingAssembly(), Times.Once);
+			providerMock.VerifyAll();
 		}
 
-		[TestMethod]
-		public void Create_Should_Return_AviVersion_Having_Environment_Returned_By_EnvironmentProvider_GetCurrentEnvironment()
+		[Theory]
+		[InlineData(typeof(ApiVersionFactory))]
+		[InlineData(typeof(FSharp.Data.ApiVersionFactory))]
+		public void Create_Should_Return_AviVersion_Having_Environment_Returned_By_EnvironmentProvider_GetCurrentEnvironment(Type type)
 		{
 			// Arrange
-			const string environment = Environment.Testing;
+			const string environment = EnvironmentName.Testing;
 
 			var providerMock = CreateEnvironmentProvider(environment);
 
-			var factory = CreateFactory(environmentProvider: providerMock);
+			var factory = CreateFactory(type, environmentProvider: providerMock);
 
 			// Act
 			ApiVersion apiVersion = factory.Create();
@@ -48,9 +54,9 @@ namespace OrangeJuice.Server.Test.Data
 		#endregion
 
 		#region Helper methods
-		private static Factory.IFactory<ApiVersion> CreateFactory(IAssemblyProvider assemblyProvider = null, IEnvironmentProvider environmentProvider = null)
+		private static IFactory<ApiVersion> CreateFactory(Type type, IAssemblyProvider assemblyProvider = null, IEnvironmentProvider environmentProvider = null)
 		{
-			return new ApiVersionFactory(
+			return (IFactory<ApiVersion>)Activator.CreateInstance(type,
 				assemblyProvider ?? CreateAssemblyProvider(),
 				environmentProvider ?? CreateEnvironmentProvider());
 		}

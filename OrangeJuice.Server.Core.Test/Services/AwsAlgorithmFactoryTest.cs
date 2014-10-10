@@ -2,17 +2,16 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class AwsAlgorithmFactoryTest
 	{
-		[TestMethod]
+		[Fact]
 		// ReSharper disable once InconsistentNaming
 		public void CreateHashAlgorithm_Should_Return_HMACSHA256()
 		{

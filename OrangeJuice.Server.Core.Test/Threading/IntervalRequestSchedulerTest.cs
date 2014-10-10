@@ -5,17 +5,16 @@ using System.Threading.Tasks;
 using FluentAssertions;
 
 using Microsoft.Reactive.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Threading;
 
 namespace OrangeJuice.Server.Test.Threading
 {
-	[TestClass]
 	public class IntervalRequestSchedulerTest
 	{
-		[TestMethod]
+		[Fact]
 		public void ScheduleRequest_Should_Call_Sample_On_Scheduler()
 		{
 			// Arrange

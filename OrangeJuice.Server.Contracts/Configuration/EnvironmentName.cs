@@ -1,6 +1,6 @@
 ﻿namespace OrangeJuice.Server.Configuration
 {
-	public static class Environment
+	public static class EnvironmentName
 	{
 		public const string Local = "Local";
 
