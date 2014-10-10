@@ -2,13 +2,12 @@
 using System.Linq;
 
 using FluentAssertions;
-
-using Xunit;
-
 using Moq;
 
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
+
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Services
 {

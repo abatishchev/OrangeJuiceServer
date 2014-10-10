@@ -3,18 +3,17 @@ using System.Linq;
 using System.Xml.Linq;
 
 using FluentAssertions;
-
-using Xunit;
-
 using Moq;
 
 using OrangeJuice.Server.Services;
+
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Services
 {
 	public class XmlItemSelectorTest
 	{
-		#region Test Methods
+		#region Tests
 		[Fact]
 		public void SelectItems_Should_Throw_Exception_When_ItemValidator_Returns_False()
 		{
