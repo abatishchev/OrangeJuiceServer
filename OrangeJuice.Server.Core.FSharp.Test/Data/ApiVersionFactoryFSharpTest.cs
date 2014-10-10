@@ -34,7 +34,7 @@ namespace OrangeJuice.Server.FSharp.Test.Data
 		public void Create_Should_Return_AviVersion_Having_Environment_Returned_By_EnvironmentProvider_GetCurrentEnvironment()
 		{
 			// Arrange
-			const string environment = Environment.Testing;
+			const string environment = EnvironmentName.Testing;
 
 			var providerMock = CreateEnvironmentProvider(environment);
 

@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Api.Handlers.Validation
 			string environment = _environmentProvider.GetCurrentEnvironment();
 			switch (environment)
 			{
-				case Environment.Local:
+				case EnvironmentName.Local:
 					return new EmptyAppVersionValidator();
 				default:
 					return new HeaderAppVersionValidator(AppVersion.Version0);

@@ -32,7 +32,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		public void Create_Should_Return_EmptyAppKeyHandler_When_Environment_Is_Local()
 		{
 			// Arrange
-			var provider = CreateEnvironmentProvider(Environment.Local);
+			var provider = CreateEnvironmentProvider(EnvironmentName.Local);
 			var factory = new AppVersionValidatorFactory(provider);
 
 			// Act
@@ -45,7 +45,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		[TestMethod]
 		public void Create_Should_Return_HeaderAppKeyHandler_When_Environment_Is_Not_Local()
 		{
-			foreach (string environment in GetAllEnvironments().Except(Environment.Local))
+			foreach (string environment in GetAllEnvironments().Except(EnvironmentName.Local))
 			{
 				// Arrange
 				var provider = CreateEnvironmentProvider(environment);
@@ -61,7 +61,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		#endregion
 
 		#region Helper methods
-		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = Environment.Testing)
+		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = EnvironmentName.Testing)
 		{
 			var providerMock = new Mock<IEnvironmentProvider>();
 			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
@@ -70,7 +70,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 
 		private static IEnumerable<string> GetAllEnvironments()
 		{
-			return typeof(Environment).GetFields().Select(f => (string)f.GetValue(null));
+			return typeof(EnvironmentName).GetFields().Select(f => (string)f.GetValue(null));
 		}
 		#endregion
 	}

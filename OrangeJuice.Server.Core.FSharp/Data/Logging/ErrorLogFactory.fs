@@ -12,5 +12,5 @@ type ErrorLogFactory(environmentProvider : IEnvironmentProvider, connectionStrin
 
     member this.Create() =
         match environmentProvider.GetCurrentEnvironment() with
-            | Environment.Production -> new EntityErrorLog(connectionStringProvider.GetDefaultConnectionString()) :> ErrorLog
+            | EnvironmentName.Production -> new EntityErrorLog(connectionStringProvider.GetDefaultConnectionString()) :> ErrorLog
             | _ -> new TraceErrorLog() :> ErrorLog

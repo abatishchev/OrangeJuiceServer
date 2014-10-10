@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.FSharp.Test.Data.Logging
 		public void Create_Should_Return_EntityErrorLog_When_Environment_Is_Production()
 		{
 			// Arrange
-			var environmentProvider = CreateEnvironmentProvider(Environment.Production);
+			var environmentProvider = CreateEnvironmentProvider(EnvironmentName.Production);
 			var connectionStringProvider = CreateConnectionStringProvider();
 
 			var factory = new ErrorLogFactory(environmentProvider, connectionStringProvider);
@@ -35,7 +35,7 @@ namespace OrangeJuice.Server.FSharp.Test.Data.Logging
 		[TestMethod]
 		public void Create_Should_Return_TraceErrorLog_When_Environment_Is_Not_Production()
 		{
-			foreach (string environment in GetAllEnvironments().Except(Environment.Production))
+			foreach (string environment in GetAllEnvironments().Except(EnvironmentName.Production))
 			{
 				// Arrange
 				var environmentProvider = CreateEnvironmentProvider(environment);
@@ -53,7 +53,7 @@ namespace OrangeJuice.Server.FSharp.Test.Data.Logging
 		#endregion
 
 		#region Helper methods
-		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = Environment.Testing)
+		private static IEnvironmentProvider CreateEnvironmentProvider(string environment = EnvironmentName.Testing)
 		{
 			var providerMock = new Mock<IEnvironmentProvider>();
 			providerMock.Setup(p => p.GetCurrentEnvironment()).Returns(environment);
@@ -62,7 +62,7 @@ namespace OrangeJuice.Server.FSharp.Test.Data.Logging
 
 		private static IEnumerable<string> GetAllEnvironments()
 		{
-			return typeof(Environment).GetFields().Select(f => (string)f.GetValue(null));
+			return typeof(EnvironmentName).GetFields().Select(f => (string)f.GetValue(null));
 		}
 
 		private static IConnectionStringProvider CreateConnectionStringProvider()
