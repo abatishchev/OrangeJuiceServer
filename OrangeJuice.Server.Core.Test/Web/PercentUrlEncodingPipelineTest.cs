@@ -2,16 +2,15 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Test.Web
 {
-	[TestClass]
 	public class PercentUrlEncodingPipelineTest
 	{
-		[TestMethod]
+		[Fact]
 		public void PercentEncode_Should_Encode_Special_Characters_Using_Dictionary()
 		{
 			// Arrange
@@ -36,7 +35,7 @@ namespace OrangeJuice.Server.Test.Web
 			}
 		}
 
-		[TestMethod]
+		[Fact]
 		public void ToUpperCase_Should_UpperCase_Encoded_Characters_And_Should_Not_Regular_Characters()
 		{
 			// Arrange

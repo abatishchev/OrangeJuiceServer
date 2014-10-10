@@ -3,7 +3,7 @@ using System.Linq;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -12,11 +12,10 @@ using OrangeJuice.Server.Data.Logging;
 
 namespace OrangeJuice.Server.Test.Data.Logging
 {
-	[TestClass]
 	public class ErrorLogFactoryTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_EntityErrorLog_When_Environment_Is_Production()
 		{
 			// Arrange
@@ -32,7 +31,7 @@ namespace OrangeJuice.Server.Test.Data.Logging
 			errorLog.Should().BeOfType<Elmah.Contrib.EntityFramework.EntityErrorLog>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_TraceErrorLog_When_Environment_Is_Not_Production()
 		{
 			foreach (string environment in GetAllEnvironments().Except(Environment.Production))

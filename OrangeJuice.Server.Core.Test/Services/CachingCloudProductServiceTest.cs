@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -15,11 +15,10 @@ using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class CachingCloudProductServiceTest
 	{
 		#region Search
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Pass_Barcode_BarcodeType_To_ProductRepository_Search()
 		{
 			// Arrange
@@ -38,7 +37,7 @@ namespace OrangeJuice.Server.Test.Services
 			repositoryMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Pass_ProductId_Of_Product_Returned_By_ProductRepository_Search_To_AzureProductProvider_Get()
 		{
 			// Arrange
@@ -57,7 +56,7 @@ namespace OrangeJuice.Server.Test.Services
 			azureProviderMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Not_Empty_Sequence()
 		{
 			// Arrange
@@ -79,7 +78,7 @@ namespace OrangeJuice.Server.Test.Services
 			actual.Should().BeEquivalentTo(new[] { expected });
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Not_Call_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Not_Empty_Sequence()
 		{
 			// Arrange
@@ -97,7 +96,7 @@ namespace OrangeJuice.Server.Test.Services
 			awsProvider.Verify(p => p.Search(It.IsAny<string>(), It.IsAny<BarcodeType>()), Times.Never);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Not_Call_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Empty_Sequence()
 		{
 			// Arrange
@@ -115,7 +114,7 @@ namespace OrangeJuice.Server.Test.Services
 			azureProviderMock.Verify(p => p.Get(It.IsAny<Guid>()), Times.Never);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Pass_Barcode_BarcodeType_To_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Empty_Sequence()
 		{
 			// Arrange
@@ -136,7 +135,7 @@ namespace OrangeJuice.Server.Test.Services
 			Mock.Get(awsProvider).VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Return_Null_When_AwsProvider_Search_Returns_Empty_Sequence()
 		{
 			var awsProviderMock = new Mock<IAwsProductProvider>();
@@ -151,7 +150,7 @@ namespace OrangeJuice.Server.Test.Services
 			descriptors.Should().BeNull();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Pass_Barcode_BarcodeType_SourceProductId_To_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence()
 		{
 			// Arrange
@@ -174,7 +173,7 @@ namespace OrangeJuice.Server.Test.Services
 			repositoryMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Pass_ProductDescriptor_Returned_By_AwsProductProvider_Search_To_AzureProductProvider_Save_When_ProductRepository_Search_ReturnsEmpty_Sequence()
 		{
 			// Arrange
@@ -202,7 +201,7 @@ namespace OrangeJuice.Server.Test.Services
 			Mock.Get(azureProvider).VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Pass_Product_To_AzureProductProvider_Save_Having_ProductId_Returned_By_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence()
 		{
 			// Arrange
@@ -227,7 +226,7 @@ namespace OrangeJuice.Server.Test.Services
 			azureProviderMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Empty_Sequence()
 		{
 			// Arrange
@@ -249,7 +248,7 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Get
-		[TestMethod]
+		[Fact]
 		public async Task Get_Should_Return_ProductDescriptor_Returned_By_AzureProductProvider_Get()
 		{
 			// Arrange

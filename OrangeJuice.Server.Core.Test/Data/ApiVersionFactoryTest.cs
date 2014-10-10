@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -9,11 +9,10 @@ using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Test.Data
 {
-	[TestClass]
 	public class ApiVersionFactoryTest
 	{
 		#region Create
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Call_AssemblyProvider_GetExecutingAssembly()
 		{
 			// Arrange
@@ -29,7 +28,7 @@ namespace OrangeJuice.Server.Test.Data
 			providerMock.Verify(p => p.GetExecutingAssembly(), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_AviVersion_Having_Environment_Returned_By_EnvironmentProvider_GetCurrentEnvironment()
 		{
 			// Arrange

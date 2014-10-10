@@ -2,7 +2,7 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -13,11 +13,10 @@ using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
 
 namespace OrangeJuice.Server.Test.Web
 {
-	[TestClass]
 	public class EncodedQueryBuilderTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void BuildQuery_Should_Pass_Each_Argument_Value_To_UrlEncoder_Encode()
 		{
 			// Arrange
@@ -34,7 +33,7 @@ namespace OrangeJuice.Server.Test.Web
 			encoderMock.Verify(e => e.Encode(It.IsAny<string>()), Times.Exactly(args.Count));
 		}
 
-		[TestMethod]
+		[Fact]
 		public void BuildQuery_Should_Split_Name_And_Value()
 		{
 			// Arrange
@@ -49,7 +48,7 @@ namespace OrangeJuice.Server.Test.Web
 			query.Should().Be("key=value");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void BuildQuery_Should_Split_Parameters()
 		{
 			// Arrange
@@ -64,7 +63,7 @@ namespace OrangeJuice.Server.Test.Web
 			query.Should().Be("a=1&b=2");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void SignQuery_Should_Pass_Signature_To_UrlEncoder_Encode()
 		{
 			// Arrange
@@ -82,7 +81,7 @@ namespace OrangeJuice.Server.Test.Web
 			encoderMock.Verify(e => e.Encode(signature), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void SignQuery_Should_Append_Signature()
 		{
 			// Arrange

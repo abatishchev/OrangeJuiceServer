@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -13,10 +12,9 @@ using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class XmlAwsClientTest
 	{
-	    [TestMethod]
+	    [Fact]
 	    public void GetItems_Should_Execute_Pipeline()
 	    {
 	        // Arrange

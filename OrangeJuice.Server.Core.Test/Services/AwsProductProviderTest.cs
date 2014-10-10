@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -10,11 +10,10 @@ using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Test.Services
 {
-	[TestClass]
 	public class AwsProductProviderTest
 	{
 		#region Search
-		[TestMethod]
+		[Fact]
 		public void Search_Should_Pass_SearchCriteria_To_Client()
 		{
 			// Arrange

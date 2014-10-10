@@ -2,7 +2,7 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using Moq;
 
@@ -10,10 +10,9 @@ using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Test.Web
 {
-	[TestClass]
 	public class PercentUrlEncoderTest
 	{
-		[TestMethod]
+		[Fact]
 		public void Encode_Should_Execute_Pipeline()
 		{
 			// Arrange

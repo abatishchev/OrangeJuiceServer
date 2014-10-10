@@ -3,16 +3,15 @@ using System.Xml.Linq;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Validation;
 
 namespace OrangeJuice.Server.Test.Validation
 {
-	[TestClass]
 	public class XmlRequestValidatorTest
 	{
-		[TestMethod]
+		[Fact]
 		public void IsValid_Should_Return_False_When_Item_Is_Null()
 		{
 			// Arange
@@ -27,7 +26,7 @@ namespace OrangeJuice.Server.Test.Validation
 			actual.Should().BeFalse();
 		}
 
-		[TestMethod]
+		[Fact]
         public void IsValid_Should_Return_Request_Element_IsValid_Value()
 		{
 			// Arange

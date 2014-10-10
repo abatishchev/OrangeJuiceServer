@@ -2,14 +2,13 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace OrangeJuice.Server.Test
 {
-	[TestClass]
 	public class UtcDateTimeProviderTest
 	{
-		[TestMethod]
+		[Fact]
 		public void Format_Should_Return_DateTime_In_Universal_Format()
 		{
 			// Arrange
