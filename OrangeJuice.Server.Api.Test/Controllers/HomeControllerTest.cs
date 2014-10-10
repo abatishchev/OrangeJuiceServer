@@ -3,18 +3,17 @@ using System.Web.Http.Results;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Data;
 
+using Xunit;
+
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
-	[TestClass]
 	public class HomeControllerTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void Get_Should_Return_Status_NotFound()
 		{
 			// Assign
@@ -27,7 +26,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			result.Should().BeOfType<NotFoundResult>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void GetVersion_Should_Return_ApiVersion()
 		{
 			// Arrange

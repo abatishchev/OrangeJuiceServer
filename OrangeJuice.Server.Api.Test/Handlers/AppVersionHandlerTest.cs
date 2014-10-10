@@ -4,18 +4,17 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 
 using OrangeJuice.Server.Api.Handlers;
 
 namespace OrangeJuice.Server.Api.Test.Handlers
 {
-	[TestClass]
 	public class AppVersionHandlerTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void SendAsync_Should_Return_Status_Forbidden_When_IsValid_Returns_False()
 		{
 			// Arrange

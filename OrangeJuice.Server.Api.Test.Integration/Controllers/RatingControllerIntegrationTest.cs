@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {
@@ -11,7 +11,6 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 </WebTest>
     */
 
-    [TestClass]
     public class RatingControllerIntegrationTest
     {
     }

@@ -6,17 +6,16 @@ using System.Web;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Api.Models;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {
-	[TestClass]
 	public class UserControllerIntegrationTest
 	{
 		#region Tests
-		[TestMethod]
+		[Fact]
 		public async Task GetUser_Should_Return_Status_Ok_When_User_Exists()
 		{
 			// Arrange
@@ -37,7 +36,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetUser_Should_Return_Status_NoContent_When_User_Does_Not_Exist()
 		{
 			// Arrange
@@ -58,7 +57,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task PutUser_Should_Return_Status_Created()
 		{
 			// Arrange

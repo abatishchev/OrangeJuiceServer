@@ -3,17 +3,16 @@
 using FluentAssertions;
 
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
 {
-	[TestClass]
 	public class AwsClientIntergrationTest
 	{
-		[TestMethod]
+		[Fact]
 		public async Task GetItems_Should_Return_Sequnce_Of_ProductDescriptor()
 		{
 			using (IUnityContainer container = ContainerConfig.CreateContainer())

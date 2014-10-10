@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 
 using FluentAssertions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
@@ -15,13 +11,14 @@ using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Repository;
 
+using Xunit;
+
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
-	[TestClass]
 	public class RatingControllerTest
 	{
 		#region GetRating
-		[TestMethod]
+		[Fact]
 		public void GetRating_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
@@ -34,7 +31,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetRating_Should_Return_Status_NotFound_When_RatingRepository_Search_Returns_Null()
 		{
 			//Arrange
@@ -50,7 +47,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			result.Should().BeOfType<NotFoundResult>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetRating_Should_Pass_UserId_And_ProductId_To_RatingRepository_Search()
 		{
 			// Arrange
@@ -68,7 +65,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Verify(r => r.Search(userId, productId), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetRating_Should_Return_Rating_Returned_By_RatingRepository_Search()
 		{
 			// Arrange
@@ -88,7 +85,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			actual.Should().Be(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetRating_Should_Return_Status_Ok()
 		{
 			// Arrange
@@ -106,7 +103,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region GetRatings
-		[TestMethod]
+		[Fact]
 		public void GetRatings_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
@@ -119,7 +116,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 		
-		[TestMethod]
+		[Fact]
 		public async Task GetRatings_Should_Return_Status_NotFound_When_RatingRepository_SearchAll_Returns_Null()
 		{
 			//Arrange
@@ -135,7 +132,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			result.Should().BeOfType<NotFoundResult>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetRatings_Should_Pass_ProductId_To_RatingRepository_SearchAll()
 		{
 			// Arrange
@@ -153,7 +150,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Verify(r => r.SearchAll(productId), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetRatings_Should_Return_Ratings_Returned_By_RatingRepository_SearchAll()
 		{
 			// Arrange
@@ -173,7 +170,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			actual.Should().BeEquivalentTo(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetRatings_Should_Return_Status_Ok()
 		{
 			// Arrange
@@ -191,7 +188,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region PostRating
-		[TestMethod]
+		[Fact]
 		public void PostRating_Should_Should_Throw_Exception_When_RatingModel_Is_Null()
 		{
 			// Arrange
@@ -204,7 +201,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 		
-		[TestMethod]
+		[Fact]
 		public async Task PostRating_Should_Pass_UserId_And_ProductId_And_Value_To_RatingRepository_Delete()
 		{
 			// Arrange
@@ -224,7 +221,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Verify(r => r.AddOrUpdate(userId, productId, value, comment), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task PostRating_Should_Return_Status_Ok()
 		{
 			// Arrange
@@ -242,7 +239,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region DeleteRating
-		[TestMethod]
+		[Fact]
 		public void DeleteRating_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
@@ -255,7 +252,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 		
-		[TestMethod]
+		[Fact]
 		public async Task DeleteRating_Should_Pass_UserId_And_ProductId_To_RatingRepository_Delete()
 		{
 			// Arrange
@@ -273,7 +270,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.Verify(r => r.Delete(userId, productId), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task DeleteRating_Should_Return_Status_Ok()
 		{
 			// Arrange

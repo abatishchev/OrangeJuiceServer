@@ -5,17 +5,16 @@ using System.Web.Http.Filters;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using OrangeJuice.Server.Api.Filters;
+
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Filters
 {
-	[TestClass]
 	public class ValidModelActionFilterTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void OnActionExecuting_Should_Assign_ActionContext_Response_StatusCode_To_BadRequest_When_Model_Is_Not_Valid()
 		{
 			// Arrange
@@ -31,7 +30,7 @@ namespace OrangeJuice.Server.Api.Test.Filters
 			actionContext.Response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void OnActionExecuting_Should_Not_Change_ActionContext_Response_When_Model_Is_Valid()
 		{
 			// Arrange

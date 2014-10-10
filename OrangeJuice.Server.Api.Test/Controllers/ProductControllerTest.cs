@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 
 using FluentAssertions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
@@ -17,13 +12,14 @@ using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 
+using Xunit;
+
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
-	[TestClass]
 	public class ProductControllerTest
 	{
 		#region GetProductId
-		[TestMethod]
+		[Fact]
 		public void GetProducId_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
@@ -36,7 +32,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProducId_Should_Return_Status_Ok()
 		{
 			// Arrange
@@ -52,7 +48,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor>>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProducId_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
 		{
 			// Arrange
@@ -70,7 +66,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			serviceMock.Verify(r => r.Get(productId), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProducId_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search()
 		{
 			// Arrange
@@ -89,7 +85,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			actual.Should().Be(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProducId_Should_Return_Status_NoContent_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange
@@ -108,7 +104,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region GetProductBarcode
-		[TestMethod]
+		[Fact]
 		public void GetProducBarcode_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
@@ -121,7 +117,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Return_Status_Ok()
 		{
 			// Arrange
@@ -137,7 +133,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor[]>>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
 		{
 			// Arrange
@@ -156,7 +152,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			serviceMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Return_ProductDescriptors_Returned_By_ProductManager_Search()
 		{
 			// Arrange
@@ -175,7 +171,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			actual.Should().BeEquivalentTo(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Return_Status_NoContent_When_ProductManager_Search_Returns_Null()
 		{
 			// Arrange

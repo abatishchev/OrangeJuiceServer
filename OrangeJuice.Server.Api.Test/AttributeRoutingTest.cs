@@ -3,16 +3,14 @@ using System.Reflection;
 using System.Web.Http;
 
 using FluentAssertions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test
 {
-	[TestClass]
 	public class AttributeRoutingTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void Every_Method_Of_ApiController_Returning_IHttpActionResult_Should_Be_Decorated_With_RouteAttribute()
 		{
 			// Arrange

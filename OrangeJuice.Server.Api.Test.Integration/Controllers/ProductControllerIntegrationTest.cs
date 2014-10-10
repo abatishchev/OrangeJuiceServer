@@ -5,18 +5,17 @@ using System.Web;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Test;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {
-	[TestClass]
 	public class ProductControllerIntegrationTest
 	{
 		#region GetProductBarcode
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Return_Status_BadRequest_When_Barcode_Is_Empty()
 		{
 			// Arrange
@@ -36,7 +35,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Return_Status_BadRequest_When_Barcode_Is_Incorrect()
 		{
 			// Arrange
@@ -56,7 +55,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Return_Status_BadRequest_When_BarcodeType_Is_Empty()
 		{
 			// Arrange
@@ -76,7 +75,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Return_Status_BadRequest_When_BarcodeType_Is_Incorrect()
 		{
 			// Arrange
@@ -96,7 +95,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductBarcode_Should_Return_Status_Ok_For_Wellknown_Product()
 		{
 			// Arrange
@@ -116,7 +115,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 		}
 
-        [TestMethod]
+        [Fact]
         public async Task GetProductBarcode_Should_Return_Status_Ok_For_Product_In_Database()
         {
             // Arrange
@@ -140,7 +139,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		#endregion
 
 		#region GetProductId
-		[TestMethod]
+		[Fact]
 		public async Task GetProductId_Should_Return_Status_BadRequest_When_Id_Is_Empty()
 		{
 			// Arrange
@@ -159,7 +158,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductId_Should_Return_Status_BadRequest_When_Id_Is_Incorrect()
 		{
 			// Arrange
@@ -178,7 +177,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductId_Should_Return_Status_NoContent_When_Product_Does_Not_Exist()
 		{
 			// Arrange
@@ -197,7 +196,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProductId_Should_Return_Status_Ok()
 		{
 			// Arrange

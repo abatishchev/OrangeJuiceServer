@@ -4,17 +4,16 @@ using System.Threading.Tasks;
 using FluentAssertions;
 
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
 {
-	[TestClass]
 	public class AwsProductProviderIntegrationTest
 	{
-		[TestMethod]
+		[Fact]
 		public async Task Search_Should_Return_ProductDescriptor()
 		{
 			using (IUnityContainer container = ContainerConfig.CreateContainer())

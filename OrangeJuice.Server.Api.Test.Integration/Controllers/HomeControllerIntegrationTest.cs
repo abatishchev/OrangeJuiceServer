@@ -3,14 +3,13 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {
-	[TestClass]
 	public class HomeControllerIntegrationTest
 	{
-		[TestMethod]
+		[Fact]
 		public async Task GetRoot_Should_Return_Status_NotFound()
 		{
 			// Arrange
@@ -23,7 +22,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.NotFound);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetVersion_Should_Return_Status_Ok()
 		{
 			// Arrange

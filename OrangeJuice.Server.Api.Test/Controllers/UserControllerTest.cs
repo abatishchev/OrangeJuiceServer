@@ -5,9 +5,6 @@ using System.Web.Http;
 using System.Web.Http.Results;
 
 using FluentAssertions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
@@ -15,13 +12,14 @@ using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Repository;
 
+using Xunit;
+
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
-	[TestClass]
 	public class UserControllerTest
 	{
 		#region GetUser
-		[TestMethod]
+		[Fact]
 		public void GetUser_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
 		{
 			// Arrange
@@ -34,7 +32,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetUser_Should_Return_Status_NoContent_When_UserRepository_Returns_Null()
 		{
 			//Arrange
@@ -51,7 +49,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 				  .Which.StatusCode.Should().Be(HttpStatusCode.NoContent);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetUser_Should_Pass_UserGuid_To_UserRepository_Search()
 		{
 			// Arrange
@@ -70,7 +68,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetUser_Should_Return_User_Returned_By_UserRepository_Search()
 		{
 			// Arrange
@@ -90,7 +88,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			actual.Should().Be(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetUser_Should_Return_Status_Ok()
 		{
 			// Arrange
@@ -109,7 +107,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region PutUser
-		[TestMethod]
+		[Fact]
 		public void PutUser_Should_Should_Throw_Exception_When_UserModel_Is_Null()
 		{
 			// Arrange
@@ -122,7 +120,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task PutUser_Should_Pass_Email_Name_To_UserRepository_Register()
 		{
 			// Arrange
@@ -141,7 +139,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			repositoryMock.VerifyAll();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task PutUser_Should_Return_User_Returned_By_UserRepository_Register()
 		{
 			// Arrange
@@ -160,7 +158,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			actual.Should().Be(expected);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task PutUser_Should_Return_Status_Created()
 		{
 			// Arrange

@@ -2,17 +2,17 @@
 using System.Net.Http;
 
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using OrangeJuice.Server.Api.Handlers.Validation;
 
+using Xunit;
+
 namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
-	[TestClass]
 	public class QueryAppVersionValidatorTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void IsValid_Should_Return_True_When_Query_Contains_AppVersion()
 		{
 			// Arrange
@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 			valid.Should().BeTrue();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void IsValid_Should_Return_False_When_Query_Does_Not_Contain_AppVersion()
 		{
 			// Arrange

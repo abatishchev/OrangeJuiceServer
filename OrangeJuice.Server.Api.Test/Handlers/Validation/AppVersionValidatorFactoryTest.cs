@@ -2,7 +2,7 @@
 using System.Linq;
 
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 
 using OrangeJuice.Server.Api.Handlers.Validation;
@@ -10,11 +10,10 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
-	[TestClass]
 	public class AppVersionValidatorFactoryTest
 	{
 		#region Test methods
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Call_EnvironmentProvider_GetCurrentEnvironment()
 		{
 			// Arrange
@@ -28,7 +27,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 			Mock.Get(provider).Verify(p => p.GetCurrentEnvironment(), Times.Once);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_EmptyAppKeyHandler_When_Environment_Is_Local()
 		{
 			// Arrange
@@ -42,7 +41,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 			handler.Should().BeOfType<EmptyAppVersionValidator>();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Create_Should_Return_HeaderAppKeyHandler_When_Environment_Is_Not_Local()
 		{
 			foreach (string environment in GetAllEnvironments().Except(EnvironmentName.Local))

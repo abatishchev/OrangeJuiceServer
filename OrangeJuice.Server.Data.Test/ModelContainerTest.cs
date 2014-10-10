@@ -1,17 +1,16 @@
 ﻿using System.Data.Entity;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 using OrangeJuice.Server.Configuration;
 
+using Xunit;
+
 namespace OrangeJuice.Server.Data.Test
 {
-	[TestClass]
 	public class ModelContainerTest
 	{
-		[TestMethod]
+		[Fact]
 		public void Ctor_Should_Call_ConnectionStringProvider_GetDefaultConnectionString()
 		{
 			// Arrange
