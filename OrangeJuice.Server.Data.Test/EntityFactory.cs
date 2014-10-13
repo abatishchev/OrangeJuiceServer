@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Linq;
+﻿using System.Linq;
 
 using OrangeJuice.Server.Configuration;
 
@@ -9,12 +8,16 @@ namespace OrangeJuice.Server.Data.Test
 	{
 		public static T Get<T>() where T : class
 		{
-			using (var container = new ModelContext(new ConfigurationConnectionStringProvider(new AppSettingsConfigurationProvider())))
+			try
 			{
-				var entity = container.Set<T>().FirstOrDefault();
-				if (entity == null)
-					throw new DataException("Database contains no entities of given type");
-				return entity;
+				using (var container = new ModelContext(new ConfigurationConnectionStringProvider(new AppSettingsConfigurationProvider())))
+				{
+					return container.Set<T>().FirstOrDefault();
+				}
+			}
+			catch
+			{
+				return null;
 			}
 		}
 	}

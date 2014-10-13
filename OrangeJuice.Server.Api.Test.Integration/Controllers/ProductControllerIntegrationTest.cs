@@ -119,7 +119,9 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
         public async Task GetProductBarcode_Should_Return_Status_Ok_For_Product_In_Database()
         {
             // Arrange
-            Product product = EntityFactory.Get<Product>();
+			Product product = EntityFactory.Get<Product>();
+			if (product == null)
+				return;
 
             var query = HttpUtility.ParseQueryString(String.Empty);
             query.Add("barcode", product.Barcode);
@@ -200,8 +202,11 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		public async Task GetProductId_Should_Return_Status_Ok()
 		{
 			// Arrange
-			Guid productId = EntityFactory.Get<Product>().ProductId;
+			Product product = EntityFactory.Get<Product>();
+			if (product == null)
+				return;
 
+			Guid productId = product.ProductId;
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("productid", productId.ToString());
 

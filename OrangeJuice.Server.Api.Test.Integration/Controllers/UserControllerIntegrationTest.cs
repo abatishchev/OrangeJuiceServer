@@ -6,9 +6,10 @@ using System.Web;
 
 using FluentAssertions;
 
-using Xunit;
-
 using OrangeJuice.Server.Api.Models;
+using OrangeJuice.Server.Data;
+
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {
@@ -19,8 +20,11 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		public async Task GetUser_Should_Return_Status_Ok_When_User_Exists()
 		{
 			// Arrange
-			Guid userId = Data.Test.EntityFactory.Get<Data.User>().UserId;
+			User user = Data.Test.EntityFactory.Get<User>();
+			if (user == null)
+				return;
 
+			Guid userId = user.UserId;
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("userId", userId.ToString());
 
