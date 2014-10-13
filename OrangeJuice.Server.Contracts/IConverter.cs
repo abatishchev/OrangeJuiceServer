@@ -2,8 +2,8 @@
 {
 	public interface IConverter<TIn, TOut>
 	{
-		TOut Convert(TIn item);
+		TOut Convert(TIn value);
 
-		TIn ConvertBack(TOut item);
+		TIn ConvertBack(TOut value);
 	}
 }

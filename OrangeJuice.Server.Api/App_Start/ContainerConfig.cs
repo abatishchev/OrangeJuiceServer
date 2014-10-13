@@ -31,6 +31,7 @@ using OrangeJuice.Server.Web;
 using DefaultLifetimeManager = Microsoft.Practices.Unity.HierarchicalLifetimeManager;
 
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
+using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProductDescriptorConverter;
 using XmlProductDescriptorFactory = OrangeJuice.Server.FSharp.Data.XmlProductDescriptorFactory;
 using ErrorLogFactory = OrangeJuice.Server.FSharp.Data.Logging.ErrorLogFactory;
 
@@ -157,7 +158,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType<IAzureClient, AzureClient>(
 				new DefaultLifetimeManager());
 
-			container.RegisterType<IConverter<string, ProductDescriptor>, StringProductDescriptorConverter>(
+			container.RegisterType<IConverter<string, ProductDescriptor>, JsonProductDescriptorConverter>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IAzureProductProvider, AzureProductProvider>(

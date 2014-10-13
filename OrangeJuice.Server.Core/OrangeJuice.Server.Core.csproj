@@ -103,7 +103,7 @@
     <Compile Include="Data\Configuration\AzureDbConfiguration.cs" />
     <Compile Include="Data\Logging\ErrorLogFactory.cs" />
     <Compile Include="Data\Logging\TraceErrorLog.cs" />
-    <Compile Include="Data\StringProductDescriptorConverter.cs" />
+    <Compile Include="Data\JsonProductDescriptorConverter.cs" />
     <Compile Include="Data\XmlProductDescriptorFactory.cs" />
     <Compile Include="GenericPipeline.cs" />
     <Compile Include="ObjectPipeline.cs" />

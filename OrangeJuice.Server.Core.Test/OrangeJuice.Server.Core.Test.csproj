@@ -116,6 +116,7 @@
     <Compile Include="Configuration\ConfigurationEnvironmentProviderTest.cs" />
     <Compile Include="Configuration\ConfigurationConnectionStringProviderTest.cs" />
     <Compile Include="Data\ApiVersionFactoryTest.cs" />
+    <Compile Include="Data\JsonProductDescriptorConverterTest.cs" />
     <Compile Include="Data\Logging\ErrorLogFactoryTest.cs" />
     <Compile Include="Data\XmlProductDescriptorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

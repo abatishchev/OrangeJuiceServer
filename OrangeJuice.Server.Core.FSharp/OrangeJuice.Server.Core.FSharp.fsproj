@@ -55,6 +55,7 @@
     <Compile Include="Data\Logging\TraceErrorLog.fs" />
     <Compile Include="Data\Logging\ErrorLogFactory.fs" />
     <Compile Include="Data\ApiVersionFactory.fs" />
+    <Compile Include="Data\JsonProductDescriptorConverter.fs" />
     <Compile Include="Data\XmlProductDescriptorFactory.fs" />
     <Compile Include="Services\AwsAlgorithmFactory.fs" />
     <Compile Include="Services\AzureProductProvider.fs" />
@@ -87,6 +88,10 @@
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
