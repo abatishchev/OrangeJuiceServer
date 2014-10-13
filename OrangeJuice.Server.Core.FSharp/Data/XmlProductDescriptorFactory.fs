@@ -15,10 +15,8 @@ type XmlProductDescriptorFactory() =
         let nm = new XmlNamespaceManager(new NameTable())
         nm.AddNamespace("x", element.Name.Namespace.ToString()) |> ignore
 
-        let toString e =
-            let o = match e with
-                | null -> None
-                | e -> Some(XElement.op_Explicit e : string)
+        let toString e = 
+            let o = if e = null then None else Some(XElement.op_Explicit e : string)
             if o.IsSome then o.Value else null
 
         new ProductDescriptor(

@@ -14,9 +14,8 @@ type XmlRequestValidator() =
                 let nm = new XmlNamespaceManager(new NameTable())
                 nm.AddNamespace("x", item.Name.Namespace.ToString()) |> ignore
 
-                let toBool e =
-                    match e with
-                    | null -> None
-                    | e -> Some(XElement.op_Explicit e : bool)
+                let toBool e = 
+                    let o = if e = null then None else Some(XElement.op_Explicit e : bool)
+                    if o.IsSome then o.Value else false
 
-                (item.XPathSelectElement("x:Request/x:IsValid", nm) |> toBool).Value
+                item.XPathSelectElement("x:Request/x:IsValid", nm) |> toBool
