@@ -63,6 +63,11 @@
     <Compile Include="Services\JsonBlobNameResolver.fs" />
     <Compile Include="Services\XmlAwsClient.fs" />
     <Compile Include="Validation\XmlRequestValidator.fs" />
+    <Compile Include="Web\QueryStringNameValueCollection.fs" />
+    <Compile Include="Web\HttpUtility.fs" />
+    <Compile Include="Web\EncodedQueryBuilder.fs" />
+    <Compile Include="Web\HttpClientAdapter.fs" />
+    <Compile Include="Web\ThrottlingHttpClient.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +103,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Numerics" />
     <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
       <Name>OrangeJuice.Server.Contracts</Name>

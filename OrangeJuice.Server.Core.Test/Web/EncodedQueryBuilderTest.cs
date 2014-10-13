@@ -2,11 +2,11 @@
 
 using FluentAssertions;
 
-using Xunit;
-
 using Moq;
 
 using OrangeJuice.Server.Web;
+
+using Xunit.Extensions;
 
 using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
 using StringDictionary = System.Collections.Generic.Dictionary<string, string>;
@@ -15,14 +15,16 @@ namespace OrangeJuice.Server.Test.Web
 {
 	public class EncodedQueryBuilderTest
 	{
-		#region Test methods
-		[Fact]
-		public void BuildQuery_Should_Pass_Each_Argument_Value_To_UrlEncoder_Encode()
+		#region Tests
+		[Theory]
+		[InlineData(typeof(EncodedQueryBuilder))]
+		[InlineData(typeof(FSharp.Web.EncodedQueryBuilder))]
+		public void BuildQuery_Should_Pass_Each_Argument_Value_To_UrlEncoder_Encode(Type type)
 		{
 			// Arrange
 			var encoderMock = CreateEncoder();
 
-			IQueryBuilder urlBuilder = CreatelBuilder(encoderMock.Object);
+			IQueryBuilder urlBuilder = CreatelBuilder(type, encoderMock.Object);
 
 			IStringDictionary args = new StringDictionary { { "key", "value" } };
 
@@ -33,11 +35,13 @@ namespace OrangeJuice.Server.Test.Web
 			encoderMock.Verify(e => e.Encode(It.IsAny<string>()), Times.Exactly(args.Count));
 		}
 
-		[Fact]
-		public void BuildQuery_Should_Split_Name_And_Value()
+		[Theory]
+		[InlineData(typeof(EncodedQueryBuilder))]
+		[InlineData(typeof(FSharp.Web.EncodedQueryBuilder))]
+		public void BuildQuery_Should_Split_Name_And_Value(Type type)
 		{
 			// Arrange
-			IQueryBuilder urlBuilder = CreatelBuilder();
+			IQueryBuilder urlBuilder = CreatelBuilder(type);
 
 			IStringDictionary args = new StringDictionary { { "key", "value" } };
 
@@ -48,11 +52,13 @@ namespace OrangeJuice.Server.Test.Web
 			query.Should().Be("key=value");
 		}
 
-		[Fact]
-		public void BuildQuery_Should_Split_Parameters()
+		[Theory]
+		[InlineData(typeof(EncodedQueryBuilder))]
+		[InlineData(typeof(FSharp.Web.EncodedQueryBuilder))]
+		public void BuildQuery_Should_Split_Parameters(Type type)
 		{
 			// Arrange
-			IQueryBuilder urlBuilder = CreatelBuilder();
+			IQueryBuilder urlBuilder = CreatelBuilder(type);
 
 			IStringDictionary args = new StringDictionary { { "a", "1" }, { "b", "2" } };
 
@@ -63,8 +69,10 @@ namespace OrangeJuice.Server.Test.Web
 			query.Should().Be("a=1&b=2");
 		}
 
-		[Fact]
-		public void SignQuery_Should_Pass_Signature_To_UrlEncoder_Encode()
+		[Theory]
+		[InlineData(typeof(EncodedQueryBuilder))]
+		[InlineData(typeof(FSharp.Web.EncodedQueryBuilder))]
+		public void SignQuery_Should_Pass_Signature_To_UrlEncoder_Encode(Type type)
 		{
 			// Arrange
 			const string query = "query";
@@ -72,7 +80,7 @@ namespace OrangeJuice.Server.Test.Web
 
 			var encoderMock = CreateEncoder();
 
-			IQueryBuilder urlBuilder = CreatelBuilder(encoderMock.Object);
+			IQueryBuilder urlBuilder = CreatelBuilder(type, encoderMock.Object);
 
 			// Act
 			urlBuilder.SignQuery(query, signature);
@@ -81,8 +89,10 @@ namespace OrangeJuice.Server.Test.Web
 			encoderMock.Verify(e => e.Encode(signature), Times.Once);
 		}
 
-		[Fact]
-		public void SignQuery_Should_Append_Signature()
+		[Theory]
+		[InlineData(typeof(EncodedQueryBuilder))]
+		[InlineData(typeof(FSharp.Web.EncodedQueryBuilder))]
+		public void SignQuery_Should_Append_Signature(Type type)
 		{
 			// Arrange
 			const string query = "query";
@@ -90,7 +100,7 @@ namespace OrangeJuice.Server.Test.Web
 
 			var encoderMock = CreateEncoder();
 
-			IQueryBuilder urlBuilder = CreatelBuilder(encoderMock.Object);
+			IQueryBuilder urlBuilder = CreatelBuilder(type, encoderMock.Object);
 
 			// Act
 			string signedQuery = urlBuilder.SignQuery(query, signature);
@@ -101,9 +111,10 @@ namespace OrangeJuice.Server.Test.Web
 		#endregion
 
 		#region Helper methods
-		private static EncodedQueryBuilder CreatelBuilder(IUrlEncoder urlEncoder = null)
+		private static IQueryBuilder CreatelBuilder(Type type, IUrlEncoder urlEncoder = null)
 		{
-			return new EncodedQueryBuilder(urlEncoder ?? CreateEncoder().Object);
+			return (IQueryBuilder)Activator.CreateInstance(type,
+				urlEncoder ?? CreateEncoder().Object);
 		}
 
 		private static Mock<IUrlEncoder> CreateEncoder()

@@ -135,6 +135,7 @@
     <Compile Include="Web\EncodedQueryBuilderTest.cs" />
     <Compile Include="Web\PercentUrlEncoderTest.cs" />
     <Compile Include="Web\PercentUrlEncodingPipelineTest.cs" />
+    <Compile Include="Web\QueryStringNameValueCollectionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

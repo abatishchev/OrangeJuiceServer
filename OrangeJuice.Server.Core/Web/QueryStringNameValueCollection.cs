@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
@@ -22,13 +21,13 @@ namespace OrangeJuice.Server.Web
 		#region Methods
 		public override string Get(string name)
 		{
-			return base.Get(name) ?? "";
+			return base.Get(name) ?? String.Empty;
 		}
 
 		public override string ToString()
 		{
 			var args = this.AllKeys
-						   .Select(k => new KeyValuePair<string, string>(k, _urlEncoder.Encode(this[k])))
+						   .Select(k => new { Key = k, Value = _urlEncoder.Encode(this[k]) })
 						   .Select(p => String.Format("{0}={1}", p.Key, p.Value));
 			return String.Join("&", args);
 		}

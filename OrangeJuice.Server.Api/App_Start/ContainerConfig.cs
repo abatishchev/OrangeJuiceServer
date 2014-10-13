@@ -43,6 +43,10 @@ using XmlAwsClient = OrangeJuice.Server.FSharp.Services.XmlAwsClient;
 
 using XmlRequestValidator = OrangeJuice.Server.FSharp.Validation.XmlRequestValidator;
 
+using EncodedQueryBuilder = OrangeJuice.Server.FSharp.Web.EncodedQueryBuilder;
+using HttpClientAdapter = OrangeJuice.Server.FSharp.Web.HttpClientAdapter;
+using ThrottlingHttpClient = OrangeJuice.Server.FSharp.Web.ThrottlingHttpClient;
+
 namespace OrangeJuice.Server.Api
 {
 	internal static class ContainerConfig
