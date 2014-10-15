@@ -17,7 +17,6 @@ using FluentValidation.WebApi;
 
 using Microsoft.Practices.Unity;
 
-using OrangeJuice.Server.Api.Filters;
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Configuration;
@@ -27,6 +26,8 @@ using OrangeJuice.Server.Data.Repository;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
 using OrangeJuice.Server.Web;
+
+using WebApiContrib.Filters;
 
 using DefaultLifetimeManager = Microsoft.Practices.Unity.HierarchicalLifetimeManager;
 
@@ -71,8 +72,8 @@ namespace OrangeJuice.Server.Api
 		{
 			#region Web API
 			// Filters
-			container.RegisterType<IFilter, ValidModelActionFilter>(
-				typeof(ValidModelActionFilter).Name, // named registration
+			container.RegisterType<IFilter, ValidationAttribute>(
+                typeof(ValidationAttribute).Name, // named registration
 				new DefaultLifetimeManager());
 
 			// Handlers

@@ -95,7 +95,6 @@
     <Compile Include="Controllers\ProductControllerTest.cs" />
     <Compile Include="Controllers\RatingControllerTest.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
-    <Compile Include="Filters\ValidModelActionFilterTest.cs" />
     <Compile Include="Handlers\Validation\QueryAppVersionValidatorTest.cs" />
     <Compile Include="Handlers\Validation\HeaderAppVersionValidatorTest.cs" />
     <Compile Include="Handlers\Validation\AppVersionValidatorFactoryTest.cs" />
