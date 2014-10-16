@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data.Context;
 
@@ -13,11 +14,12 @@ namespace OrangeJuice.Server.Data.Repository
 			_db = db;
 		}
 
-		public Task Add(string url, string httpMethod, string ipAddress, string userAgent)
+		public Task Add(DateTime timestamp, string url, string httpMethod, string ipAddress, string userAgent)
 		{
 			_db.Requests.Add(
 				new Request
 				{
+                    Timestamp = timestamp,
 					Url = url,
 					HttpMethod = httpMethod,
 					IpAddress = ipAddress,

@@ -37,6 +37,7 @@
             <PropertyRef Name="RequestId" />
           </Key>
           <Property Name="RequestId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Timestamp" Type="datetime2" Precision="2" Nullable="false" />
           <Property Name="Url" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="HttpMethod" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="IpAddress" Type="varchar" MaxLength="15" Nullable="false" />
@@ -159,6 +160,7 @@
             <PropertyRef Name="RequestId" />
           </Key>
           <Property Name="RequestId" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" cg:SetterAccess="Internal" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="2" />
           <Property Name="Url" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="HttpMethod" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="IpAddress" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
@@ -204,6 +206,7 @@
           <EntitySetMapping Name="Requests">
             <EntityTypeMapping TypeName="Model.Request">
               <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
                 <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
                 <ScalarProperty Name="HttpMethod" ColumnName="HttpMethod" />

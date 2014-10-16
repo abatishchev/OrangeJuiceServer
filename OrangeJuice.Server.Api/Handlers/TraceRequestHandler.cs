@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,7 +27,9 @@ namespace OrangeJuice.Server.Api.Handlers
 
 		private Task TraceRequest(HttpRequestMessage request)
 		{
-			return _repository.Add(request.RequestUri.ToString(),
+			return _repository.Add(
+                DateTime.UtcNow,
+                request.RequestUri.ToString(),
 				request.Method.Method,
 				((System.Web.HttpContextWrapper)request.Properties[MsHttpContextKey]).Request.UserHostAddress,
 				request.Headers.UserAgent.ToString());
