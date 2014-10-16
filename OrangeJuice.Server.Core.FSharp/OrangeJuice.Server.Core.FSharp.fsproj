@@ -52,8 +52,6 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="Data\Configuration\AzureDbConfiguration.fs" />
-    <Compile Include="Data\Logging\TraceErrorLog.fs" />
-    <Compile Include="Data\Logging\ErrorLogFactory.fs" />
     <Compile Include="Data\ApiVersionFactory.fs" />
     <Compile Include="Data\JsonProductDescriptorConverter.fs" />
     <Compile Include="Data\XmlProductDescriptorFactory.fs" />

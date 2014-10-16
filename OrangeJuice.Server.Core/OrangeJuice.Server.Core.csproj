@@ -101,8 +101,6 @@
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
     <Compile Include="Data\Configuration\AzureDbConfiguration.cs" />
-    <Compile Include="Data\Logging\ErrorLogFactory.cs" />
-    <Compile Include="Data\Logging\TraceErrorLog.cs" />
     <Compile Include="Data\JsonProductDescriptorConverter.cs" />
     <Compile Include="Data\XmlProductDescriptorFactory.cs" />
     <Compile Include="GenericPipeline.cs" />

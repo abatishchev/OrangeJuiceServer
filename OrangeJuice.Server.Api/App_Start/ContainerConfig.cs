@@ -8,7 +8,10 @@ using System.Web.Http.Validation;
 using System.Xml.Linq;
 
 using Drum;
+
 using Elmah;
+using Elmah.Contrib.EntityFramework;
+
 using Factory;
 
 using FluentValidation;
@@ -34,7 +37,6 @@ using DefaultLifetimeManager = Microsoft.Practices.Unity.HierarchicalLifetimeMan
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
 using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProductDescriptorConverter;
 using XmlProductDescriptorFactory = OrangeJuice.Server.FSharp.Data.XmlProductDescriptorFactory;
-using ErrorLogFactory = OrangeJuice.Server.FSharp.Data.Logging.ErrorLogFactory;
 
 using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFactory;
 using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProvider;
@@ -70,10 +72,27 @@ namespace OrangeJuice.Server.Api
 		/// </remarks>
 		private static void RegisterTypes(IUnityContainer container)
 		{
+			#region Providers
+			container.RegisterType<IConfigurationProvider, AzureConfigurationProvider>(
+				new DefaultLifetimeManager());
+
+			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
+				new DefaultLifetimeManager());
+
+			container.RegisterType<IConnectionStringProvider, ConfigurationConnectionStringProvider>(
+				new DefaultLifetimeManager());
+
+			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(
+				new DefaultLifetimeManager());
+
+			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(
+				new DefaultLifetimeManager());
+			#endregion
+
 			#region Web API
 			// Filters
 			container.RegisterType<IFilter, ValidationAttribute>(
-                typeof(ValidationAttribute).Name, // named registration
+				typeof(ValidationAttribute).Name, // named registration
 				new DefaultLifetimeManager());
 
 			// Handlers
@@ -103,8 +122,9 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container));
 			ServiceCenter.Current = c => container.Resolve<IServiceProvider>();
-			container.RegisterFactory<ErrorLog, ErrorLogFactory>(
-				new DefaultLifetimeManager());
+			container.RegisterType<ErrorLog, EntityErrorLog>(
+				new DefaultLifetimeManager(),
+				new InjectionFactory(c => new EntityErrorLog(c.Resolve<IConnectionStringProvider>().GetDefaultConnectionString())));
 
 			container.RegisterType<HttpRequestMessage>(
 				new DefaultLifetimeManager(),
@@ -112,23 +132,6 @@ namespace OrangeJuice.Server.Api
 			container.RegisterType(typeof(UriMaker<>),
 				new DefaultLifetimeManager(),
 				new InjectionConstructor(typeof(UriMakerContext), typeof(HttpRequestMessage)));
-			#endregion
-
-			#region Providers
-			container.RegisterType<IConfigurationProvider, AzureConfigurationProvider>(
-				new DefaultLifetimeManager());
-
-			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
-				new DefaultLifetimeManager());
-
-			container.RegisterType<IConnectionStringProvider, ConfigurationConnectionStringProvider>(
-				new DefaultLifetimeManager());
-
-			container.RegisterType<IDateTimeProvider, UtcDateTimeProvider>(
-				new DefaultLifetimeManager());
-
-			container.RegisterType<IAssemblyProvider, ReflectionAssemblyProvider>(
-				new DefaultLifetimeManager());
 			#endregion
 
 			#region Data
