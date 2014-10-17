@@ -8,23 +8,24 @@ namespace OrangeJuice.Server.Api.Models.Validation
 	{
 		public BarcodeSearchCriteriaValidator()
 		{
-			CascadeMode = CascadeMode.StopOnFirstFailure;
-
 			RuleFor(x => x.Barcode).NotNull();
 			RuleFor(x => x.BarcodeType).NotEmpty();
-			RuleFor(x => x).Must(c =>
-				{
-					switch (c.BarcodeType)
-					{
-						case BarcodeType.EAN:
-							return c.Barcode.Length == 13;
-						case BarcodeType.UPC:
-							return c.Barcode.Length == 12;
-						default:
-							return false;
-					}
-				})
-				.WithName("BarcodeTypeLength");
+			RuleFor(x => x).Cascade(CascadeMode.StopOnFirstFailure)
+				.Must(c =>
+					  {
+						  if (c.Barcode != null)
+						  {
+							  switch (c.BarcodeType)
+							  {
+								  case BarcodeType.EAN:
+									  return c.Barcode.Length == 13;
+								  case BarcodeType.UPC:
+									  return c.Barcode.Length == 12;
+							  }
+						  }
+						  return false;
+					  })
+				.WithName("BarcodeLength");
 		}
 	}
 }
