@@ -12,7 +12,9 @@ type QueryStringNameValueCollection(coll : NameValueCollection, urlEncoder : IUr
 
     override this.Get(name : string) : string =
         let value = base.Get(name)
-        if not (value = null) then value else String.Empty
+        if value <> null
+            then value
+            else String.Empty
 
     override this.ToString() : string =
         let args = this.AllKeys |>

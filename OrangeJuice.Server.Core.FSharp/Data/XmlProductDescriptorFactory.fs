@@ -16,8 +16,12 @@ type XmlProductDescriptorFactory() =
         nm.AddNamespace("x", element.Name.Namespace.ToString()) |> ignore
 
         let toString e = 
-            let o = if e = null then None else Some(XElement.op_Explicit e : string)
-            if o.IsSome then o.Value else null
+            let o = if e <> null
+                        then Some(XElement.op_Explicit e : string)
+                        else None
+            if o.IsSome
+                then o.Value
+                else null
 
         new ProductDescriptor(
             SourceProductId = (element.XPathSelectElement("x:ASIN", nm) |> toString),

@@ -21,7 +21,9 @@ type AzureProductProvider(azureOptions : AzureOptions, client : IAzureClient, co
 
     member this.Get(productId : Guid) = async {
         let! content = client.GetBlobFromContainer(azureOptions.ProductsContainer, productId.ToString()) |> Async.AwaitTask
-        return if content <> null then converter.Convert(content) else null
+        return if content <> null 
+            then converter.Convert(content)
+            else null
     }
 
     member this.Save(descriptor : ProductDescriptor) =
