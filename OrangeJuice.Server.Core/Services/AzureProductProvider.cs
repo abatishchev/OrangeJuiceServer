@@ -30,10 +30,10 @@ namespace OrangeJuice.Server.Services
 			return content != null ? _converter.Convert(content) : null;
 		}
 
-		public async Task Save(ProductDescriptor descriptor)
+		public Task Save(ProductDescriptor descriptor)
 		{
 			string content = _converter.ConvertBack(descriptor);
-			await _client.PutBlobToContainer(_azureOptions.ProductsContainer, descriptor.ProductId.ToString(), content);
+			return _client.PutBlobToContainer(_azureOptions.ProductsContainer, descriptor.ProductId.ToString(), content);
 		}
 
 		public Uri GetUrl(Guid productId)
