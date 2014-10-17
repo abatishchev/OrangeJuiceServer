@@ -30,14 +30,14 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
                         // if empty
                         | [] -> return null
                         // if not empty
-                        | _ -> let save = fun (descriptor : ProductDescriptor) -> async {
-                                          let! productId = productRepository.Save(barcode, barcodeType, descriptor.SourceProductId) |> Async.AwaitTask
-                                          descriptor.ProductId <- productId
-                                          azureProvider.Save(descriptor) |> Async.AwaitIAsyncResult |> Async.Ignore |> ignore
-                                          return descriptor
+                        | _ -> let save = fun () -> async {
+                                   for d in descriptors do
+                                       let! productId = productRepository.Save(barcode, barcodeType, d.SourceProductId) |> Async.AwaitTask
+                                       d.ProductId <- productId
+                                       azureProvider.Save(d) |> Async.AwaitIAsyncResult |> Async.Ignore |> ignore
+                                   return descriptors
                                }
-                               let seq = Seq.map (fun d -> save(d) |> Async.StartAsTask) descriptors
-                               let! t = Task.WhenAll(seq) |> Async.AwaitTask
+                               let! t = save() |> Async.StartAsTask |> Async.AwaitTask
                                return t
             // if not empty
             | _ -> let seq = Seq.map (fun (p : IProduct) -> azureProvider.Get(p.ProductId)) products

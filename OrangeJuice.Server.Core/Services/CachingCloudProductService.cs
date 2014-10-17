@@ -39,20 +39,23 @@ namespace OrangeJuice.Server.Services
 			ProductDescriptor[] descriptors = await _awsProvider.Search(barcode, barcodeType);
 			if (!descriptors.Any())
 				return null;
-
-			return await Task.WhenAll(descriptors.Select(async d => await Save(d, barcode, barcodeType)));
+			return await Save(descriptors, barcode, barcodeType);
 		}
+
 		#endregion
 
 		#region Methods
-		private async Task<ProductDescriptor> Save(ProductDescriptor descriptor, string barcode, BarcodeType barcodeType)
+		private async Task<ProductDescriptor[]> Save(ProductDescriptor[] descriptors, string barcode, BarcodeType barcodeType)
 		{
-			Guid productId = await _productRepository.Save(barcode, barcodeType, descriptor.SourceProductId);
-			descriptor.ProductId = productId;
-			
-			await _azureProvider.Save(descriptor);
+			foreach (ProductDescriptor d in descriptors)
+			{
+				Guid productId = await _productRepository.Save(barcode, barcodeType, d.SourceProductId);
 
-			return descriptor;
+				d.ProductId = productId;
+
+				await _azureProvider.Save(d);
+			}
+			return descriptors;
 		}
 		#endregion
 
