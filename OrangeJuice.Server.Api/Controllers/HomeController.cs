@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Api.Controllers
 {

@@ -4,7 +4,7 @@ open System.Reflection
 
 open OrangeJuice.Server
 open OrangeJuice.Server.Configuration
-open OrangeJuice.Server.Data
+open OrangeJuice.Server.Data.Models
 
 type ApiVersionFactory(assemblyProvider : IAssemblyProvider, environmentProvider : IEnvironmentProvider) =
     interface Factory.IFactory<ApiVersion> with

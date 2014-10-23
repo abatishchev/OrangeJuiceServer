@@ -5,7 +5,7 @@ open System.Xml.Linq
 
 open Factory
 
-open OrangeJuice.Server.Data
+open OrangeJuice.Server.Data.Models
 open OrangeJuice.Server.Services
 open OrangeJuice.Server.Web
 

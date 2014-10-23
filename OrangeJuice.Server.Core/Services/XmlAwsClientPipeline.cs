@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Factory;
 
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services

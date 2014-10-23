@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Configuration;
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Services
 {

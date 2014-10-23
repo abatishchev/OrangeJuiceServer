@@ -4,7 +4,7 @@ open Newtonsoft.Json
 open Newtonsoft.Json.Linq
 
 open OrangeJuice.Server
-open OrangeJuice.Server.Data
+open OrangeJuice.Server.Data.Models
 
 type JsonProductDescriptorConverter() =
     interface IConverter<string, ProductDescriptor> with

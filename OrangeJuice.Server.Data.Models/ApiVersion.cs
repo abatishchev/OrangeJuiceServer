@@ -1,4 +1,4 @@
-﻿namespace OrangeJuice.Server.Data
+﻿namespace OrangeJuice.Server.Data.Models
 {
 	public class ApiVersion
 	{

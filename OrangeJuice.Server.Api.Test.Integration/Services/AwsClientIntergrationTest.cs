@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 
 using FluentAssertions;
-
 using Microsoft.Practices.Unity;
-using Xunit;
 
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
+
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
 {

@@ -3,6 +3,7 @@
 using FluentAssertions;
 
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 
 using Xunit.Extensions;
 

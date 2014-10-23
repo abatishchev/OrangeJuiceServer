@@ -4,7 +4,7 @@ using System.Web.Http.Results;
 using FluentAssertions;
 
 using OrangeJuice.Server.Api.Controllers;
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 
 using Xunit;
 

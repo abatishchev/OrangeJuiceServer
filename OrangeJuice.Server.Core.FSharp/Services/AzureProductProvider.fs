@@ -5,7 +5,7 @@ open System.Threading.Tasks
 
 open OrangeJuice.Server
 open OrangeJuice.Server.Configuration
-open OrangeJuice.Server.Data
+open OrangeJuice.Server.Data.Models
 open OrangeJuice.Server.Services
 
 type AzureProductProvider(azureOptions : AzureOptions, client : IAzureClient, converter : IConverter<string, ProductDescriptor>) =

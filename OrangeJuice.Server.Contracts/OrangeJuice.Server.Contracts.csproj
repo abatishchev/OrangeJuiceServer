@@ -81,9 +81,6 @@
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IConnectionStringProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
-    <Compile Include="Data\ApiVersion.cs" />
-    <Compile Include="Data\ProductDescriptor.cs" />
-    <Compile Include="Data\ProductDescriptorSearchCriteria.cs" />
     <Compile Include="Data\IProductRepository.cs" />
     <Compile Include="Data\IRatingRepository.cs" />
     <Compile Include="Data\ITraceRequestRepository.cs" />

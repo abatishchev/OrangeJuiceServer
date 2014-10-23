@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OrangeJuice.Server.Data
+namespace OrangeJuice.Server.Data.Models
 {
 	public class ProductDescriptor
 	{

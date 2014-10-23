@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using OrangeJuice.Server.Configuration;
+using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Services
 {
@@ -24,7 +25,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IArgumentBuilder members
-		public IDictionary<string, string> BuildArgs(Data.ProductDescriptorSearchCriteria searchCriteria)
+		public IDictionary<string, string> BuildArgs(ProductDescriptorSearchCriteria searchCriteria)
 		{
 			DateTime now = _dateTimeProvider.GetNow();
 			string timestamp = _dateTimeProvider.Format(now);

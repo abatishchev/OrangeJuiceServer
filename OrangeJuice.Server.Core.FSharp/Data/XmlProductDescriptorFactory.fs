@@ -4,7 +4,7 @@ open System.Xml
 open System.Xml.Linq
 open System.Xml.XPath
 
-open OrangeJuice.Server.Data
+open OrangeJuice.Server.Data.Models
 
 type XmlProductDescriptorFactory() =
     interface Factory.IFactory<ProductDescriptor, XElement> with

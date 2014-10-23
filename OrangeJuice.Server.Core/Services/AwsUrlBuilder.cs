@@ -1,5 +1,6 @@
 ﻿using System;
 
+using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Services
@@ -27,7 +28,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IUrlBuilder members
-		public Uri BuildUrl(Data.ProductDescriptorSearchCriteria searchCriteria)
+		public Uri BuildUrl(ProductDescriptorSearchCriteria searchCriteria)
 		{
 			var args = _argumentBuilder.BuildArgs(searchCriteria);
 			string query = _queryBuilder.BuildQuery(args);

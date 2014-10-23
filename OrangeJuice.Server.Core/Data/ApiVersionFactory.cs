@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 
 using OrangeJuice.Server.Configuration;
+using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Data
 {

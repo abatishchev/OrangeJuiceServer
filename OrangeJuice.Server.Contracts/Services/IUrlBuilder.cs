@@ -1,9 +1,11 @@
 ﻿using System;
 
+using OrangeJuice.Server.Data.Models;
+
 namespace OrangeJuice.Server.Services
 {
 	public interface IUrlBuilder
 	{
-		Uri BuildUrl(Data.ProductDescriptorSearchCriteria searchCriteria);
+		Uri BuildUrl(ProductDescriptorSearchCriteria searchCriteria);
 	}
 }

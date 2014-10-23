@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 
 using FluentAssertions;
-
+using OrangeJuice.Server.Data.Models;
 using Xunit;
 
 using Moq;
 
 using OrangeJuice.Server.Configuration;
-using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 

@@ -3,9 +3,10 @@ using System.Xml.Linq;
 
 using FluentAssertions;
 
-using Xunit;
-
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
+
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Data
 {

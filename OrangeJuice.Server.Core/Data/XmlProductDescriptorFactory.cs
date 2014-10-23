@@ -2,6 +2,8 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
 
+using OrangeJuice.Server.Data.Models;
+
 namespace OrangeJuice.Server.Data
 {
 	public sealed class XmlProductDescriptorFactory : Factory.IFactory<ProductDescriptor, XElement>
