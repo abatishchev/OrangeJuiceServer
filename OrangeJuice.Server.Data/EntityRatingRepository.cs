@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
-using OrangeJuice.Server.Data.Context;
+using OrangeJuice.Server.Data.Models;
 
-namespace OrangeJuice.Server.Data.Repository
+namespace OrangeJuice.Server.Data
 {
 	public sealed class EntityRatingRepository : IRatingRepository
 	{
@@ -60,12 +60,12 @@ namespace OrangeJuice.Server.Data.Repository
 			}
 		}
 
-		public async Task<IRating> Search(Guid userId, Guid productId)
+		public Task<Rating> Search(Guid userId, Guid productId)
 		{
-			return await _db.Ratings.FindAsync(userId, productId);
+			return _db.Ratings.FindAsync(userId, productId);
 		}
 
-		public async Task<IRating[]> SearchAll(Guid productId)
+		public async Task<Rating[]> SearchAll(Guid productId)
 		{
 			Product product = await _db.Products.FindAsync(productId);
 			return product != null ? product.Ratings.ToArray() : null;

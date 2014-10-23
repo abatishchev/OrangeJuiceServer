@@ -9,7 +9,7 @@ using Moq;
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Repository;
+using OrangeJuice.Server.Data.Models;
 
 using Xunit;
 
@@ -70,7 +70,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			Guid userId = Guid.NewGuid(), productId = Guid.NewGuid();
-			IRating expected = Mock.Of<IRating>();
+			Rating expected = Mock.Of<Rating>();
 
 			var repositoryMock = new Mock<IRatingRepository>();
 			repositoryMock.Setup(r => r.Search(userId, productId)).ReturnsAsync(expected);
@@ -79,7 +79,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.GetRating(new RatingSearchCriteria { UserId = userId, ProductId = productId });
-			IRating actual = ((OkNegotiatedContentResult<IRating>)result).Content;
+			Rating actual = ((OkNegotiatedContentResult<Rating>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -90,7 +90,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Search(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(Mock.Of<IRating>());
+			repositoryMock.Setup(r => r.Search(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(Mock.Of<Rating>());
 
 			RatingController controller = CreateController(repositoryMock.Object);
 
@@ -98,7 +98,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetRating(new RatingSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<OkNegotiatedContentResult<IRating>>();
+			result.Should().BeOfType<OkNegotiatedContentResult<Rating>>();
 		}
 		#endregion
 
@@ -115,7 +115,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Assert
 			task.ShouldThrow<ArgumentNullException>();
 		}
-		
+
 		[Fact]
 		public async Task GetRatings_Should_Return_Status_NotFound_When_RatingRepository_SearchAll_Returns_Null()
 		{
@@ -155,7 +155,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			Guid productId = Guid.NewGuid();
-			IRating[] expected = { Mock.Of<IRating>() };
+			Rating[] expected = { Mock.Of<Rating>() };
 
 			var repositoryMock = new Mock<IRatingRepository>();
 			repositoryMock.Setup(r => r.SearchAll(productId)).ReturnsAsync(expected);
@@ -164,7 +164,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.GetRatings(new RatingsSearchCriteria { ProductId = productId });
-			var actual = ((OkNegotiatedContentResult<IRating[]>)result).Content;
+			var actual = ((OkNegotiatedContentResult<Rating[]>)result).Content;
 
 			// Assert
 			actual.Should().BeEquivalentTo(expected);
@@ -175,7 +175,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.SearchAll(It.IsAny<Guid>())).ReturnsAsync(new[] { Mock.Of<IRating>() });
+			repositoryMock.Setup(r => r.SearchAll(It.IsAny<Guid>())).ReturnsAsync(new[] { Mock.Of<Rating>() });
 
 			RatingController controller = CreateController(repositoryMock.Object);
 
@@ -183,7 +183,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetRatings(new RatingsSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<OkNegotiatedContentResult<IRating[]>>();
+			result.Should().BeOfType<OkNegotiatedContentResult<Rating[]>>();
 		}
 		#endregion
 
@@ -200,7 +200,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Assert
 			task.ShouldThrow<ArgumentNullException>();
 		}
-		
+
 		[Fact]
 		public async Task PostRating_Should_Pass_UserId_And_ProductId_And_Value_To_RatingRepository_Delete()
 		{
@@ -251,7 +251,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Assert
 			task.ShouldThrow<ArgumentNullException>();
 		}
-		
+
 		[Fact]
 		public async Task DeleteRating_Should_Pass_UserId_And_ProductId_To_RatingRepository_Delete()
 		{

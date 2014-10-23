@@ -1,4 +1,4 @@
-﻿namespace OrangeJuice.Server.Data
+﻿namespace OrangeJuice.Server.Data.Models
 {
 	// ReSharper disable InconsistentNaming
 	public enum BarcodeType : byte

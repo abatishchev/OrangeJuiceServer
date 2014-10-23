@@ -5,10 +5,10 @@ using System.Web;
 
 using FluentAssertions;
 
-using Xunit;
-
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Data.Test;
+
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 {

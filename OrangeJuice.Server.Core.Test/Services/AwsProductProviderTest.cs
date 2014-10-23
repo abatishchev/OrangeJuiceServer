@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
 
-using Xunit;
-
 using Moq;
 
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
+
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Services
 {

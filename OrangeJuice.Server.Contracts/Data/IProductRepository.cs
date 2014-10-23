@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OrangeJuice.Server.Data.Repository
+using OrangeJuice.Server.Data.Models;
+
+namespace OrangeJuice.Server.Data
 {
 	public interface IProductRepository : IDisposable
 	{
-		IEnumerable<IProduct> Search(string barcode, BarcodeType barcodeType);
+		Task<Product[]> Search(string barcode, BarcodeType barcodeType);
 
 		Task<Guid> Save(string barcode, BarcodeType barcodeType, string sourceProductId);
 	}

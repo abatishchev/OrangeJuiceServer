@@ -82,7 +82,7 @@ namespace OrangeJuice.Server.Test.Web
 			var coll = CreateCollection(type, new NameValueCollection { { key, value } }, urlEncoderMock.Object);
 
 			// Act
-			coll.ToString();
+			string str = coll.ToString();
 
 			// Arrange
 			urlEncoderMock.VerifyAll();

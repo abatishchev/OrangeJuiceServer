@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-using OrangeJuice.Server.Data.Context;
+using OrangeJuice.Server.Data.Models;
 
-namespace OrangeJuice.Server.Data.Repository
+namespace OrangeJuice.Server.Data
 {
 	public sealed class EntityProductRepository : IProductRepository
 	{
@@ -21,9 +21,9 @@ namespace OrangeJuice.Server.Data.Repository
 		#endregion
 
 		#region IProductRepository members
-		public IEnumerable<IProduct> Search(string barcode, BarcodeType barcodeType)
+		public Task<Product[]> Search(string barcode, BarcodeType barcodeType)
 		{
-			return _db.Products.Where(p => p.Barcode == barcode && p.BarcodeType == barcodeType);
+			return _db.Products.Where(p => p.Barcode == barcode && p.BarcodeType == barcodeType).ToArrayAsync();
 		}
 
 		public async Task<Guid> Save(string barcode, BarcodeType barcodeType, string sourceProductId)

@@ -4,7 +4,7 @@ using System.Web.Http;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Repository;
+using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (searchCriteria == null)
 				throw new ArgumentNullException();
 
-			IRating rating = await _ratingRepository.Search(searchCriteria.UserId, searchCriteria.ProductId);
+			Rating rating = await _ratingRepository.Search(searchCriteria.UserId, searchCriteria.ProductId);
 			if (rating == null)
 				return NotFound();
 

@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OrangeJuice.Server.Data.Repository
+using OrangeJuice.Server.Data.Models;
+
+namespace OrangeJuice.Server.Data
 {
 	public interface IRatingRepository : IDisposable
 	{
@@ -10,8 +11,8 @@ namespace OrangeJuice.Server.Data.Repository
 
 		Task Delete(Guid ratingId, Guid productId);
 
-		Task<IRating> Search(Guid userId, Guid productId);
+		Task<Rating> Search(Guid userId, Guid productId);
 
-		Task<IRating[]> SearchAll(Guid productId);
+		Task<Rating[]> SearchAll(Guid productId);
 	}
 }

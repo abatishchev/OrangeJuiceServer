@@ -122,6 +122,10 @@
       <Project>{1a416347-6b6c-4551-bfdb-fbe19b121d74}</Project>
       <Name>OrangeJuice.Server.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrangeJuice.Server.Data.Models\OrangeJuice.Server.Data.Models.csproj">
+      <Project>{A7AA0640-3152-4395-9D3B-2E9FCCE45C80}</Project>
+      <Name>OrangeJuice.Server.Data.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Data\OrangeJuice.Server.Data.csproj">
       <Project>{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}</Project>
       <Name>OrangeJuice.Server.Data</Name>

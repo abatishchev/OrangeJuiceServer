@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using OrangeJuice.Server.Data.Context;
+using OrangeJuice.Server.Data.Models;
 
-namespace OrangeJuice.Server.Data.Repository
+namespace OrangeJuice.Server.Data
 {
 	public sealed class EntityTraceRequestRepository : ITraceRequestRepository
 	{

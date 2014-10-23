@@ -69,6 +69,11 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OrangeJuice.Server.Data.Models\OrangeJuice.Server.Data.Models.csproj">
+      <Name>OrangeJuice.Server.Data.Models</Name>
+      <Project>{a7aa0640-3152-4395-9d3b-2e9fcce45c80}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
       <Private>True</Private>

@@ -82,16 +82,12 @@
     <Compile Include="Configuration\IConnectionStringProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
     <Compile Include="Data\ApiVersion.cs" />
-    <Compile Include="Data\BarcodeType.cs" />
-    <Compile Include="Data\IProduct.cs" />
-    <Compile Include="Data\IRating.cs" />
-    <Compile Include="Data\IUser.cs" />
     <Compile Include="Data\ProductDescriptor.cs" />
     <Compile Include="Data\ProductDescriptorSearchCriteria.cs" />
-    <Compile Include="Data\Repository\IProductRepository.cs" />
-    <Compile Include="Data\Repository\IRatingRepository.cs" />
-    <Compile Include="Data\Repository\ITraceRequestRepository.cs" />
-    <Compile Include="Data\Repository\IUserRepository.cs" />
+    <Compile Include="Data\IProductRepository.cs" />
+    <Compile Include="Data\IRatingRepository.cs" />
+    <Compile Include="Data\ITraceRequestRepository.cs" />
+    <Compile Include="Data\IUserRepository.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Filters\IFilter.cs" />
     <Compile Include="IAssemblyProvider.cs" />
@@ -119,6 +115,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OrangeJuice.Server.Data.Models\OrangeJuice.Server.Data.Models.csproj">
+      <Project>{A7AA0640-3152-4395-9D3B-2E9FCCE45C80}</Project>
+      <Name>OrangeJuice.Server.Data.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

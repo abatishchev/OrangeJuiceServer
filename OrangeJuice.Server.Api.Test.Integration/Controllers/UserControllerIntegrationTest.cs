@@ -7,7 +7,7 @@ using System.Web;
 using FluentAssertions;
 
 using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 
 using Xunit;
 

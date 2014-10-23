@@ -10,6 +10,7 @@ using Moq;
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
 
 using Xunit;

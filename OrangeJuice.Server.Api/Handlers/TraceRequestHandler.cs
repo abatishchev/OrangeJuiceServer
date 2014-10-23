@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using OrangeJuice.Server.Data.Repository;
+using OrangeJuice.Server.Data;
 
 namespace OrangeJuice.Server.Api.Handlers
 {

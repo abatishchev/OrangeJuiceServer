@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Api.Models.Validation
 {

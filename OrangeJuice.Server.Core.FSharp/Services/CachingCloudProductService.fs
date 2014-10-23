@@ -7,7 +7,7 @@ open System.Threading.Tasks
 open Factory
 
 open OrangeJuice.Server.Data
-open OrangeJuice.Server.Data.Repository
+open OrangeJuice.Server.Data.Models
 open OrangeJuice.Server.Services
 
 type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider : IAzureProductProvider, productRepository : IProductRepository) =
@@ -22,7 +22,7 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
             productRepository.Dispose()
 
     member this.Search(barcode : string, barcodeType : BarcodeType) = async {
-        let products = productRepository.Search(barcode, barcodeType)
+        let! products = productRepository.Search(barcode, barcodeType) |> Async.AwaitTask
         match products |> List.ofSeq with
             // if empty
             | [] -> let! descriptors = awsProvider.Search(barcode, barcodeType) |> Async.AwaitTask
@@ -40,7 +40,7 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
                                let! t = save() |> Async.StartAsTask |> Async.AwaitTask
                                return t
             // if not empty
-            | _ -> let seq = Seq.map (fun (p : IProduct) -> azureProvider.Get(p.ProductId)) products
+            | _ -> let seq = Seq.map (fun (p : Product) -> azureProvider.Get(p.ProductId)) products
                    let! t = Task.WhenAll(seq) |> Async.AwaitTask
                    return t
     }

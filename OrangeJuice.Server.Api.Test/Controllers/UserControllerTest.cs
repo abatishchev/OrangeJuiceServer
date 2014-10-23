@@ -10,7 +10,7 @@ using Moq;
 using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Repository;
+using OrangeJuice.Server.Data.Models;
 
 using Xunit;
 
@@ -54,7 +54,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			Guid userId = Guid.NewGuid();
-			IUser user = CreateUser(userId);
+			User user = CreateUser(userId);
 
 			var repositoryMock = new Mock<IUserRepository>();
 			repositoryMock.Setup(r => r.Search(userId)).ReturnsAsync(user);
@@ -73,7 +73,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			Guid userId = Guid.NewGuid();
-			IUser expected = CreateUser(userId);
+			User expected = CreateUser(userId);
 
 			var repositoryMock = new Mock<IUserRepository>();
 			repositoryMock.Setup(r => r.Search(userId)).ReturnsAsync(expected);
@@ -82,7 +82,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			var result = await controller.GetUser(new UserSearchCriteria { UserId = userId });
-			IUser actual = ((OkNegotiatedContentResult<IUser>)result).Content;
+			User actual = ((OkNegotiatedContentResult<User>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -92,7 +92,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task GetUser_Should_Return_Status_Ok()
 		{
 			// Arrange
-			IUser user = CreateUser();
+			User user = CreateUser();
 			var repositoryMock = new Mock<IUserRepository>();
 			repositoryMock.Setup(r => r.Search(It.IsAny<Guid>())).ReturnsAsync(user);
 
@@ -102,7 +102,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetUser(new UserSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<OkNegotiatedContentResult<IUser>>();
+			result.Should().BeOfType<OkNegotiatedContentResult<User>>();
 		}
 		#endregion
 
@@ -128,7 +128,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const string name = "name";
 
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(email, name)).ReturnsAsync(Mock.Of<IUser>());
+			repositoryMock.Setup(r => r.Register(email, name)).ReturnsAsync(Mock.Of<User>());
 
 			UserController controller = CreateController(repositoryMock.Object);
 
@@ -143,7 +143,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task PutUser_Should_Return_User_Returned_By_UserRepository_Register()
 		{
 			// Arrange
-			IUser expected = CreateUser();
+			User expected = CreateUser();
 
 			var repositoryMock = new Mock<IUserRepository>();
 			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(expected);
@@ -152,7 +152,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.PutUser(new UserModel());
-			IUser actual = ((CreatedNegotiatedContentResult<IUser>)result).Content;
+			User actual = ((CreatedNegotiatedContentResult<User>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -162,7 +162,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		public async Task PutUser_Should_Return_Status_Created()
 		{
 			// Arrange
-			IUser user = CreateUser();
+			User user = CreateUser();
 			var repositoryMock = new Mock<IUserRepository>();
 			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(user);
 
@@ -172,7 +172,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.PutUser(new UserModel());
 
 			// Assert
-			result.Should().BeOfType<CreatedNegotiatedContentResult<IUser>>();
+			result.Should().BeOfType<CreatedNegotiatedContentResult<User>>();
 		}
 		#endregion
 
@@ -184,11 +184,12 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 				ControllerFactory<UserController>.CreateUriMaker());
 		}
 
-		private static IUser CreateUser(Guid? userId = null)
+		private static User CreateUser(Guid? userId = null)
 		{
-			var userMock = new Mock<IUser>();
-			userMock.Setup(u => u.UserId).Returns(userId ?? Guid.NewGuid());
-			return userMock.Object;
+			return new User
+			{
+				UserId = userId ?? Guid.NewGuid()
+			};
 		}
 		#endregion
 	}

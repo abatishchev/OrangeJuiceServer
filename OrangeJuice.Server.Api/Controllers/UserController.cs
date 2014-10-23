@@ -6,7 +6,7 @@ using Drum;
 
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Repository;
+using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
@@ -34,7 +34,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (searchCriteria == null)
 				throw new ArgumentNullException();
 
-			IUser user = await _userRepository.Search(searchCriteria.UserId);
+			User user = await _userRepository.Search(searchCriteria.UserId);
 			if (user == null)
 				return this.NoContent();
 
@@ -48,7 +48,7 @@ namespace OrangeJuice.Server.Api.Controllers
 				throw new ArgumentNullException();
 
 			// TODO: handle duplication
-			IUser user = await _userRepository.Register(userModel.Email, userModel.Name);
+			User user = await _userRepository.Register(userModel.Email, userModel.Name);
 
 			var url = _urlMaker.UriFor(c => c.GetUser(new UserSearchCriteria { UserId = user.UserId }));
 

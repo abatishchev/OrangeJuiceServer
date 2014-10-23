@@ -3,7 +3,9 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 
-namespace OrangeJuice.Server.Data.Context
+using OrangeJuice.Server.Data.Models;
+
+namespace OrangeJuice.Server.Data
 {
 	public interface IModelContext : IDisposable
 	{

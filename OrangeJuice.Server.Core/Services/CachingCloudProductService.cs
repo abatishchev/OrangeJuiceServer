@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Repository;
+using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Services
 {
@@ -32,7 +32,7 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
 		{
-			IProduct[] products = _productRepository.Search(barcode, barcodeType).ToArray();
+			Product[] products = await _productRepository.Search(barcode, barcodeType);
 			if (products.Any())
 				return await Task.WhenAll(products.Select(p => _azureProvider.Get(p.ProductId)));
 

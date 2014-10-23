@@ -153,6 +153,10 @@
       <Project>{1a416347-6b6c-4551-bfdb-fbe19b121d74}</Project>
       <Name>OrangeJuice.Server.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrangeJuice.Server.Data.Models\OrangeJuice.Server.Data.Models.csproj">
+      <Project>{A7AA0640-3152-4395-9D3B-2E9FCCE45C80}</Project>
+      <Name>OrangeJuice.Server.Data.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

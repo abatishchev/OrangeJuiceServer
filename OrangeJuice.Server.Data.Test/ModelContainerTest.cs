@@ -1,6 +1,4 @@
-﻿using System.Data.Entity;
-
-using Moq;
+﻿using Moq;
 
 using OrangeJuice.Server.Configuration;
 
@@ -18,7 +16,7 @@ namespace OrangeJuice.Server.Data.Test
 			providerMock.Setup(p => p.GetDefaultConnectionString()).Returns("connectionString");
 
 			// Act
-			DbContext context = new ModelContext(providerMock.Object);
+			new ModelContext(providerMock.Object);
 
 			// Assert
 			providerMock.VerifyAll();
