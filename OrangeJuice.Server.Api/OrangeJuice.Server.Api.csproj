@@ -169,6 +169,8 @@
     <Compile Include="App_Start\OwinConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ControllerExtensions.cs" />
+    <Compile Include="Controllers\AuthorizationController.cs" />
+    <Compile Include="Handlers\DelegatingHandlerProxy.cs" />
     <Compile Include="Handlers\TraceRequestHandler.cs" />
     <Compile Include="Models\ProductSearchCriteria.cs" />
     <Compile Include="Models\RatingModel.cs" />
@@ -197,6 +199,8 @@
     <Compile Include="Models\Validation\RatingModelValidator.cs" />
     <Compile Include="Models\Validation\UserModelValidator.cs" />
     <Compile Include="Models\Validation\UserSearchCriteriaValidator.cs" />
+    <Compile Include="Services\HttpRequestMessageProvider.cs" />
+    <Compile Include="Services\UriMakerAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

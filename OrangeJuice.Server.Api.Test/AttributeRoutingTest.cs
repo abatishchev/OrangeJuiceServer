@@ -19,11 +19,13 @@ namespace OrangeJuice.Server.Api.Test
 			var attributes = from t in assembly.GetTypes()
 							 where typeof(ApiController).IsAssignableFrom(t)
 							 from m in t.GetMethods()
-							 where m.ReturnType == typeof(IHttpActionResult)
+							 where m.ReturnType.IsGenericType ?
+									   m.ReturnType.GenericTypeArguments[0] == typeof(IHttpActionResult) :
+									   m.ReturnType == typeof(IHttpActionResult)
 							 select m.GetCustomAttributes<RouteAttribute>().FirstOrDefault();
 
 			// Assert
-			attributes.Should().Contain(a => a != null);
+			attributes.Should().NotContainNulls();
 		}
 		#endregion
 	}

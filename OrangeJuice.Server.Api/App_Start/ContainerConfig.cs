@@ -17,6 +17,7 @@ using FluentValidation.WebApi;
 
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Handlers.Validation;
+using OrangeJuice.Server.Api.Services;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
@@ -56,10 +57,7 @@ namespace OrangeJuice.Server.Api
 		{
 			Container container = new Container();
 
-			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
-
 			RegisterTypes(container);
-			container.Verify();
 
 			return container;
 		}
@@ -69,9 +67,9 @@ namespace OrangeJuice.Server.Api
 			Container container = new Container();
 
 			container.Register<IConfigurationProvider, WebConfigurationProvider>();
-
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>();
 
+			container.Verify();
 			return container;
 		}
 
@@ -90,7 +88,6 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Configuration
-
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>();
 
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>();
@@ -108,14 +105,15 @@ namespace OrangeJuice.Server.Api
 
 			#region Web API
 			// Filters
+			container.RegisterWebApiFilterProvider(GlobalConfiguration.Configuration);
 			container.RegisterAll<IFilter>(typeof(WebApiContrib.Filters.ValidationAttribute));
 
 			// Handlers
 			container.RegisterFactory<IValidator<HttpRequestMessage>, AppVersionValidatorFactory>();
 
 			container.Register<ITraceRequestRepository, EntityTraceRequestRepository>();
-			
-			container.RegisterAll<DelegatingHandler>(typeof(AppVersionHandler), typeof(TraceRequestHandler));
+
+			container.RegisterAll<DelegatingHandler>(typeof(AppVersionHandler), typeof(DelegatingHandlerProxy<TraceRequestHandler>));
 
 			// Services
 			container.Register<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>();
@@ -123,9 +121,12 @@ namespace OrangeJuice.Server.Api
 			ServiceCenter.Current = c => container;
 			container.Register<ErrorLog>(() => new SqlErrorLog(container.GetInstance<IConnectionStringProvider>().GetDefaultConnectionString()));
 
-			//container.RegisterType(typeof(UriMaker<>),
-			//	new DefaultLifetimeManager(),
-			//	new InjectionConstructor(typeof(UriMakerContext), typeof(HttpRequestMessage)));
+			// Controllers
+			container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+
+			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
+			container.RegisterWebApiRequest<IRequestMessageProvider, HttpRequestMessageProvider>();
+			container.RegisterOpenGeneric(typeof(UriMaker<>), typeof(UriMakerAdapter<>));
 			#endregion
 
 			#region Data
@@ -207,13 +208,13 @@ namespace OrangeJuice.Server.Api
 			#endregion
 		}
 
-		internal static void RegisterUriMaker(Container container, UriMakerContext uriMakerContext)
+		public static void RegisterUriMaker(Container container, UriMakerContext uriMakerContext)
 		{
 			container.RegisterSingle(uriMakerContext);
 		}
 	}
 
-	internal static class UnityContainerExtensions
+	internal static class ContainerExtensions
 	{
 		public static void RegisterFactory<T, TFactory>(this Container container)
 			where T : class

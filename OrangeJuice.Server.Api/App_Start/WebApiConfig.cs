@@ -23,16 +23,17 @@ namespace OrangeJuice.Server.Api
 		{
 			config.DependencyResolver = new SimpleInjector.Integration.WebApi.SimpleInjectorWebApiDependencyResolver(container);
 
-			ConfigureFilters(config.Filters, container);
-			ConfigureHandlers(config.MessageHandlers, container);
-			ConfigureServices(config.Services, container);
-			ConfigureFormatters(config.Formatters);
-
 			config.UseWebConfigCustomErrors();
 
 			//config.MapHttpAttributeRoutes();
 			var uriMaker = config.MapHttpAttributeRoutesAndUseUriMaker();
 			ContainerConfig.RegisterUriMaker(container, uriMaker);
+			container.Verify();
+
+			ConfigureFilters(config.Filters, container);
+			ConfigureHandlers(config.MessageHandlers, container);
+			ConfigureServices(config.Services, container);
+			ConfigureFormatters(config.Formatters);
 
 			// Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
 			// To avoid processing unexpected or malicious queries, use the validation settings on QueryableAttribute to validate incoming queries.
@@ -50,7 +51,7 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, Container container)
 		{
-            foreach (DelegatingHandler handler in container.GetAllInstances<DelegatingHandler>())
+			foreach (DelegatingHandler handler in container.GetAllInstances<DelegatingHandler>())
 			{
 				handlers.Add(handler);
 			}
