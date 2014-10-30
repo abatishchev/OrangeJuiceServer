@@ -40,7 +40,7 @@ using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFacto
 using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProvider;
 using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
 using JsonBlobNameResolver = OrangeJuice.Server.FSharp.Services.JsonBlobNameResolver;
-using XmlAwsClient = OrangeJuice.Server.Services.XmlAwsClient;
+using XmlAwsClient = OrangeJuice.Server.FSharp.Services.XmlAwsClient;
 
 using XmlRequestValidator = OrangeJuice.Server.FSharp.Validation.XmlRequestValidator;
 
@@ -178,7 +178,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register(typeof(IHttpClient), typeof(HttpClientAdapter));
 			
-	        container.RegisterDecorator(typeof(IHttpClient), typeof(ThrottlingHttpClient));
+			container.RegisterDecorator(typeof(IHttpClient), typeof(ThrottlingHttpClient));
 
 			container.Register<IValidator<XElement>, XmlRequestValidator>();
 
