@@ -8,10 +8,7 @@ using System.Web.Http.Validation;
 using System.Xml.Linq;
 
 using Drum;
-
 using Elmah;
-using Elmah.Contrib.EntityFramework;
-
 using Factory;
 
 using FluentValidation;
@@ -181,9 +178,9 @@ namespace OrangeJuice.Server.Api
 				new ContainerControlledLifetimeManager(),
 				new InjectionConstructor(container));
 			ServiceCenter.Current = c => container.Resolve<IServiceProvider>();
-			container.RegisterType<ErrorLog, EntityErrorLog>(
+			container.RegisterType<ErrorLog, SqlErrorLog>(
 				new DefaultLifetimeManager(),
-				new InjectionFactory(c => new EntityErrorLog(c.Resolve<IConnectionStringProvider>().GetDefaultConnectionString())));
+				new InjectionFactory(c => new SqlErrorLog(c.Resolve<IConnectionStringProvider>().GetDefaultConnectionString())));
 
 			container.RegisterType<HttpRequestMessage>(
 				new DefaultLifetimeManager(),
