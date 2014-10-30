@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("userId", userId.ToString());
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/user";
 			url.Query = query.ToString();
@@ -49,7 +49,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("userId", userId.ToString());
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/user";
 			url.Query = query.ToString();
@@ -71,7 +71,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 				Email = String.Format("{0}@example.com", Guid.NewGuid())
 			};
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/user";
 

@@ -13,7 +13,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		public async Task GetRoot_Should_Return_Status_NotFound()
 		{
 			// Arrange
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 
 			// Act
 			var response = await client.GetAsync("/api");
@@ -26,7 +26,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 		public async Task GetVersion_Should_Return_Status_Ok()
 		{
 			// Arrange
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 
 			// Act
 			var response = await client.GetAsync("/api/version");

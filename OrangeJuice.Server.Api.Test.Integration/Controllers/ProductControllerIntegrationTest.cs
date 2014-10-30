@@ -23,7 +23,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			query.Add("barcode", "");
 			query.Add("barcodeType", BarcodeType.EAN.ToString());
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/barcode";
 			url.Query = query.ToString();
@@ -43,7 +43,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			query.Add("barcode", "barcode1");
 			query.Add("barcodeType", BarcodeType.EAN.ToString());
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/barcode";
 			url.Query = query.ToString();
@@ -63,7 +63,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			query.Add("barcode", "0072273390812");
 			query.Add("barcodeType", "");
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/barcode";
 			url.Query = query.ToString();
@@ -83,7 +83,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			query.Add("barcode", "0072273390812");
 			query.Add("barcodeType", "barcodeType1");
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/barcode";
 			url.Query = query.ToString();
@@ -103,7 +103,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			query.Add("barcode", "0072273390812");
 			query.Add("barcodeType", "EAN");
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/barcode";
 			url.Query = query.ToString();
@@ -127,7 +127,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
             query.Add("barcode", product.Barcode);
             query.Add("barcodeType", product.BarcodeType.ToString());
 
-            var client = HttpClientFactory.Create();
+            var client = await HttpClientFactory.Create();
             var url = new UriBuilder(client.BaseAddress);
             url.Path += "api/product/barcode";
             url.Query = query.ToString();
@@ -148,7 +148,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("productid", "");
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/id";
 			url.Query = query.ToString();
@@ -167,7 +167,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("productid", "productid1");
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/id";
 			url.Query = query.ToString();
@@ -186,7 +186,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("productid", Guid.NewGuid().ToString());
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/id";
 			url.Query = query.ToString();
@@ -210,7 +210,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			var query = HttpUtility.ParseQueryString(String.Empty);
 			query.Add("productid", productId.ToString());
 
-			var client = HttpClientFactory.Create();
+			var client = await HttpClientFactory.Create();
 			var url = new UriBuilder(client.BaseAddress);
 			url.Path += "api/product/id";
 			url.Query = query.ToString();
