@@ -125,11 +125,7 @@
     <Compile Include="RulesValidator.cs" />
     <Compile Include="Security\GoogleAuthTokenFactory.cs" />
     <Compile Include="Security\AuthTokenFactory.cs" />
-    <Compile Include="Security\GenericPrincipalFactory.cs" />
     <Compile Include="Security\JwtFactory.cs" />
-    <Compile Include="Security\PrincipalFactoryFactory.cs" />
-    <Compile Include="Security\SecurityTokenPrincipalFactory.cs" />
-    <Compile Include="Security\TokenValidationParametersFactory.cs" />
     <Compile Include="UnderscoreMappingResolver.cs" />
     <Compile Include="Services\PassThruCloudProductService.cs" />
     <Compile Include="Services\AzureBlobClient.cs" />
@@ -143,7 +139,6 @@
     <Compile Include="Services\CachingCloudProductService.cs" />
     <Compile Include="Services\JsonBlobNameResolver.cs" />
     <Compile Include="Services\XmlAwsClient.cs" />
-    <Compile Include="Services\XmlAwsClientPipeline.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
     <Compile Include="Threading\IntervalRequestScheduler.cs" />
     <Compile Include="Validation\XmlRequestValidator.cs" />

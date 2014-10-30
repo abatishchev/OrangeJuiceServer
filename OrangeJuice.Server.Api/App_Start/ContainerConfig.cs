@@ -178,7 +178,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register(typeof(IHttpClient), typeof(HttpClientAdapter));
 			
-            container.RegisterDecorator(typeof(IHttpClient), typeof(ThrottlingHttpClient));
+	        container.RegisterDecorator(typeof(IHttpClient), typeof(ThrottlingHttpClient));
 
 			container.Register<IValidator<XElement>, XmlRequestValidator>();
 
