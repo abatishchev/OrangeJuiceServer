@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Reactive.Concurrency;
-using System.Web.Http;
+using System.Threading.Tasks;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Validation;
@@ -25,13 +25,16 @@ using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
+using OrangeJuice.Server.Security;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
 using OrangeJuice.Server.Web;
 
-using WebApiContrib.Filters;
-
 using DefaultLifetimeManager = Microsoft.Practices.Unity.HierarchicalLifetimeManager;
+
+using AuthOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AuthOptionsFactory;
+using AwsOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AwsOptionsFactory;
+using AzureOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AzureOptionsFactory;
 
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
 using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProductDescriptorConverter;
@@ -53,13 +56,24 @@ namespace OrangeJuice.Server.Api
 {
 	internal static class ContainerConfig
 	{
-		public static IUnityContainer CreateContainer()
+		public static IUnityContainer CreateWebApiContainer()
 		{
 			IUnityContainer container = new UnityContainer();
 
 			RegisterTypes(container);
 
-			GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
+			return container;
+		}
+
+		public static IUnityContainer CreateOwinContainer()
+		{
+			IUnityContainer container = new UnityContainer();
+
+			container.RegisterType<IConfigurationProvider, WebConfigurationProvider>(
+				new DefaultLifetimeManager());
+
+			container.RegisterFactory<AuthOptions, AuthOptionsFactory>(
+				new DefaultLifetimeManager());
 
 			return container;
 		}
@@ -72,7 +86,7 @@ namespace OrangeJuice.Server.Api
 		private static void RegisterTypes(IUnityContainer container)
 		{
 			#region Providers
-			container.RegisterType<IConfigurationProvider, AzureConfigurationProvider>(
+			container.RegisterType<IConfigurationProvider, WebConfigurationProvider>(
 				new DefaultLifetimeManager());
 
 			container.RegisterType<IEnvironmentProvider, ConfigurationEnvironmentProvider>(
@@ -88,13 +102,56 @@ namespace OrangeJuice.Server.Api
 				new DefaultLifetimeManager());
 			#endregion
 
+			#region Configuration
+			container.RegisterFactory<AuthOptions, AuthOptionsFactory>(
+				new ContainerControlledLifetimeManager());
+
+			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(
+				new ContainerControlledLifetimeManager());
+
+			container.RegisterFactory<AwsOptions, AwsOptionsFactory>(
+				new ContainerControlledLifetimeManager());
+
+			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>(
+				new ContainerControlledLifetimeManager());
+			#endregion
+
+			#region Security
+			container.RegisterType<IFactory<string>, JwtFactory>(
+				typeof(JwtFactory).Name, // named registration
+				new DefaultLifetimeManager());
+			container.RegisterFactory<Task<AuthToken>, string, GoogleAuthTokenFactory>(
+				typeof(GoogleAuthTokenFactory).Name, // named registration
+				new DefaultLifetimeManager(),
+				new InjectionConstructor(
+					new ResolvedParameter<IFactory<string>>(typeof(JwtFactory).Name))); // param1: named registration
+			container.RegisterFactory<Task<AuthToken>, AuthToken, AuthTokenFactory>(
+				typeof(AuthTokenFactory).Name, // named registration
+				new DefaultLifetimeManager());
+			#endregion
+
 			#region Web API
 			// Filters
-			container.RegisterType<IFilter, ValidationAttribute>(
-				typeof(ValidationAttribute).Name, // named registration
+			container.RegisterType<IFilter, WebApiContrib.Filters.ValidationAttribute>(
+				typeof(WebApiContrib.Filters.ValidationAttribute).Name, // named registration
 				new DefaultLifetimeManager());
 
 			// Handlers
+			//container.RegisterFactory<IValidator<HttpRequestMessage, string>, AccessTokenValidatorFactory>(
+			//	typeof(AccessTokenAuthorizationHandler).Name, // named registration
+			//	new DefaultLifetimeManager());
+			//container.RegisterType<ISecurityTokenValidator, JwtSecurityTokenHandler>(
+			//	new DefaultLifetimeManager());
+			//container.RegisterFactory<TokenValidationParameters, TokenValidationParametersFactory>(
+			//	new ContainerControlledLifetimeManager()); container.RegisterFactory<IFactory<IPrincipal, string>, PrincipalFactoryFactory>(
+			//	new ContainerControlledLifetimeManager());
+			//container.RegisterType<DelegatingHandler, AccessTokenAuthorizationHandler>(
+			//	typeof(AccessTokenAuthorizationHandler).Name, // named registration
+			//	new DefaultLifetimeManager(),
+			//	new InjectionConstructor(
+			//		new ResolvedParameter<IValidator<HttpRequestMessage, string>>(typeof(AccessTokenAuthorizationHandler).Name), // param1: named registration
+			//		new ResolvedParameter<IFactory<IPrincipal, string>>())); // param2
+
 			container.RegisterType<CurrentRequest>(
 				new DefaultLifetimeManager());
 			container.RegisterType<DelegatingHandler, CurrentRequestHandler>(
@@ -102,13 +159,16 @@ namespace OrangeJuice.Server.Api
 				new DefaultLifetimeManager());
 
 			container.RegisterFactory<IValidator<HttpRequestMessage>, AppVersionValidatorFactory>(
+				typeof(AppVersionHandler).Name, // named registration
 				new DefaultLifetimeManager());
 			container.RegisterType<DelegatingHandler, AppVersionHandler>(
 				typeof(AppVersionHandler).Name, // named registration
-				new DefaultLifetimeManager());
+				new DefaultLifetimeManager(),
+				new InjectionConstructor(
+					new ResolvedParameter<IValidator<HttpRequestMessage>>(typeof(AppVersionHandler).Name))); // param1: named registration
 
 			container.RegisterType<ITraceRequestRepository, EntityTraceRequestRepository>(
-			  new DefaultLifetimeManager());
+				new DefaultLifetimeManager());
 			container.RegisterType<DelegatingHandler, TraceRequestHandler>(
 				typeof(TraceRequestHandler).Name, // named registration
 				new DefaultLifetimeManager());
@@ -153,9 +213,6 @@ namespace OrangeJuice.Server.Api
 
 			#region ProductController
 			#region Azure
-			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(
-				new DefaultLifetimeManager());
-
 			container.RegisterType<IBlobNameResolver, JsonBlobNameResolver>(
 				new DefaultLifetimeManager());
 
@@ -173,9 +230,6 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Aws
-			container.RegisterFactory<AwsOptions, AwsOptionsFactory>(
-				new DefaultLifetimeManager());
-
 			container.RegisterType<IArgumentBuilder, AwsArgumentBuilder>(
 				new DefaultLifetimeManager());
 
@@ -265,26 +319,37 @@ namespace OrangeJuice.Server.Api
 
 	internal static class UnityContainerExtensions
 	{
-		public static IUnityContainer RegisterFactory<T, TFactory>(this IUnityContainer container, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
+		public static IUnityContainer RegisterFactory<T, TFactory>(this IUnityContainer container, string name, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
 			where TFactory : IFactory<T>
 		{
 			return container.RegisterType<IFactory<T>, TFactory>(
 								new ContainerControlledLifetimeManager(), // singleton
 								injectionMembers)
 							.RegisterType<T>(
+								name,
 								lifetimeManager,
 								new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));
+		}
+
+		public static IUnityContainer RegisterFactory<T, TFactory>(this IUnityContainer container, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
+			where TFactory : IFactory<T>
+		{
+			return container.RegisterFactory<T, TFactory>(null, lifetimeManager, injectionMembers);
+		}
+
+		public static IUnityContainer RegisterFactory<T, TArg, TFactory>(this IUnityContainer container, string name, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
+			where TFactory : IFactory<T, TArg>
+		{
+			return container.RegisterType<IFactory<T, TArg>, TFactory>(
+								name,
+								new ContainerControlledLifetimeManager(), // singleton
+								injectionMembers);
 		}
 
 		public static IUnityContainer RegisterFactory<T, TArg, TFactory>(this IUnityContainer container, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
 			where TFactory : IFactory<T, TArg>
 		{
-			return container.RegisterType<IFactory<T, TArg>, TFactory>(
-								new ContainerControlledLifetimeManager(), // singleton
-								injectionMembers)
-							.RegisterType<T>(
-								lifetimeManager,
-								new InjectionFactory(c => c.Resolve<IFactory<T>>().Create()));
+			return container.RegisterFactory<T, TArg, TFactory>(null, lifetimeManager, injectionMembers);
 		}
 	}
 

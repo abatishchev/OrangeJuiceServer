@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Api.Handlers.Validation
 			switch (environment)
 			{
 				case EnvironmentName.Local:
-					return new EmptyAppVersionValidator();
+					return new EmptyValidator<HttpRequestMessage>();
 				default:
 					return new HeaderAppVersionValidator(AppVersion.Version0);
 			}

@@ -65,7 +65,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -95,9 +95,10 @@
     <Compile Include="Controllers\ProductControllerTest.cs" />
     <Compile Include="Controllers\RatingControllerTest.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
-    <Compile Include="Handlers\Validation\QueryAppVersionValidatorTest.cs" />
-    <Compile Include="Handlers\Validation\HeaderAppVersionValidatorTest.cs" />
-    <Compile Include="Handlers\Validation\AppVersionValidatorFactoryTest.cs" />
+    <Compile Include="Handlers\Validation\AccessToken\AccessTokenValidatorFactoryTest.cs" />
+    <Compile Include="Handlers\Validation\AccessToken\AccesstTokenValidatorTest.cs" />
+    <Compile Include="Handlers\Validation\AppVersion\HeaderAppVersionValidatorTest.cs" />
+    <Compile Include="Handlers\Validation\AppVersion\AppVersionValidatorFactoryTest.cs" />
     <Compile Include="Handlers\AppVersionHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 		[Fact]
 		public async Task Search_Should_Return_ProductDescriptor()
 		{
-			using (IUnityContainer container = ContainerConfig.CreateContainer())
+			using (IUnityContainer container = ContainerConfig.CreateWebApiContainer())
 			{
 				// Arrange
 				IAwsProductProvider provider = container.Resolve<IAwsProductProvider>();

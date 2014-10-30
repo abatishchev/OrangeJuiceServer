@@ -9,16 +9,16 @@ using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
-	public class QueryAppVersionValidatorTest
+	public class HeaderAppVersionValidatorTest
 	{
 		#region Test methods
 		[Fact]
-		public void IsValid_Should_Return_True_When_Query_Contains_AppVersion()
+		public void IsValid_Should_Return_True_When_Headers_Contains_AppVersion()
 		{
 			// Arrange
 			Version appVersion = new Version();
-			QueryAppVersionValidator handler = CreateHandler(appVersion);
-			HttpRequestMessage request = CreateRequest(AppVersion.ElementName, appVersion);
+			HeaderAppVersionValidator handler = CreateHandler(appVersion);
+			HttpRequestMessage request = CreateRequest("AppVer", appVersion);
 
 			// Act
 			bool valid = handler.IsValid(request);
@@ -28,10 +28,10 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		}
 
 		[Fact]
-		public void IsValid_Should_Return_False_When_Query_Does_Not_Contain_AppVersion()
+		public void IsValid_Should_Return_False_When_Headers_Does_Not_Contain_AppVersion()
 		{
 			// Arrange
-			QueryAppVersionValidator handler = CreateHandler();
+			HeaderAppVersionValidator handler = CreateHandler();
 			HttpRequestMessage request = CreateRequest("any-name", "any-value");
 
 			// Act
@@ -43,17 +43,16 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		#endregion
 
 		#region Helper methods
-		private static QueryAppVersionValidator CreateHandler(Version appVersion = null)
+		private static HeaderAppVersionValidator CreateHandler(Version appVersion = null)
 		{
-			return new QueryAppVersionValidator(appVersion ?? new Version());
+			return new HeaderAppVersionValidator(appVersion ?? new Version());
 		}
 
 		private static HttpRequestMessage CreateRequest(string name, object value)
 		{
-			return new HttpRequestMessage
-			{
-				RequestUri = new UriBuilder(Uri.UriSchemeHttp, "example.com", 80, "", String.Format("?{0}={1}", name, value)).Uri
-			};
+			HttpRequestMessage request = new HttpRequestMessage();
+			request.Headers.Add(name, value.ToString());
+			return request;
 		}
 		#endregion
 	}

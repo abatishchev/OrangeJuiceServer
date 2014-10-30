@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Api.Test.Integration
 			var client = new HttpClient { BaseAddress = new Uri(Url) };
 
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			client.DefaultRequestHeaders.TryAddWithoutValidation(AppVersion.ElementName, AppVersion.Version0.ToString());
+			client.DefaultRequestHeaders.TryAddWithoutValidation("AppVer", AppVersion.Version0.ToString());
 
 			return client;
 		}

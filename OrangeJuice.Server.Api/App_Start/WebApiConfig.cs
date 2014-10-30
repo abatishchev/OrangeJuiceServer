@@ -21,6 +21,8 @@ namespace OrangeJuice.Server.Api
 	{
 		public static void Configure(HttpConfiguration config, IUnityContainer container)
 		{
+			config.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
+
 			ConfigureFilters(config.Filters, container);
 			ConfigureHandlers(config.MessageHandlers, container);
 			ConfigureServices(config.Services, container);

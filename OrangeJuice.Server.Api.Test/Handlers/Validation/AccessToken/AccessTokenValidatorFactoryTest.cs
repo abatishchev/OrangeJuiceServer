@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 
 using FluentAssertions;
 using Xunit;
@@ -10,7 +11,7 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
-	public class AppVersionValidatorFactoryTest
+	public class AccessTokenValidatorFactoryTest
 	{
 		#region Test methods
 		[Fact]
@@ -18,7 +19,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		{
 			// Arrange
 			var provider = CreateEnvironmentProvider();
-			var factory = new AppVersionValidatorFactory(provider);
+			var factory = new AccessTokenValidatorFactory(provider);
 
 			// Act
 			factory.Create();
@@ -28,33 +29,33 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		}
 
 		[Fact]
-		public void Create_Should_Return_EmptyAppKeyHandler_When_Environment_Is_Local()
+		public void Create_Should_Return_EmptyValidator_When_Environment_Is_Local()
 		{
 			// Arrange
 			var provider = CreateEnvironmentProvider(EnvironmentName.Local);
-			var factory = new AppVersionValidatorFactory(provider);
+			var factory = new AccessTokenValidatorFactory(provider);
 
 			// Act
 			var handler = factory.Create();
 
 			// Assert
-			handler.Should().BeOfType<EmptyAppVersionValidator>();
+			handler.Should().BeOfType<EmptyValidator<HttpRequestMessage>>();
 		}
 
 		[Fact]
-		public void Create_Should_Return_HeaderAppKeyHandler_When_Environment_Is_Not_Local()
+		public void Create_Should_Return_HeaderAccesstTokenValidator_When_Environment_Is_Not_Local()
 		{
 			foreach (string environment in GetAllEnvironments().Except(EnvironmentName.Local))
 			{
 				// Arrange
 				var provider = CreateEnvironmentProvider(environment);
-				var factory = new AppVersionValidatorFactory(provider);
+				var factory = new AccessTokenValidatorFactory(provider);
 
 				// Act
 				var handler = factory.Create();
 
 				// Assert
-				handler.Should().BeOfType<HeaderAppVersionValidator>();
+				handler.Should().BeOfType<HeaderAccesstTokenValidator>();
 			}
 		}
 		#endregion

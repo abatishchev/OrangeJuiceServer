@@ -5,7 +5,7 @@ using System.Net.Http;
 
 namespace OrangeJuice.Server.Api.Handlers.Validation
 {
-	public sealed class HeaderAppVersionValidator : IValidator<HttpRequestMessage>
+	public sealed class HeaderAppVersionValidator : RulesValidator<HttpRequestMessage>
 	{
 		private readonly Version _appVersion;
 
@@ -14,15 +14,10 @@ namespace OrangeJuice.Server.Api.Handlers.Validation
 			_appVersion = appVersion;
 		}
 
-		public bool IsValid(HttpRequestMessage request)
-		{
-			return GetRules(request).All(b => b);
-		}
-
-		private IEnumerable<bool> GetRules(HttpRequestMessage request)
+		protected override IEnumerable<bool> GetRules(HttpRequestMessage request)
 		{
 			IEnumerable<string> values;
-			yield return request.Headers.TryGetValues(AppVersion.ElementName, out values);
+			yield return request.Headers.TryGetValues("AppVer", out values);
 
 			Version version;
 			yield return Version.TryParse(values.FirstOrDefault(), out version);

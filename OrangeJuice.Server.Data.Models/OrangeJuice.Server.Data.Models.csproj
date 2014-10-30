@@ -37,6 +37,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ApiVersion.cs" />
+    <Compile Include="AuthToken.cs" />
     <Compile Include="BarcodeType.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductDescriptor.cs" />

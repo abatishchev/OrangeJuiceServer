@@ -28,6 +28,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
+		[Authorize]
 		[Route("api/user", Name = "GetUser")]
 		public async Task<IHttpActionResult> GetUser([FromUri]UserSearchCriteria searchCriteria)
 		{

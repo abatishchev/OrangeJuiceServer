@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 using FluentAssertions;
 
@@ -9,16 +8,15 @@ using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
-	public class HeaderAppVersionValidatorTest
+	public class AccesstTokenValidatorTest
 	{
 		#region Test methods
 		[Fact]
-		public void IsValid_Should_Return_True_When_Headers_Contains_AppVersion()
+		public void IsValid_Should_Return_True_When_Headers_Contains_Authorization_And_It_Is_Bearer()
 		{
 			// Arrange
-			Version appVersion = new Version();
-			HeaderAppVersionValidator handler = CreateHandler(appVersion);
-			HttpRequestMessage request = CreateRequest(AppVersion.ElementName, appVersion);
+			HeaderAccesstTokenValidator handler = new HeaderAccesstTokenValidator();
+			HttpRequestMessage request = CreateRequest("Authorization", "Bearer test");
 
 			// Act
 			bool valid = handler.IsValid(request);
@@ -28,10 +26,10 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		}
 
 		[Fact]
-		public void IsValid_Should_Return_False_When_Headers_Does_Not_Contain_AppVersion()
+		public void IsValid_Should_Return_False_When_Headers_Does_Not_Contain_Authorization()
 		{
 			// Arrange
-			HeaderAppVersionValidator handler = CreateHandler();
+			HeaderAccesstTokenValidator handler = new HeaderAccesstTokenValidator();
 			HttpRequestMessage request = CreateRequest("any-name", "any-value");
 
 			// Act
@@ -43,11 +41,6 @@ namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 		#endregion
 
 		#region Helper methods
-		private static HeaderAppVersionValidator CreateHandler(Version appVersion = null)
-		{
-			return new HeaderAppVersionValidator(appVersion ?? new Version());
-		}
-
 		private static HttpRequestMessage CreateRequest(string name, object value)
 		{
 			HttpRequestMessage request = new HttpRequestMessage();

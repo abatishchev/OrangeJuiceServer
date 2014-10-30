@@ -51,8 +51,11 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
-    <Compile Include="Data\Configuration\AzureDbConfiguration.fs" />
+    <Compile Include="Configuration\AuthOptionsFactory.fs" />
+    <Compile Include="Configuration\AwsOptionsFactory.fs" />
+    <Compile Include="Configuration\AzureOptionsFactory.fs" />
     <Compile Include="Data\ApiVersionFactory.fs" />
+    <Compile Include="Data\AzureDbConfiguration.fs" />
     <Compile Include="Data\JsonProductDescriptorConverter.fs" />
     <Compile Include="Data\XmlProductDescriptorFactory.fs" />
     <Compile Include="Services\AwsAlgorithmFactory.fs" />
@@ -99,7 +102,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

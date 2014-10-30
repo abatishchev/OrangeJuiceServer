@@ -10,12 +10,12 @@ using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
 {
-	public class AwsClientIntergrationTest
+	public class AwsClientIntegrationTest
 	{
 		[Fact]
 		public async Task GetItems_Should_Return_Sequnce_Of_ProductDescriptor()
 		{
-			using (IUnityContainer container = ContainerConfig.CreateContainer())
+			using (IUnityContainer container = ContainerConfig.CreateWebApiContainer())
 			{
 				// Arrange
 				IAwsClient client = container.Resolve<IAwsClient>();
