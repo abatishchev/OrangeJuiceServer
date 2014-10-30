@@ -9,9 +9,9 @@ using System.Web.Http.Validation;
 
 using Drum;
 
-using Microsoft.Practices.Unity;
-
 using Newtonsoft.Json;
+
+using SimpleInjector;
 
 using WebApiContrib.Configuration;
 
@@ -19,9 +19,9 @@ namespace OrangeJuice.Server.Api
 {
 	internal static class WebApiConfig
 	{
-		public static void Configure(HttpConfiguration config, IUnityContainer container)
+		public static void Configure(HttpConfiguration config, Container container)
 		{
-			config.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
+			config.DependencyResolver = new SimpleInjector.Integration.WebApi.SimpleInjectorWebApiDependencyResolver(container);
 
 			ConfigureFilters(config.Filters, container);
 			ConfigureHandlers(config.MessageHandlers, container);
@@ -43,24 +43,24 @@ namespace OrangeJuice.Server.Api
 			//config.EnableSystemDiagnosticsTracing();
 		}
 
-		public static void ConfigureFilters(HttpFilterCollection filters, IUnityContainer container)
+		public static void ConfigureFilters(HttpFilterCollection filters, Container container)
 		{
-			filters.AddRange(container.ResolveAll<IFilter>());
+			filters.AddRange(container.GetAllInstances<IFilter>());
 		}
 
-		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, IUnityContainer container)
+		private static void ConfigureHandlers(ICollection<DelegatingHandler> handlers, Container container)
 		{
-			foreach (DelegatingHandler handler in container.ResolveAll<DelegatingHandler>())
+            foreach (DelegatingHandler handler in container.GetAllInstances<DelegatingHandler>())
 			{
 				handlers.Add(handler);
 			}
 		}
 
-		private static void ConfigureServices(ServicesContainer services, IUnityContainer container)
+		private static void ConfigureServices(ServicesContainer services, Container container)
 		{
-			services.Replace(typeof(ModelValidatorProvider), container.Resolve<ModelValidatorProvider>());
+			services.Replace(typeof(ModelValidatorProvider), container.GetInstance<ModelValidatorProvider>());
 
-			services.Add(typeof(IExceptionLogger), container.Resolve<IExceptionLogger>());
+			services.Add(typeof(IExceptionLogger), container.GetInstance<IExceptionLogger>());
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)

@@ -100,6 +100,18 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleInjector">
+      <HintPath>..\packages\SimpleInjector.2.6.1\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Diagnostics">
+      <HintPath>..\packages\SimpleInjector.2.6.1\lib\net45\SimpleInjector.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Extensions.ExecutionContextScoping">
+      <HintPath>..\packages\SimpleInjector.Extensions.ExecutionContextScoping.2.6.1\lib\net45\SimpleInjector.Extensions.ExecutionContextScoping.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.WebApi">
+      <HintPath>..\packages\SimpleInjector.Integration.WebApi.2.6.1\lib\net45\SimpleInjector.Integration.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
@@ -155,13 +167,9 @@
     </Compile>
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\OwinConfig.cs" />
-    <Compile Include="Handlers\AccessTokenAuthorizationHandler.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ControllerExtensions.cs" />
-    <Compile Include="Handlers\CurrentRequestHandler.cs" />
     <Compile Include="Handlers\TraceRequestHandler.cs" />
-    <Compile Include="Handlers\Validation\AccessToken\AccessTokenValidatorFactory.cs" />
-    <Compile Include="Handlers\Validation\AccessToken\HeaderAccesstTokenValidator.cs" />
     <Compile Include="Models\ProductSearchCriteria.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RatingsSearchCriteria.cs" />

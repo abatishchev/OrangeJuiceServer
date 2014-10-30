@@ -3,26 +3,27 @@
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
-using Microsoft.Practices.Unity;
 
 using OrangeJuice.Server.Configuration;
 
 using Owin;
 
+using SimpleInjector;
+
 namespace OrangeJuice.Server.Api
 {
 	internal static class OwinConfig
 	{
-		public static void Configure(IAppBuilder app, HttpConfiguration config, IUnityContainer container)
+		public static void Configure(IAppBuilder app, HttpConfiguration config, Container container)
 		{
 			app.UseWebApi(config);
 
 			ConfigureOAuth(app, container);
 		}
 
-		private static void ConfigureOAuth(IAppBuilder app, IUnityContainer container)
+		private static void ConfigureOAuth(IAppBuilder app, Container container)
 		{
-			AuthOptions authOptions = container.Resolve<AuthOptions>();
+			AuthOptions authOptions = container.GetInstance<AuthOptions>();
 
 			app.UseJwtBearerAuthentication(
 				new JwtBearerAuthenticationOptions

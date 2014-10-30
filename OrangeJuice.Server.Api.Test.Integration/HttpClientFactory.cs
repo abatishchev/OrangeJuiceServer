@@ -5,17 +5,16 @@ using System.Threading.Tasks;
 
 using Factory;
 
-using Microsoft.Practices.Unity;
-
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data.Models;
-using OrangeJuice.Server.Security;
+
+using SimpleInjector;
 
 namespace OrangeJuice.Server.Api.Test.Integration
 {
 	internal static class HttpClientFactory
 	{
-		private static readonly IUnityContainer Container = ContainerConfig.CreateWebApiContainer();
+		private static readonly Container Container = ContainerConfig.CreateWebApiContainer();
 
 		public static async Task<HttpClient> Create()
 		{
@@ -30,7 +29,7 @@ namespace OrangeJuice.Server.Api.Test.Integration
 
 		private static Uri GetUrl()
 		{
-			return new Uri(Container.Resolve<IConfigurationProvider>().GetValue("environment:Url"));
+			return new Uri(Container.GetInstance<IConfigurationProvider>().GetValue("environment:Url"));
 		}
 
 		private static AuthToken _authToken;
@@ -40,13 +39,13 @@ namespace OrangeJuice.Server.Api.Test.Integration
 			if (_authToken != null)
 				return _authToken;
 
-			var jwtFactory = Container.Resolve<IFactory<string>>(typeof(JwtFactory).Name);
+			var jwtFactory = Container.GetInstance<IFactory<string>>();
 			string jwt = jwtFactory.Create();
 
-			var googleTokenFactory = Container.Resolve<IFactory<Task<AuthToken>, string>>(typeof(GoogleAuthTokenFactory).Name);
+			var googleTokenFactory = Container.GetInstance<IFactory<Task<AuthToken>, string>>();
 			AuthToken authorizationToken = await googleTokenFactory.Create(jwt);
 
-			var bearerTokenFactory = Container.Resolve<IFactory<Task<AuthToken>, AuthToken>>(typeof(AuthTokenFactory).Name);
+			var bearerTokenFactory = Container.GetInstance<IFactory<Task<AuthToken>, AuthToken>>();
 			_authToken = await bearerTokenFactory.Create(authorizationToken);
 			return _authToken;
 		}

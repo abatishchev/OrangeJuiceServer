@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
-using Microsoft.Practices.Unity;
-
-using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
+
+using SimpleInjector;
 
 using Xunit;
 
@@ -18,25 +17,23 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 		[Fact]
 		public async Task Search_Should_Return_ProductDescriptor()
 		{
-			using (IUnityContainer container = ContainerConfig.CreateWebApiContainer())
-			{
-				// Arrange
-				IAwsProductProvider provider = container.Resolve<IAwsProductProvider>();
+			// Arrange
+			Container container = ContainerConfig.CreateWebApiContainer();
+			IAwsProductProvider provider = container.GetInstance<IAwsProductProvider>();
 
-				// Act
-				ProductDescriptor descriptor = (await provider.Search("0747599330971", BarcodeType.EAN)).FirstOrDefault();
+			// Act
+			ProductDescriptor descriptor = (await provider.Search("0747599330971", BarcodeType.EAN)).FirstOrDefault();
 
-				// Assert
-				descriptor.Should().NotBeNull();
+			// Assert
+			descriptor.Should().NotBeNull();
 
-				descriptor.SourceProductId.Should().Be("B00HSQEETM");
-				descriptor.Title.Should().Be("Ghirardelli Valentine's Chocolate Squares Premium Chocolate Assortment");
-				descriptor.Brand.Should().Be("Ghirardelli");
+			descriptor.SourceProductId.Should().Be("B00HSQEETM");
+			descriptor.Title.Should().Be("Ghirardelli Valentine's Chocolate Squares Premium Chocolate Assortment");
+			descriptor.Brand.Should().Be("Ghirardelli");
 
-				descriptor.SmallImageUrl.Should().NotBeNullOrEmpty();
-				descriptor.MediumImageUrl.Should().NotBeNullOrEmpty();
-				descriptor.LargeImageUrl.Should().NotBeNullOrEmpty();
-			}
+			descriptor.SmallImageUrl.Should().NotBeNullOrEmpty();
+			descriptor.MediumImageUrl.Should().NotBeNullOrEmpty();
+			descriptor.LargeImageUrl.Should().NotBeNullOrEmpty();
 		}
 	}
 }
