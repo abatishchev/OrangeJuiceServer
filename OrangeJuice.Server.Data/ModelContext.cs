@@ -21,23 +21,25 @@ namespace OrangeJuice.Server.Data
 
 		public virtual DbSet<Request> Requests { get; set; }
 
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		protected override void OnModelCreating(DbModelBuilder builder)
 		{
 			// dbo
-			modelBuilder.Entity<Product>().HasKey(x => x.ProductId);
-			modelBuilder.Entity<Product>().Property(x => x.ProductId)
+			builder.Entity<Product>().HasKey(x => x.ProductId);
+			builder.Entity<Product>().Property(x => x.ProductId)
 						.HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-			modelBuilder.Entity<Rating>().HasKey(x => new { x.ProductId, x.UserId });
+			builder.Entity<Rating>().HasKey(x => new { x.ProductId, x.UserId });
 
-			modelBuilder.Entity<User>().Property(x => x.UserId)
+			builder.Entity<User>().Property(x => x.UserId)
 						.HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-			modelBuilder.Entity<User>().HasKey(x => x.UserId);
+			builder.Entity<User>().HasKey(x => x.UserId);
 
 			// dm
-			modelBuilder.Entity<Request>().HasKey(x => x.RequestId);
-			modelBuilder.Entity<Request>().Property(x => x.RequestId)
+			builder.Entity<Request>().ToTable("Requests", "dm").HasKey(x => x.RequestId);
+			builder.Entity<Request>().Property(x => x.RequestId)
 						.HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+			base.OnModelCreating(builder);
 		}
 	}
 }
