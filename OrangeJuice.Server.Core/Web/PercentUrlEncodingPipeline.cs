@@ -27,13 +27,13 @@ namespace OrangeJuice.Server.Web
 		/// This is necessary because .NET's HttpUtility.UrlEncode does not encode according to the above standard.
 		/// Also it returns lower-case encoding by default and Amazon requires upper-case encoding.
 		/// </remarks>
-	    protected override IEnumerable<IPipelineFilter<string, string>> GetFilters()
+		protected override IEnumerable<IPipelineFilter<string, string>> GetFilters()
 		{
 			yield return PipelineFilter.Create((string s) => System.Web.HttpUtility.UrlEncode(s));
 			yield return PipelineFilter.Create((string s) => PercentEncode(s));
 			yield return PipelineFilter.Create((string s) => ToUpperCase(s));
-	    }
-	    #endregion
+		}
+		#endregion
 
 		#region Methods
 		internal static string PercentEncode(string url)

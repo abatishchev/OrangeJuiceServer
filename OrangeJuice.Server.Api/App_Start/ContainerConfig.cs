@@ -122,7 +122,7 @@ namespace OrangeJuice.Server.Api
 			container.Register<ErrorLog>(() => new SqlErrorLog(container.GetInstance<IConnectionStringProvider>().GetDefaultConnectionString()));
 
 			// Controllers
-			container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+			//container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
 			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage));

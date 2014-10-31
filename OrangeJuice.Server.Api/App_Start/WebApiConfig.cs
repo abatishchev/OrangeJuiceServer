@@ -23,12 +23,12 @@ namespace OrangeJuice.Server.Api
 		{
 			config.DependencyResolver = new SimpleInjector.Integration.WebApi.SimpleInjectorWebApiDependencyResolver(container);
 
-			config.UseWebConfigCustomErrors();
-
 			//config.MapHttpAttributeRoutes();
 			var uriMaker = config.MapHttpAttributeRoutesAndUseUriMaker();
 			ContainerConfig.RegisterUriMaker(container, uriMaker);
 			container.Verify();
+
+			config.UseWebConfigCustomErrors();
 
 			ConfigureFilters(config.Filters, container);
 			ConfigureHandlers(config.MessageHandlers, container);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -11,7 +12,7 @@ using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
-
+using OrangeJuice.Server.Web;
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
@@ -128,7 +129,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const string name = "name";
 
 			var repositoryMock = new Mock<IUserRepository>();
-			repositoryMock.Setup(r => r.Register(email, name)).ReturnsAsync(Mock.Of<User>());
+			repositoryMock.Setup(r => r.Register(email, name)).ReturnsAsync(new User());
 
 			UserController controller = CreateController(repositoryMock.Object);
 
@@ -181,7 +182,15 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			return ControllerFactory<UserController>.Create(
 				userRepository ?? Mock.Of<IUserRepository>(),
-				ControllerFactory<UserController>.CreateUriMaker());
+				CreateUrlProvider());
+		}
+
+		private static IUrlProvider CreateUrlProvider()
+		{
+			var providerMock = new Mock<IUrlProvider>();
+			providerMock.Setup(p => p.UriFor(It.IsAny<Expression<Action<UserController>>>()))
+						.Returns(new Uri("http://example.com"));
+			return providerMock.Object;
 		}
 
 		private static User CreateUser(Guid? userId = null)

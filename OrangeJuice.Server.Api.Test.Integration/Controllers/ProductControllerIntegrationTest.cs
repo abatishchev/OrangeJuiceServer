@@ -115,29 +115,29 @@ namespace OrangeJuice.Server.Api.Test.Integration.Controllers
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 		}
 
-        [Fact]
-        public async Task GetProductBarcode_Should_Return_Status_Ok_For_Product_In_Database()
-        {
-            // Arrange
+		[Fact]
+		public async Task GetProductBarcode_Should_Return_Status_Ok_For_Product_In_Database()
+		{
+			// Arrange
 			Product product = EntityFactory.Get<Product>();
 			if (product == null)
 				return;
 
-            var query = HttpUtility.ParseQueryString(String.Empty);
-            query.Add("barcode", product.Barcode);
-            query.Add("barcodeType", product.BarcodeType.ToString());
+			var query = HttpUtility.ParseQueryString(String.Empty);
+			query.Add("barcode", product.Barcode);
+			query.Add("barcodeType", product.BarcodeType.ToString());
 
-            var client = await HttpClientFactory.Create();
-            var url = new UriBuilder(client.BaseAddress);
-            url.Path += "api/product/barcode";
-            url.Query = query.ToString();
+			var client = await HttpClientFactory.Create();
+			var url = new UriBuilder(client.BaseAddress);
+			url.Path += "api/product/barcode";
+			url.Query = query.ToString();
 
-            // Act
-            var response = await client.GetAsync(url.Uri);
+			// Act
+			var response = await client.GetAsync(url.Uri);
 
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
+			// Assert
+			response.StatusCode.Should().Be(HttpStatusCode.OK);
+		}
 		#endregion
 
 		#region GetProductId

@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Data
 			_db.Requests.Add(
 				new Request
 				{
-                    Timestamp = timestamp,
+					Timestamp = timestamp,
 					Url = url,
 					HttpMethod = httpMethod,
 					IpAddress = ipAddress,

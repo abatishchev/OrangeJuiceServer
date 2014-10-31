@@ -11,13 +11,13 @@ namespace OrangeJuice.Server.Data
 		public ProductDescriptor Convert(string value)
 		{
 			return JObject.Parse(value)
-			              .ToObject<ProductDescriptor>();
+						  .ToObject<ProductDescriptor>();
 		}
 
 		public string ConvertBack(ProductDescriptor value)
 		{
 			return JObject.FromObject(value)
-			              .ToString(Formatting.Indented);
+						  .ToString(Formatting.Indented);
 		}
 		#endregion
 	}

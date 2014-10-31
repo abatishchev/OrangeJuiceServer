@@ -7,7 +7,7 @@ using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Security
 {
-    public sealed class AuthTokenFactory : Factory.IFactory<Task<AuthToken>, AuthToken>
+	public sealed class AuthTokenFactory : Factory.IFactory<Task<AuthToken>, AuthToken>
 	{
 		private readonly AuthOptions _authOptions;
 

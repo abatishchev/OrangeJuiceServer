@@ -28,8 +28,8 @@ namespace OrangeJuice.Server.Api.Handlers
 		private Task TraceRequest(HttpRequestMessage request)
 		{
 			return _repository.Add(
-                DateTime.UtcNow,
-                request.RequestUri.ToString(),
+				DateTime.UtcNow,
+				request.RequestUri.ToString(),
 				request.Method.Method,
 				((System.Web.HttpContextWrapper)request.Properties[MsHttpContextKey]).Request.UserHostAddress,
 				request.Headers.UserAgent.ToString());

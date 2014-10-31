@@ -3,7 +3,6 @@ using System.Linq;
 
 using Moq;
 
-using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
 

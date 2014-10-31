@@ -70,7 +70,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			Guid userId = Guid.NewGuid(), productId = Guid.NewGuid();
-			Rating expected = Mock.Of<Rating>();
+			Rating expected = new Rating();
 
 			var repositoryMock = new Mock<IRatingRepository>();
 			repositoryMock.Setup(r => r.Search(userId, productId)).ReturnsAsync(expected);
@@ -90,7 +90,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.Search(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(Mock.Of<Rating>());
+			repositoryMock.Setup(r => r.Search(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(new Rating());
 
 			RatingController controller = CreateController(repositoryMock.Object);
 
@@ -155,7 +155,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			Guid productId = Guid.NewGuid();
-			Rating[] expected = { Mock.Of<Rating>() };
+			Rating[] expected = {new Rating() };
 
 			var repositoryMock = new Mock<IRatingRepository>();
 			repositoryMock.Setup(r => r.SearchAll(productId)).ReturnsAsync(expected);
@@ -175,7 +175,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
-			repositoryMock.Setup(r => r.SearchAll(It.IsAny<Guid>())).ReturnsAsync(new[] { Mock.Of<Rating>() });
+			repositoryMock.Setup(r => r.SearchAll(It.IsAny<Guid>())).ReturnsAsync(new[] { new Rating() });
 
 			RatingController controller = CreateController(repositoryMock.Object);
 
