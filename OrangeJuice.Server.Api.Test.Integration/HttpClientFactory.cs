@@ -14,40 +14,36 @@ namespace OrangeJuice.Server.Api.Test.Integration
 {
 	internal static class HttpClientFactory
 	{
-		private static readonly Container Container = ContainerConfig.CreateWebApiContainer();
+		private static readonly Container _container = ContainerConfig.CreateWebApiContainer();
 
-		public static async Task<HttpClient> Create()
+		private static readonly Lazy<AuthToken> _authToken = new Lazy<AuthToken>(() => Task.Factory.StartNew(() => GetAccessToken()).Unwrap().Result);
+
+		public static HttpClient Create()
 		{
 			var client = new HttpClient { BaseAddress = GetUrl() };
 
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			client.DefaultRequestHeaders.TryAddWithoutValidation("AppVer", AppVersion.Version0.ToString());
-			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (await GetAccessToken()).IdToken);
+			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken.Value.IdToken);
 
 			return client;
 		}
 
 		private static Uri GetUrl()
 		{
-			return new Uri(Container.GetInstance<IConfigurationProvider>().GetValue("environment:Url"));
+			return new Uri(_container.GetInstance<IConfigurationProvider>().GetValue("environment:Url"));
 		}
-
-		private static AuthToken _authToken;
 
 		private static async Task<AuthToken> GetAccessToken()
 		{
-			if (_authToken != null)
-				return _authToken;
-
-			var jwtFactory = Container.GetInstance<IFactory<string>>();
+			var jwtFactory = _container.GetInstance<IFactory<string>>();
 			string jwt = jwtFactory.Create();
 
-			var googleTokenFactory = Container.GetInstance<IFactory<Task<AuthToken>, string>>();
+			var googleTokenFactory = _container.GetInstance<IFactory<Task<AuthToken>, string>>();
 			AuthToken authorizationToken = await googleTokenFactory.Create(jwt);
 
-			var bearerTokenFactory = Container.GetInstance<IFactory<Task<AuthToken>, AuthToken>>();
-			_authToken = await bearerTokenFactory.Create(authorizationToken);
-			return _authToken;
+			var bearerTokenFactory = _container.GetInstance<IFactory<Task<AuthToken>, AuthToken>>();
+			return await bearerTokenFactory.Create(authorizationToken);
 		}
 	}
 }
