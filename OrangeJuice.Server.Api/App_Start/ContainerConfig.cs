@@ -125,8 +125,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
-			container.RegisterWebApiRequest<IRequestMessageProvider, HttpRequestMessageProvider>();
-			container.RegisterOpenGeneric(typeof(UriMaker<>), typeof(UriMakerAdapter<>));
+			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage));
+			container.RegisterSingle<IUrlProvider, DrumUrlProvider>();
 			#endregion
 
 			#region Data
@@ -178,7 +178,7 @@ namespace OrangeJuice.Server.Api
 			container.Register<HttpClient>(() => HttpClientFactory.Create());
 
 			container.Register(typeof(IHttpClient), typeof(HttpClientAdapter));
-			
+
 			container.RegisterDecorator(typeof(IHttpClient), typeof(ThrottlingHttpClient));
 
 			container.Register<IValidator<XElement>, XmlRequestValidator>();

@@ -199,8 +199,7 @@
     <Compile Include="Models\Validation\RatingModelValidator.cs" />
     <Compile Include="Models\Validation\UserModelValidator.cs" />
     <Compile Include="Models\Validation\UserSearchCriteriaValidator.cs" />
-    <Compile Include="Services\HttpRequestMessageProvider.cs" />
-    <Compile Include="Services\UriMakerAdapter.cs" />
+    <Compile Include="Services\DrumUrlProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

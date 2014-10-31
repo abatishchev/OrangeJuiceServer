@@ -95,8 +95,8 @@
     <Compile Include="Threading\IRequestScheduler.cs" />
     <Compile Include="Web\IHttpClient.cs" />
     <Compile Include="Web\IQueryBuilder.cs" />
-    <Compile Include="Web\IRequestMessageProvider.cs" />
     <Compile Include="Web\IUrlEncoder.cs" />
+    <Compile Include="Web\IUrlProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

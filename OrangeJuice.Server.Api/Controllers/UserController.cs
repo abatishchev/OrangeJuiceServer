@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 
-using Drum;
-
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
+using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
@@ -14,15 +13,15 @@ namespace OrangeJuice.Server.Api.Controllers
 	{
 		#region Fields
 		private readonly IUserRepository _userRepository;
-		private readonly UriMaker<UserController> _urlMaker;
+		private readonly IUrlProvider _urlProvider;
 
 		#endregion
 
 		#region Ctor
-		public UserController(IUserRepository userRepository, UriMaker<UserController> urlMaker)
+		public UserController(IUserRepository userRepository, IUrlProvider urlProvider)
 		{
 			_userRepository = userRepository;
-			_urlMaker = urlMaker;
+			_urlProvider = urlProvider;
 		}
 
 		#endregion
@@ -51,7 +50,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			// TODO: handle duplication
 			User user = await _userRepository.Register(userModel.Email, userModel.Name);
 
-			var url = _urlMaker.UriFor(c => c.GetUser(new UserSearchCriteria { UserId = user.UserId }));
+			var url = _urlProvider.UriFor<UserController>(c => c.GetUser(new UserSearchCriteria { UserId = user.UserId }));
 
 			return Created(url, user);
 		}
