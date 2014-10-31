@@ -5,7 +5,7 @@ using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Data
 {
-	public interface IUserRepository : IDisposable
+	public interface IUserRepository
 	{
 		Task<User> Register(string email, string name);
 

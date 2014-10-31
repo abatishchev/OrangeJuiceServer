@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Services
@@ -32,12 +31,6 @@ namespace OrangeJuice.Server.Services
 		public Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
 		{
 			return _awsProvider.Search(barcode, barcodeType);
-		}
-		#endregion
-
-		#region IDisposable members
-		public void Dispose()
-		{
 		}
 		#endregion
 	}

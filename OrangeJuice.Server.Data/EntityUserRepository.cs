@@ -37,12 +37,5 @@ namespace OrangeJuice.Server.Data
 			return _db.Users.FindAsync(userId);
 		}
 		#endregion
-
-		#region IDisposable members
-		public void Dispose()
-		{
-			_db.Dispose();
-		}
-		#endregion
 	}
 }

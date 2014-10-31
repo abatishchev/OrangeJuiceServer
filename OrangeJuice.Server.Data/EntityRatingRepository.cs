@@ -71,12 +71,5 @@ namespace OrangeJuice.Server.Data
 			return product != null ? product.Ratings.ToArray() : null;
 		}
 		#endregion
-
-		#region IDisposable members
-		public void Dispose()
-		{
-			_db.Dispose();
-		}
-		#endregion
 	}
 }

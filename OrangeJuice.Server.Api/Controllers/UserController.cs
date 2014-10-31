@@ -55,14 +55,5 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Created(url, user);
 		}
 		#endregion
-
-		#region Methods
-		protected override void Dispose(bool disposing)
-		{
-			_userRepository.Dispose();
-
-			base.Dispose(disposing);
-		}
-		#endregion
 	}
 }

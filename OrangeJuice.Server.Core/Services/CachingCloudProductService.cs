@@ -58,12 +58,5 @@ namespace OrangeJuice.Server.Services
 			return descriptors;
 		}
 		#endregion
-
-		#region IDisposable members
-		public void Dispose()
-		{
-			_productRepository.Dispose();
-		}
-		#endregion
 	}
 }

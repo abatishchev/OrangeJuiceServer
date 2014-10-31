@@ -17,9 +17,6 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
         
         member this.Search(barcode : string, barcodeType : BarcodeType) : Task<ProductDescriptor[]> =
             this.Search(barcode, barcodeType) |> Async.StartAsTask
-        
-        member this.Dispose() : unit =
-            productRepository.Dispose()
 
     member this.Search(barcode : string, barcodeType : BarcodeType) = async {
         let! products = productRepository.Search(barcode, barcodeType) |> Async.AwaitTask

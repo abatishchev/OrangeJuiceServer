@@ -41,12 +41,5 @@ namespace OrangeJuice.Server.Data
 			return product.ProductId;
 		}
 		#endregion
-
-		#region IDisposable members
-		public void Dispose()
-		{
-			_db.Dispose();
-		}
-		#endregion
 	}
 }

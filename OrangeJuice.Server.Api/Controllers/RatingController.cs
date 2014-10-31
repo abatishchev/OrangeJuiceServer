@@ -74,14 +74,5 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok();
 		}
 		#endregion
-
-		#region Methods
-		protected override void Dispose(bool disposing)
-		{
-			_ratingRepository.Dispose();
-
-			base.Dispose(disposing);
-		}
-		#endregion
 	}
 }

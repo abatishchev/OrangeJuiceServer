@@ -5,7 +5,7 @@ using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Data
 {
-	public interface IRatingRepository : IDisposable
+	public interface IRatingRepository
 	{
 		Task AddOrUpdate(Guid userId, Guid productId, byte ratingValue, string comment);
 
