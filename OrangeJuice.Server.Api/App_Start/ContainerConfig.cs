@@ -32,6 +32,9 @@ using SimpleInjector.Extensions;
 using AuthOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AuthOptionsFactory;
 using AwsOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AwsOptionsFactory;
 using AzureOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AzureOptionsFactory;
+using ConfigurationConnectionStringProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationConnectionStringProvider;
+using ConfigurationEnvironmentProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationEnvironmentProvider;
+using WebConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.WebConfigurationProvider;
 
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
 using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProductDescriptorConverter;

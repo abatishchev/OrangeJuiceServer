@@ -14,4 +14,6 @@ type ApiVersionFactory(assemblyProvider : IAssemblyProvider, environmentProvider
     member this.Create() =
         let version = assemblyProvider.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version
         let environment = environmentProvider.GetCurrentEnvironment()
-        new ApiVersion(Version = version, Environment = environment)
+        new ApiVersion(
+            Version = version,
+            Environment = environment)
