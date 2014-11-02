@@ -21,11 +21,6 @@ namespace OrangeJuice.Server.Data
 		#endregion
 
 		#region IProductRepository members
-		public Task<Product[]> Search(string barcode, BarcodeType barcodeType)
-		{
-			return _db.Products.Where(p => p.Barcode == barcode && p.BarcodeType == barcodeType).ToArrayAsync();
-		}
-
 		public async Task<Guid> Save(string barcode, BarcodeType barcodeType, string sourceProductId)
 		{
 			Product product = _db.Products.Add(
@@ -39,6 +34,11 @@ namespace OrangeJuice.Server.Data
 			await _db.SaveChangesAsync();
 
 			return product.ProductId;
+		}
+
+		public Task<Product[]> Search(string barcode, BarcodeType barcodeType)
+		{
+			return _db.Products.Where(p => p.Barcode == barcode && p.BarcodeType == barcodeType).ToArrayAsync();
 		}
 		#endregion
 	}

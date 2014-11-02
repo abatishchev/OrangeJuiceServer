@@ -113,7 +113,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<ITraceRequestRepository, EntityTraceRequestRepository>();
 
-			container.RegisterAll<DelegatingHandler>(typeof(AppVersionHandler), typeof(DelegatingHandlerProxy<TraceRequestHandler>));
+			container.RegisterAll<DelegatingHandler>(typeof(AppVersionHandler));
 
 			// Services
 			container.Register<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>();
