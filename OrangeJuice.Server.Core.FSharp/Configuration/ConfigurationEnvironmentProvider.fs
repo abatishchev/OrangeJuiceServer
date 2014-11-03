@@ -7,6 +7,6 @@ type ConfigurationEnvironmentProvider(configurationProvider : IConfigurationProv
     interface IEnvironmentProvider with
         member this.GetCurrentEnvironment() : string =
             let environment = configurationProvider.GetValue("environment:Name")
-            if String.IsNullOrEmpty(environment) then environment
-            else invalidOp "Current environment is null or empty"
+            if String.IsNullOrEmpty(environment) then invalidOp "Current environment is null or empty"
+            else environment
  
