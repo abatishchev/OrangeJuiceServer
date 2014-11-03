@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using System.Web.Http.Dispatcher;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Validation;
@@ -59,9 +60,11 @@ namespace OrangeJuice.Server.Api
 
 		private static void ConfigureServices(ServicesContainer services, Container container)
 		{
-			services.Replace(typeof(ModelValidatorProvider), container.GetInstance<ModelValidatorProvider>());
+			container.ReplaceService<IAssembliesResolver>(services);
 
-			services.Add(typeof(IExceptionLogger), container.GetInstance<IExceptionLogger>());
+			container.ReplaceService<ModelValidatorProvider>(services);
+
+			container.AddService<IExceptionLogger>(services);
 		}
 
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)

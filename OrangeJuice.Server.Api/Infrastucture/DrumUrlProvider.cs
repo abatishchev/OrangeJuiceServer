@@ -5,7 +5,7 @@ using System.Net.Http;
 using Drum;
 using Factory;
 
-namespace OrangeJuice.Server.Api.Services
+namespace OrangeJuice.Server.Api.Infrastucture
 {
 	public sealed class DrumUrlProvider : Web.IUrlProvider
 	{

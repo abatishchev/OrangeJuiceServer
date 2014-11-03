@@ -2,9 +2,12 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Dispatcher;
 
 using Factory;
 
+using OrangeJuice.Server.Api.Infrastucture;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data.Models;
 
@@ -14,7 +17,7 @@ namespace OrangeJuice.Server.Api.Test.Integration
 {
 	internal static class HttpClientFactory
 	{
-		private static readonly Container _container = ContainerConfig.CreateWebApiContainer();
+		private static readonly Container _container = CreateiContainer();
 
 		private static readonly Lazy<AuthToken> _authToken = new Lazy<AuthToken>(() => Task.Factory.StartNew(() => GetAccessToken()).Unwrap().Result);
 
@@ -27,6 +30,12 @@ namespace OrangeJuice.Server.Api.Test.Integration
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken.Value.IdToken);
 
 			return client;
+		}
+
+		private static Container CreateiContainer()
+		{
+			GlobalConfiguration.Configuration.Services.Replace(typeof(IAssembliesResolver), new AssembliesResolver(AppDomain.CurrentDomain.GetAssemblies()));
+			return ContainerConfig.CreateWebApiContainer();
 		}
 
 		private static Uri GetUrl()

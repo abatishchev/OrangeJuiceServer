@@ -2,6 +2,8 @@ using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Dispatcher;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Validation;
@@ -17,7 +19,7 @@ using FluentValidation.WebApi;
 
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Handlers.Validation;
-using OrangeJuice.Server.Api.Services;
+using OrangeJuice.Server.Api.Infrastucture;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
@@ -119,13 +121,15 @@ namespace OrangeJuice.Server.Api
 			container.RegisterAll<DelegatingHandler>(typeof(AppVersionHandler));
 
 			// Services
+			container.Register<IAssembliesResolver>(() => new AssembliesResolver(System.Reflection.Assembly.GetCallingAssembly()), Lifestyle.Singleton);
+
 			container.Register<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>();
 
 			ServiceCenter.Current = c => container;
 			container.Register<ErrorLog>(() => new SqlErrorLog(container.GetInstance<IConnectionStringProvider>().GetDefaultConnectionString()));
 
 			// Controllers
-			//container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+			container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
 			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage));
@@ -231,6 +235,18 @@ namespace OrangeJuice.Server.Api
 		   where TFactory : class, IFactory<T, TArg>
 		{
 			container.Register<IFactory<T, TArg>, TFactory>(Lifestyle.Singleton);
+		}
+
+		public static void AddService<T>(this Container container, ServicesContainer services)
+			where T : class
+		{
+			services.Add(typeof(T), container.GetInstance<T>());
+		}
+
+		public static void ReplaceService<T>(this Container container, ServicesContainer services)
+			where T : class
+		{
+			services.Replace(typeof(T), container.GetInstance<T>());
 		}
 	}
 }
