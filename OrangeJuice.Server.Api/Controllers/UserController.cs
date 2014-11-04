@@ -47,7 +47,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			if (userModel == null)
 				throw new ArgumentNullException();
 
-			// TODO: handle duplication
 			User user = await _userRepository.Register(userModel.Email, userModel.Name);
 
 			var url = _urlProvider.UriFor<UserController>(c => c.GetUser(new UserSearchCriteria { UserId = user.UserId }));

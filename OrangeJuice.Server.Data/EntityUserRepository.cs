@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Data;
+using System.Data.Entity;
 using System.Threading.Tasks;
+using System.Transactions;
 
 using OrangeJuice.Server.Data.Models;
 
@@ -21,15 +24,23 @@ namespace OrangeJuice.Server.Data
 		#region IUserRepository members
 		public async Task<User> Register(string email, string name)
 		{
-			User user = _db.Users.Add(
-				new User
-				{
-					Email = email,
-					Name = name
-				});
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+			{
+				if (await _db.Users.AnyAsync(u => u.Email == email))
+					throw new DataException("User already exists");
 
-			await _db.SaveChangesAsync();
-			return user;
+				User user = _db.Users.Add(
+					new User
+					{
+						Email = email,
+						Name = name
+					});
+
+				await _db.SaveChangesAsync();
+				scope.Complete();
+
+				return user;
+			}
 		}
 
 		public Task<User> Search(Guid userId)

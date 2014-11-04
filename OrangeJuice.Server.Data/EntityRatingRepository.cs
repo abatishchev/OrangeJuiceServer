@@ -37,8 +37,8 @@ namespace OrangeJuice.Server.Data
 				rating.Comment = comment;
 
 				_db.Ratings.AddOrUpdate(rating);
+				
 				await _db.SaveChangesAsync();
-
 				scope.Complete();
 			}
 		}
