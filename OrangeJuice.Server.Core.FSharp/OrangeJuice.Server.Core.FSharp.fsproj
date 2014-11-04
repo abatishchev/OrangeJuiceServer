@@ -53,11 +53,13 @@
   <ItemGroup>
     <Compile Include="Configuration\AuthOptionsFactory.fs" />
     <Compile Include="Configuration\AwsOptionsFactory.fs" />
+    <Compile Include="Configuration\AzureConfigurationProvider.fs" />
     <Compile Include="Configuration\AzureOptionsFactory.fs" />
     <Compile Include="Configuration\ConfigurationConnectionStringProvider.fs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.fs" />
-    <Compile Include="Configuration\WebConfigurationProvider.fs" />
     <Compile Include="Configuration\GoogleAuthOptionsFactory.fs" />
+    <Compile Include="Configuration\WebConfigurationProvider.fs" />
+    <Compile Include="Configuration\ConfigurationProviderFactory.fs" />
     <Compile Include="Data\ApiVersionFactory.fs" />
     <Compile Include="Data\AzureDbConfiguration.fs" />
     <Compile Include="Data\JsonProductDescriptorConverter.fs" />
@@ -74,7 +76,6 @@
     <Compile Include="Web\HttpClientAdapter.fs" />
     <Compile Include="Web\ThrottlingHttpClient.fs" />
     <Content Include="packages.config" />
-
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrangeJuice.Server.Data.Models\OrangeJuice.Server.Data.Models.csproj">
@@ -96,6 +97,10 @@
     </Reference>
     <Reference Include="IFactory">
       <HintPath>..\packages\IFactory.0.1.2\lib\net45\IFactory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />

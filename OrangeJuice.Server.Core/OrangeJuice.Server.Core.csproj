@@ -103,6 +103,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\ConfigurationProviderFactory.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationProvider.cs" />
     <Compile Include="Configuration\GoogleAuthOptionsFactory.cs" />
     <Compile Include="Configuration\AuthOptionsFactory.cs" />

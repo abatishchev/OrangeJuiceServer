@@ -15,8 +15,7 @@ namespace OrangeJuice.Server.Api.Handlers.Validation
 
 		public IValidator<HttpRequestMessage> Create()
 		{
-			string environment = _environmentProvider.GetCurrentEnvironment();
-			switch (environment)
+			switch (_environmentProvider.GetCurrentEnvironment())
 			{
 				case EnvironmentName.Local:
 					return new EmptyValidator<HttpRequestMessage>();
