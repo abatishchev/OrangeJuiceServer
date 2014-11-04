@@ -14,19 +14,6 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 	{
 		#region Test methods
 		[Fact]
-		public void Get_Should_Return_Status_NotFound()
-		{
-			// Assign
-			HomeController controller = CreateController();
-
-			// Act
-			IHttpActionResult result = controller.Get();
-
-			// Assert
-			result.Should().BeOfType<NotFoundResult>();
-		}
-
-		[Fact]
 		public void GetVersion_Should_Return_ApiVersion()
 		{
 			// Arrange
@@ -44,9 +31,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static HomeController CreateController(ApiVersion apiVersion = null)
+		private static HomeController CreateController(ApiVersion apiVersion)
 		{
-			return ControllerFactory<HomeController>.Create(apiVersion ?? new ApiVersion());
+			return ControllerFactory<HomeController>.Create(apiVersion);
 		}
 		#endregion
 	}

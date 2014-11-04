@@ -7,6 +7,7 @@ using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
+	[Authorize]
 	public sealed class ProductController : ApiController
 	{
 		#region Fields
