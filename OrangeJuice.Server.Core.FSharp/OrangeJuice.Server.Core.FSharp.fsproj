@@ -59,7 +59,6 @@
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.fs" />
     <Compile Include="Configuration\GoogleAuthOptionsFactory.fs" />
     <Compile Include="Configuration\WebConfigurationProvider.fs" />
-    <Compile Include="Configuration\ConfigurationProviderFactory.fs" />
     <Compile Include="Data\ApiVersionFactory.fs" />
     <Compile Include="Data\AzureDbConfiguration.fs" />
     <Compile Include="Data\JsonProductDescriptorConverter.fs" />
