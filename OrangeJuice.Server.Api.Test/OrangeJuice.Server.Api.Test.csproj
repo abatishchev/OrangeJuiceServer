@@ -42,9 +42,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Drum, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Drum, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Drum.0.2.0\lib\net45\Drum.dll</HintPath>
+      <HintPath>..\packages\Drum.0.3.1\lib\net45\Drum.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions, Version=3.2.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
