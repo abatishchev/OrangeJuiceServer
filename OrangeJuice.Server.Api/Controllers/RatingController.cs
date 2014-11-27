@@ -5,6 +5,7 @@ using System.Web.Http;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
+using OrangeJuice.Server.Web;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
@@ -13,12 +14,14 @@ namespace OrangeJuice.Server.Api.Controllers
 	{
 		#region Fields
 		private readonly IRatingRepository _ratingRepository;
+		private readonly IUrlProvider _urlProvider;
 		#endregion
 
 		#region Ctor
-		public RatingController(IRatingRepository ratingRepository)
+		public RatingController(IRatingRepository ratingRepository, IUrlProvider urlProvider)
 		{
 			_ratingRepository = ratingRepository;
+			_urlProvider = urlProvider;
 		}
 		#endregion
 
@@ -57,7 +60,8 @@ namespace OrangeJuice.Server.Api.Controllers
 
 			await _ratingRepository.AddOrUpdate(ratingModel.UserId, ratingModel.ProductId, ratingModel.Value, ratingModel.Comment);
 
-			return Ok();
+			var url = _urlProvider.UriFor<RatingController>(c => c.GetRating(new RatingSearchCriteria { ProductId = ratingModel.ProductId, UserId = ratingModel.UserId }));
+			return Created(url, ratingModel);
 		}
 
 		[Route("api/rating")]

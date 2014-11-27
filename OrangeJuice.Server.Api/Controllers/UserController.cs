@@ -61,7 +61,6 @@ namespace OrangeJuice.Server.Api.Controllers
 			User user = await _userRepository.Register(userModel.Email, userModel.Name);
 
 			var url = _urlProvider.UriFor<UserController>(c => c.GetUser(new UserSearchCriteria { UserId = user.UserId }));
-
 			return Created(url, user);
 		}
 		#endregion

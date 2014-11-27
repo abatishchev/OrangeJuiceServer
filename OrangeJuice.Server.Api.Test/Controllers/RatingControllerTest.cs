@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -10,6 +11,7 @@ using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
+using OrangeJuice.Server.Web;
 
 using Xunit;
 
@@ -155,7 +157,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			Guid productId = Guid.NewGuid();
-			Rating[] expected = {new Rating() };
+			Rating[] expected = { new Rating() };
 
 			var repositoryMock = new Mock<IRatingRepository>();
 			repositoryMock.Setup(r => r.SearchAll(productId)).ReturnsAsync(expected);
@@ -222,7 +224,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[Fact]
-		public async Task PostRating_Should_Return_Status_Ok()
+		public async Task PostRating_Should_Return_Status_Created()
 		{
 			// Arrange
 			var repositoryMock = new Mock<IRatingRepository>();
@@ -234,7 +236,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.PostRating(new RatingModel());
 
 			// Assert
-			result.Should().BeOfType<OkResult>();
+			result.Should().BeOfType<CreatedNegotiatedContentResult<RatingModel>>();
 		}
 		#endregion
 
@@ -290,7 +292,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#region Helper methods
 		private static RatingController CreateController(IRatingRepository ratingRepository = null)
 		{
-			return ControllerFactory<RatingController>.Create(ratingRepository ?? new Mock<IRatingRepository>().Object);
+			return ControllerFactory<RatingController>.Create(
+				ratingRepository ?? new Mock<IRatingRepository>().Object,
+				CreateUrlProvider());
+		}
+
+		private static IUrlProvider CreateUrlProvider()
+		{
+			var providerMock = new Mock<IUrlProvider>();
+			providerMock.Setup(p => p.UriFor(It.IsAny<Expression<Action<RatingController>>>()))
+						.Returns(new Uri("http://example.com"));
+			return providerMock.Object;
 		}
 		#endregion
 	}
