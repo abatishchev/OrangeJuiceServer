@@ -13,6 +13,7 @@ using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Web;
+
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
@@ -107,22 +108,73 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 		#endregion
 
-		#region PutUser
+		#region PostUserUpdate
 		[Fact]
-		public void PutUser_Should_Should_Throw_Exception_When_UserModel_Is_Null()
+		public void PostUserUpdate_Should_Should_Throw_Exception_When_UserModel_Is_Null()
 		{
 			// Arrange
 			UserController controller = CreateController();
 
 			// Act
-			Func<Task> task = () => controller.PutUser(null);
+			Func<Task> task = () => controller.PostUserUpdate(null);
 
 			// Assert
 			task.ShouldThrow<ArgumentNullException>();
 		}
 
 		[Fact]
-		public async Task PutUser_Should_Pass_Email_Name_To_UserRepository_Register()
+		public async Task PostUserUpdate_Should_Pass_Email_Name_To_UserRepository_Update()
+		{
+			// Arrange
+			const string email = "email";
+			const string name = "name";
+
+			var repositoryMock = new Mock<IUserRepository>();
+			repositoryMock.Setup(r => r.Update(email, name)).Returns(Task.Delay(0));
+
+			UserController controller = CreateController(repositoryMock.Object);
+
+			// Act
+			await controller.PostUserUpdate(new UserModel { Email = email, Name = name });
+
+			// Assert
+			repositoryMock.VerifyAll();
+		}
+
+		[Fact]
+		public async Task PostUserUpdate_Should_Return_Status_Ok()
+		{
+			// Arrange
+			User user = CreateUser();
+			var repositoryMock = new Mock<IUserRepository>();
+			repositoryMock.Setup(r => r.Register(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(user);
+
+			UserController controller = CreateController(repositoryMock.Object);
+
+			// Act
+			IHttpActionResult result = await controller.PostUserUpdate(new UserModel());
+
+			// Assert
+			result.Should().BeOfType<OkResult>();
+		}
+		#endregion
+
+		#region PutUserRegister
+		[Fact]
+		public void PutUserRegister_Should_Should_Throw_Exception_When_UserModel_Is_Null()
+		{
+			// Arrange
+			UserController controller = CreateController();
+
+			// Act
+			Func<Task> task = () => controller.PutUserRegister(null);
+
+			// Assert
+			task.ShouldThrow<ArgumentNullException>();
+		}
+
+		[Fact]
+		public async Task PutUserRegister_Should_Pass_Email_Name_To_UserRepository_Register()
 		{
 			// Arrange
 			const string email = "email";
@@ -134,14 +186,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			await controller.PutUser(new UserModel { Email = email, Name = name });
+			await controller.PutUserRegister(new UserModel { Email = email, Name = name });
 
 			// Assert
 			repositoryMock.VerifyAll();
 		}
 
 		[Fact]
-		public async Task PutUser_Should_Return_User_Returned_By_UserRepository_Register()
+		public async Task PutUserRegister_Should_Return_User_Returned_By_UserRepository_Register()
 		{
 			// Arrange
 			User expected = CreateUser();
@@ -152,7 +204,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PutUser(new UserModel());
+			IHttpActionResult result = await controller.PutUserRegister(new UserModel());
 			User actual = ((CreatedNegotiatedContentResult<User>)result).Content;
 
 			// Assert
@@ -160,7 +212,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		}
 
 		[Fact]
-		public async Task PutUser_Should_Return_Status_Created()
+		public async Task PutUserRegister_Should_Return_Status_Created()
 		{
 			// Arrange
 			User user = CreateUser();
@@ -170,7 +222,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			UserController controller = CreateController(repositoryMock.Object);
 
 			// Act
-			IHttpActionResult result = await controller.PutUser(new UserModel());
+			IHttpActionResult result = await controller.PutUserRegister(new UserModel());
 
 			// Assert
 			result.Should().BeOfType<CreatedNegotiatedContentResult<User>>();

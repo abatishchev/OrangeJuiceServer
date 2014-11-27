@@ -42,7 +42,18 @@ namespace OrangeJuice.Server.Api.Controllers
 		}
 
 		[Route("api/user")]
-		public async Task<IHttpActionResult> PutUser(UserModel userModel)
+		public async Task<IHttpActionResult> PostUserUpdate(UserModel userModel)
+		{
+			if (userModel == null)
+				throw new ArgumentNullException();
+
+			await _userRepository.Update(userModel.Email, userModel.Name);
+
+			return Ok();
+		}
+
+		[Route("api/user")]
+		public async Task<IHttpActionResult> PutUserRegister(UserModel userModel)
 		{
 			if (userModel == null)
 				throw new ArgumentNullException();

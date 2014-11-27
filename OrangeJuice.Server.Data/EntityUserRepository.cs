@@ -24,29 +24,36 @@ namespace OrangeJuice.Server.Data
 		#region IUserRepository members
 		public async Task<User> Register(string email, string name)
 		{
-			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-			{
-				if (await _db.Users.AnyAsync(u => u.Email == email))
-					throw new DataException("User already exists");
+			if (await _db.Users.AnyAsync(u => u.Email == email))
+				throw new DataException("User already exists");
 
-				User user = _db.Users.Add(
-					new User
-					{
-						Email = email,
-						Name = name
-					});
+			User user = _db.Users.Add(
+				new User
+				{
+					Email = email,
+					Name = name
+				});
 
-				await _db.SaveChangesAsync();
-				scope.Complete();
-
-				return user;
-			}
+			await _db.SaveChangesAsync();
+			return user;
 		}
 
 		public Task<User> Search(Guid userId)
 		{
 			return _db.Users.FindAsync(userId);
 		}
+
+		public async Task Update(string email, string name)
+		{
+			var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+			if (user == null)
+				throw new DataException("User doesn't exist");
+
+			user.Name = name;
+
+			await _db.SaveChangesAsync();
+		}
+
 		#endregion
 	}
 }
