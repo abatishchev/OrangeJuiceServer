@@ -25,6 +25,9 @@ namespace OrangeJuice.Server.Security
 
 		public string Create()
 		{
+			var header = new { typ = "JWT", alg = "RS256" };
+			var headerEncoded = Encode(header);
+
 			DateTime now = DateTime.UtcNow;
 			var claimset = new
 			{
@@ -34,33 +37,29 @@ namespace OrangeJuice.Server.Security
 				iat = ((int)now.Subtract(UnixEpoch).TotalSeconds).ToString(CultureInfo.InvariantCulture),
 				exp = ((int)now.AddMinutes(55).Subtract(UnixEpoch).TotalSeconds).ToString(CultureInfo.InvariantCulture)
 			};
+			var claimsetEncoded = Encode(claimset);
 
-			// header
-			var header = new { typ = "JWT", alg = "RS256" };
+			var signature = CreateSignature(headerEncoded, claimsetEncoded);
+			var signatureEncoded = TextEncodings.Base64Url.Encode(signature);
 
-			// encoded header
-			var headerSerialized = JsonConvert.SerializeObject(header);
-			var headerBytes = Encoding.UTF8.GetBytes(headerSerialized);
-			var headerEncoded = TextEncodings.Base64Url.Encode(headerBytes);
-
-			// encoded claimset
-			var claimsetSerialized = JsonConvert.SerializeObject(claimset);
-			var claimsetBytes = Encoding.UTF8.GetBytes(claimsetSerialized);
-			var claimsetEncoded = TextEncodings.Base64Url.Encode(claimsetBytes);
-
-			// input
-			var input = String.Join(".", headerEncoded, claimsetEncoded);
-			var inputBytes = Encoding.UTF8.GetBytes(input);
-
-			// signature
-			var signatureBytes = Sign(inputBytes);
-			var signatureEncoded = TextEncodings.Base64Url.Encode(signatureBytes);
-
-			// jwt
 			return String.Join(".", headerEncoded, claimsetEncoded, signatureEncoded);
 		}
 
-		private byte[] Sign(byte[] inputBytes)
+		private static string Encode(object value)
+		{
+			string serialized = JsonConvert.SerializeObject(value);
+			byte[] bytes = Encoding.UTF8.GetBytes(serialized);
+			return TextEncodings.Base64Url.Encode(bytes);
+		}
+
+		private byte[] CreateSignature(string headerEncoded, string claimsetEncoded)
+		{
+			var input = String.Join(".", headerEncoded, claimsetEncoded);
+			var inputBytes = Encoding.UTF8.GetBytes(input);
+			return Sign(inputBytes);
+		}
+
+		private byte[] Sign(byte[] bytes)
 		{
 			var certificate = new X509Certificate2(Convert.FromBase64String(_authOptions.CertificateKey), _authOptions.CertificateSecret);
 			var rsa = (RSACryptoServiceProvider)certificate.PrivateKey;
@@ -70,7 +69,7 @@ namespace OrangeJuice.Server.Security
 				KeyNumber = rsa.CspKeyContainerInfo.KeyNumber == KeyNumber.Exchange ? 1 : 2
 			};
 			var csp = new RSACryptoServiceProvider(cspParam) { PersistKeyInCsp = false };
-			return csp.SignData(inputBytes, "SHA256");
+			return csp.SignData(bytes, "SHA256");
 		}
 	}
 }
