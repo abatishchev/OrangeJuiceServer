@@ -43,6 +43,7 @@ using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProduc
 using XmlProductDescriptorFactory = OrangeJuice.Server.FSharp.Data.XmlProductDescriptorFactory;
 
 using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFactory;
+using AwsArgumentBuilder = OrangeJuice.Server.FSharp.Services.AwsArgumentBuilder;
 using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProvider;
 using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
 using JsonBlobNameResolver = OrangeJuice.Server.FSharp.Services.JsonBlobNameResolver;

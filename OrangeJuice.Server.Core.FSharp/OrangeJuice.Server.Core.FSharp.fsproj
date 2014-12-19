@@ -64,6 +64,7 @@
     <Compile Include="Data\JsonProductDescriptorConverter.fs" />
     <Compile Include="Data\XmlProductDescriptorFactory.fs" />
     <Compile Include="Services\AwsAlgorithmFactory.fs" />
+    <Compile Include="Services\AwsArgumentBuilder.fs" />
     <Compile Include="Services\AzureProductProvider.fs" />
     <Compile Include="Services\CachingCloudProductService.fs" />
     <Compile Include="Services\JsonBlobNameResolver.fs" />

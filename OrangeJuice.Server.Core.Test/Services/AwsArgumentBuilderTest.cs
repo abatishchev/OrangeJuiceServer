@@ -2,20 +2,23 @@
 
 using FluentAssertions;
 using OrangeJuice.Server.Data.Models;
-using Xunit;
 
 using Moq;
 
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Services;
 
+using Xunit.Extensions;
+
 namespace OrangeJuice.Server.Test.Services
 {
 	public class AwsArgumentBuilderTest
 	{
 		#region Test methods
-		[Fact]
-		public void BuildArgs_Should_Add_Default_Arguments()
+		[Theory]
+		[InlineData(typeof(AwsArgumentBuilder))]
+		[InlineData(typeof(FSharp.Services.AwsArgumentBuilder))]
+		public void BuildArgs_Should_Add_Default_Arguments(Type type)
 		{
 			// Arrange
 			const string accessKey = "key";
@@ -25,7 +28,7 @@ namespace OrangeJuice.Server.Test.Services
 			string timestamp = Convert.ToString(now);
 			var dateTimeProvider = CreateDateTimeProvider(now);
 
-			var argumentBuilder = CreateArgumentBuilder(new AwsOptions { AccessKey = accessKey, AssociateTag = associateTag }, dateTimeProvider.Object);
+			var argumentBuilder = CreateArgumentBuilder(type, new AwsOptions { AccessKey = accessKey, AssociateTag = associateTag }, dateTimeProvider.Object);
 
 			// Act
 			var args = argumentBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
@@ -38,13 +41,15 @@ namespace OrangeJuice.Server.Test.Services
 				.And.Contain("Timestamp", timestamp);
 		}
 
-		[Fact]
-		public void BuildArgs_Should_Call_DateTimeProvider_GetNow()
+		[Theory]
+		[InlineData(typeof(AwsArgumentBuilder))]
+		[InlineData(typeof(FSharp.Services.AwsArgumentBuilder))]
+		public void BuildArgs_Should_Call_DateTimeProvider_GetNow(Type type)
 		{
 			// Arrange
 			var dateTimeProviderMock = CreateDateTimeProvider(DateTime.UtcNow);
 
-			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
+			var queryBuilder = CreateArgumentBuilder(type, dateTimeProvider: dateTimeProviderMock.Object);
 
 			// Act
 			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
@@ -53,13 +58,15 @@ namespace OrangeJuice.Server.Test.Services
 			dateTimeProviderMock.VerifyAll();
 		}
 
-		[Fact]
-		public void BuildArgs_Should_Call_DateTimeProvider_Format()
+		[Theory]
+		[InlineData(typeof(AwsArgumentBuilder))]
+		[InlineData(typeof(FSharp.Services.AwsArgumentBuilder))]
+		public void BuildArgs_Should_Call_DateTimeProvider_Format(Type type)
 		{
 			// Arrange
 			var dateTimeProviderMock = CreateDateTimeProvider(DateTime.UtcNow);
 
-			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
+			var queryBuilder = CreateArgumentBuilder(type, dateTimeProvider: dateTimeProviderMock.Object);
 
 			// Act
 			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
@@ -68,14 +75,16 @@ namespace OrangeJuice.Server.Test.Services
 			dateTimeProviderMock.VerifyAll();
 		}
 
-		[Fact]
-		public void BuildArgs_Should_Pass_Result_Of_DateTimeProvider_GetNow_To_DateTimeProvider_Format()
+		[Theory]
+		[InlineData(typeof(AwsArgumentBuilder))]
+		[InlineData(typeof(FSharp.Services.AwsArgumentBuilder))]
+		public void BuildArgs_Should_Pass_Result_Of_DateTimeProvider_GetNow_To_DateTimeProvider_Format(Type type)
 		{
 			// Arrange
 			DateTime now = DateTime.UtcNow;
 			var dateTimeProviderMock = CreateDateTimeProvider(now);
 
-			var queryBuilder = CreateArgumentBuilder(dateTimeProvider: dateTimeProviderMock.Object);
+			var queryBuilder = CreateArgumentBuilder(type, dateTimeProvider: dateTimeProviderMock.Object);
 
 			// Act
 			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
@@ -86,9 +95,9 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static AwsArgumentBuilder CreateArgumentBuilder(AwsOptions awsOptions = null, IDateTimeProvider dateTimeProvider = null)
+		private static IArgumentBuilder CreateArgumentBuilder(Type type, AwsOptions awsOptions = null, IDateTimeProvider dateTimeProvider = null)
 		{
-			return new AwsArgumentBuilder(
+			return (IArgumentBuilder)Activator.CreateInstance(type,
 				awsOptions ?? new AwsOptions(),
 				dateTimeProvider ?? CreateDateTimeProvider(DateTime.UtcNow).Object);
 		}

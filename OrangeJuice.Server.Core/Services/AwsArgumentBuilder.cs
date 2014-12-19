@@ -10,16 +10,15 @@ namespace OrangeJuice.Server.Services
 	public sealed class AwsArgumentBuilder : IArgumentBuilder
 	{
 		#region Fields
-		private readonly string _accessKey;
-		private readonly string _associateTag;
+
+		private readonly AwsOptions _awsOptions;
 		private readonly IDateTimeProvider _dateTimeProvider;
 		#endregion
 
 		#region Ctor
 		public AwsArgumentBuilder(AwsOptions awsOptions, IDateTimeProvider dateTimeProvider)
 		{
-			_accessKey = awsOptions.AccessKey;
-			_associateTag = awsOptions.AssociateTag;
+			_awsOptions = awsOptions;
 			_dateTimeProvider = dateTimeProvider;
 		}
 		#endregion
@@ -38,8 +37,8 @@ namespace OrangeJuice.Server.Services
 				{ "ResponseGroup", String.Join(",", searchCriteria.ResponseGroups ?? Enumerable.Empty<string>()) },
 				{ "IdType", searchCriteria.IdType },
 				{ "ItemId", searchCriteria.ItemId },
-				{ "AWSAccessKeyId", _accessKey },
-				{ "AssociateTag", _associateTag },
+				{ "AWSAccessKeyId", _awsOptions.AccessKey },
+				{ "AssociateTag", _awsOptions.AssociateTag },
 				{ "Service", "AWSECommerceService" },
 				{ "Condition", "All" },
 				{ "Timestamp", timestamp }
