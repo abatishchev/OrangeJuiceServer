@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 
 using Factory;
@@ -33,7 +34,17 @@ namespace OrangeJuice.Server.Security
 			var response = await httpClient.PostAsync("/o/oauth2/token", content);
 			response.EnsureSuccessStatusCode();
 
-			return await response.Content.ReadAsAsync<AuthToken>(UnderscoreMappingResolver.Formatters);
+			var formatters = new[]
+			{
+				new JsonMediaTypeFormatter
+				{
+					SerializerSettings =
+					{
+						ContractResolver = new UnderscoreMappingResolver()
+					}
+				}
+			};
+			return await response.Content.ReadAsAsync<AuthToken>(formatters);
 		}
 	}
 }
