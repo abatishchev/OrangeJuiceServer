@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OrangeJuice.Server.Core.FSharp</RootNamespace>
     <AssemblyName>OrangeJuice.Server.Core.FSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
     <Name>OrangeJuice.Server.Core.FSharp</Name>
     <TargetFrameworkProfile />
@@ -63,6 +63,7 @@
     <Compile Include="Data\AzureDbConfiguration.fs" />
     <Compile Include="Data\JsonProductDescriptorConverter.fs" />
     <Compile Include="Data\XmlProductDescriptorFactory.fs" />
+    <Compile Include="Security\AuthTokenFactory.fs" />
     <Compile Include="Services\AwsAlgorithmFactory.fs" />
     <Compile Include="Services\AwsArgumentBuilder.fs" />
     <Compile Include="Services\AzureProductProvider.fs" />
@@ -126,6 +127,7 @@
       <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />

@@ -23,7 +23,6 @@ using OrangeJuice.Server.Api.Infrastucture;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
-using OrangeJuice.Server.Security;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
 using OrangeJuice.Server.Web;
@@ -41,6 +40,10 @@ using WebConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.WebConf
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
 using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProductDescriptorConverter;
 using XmlProductDescriptorFactory = OrangeJuice.Server.FSharp.Data.XmlProductDescriptorFactory;
+
+using AuthTokenFactory = OrangeJuice.Server.FSharp.Security.AuthTokenFactory;
+using JwtFactory = OrangeJuice.Server.Security.JwtFactory;
+using GoogleAuthTokenFactory = OrangeJuice.Server.Security.GoogleAuthTokenFactory;
 
 using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFactory;
 using AwsArgumentBuilder = OrangeJuice.Server.FSharp.Services.AwsArgumentBuilder;
@@ -130,7 +133,7 @@ namespace OrangeJuice.Server.Api
 			container.Register<ErrorLog>(() => new SqlErrorLog(container.GetInstance<IConnectionStringProvider>().GetDefaultConnectionString()));
 
 			// Controllers
-			container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+			//container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
 			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage));
