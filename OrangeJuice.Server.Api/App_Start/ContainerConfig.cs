@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Threading.Tasks;
@@ -133,7 +134,7 @@ namespace OrangeJuice.Server.Api
 			container.Register<ErrorLog>(() => new SqlErrorLog(container.GetInstance<IConnectionStringProvider>().GetDefaultConnectionString()));
 
 			// Controllers
-			//container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+			container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
 			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage));
@@ -250,7 +251,9 @@ namespace OrangeJuice.Server.Api
 		public static void ReplaceService<T>(this Container container, ServicesContainer services)
 			where T : class
 		{
-			services.Replace(typeof(T), container.GetInstance<T>());
+			T service = container.GetInstance<T>();
+			if (service != null)
+				services.Replace(typeof(T), service);
 		}
 	}
 }
