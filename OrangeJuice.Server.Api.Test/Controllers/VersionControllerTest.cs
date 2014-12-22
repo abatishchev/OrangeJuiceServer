@@ -10,7 +10,7 @@ using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
-	public class HomeControllerTest
+	public class VersionControllerTest
 	{
 		#region Test methods
 		[Fact]
@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			// Arrange
 			ApiVersion expected = new ApiVersion();
 
-			HomeController controller = CreateController(expected);
+			VersionController controller = CreateController(expected);
 
 			// Act
 			IHttpActionResult result = controller.GetVersion();
@@ -31,9 +31,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static HomeController CreateController(ApiVersion apiVersion)
+		private static VersionController CreateController(ApiVersion apiVersion)
 		{
-			return ControllerFactory<HomeController>.Create(apiVersion);
+			return ControllerFactory<VersionController>.Create(apiVersion);
 		}
 		#endregion
 	}

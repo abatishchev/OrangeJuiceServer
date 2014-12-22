@@ -4,11 +4,11 @@ using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
-	public sealed class HomeController : ApiController
+	public sealed class VersionController : ApiController
 	{
 		private readonly ApiVersion _apiVersion;
 
-		public HomeController(ApiVersion apiVersion)
+		public VersionController(ApiVersion apiVersion)
 		{
 			_apiVersion = apiVersion;
 		}
