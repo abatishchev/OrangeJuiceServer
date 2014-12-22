@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Threading;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Configuration;
@@ -20,7 +19,7 @@ namespace OrangeJuice.Server.Security
 
 		public async Task<AuthToken> Create(AuthToken authorizationToken)
 		{
-			var httpClient = new HttpClient();
+			var httpClient = new HttpClient { BaseAddress = new Uri("https://orangejuice.auth0.com") };
 			httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
 
 			var request = new
@@ -31,7 +30,7 @@ namespace OrangeJuice.Server.Security
 				scope = "openid"
 			};
 
-			var response = await httpClient.PostAsync("https://orangejuice.auth0.com/oauth/access_token", request, new JsonMediaTypeFormatter());
+			var response = await httpClient.PostAsync("oauth/access_token", request, new JsonMediaTypeFormatter());
 			response.EnsureSuccessStatusCode();
 
 			var formatters = new[]

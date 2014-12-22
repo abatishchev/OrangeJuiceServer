@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Factory;
@@ -14,16 +15,15 @@ namespace OrangeJuice.Server.Api.Test.Integration.Security
 	public class AuthTokenFactoryTest
 	{
 		[Theory]
-		[InlineData(typeof(Server.Security.AuthTokenFactory))]
-		[InlineData(typeof(Server.FSharp.Security.AuthTokenFactory))]
-		public async Task Create_Should_Return_AuthToken_Having_All_Properties(Type type)
+		[PropertyData("GetTypes")]
+		public async Task Create_Should_Return_AuthToken_Having_All_Properties(Type googleAuthTokenFactoryType, Type authTokenFactoryType)
 		{
 			// Arrange
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			var jwtFactory = container.GetInstance<IFactory<string>>();
-			var googleTokenFactory = container.GetInstance<IFactory<Task<AuthToken>, string>>();
-			var bearerTokenFactory = CreateFactory(container, type);
+			var googleTokenFactory = (IFactory<Task<AuthToken>, string>)container.GetInstance(googleAuthTokenFactoryType);
+			var bearerTokenFactory = (IFactory<Task<AuthToken>, AuthToken>)container.GetInstance(authTokenFactoryType);
 
 			string jwt = jwtFactory.Create();
 			AuthToken authorizationToken = await googleTokenFactory.Create(jwt);
@@ -38,9 +38,13 @@ namespace OrangeJuice.Server.Api.Test.Integration.Security
 			authToken.TokenType.Should().NotBeNullOrEmpty();
 		}
 
-		private static IFactory<Task<AuthToken>, AuthToken> CreateFactory(Container container, Type type)
+		public static IEnumerable<object[]> GetTypes
 		{
-			return (IFactory<Task<AuthToken>, AuthToken>)container.GetInstance(type);
+			get
+			{
+				yield return new[] { typeof(Server.Security.GoogleAuthTokenFactory), typeof(Server.Security.AuthTokenFactory) };
+				yield return new[] { typeof(Server.FSharp.Security.GoogleAuthTokenFactory), typeof(Server.FSharp.Security.AuthTokenFactory) };
+			}
 		}
 	}
 }

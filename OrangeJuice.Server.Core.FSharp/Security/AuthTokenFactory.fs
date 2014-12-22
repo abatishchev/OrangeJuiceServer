@@ -1,5 +1,6 @@
 ﻿namespace OrangeJuice.Server.FSharp.Security
 
+open System
 open System.Net.Http
 open System.Net.Http.Formatting
 open System.Runtime.Serialization
@@ -34,7 +35,8 @@ type AuthTokenFactory(authOptions : AuthOptions) =
     interface Factory.IFactory<Task<AuthToken>, AuthToken> with
         member this.Create(authorizationToken : AuthToken) : Task<AuthToken> =
             let task = async {
-                let httpClient = new HttpClient()
+                let httpClient = new HttpClient (
+                    BaseAddress = new Uri("https://orangejuice.auth0.com"))
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json") |> ignore
 
                 let request = {
@@ -43,7 +45,7 @@ type AuthTokenFactory(authOptions : AuthOptions) =
                     connection = "google-oauth2";
                     scope = "openid" }
 
-                let! response = httpClient.PostAsync("https://orangejuice.auth0.com/oauth/access_token", request, new JsonMediaTypeFormatter()) |> Async.AwaitTask
+                let! response = httpClient.PostAsync("oauth/access_token", request, new JsonMediaTypeFormatter()) |> Async.AwaitTask
                 response.EnsureSuccessStatusCode() |> ignore
                 
                 let formatter = new JsonMediaTypeFormatter()

@@ -64,6 +64,7 @@
     <Compile Include="Data\JsonProductDescriptorConverter.fs" />
     <Compile Include="Data\XmlProductDescriptorFactory.fs" />
     <Compile Include="Security\AuthTokenFactory.fs" />
+    <Compile Include="Security\GoogleAuthTokenFactory.fs" />
     <Compile Include="Services\AwsAlgorithmFactory.fs" />
     <Compile Include="Services\AwsArgumentBuilder.fs" />
     <Compile Include="Services\AzureProductProvider.fs" />
