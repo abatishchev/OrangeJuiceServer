@@ -11,6 +11,8 @@ namespace OrangeJuice.Server.Services
 	public sealed class AzureClient : IAzureClient
 	{
 		#region Fields
+		private static readonly TimeSpan Year = TimeSpan.FromDays(365);
+
 		private readonly AzureOptions _azureOptions;
 		private readonly IBlobClient _blobClient;
 		#endregion
@@ -39,7 +41,7 @@ namespace OrangeJuice.Server.Services
 		public async Task PutBlobToContainer(string containerName, string fileName, string content)
 		{
 			ICloudBlob blob = GetBlockReference(containerName, fileName);
-			blob.Properties.CacheControl = CreateCacheControl(TimeSpan.FromDays(365));
+			blob.Properties.CacheControl = CreateCacheControl(Year);
 			await _blobClient.Write(blob, content);
 		}
 

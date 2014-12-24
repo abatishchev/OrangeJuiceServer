@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Threading.Tasks;
@@ -48,6 +47,7 @@ using GoogleAuthTokenFactory = OrangeJuice.Server.Security.GoogleAuthTokenFactor
 
 using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFactory;
 using AwsArgumentBuilder = OrangeJuice.Server.FSharp.Services.AwsArgumentBuilder;
+using AzureClient = OrangeJuice.Server.FSharp.Services.AzureClient;
 using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProvider;
 using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
 using XmlAwsClient = OrangeJuice.Server.FSharp.Services.XmlAwsClient;
