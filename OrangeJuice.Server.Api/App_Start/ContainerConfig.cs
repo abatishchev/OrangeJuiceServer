@@ -50,7 +50,6 @@ using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFacto
 using AwsArgumentBuilder = OrangeJuice.Server.FSharp.Services.AwsArgumentBuilder;
 using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProvider;
 using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
-using JsonBlobNameResolver = OrangeJuice.Server.FSharp.Services.JsonBlobNameResolver;
 using XmlAwsClient = OrangeJuice.Server.FSharp.Services.XmlAwsClient;
 using XmlItemSelector = OrangeJuice.Server.FSharp.Services.XmlItemSelector;
 
@@ -160,8 +159,6 @@ namespace OrangeJuice.Server.Api
 
 			#region ProductController
 			#region Azure
-			container.Register<IBlobNameResolver, JsonBlobNameResolver>();
-
 			container.Register<IBlobClient, AzureBlobClient>();
 
 			container.Register<IAzureClient, AzureClient>();

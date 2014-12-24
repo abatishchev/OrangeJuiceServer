@@ -69,7 +69,6 @@
     <Compile Include="Services\AwsArgumentBuilder.fs" />
     <Compile Include="Services\AzureProductProvider.fs" />
     <Compile Include="Services\CachingCloudProductService.fs" />
-    <Compile Include="Services\JsonBlobNameResolver.fs" />
     <Compile Include="Services\XmlAwsClient.fs" />
     <Compile Include="Services\XmlItemSelector.fs" />
     <Compile Include="Validation\XmlRequestValidator.fs" />

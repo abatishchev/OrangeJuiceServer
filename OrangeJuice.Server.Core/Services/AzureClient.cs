@@ -12,15 +12,13 @@ namespace OrangeJuice.Server.Services
 	{
 		#region Fields
 		private readonly AzureOptions _azureOptions;
-		private readonly IBlobNameResolver _blobNameResolver;
 		private readonly IBlobClient _blobClient;
 		#endregion
 
 		#region Ctor
-		public AzureClient(AzureOptions azureOptions, IBlobNameResolver blobNameResolver, IBlobClient blobClient)
+		public AzureClient(AzureOptions azureOptions, IBlobClient blobClient)
 		{
 			_azureOptions = azureOptions;
-			_blobNameResolver = blobNameResolver;
 			_blobClient = blobClient;
 		}
 		#endregion
@@ -67,23 +65,28 @@ namespace OrangeJuice.Server.Services
 			return container;
 		}
 
-		private ICloudBlob GetBlobReference(string containerName, string fileName)
+		private ICloudBlob GetBlobReference(string containerName, string blobName)
 		{
 			CloudBlobContainer container = GetContainer(containerName);
-			string blobName = _blobNameResolver.Resolve(fileName);
-			return container.GetBlobReferenceFromServer(blobName);
+			string fileName = CreateFileName(blobName);
+			return container.GetBlobReferenceFromServer(fileName);
 		}
 
-		private CloudBlockBlob GetBlockReference(string containerName, string fileName)
+		private CloudBlockBlob GetBlockReference(string containerName, string blobName)
 		{
 			CloudBlobContainer container = GetContainer(containerName);
-			string blobName = _blobNameResolver.Resolve(fileName);
-			return container.GetBlockBlobReference(blobName);
+			string fileName = CreateFileName(blobName);
+			return container.GetBlockBlobReference(fileName);
 		}
 
 		private static string CreateCacheControl(TimeSpan timeSpan)
 		{
 			return String.Format("public, max-age={0}", timeSpan.TotalMilliseconds);
+		}
+
+		private static string CreateFileName(string blobName)
+		{
+			return String.Format("{0}.json", blobName);
 		}
 		#endregion
 	}
