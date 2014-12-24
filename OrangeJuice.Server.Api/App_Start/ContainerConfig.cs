@@ -52,6 +52,7 @@ using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProv
 using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
 using JsonBlobNameResolver = OrangeJuice.Server.FSharp.Services.JsonBlobNameResolver;
 using XmlAwsClient = OrangeJuice.Server.FSharp.Services.XmlAwsClient;
+using XmlItemSelector = OrangeJuice.Server.FSharp.Services.XmlItemSelector;
 
 using XmlRequestValidator = OrangeJuice.Server.FSharp.Validation.XmlRequestValidator;
 

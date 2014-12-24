@@ -7,15 +7,17 @@ using Moq;
 
 using OrangeJuice.Server.Services;
 
-using Xunit;
+using Xunit.Extensions;
 
 namespace OrangeJuice.Server.Test.Services
 {
 	public class XmlItemSelectorTest
 	{
 		#region Tests
-		[Fact]
-		public void SelectItems_Should_Throw_Exception_When_ItemValidator_Returns_False()
+		[Theory]
+		[InlineData(typeof(XmlItemSelector))]
+		[InlineData(typeof(FSharp.Services.XmlItemSelector))]
+		public void SelectItems_Should_Throw_Exception_When_ItemValidator_Returns_False(Type type)
 		{
 			// Arrange
 			XNamespace ns = "test";
@@ -24,7 +26,7 @@ namespace OrangeJuice.Server.Test.Services
 					new XElement(ns + "Error", "error")));
 
 			IValidator<XElement> validator = CreateValidator(false);
-			IItemSelector selector = CreateSelector(validator);
+			IItemSelector selector = CreateSelector(type, validator);
 
 			// Act
 			Action action = () => selector.SelectItems(doc.ToString());
@@ -33,8 +35,10 @@ namespace OrangeJuice.Server.Test.Services
 			action.ShouldThrow<ArgumentException>();
 		}
 
-		[Fact]
-		public void SelectItems_Should_Return_Items_From_String()
+		[Theory]
+		[InlineData(typeof(XmlItemSelector))]
+		[InlineData(typeof(FSharp.Services.XmlItemSelector))]
+		public void SelectItems_Should_Return_Items_From_String(Type type)
 		{
 			// Arrange
 			XNamespace ns = "test";
@@ -43,7 +47,7 @@ namespace OrangeJuice.Server.Test.Services
 				new XElement(ns + "Root",
 					new XElement(ns + "Items", expected)));
 
-			IItemSelector selector = CreateSelector();
+			IItemSelector selector = CreateSelector(type);
 
 			// Act
 			XElement actual = selector.SelectItems(doc.ToString()).First();
@@ -54,9 +58,10 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IItemSelector CreateSelector(IValidator<XElement> validator = null)
+		private static IItemSelector CreateSelector(Type type, IValidator<XElement> validator = null)
 		{
-			return new XmlItemSelector(validator ?? CreateValidator());
+			return (IItemSelector)Activator.CreateInstance(type,
+				validator ?? CreateValidator());
 		}
 
 		private static IValidator<XElement> CreateValidator(bool isValid = true)
