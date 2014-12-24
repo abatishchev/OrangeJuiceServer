@@ -1,6 +1,7 @@
 using System.Net.Http;
 
 using OrangeJuice.Server.Configuration;
+using OrangeJuice.Server.Validation;
 
 namespace OrangeJuice.Server.Api.Handlers.Validation
 {

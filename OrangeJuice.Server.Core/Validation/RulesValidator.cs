@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace OrangeJuice.Server
+namespace OrangeJuice.Server.Validation
 {
 	public abstract class RulesValidator<T> : IValidator<T>
 	{

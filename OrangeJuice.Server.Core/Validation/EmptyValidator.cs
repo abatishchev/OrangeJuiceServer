@@ -1,4 +1,4 @@
-﻿namespace OrangeJuice.Server
+﻿namespace OrangeJuice.Server.Validation
 {
 	public sealed class EmptyValidator<T> : IValidator<T, string>
 	{
