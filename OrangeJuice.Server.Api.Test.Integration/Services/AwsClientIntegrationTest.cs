@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using FluentAssertions;
 
@@ -7,18 +8,20 @@ using OrangeJuice.Server.Services;
 
 using SimpleInjector;
 
-using Xunit;
+using Xunit.Extensions;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
 {
 	public class AwsClientIntegrationTest
 	{
-		[Fact]
-		public async Task GetItems_Should_Return_Sequnce_Of_ProductDescriptor()
+		[Theory]
+		[InlineData(typeof(XmlAwsClient))]
+		[InlineData(typeof(FSharp.Services.XmlAwsClient))]
+		public async Task GetItems_Should_Return_Sequnce_Of_ProductDescriptor(Type type)
 		{
 			// Arrange
 			Container container = ContainerConfig.CreateWebApiContainer();
-			IAwsClient client = container.GetInstance<IAwsClient>();
+			IAwsClient client = (IAwsClient)container.GetInstance(type);
 			var searchCriteria = new ProductDescriptorSearchCriteria
 			{
 				Operation = "ItemLookup",
