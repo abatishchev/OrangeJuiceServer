@@ -8,6 +8,7 @@ using Moq;
 
 using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Configuration;
+using OrangeJuice.Server.Validation;
 
 namespace OrangeJuice.Server.Api.Test.Handlers.Validation
 {
