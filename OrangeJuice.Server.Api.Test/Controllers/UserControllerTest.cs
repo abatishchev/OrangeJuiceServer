@@ -232,7 +232,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#region Helper methods
 		private static UserController CreateController(IUserRepository userRepository = null)
 		{
-			return ControllerFactory<UserController>.Create(
+			return ControllerFactory.Create<UserController>(
 				userRepository ?? Mock.Of<IUserRepository>(),
 				CreateUrlProvider());
 		}

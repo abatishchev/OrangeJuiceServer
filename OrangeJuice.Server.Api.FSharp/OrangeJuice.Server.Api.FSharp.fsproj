@@ -72,6 +72,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
+      <Name>OrangeJuice.Server.Contracts</Name>
+      <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Data.Models\OrangeJuice.Server.Data.Models.csproj">
       <Name>OrangeJuice.Server.Data.Models</Name>
       <Project>{a7aa0640-3152-4395-9d3b-2e9fcce45c80}</Project>

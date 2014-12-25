@@ -4,9 +4,14 @@ using System.Web.Http;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
-	internal static class ControllerFactory<T> where T : ApiController
+	internal static class ControllerFactory
 	{
-		public static T Create(params object[] args) 
+		public static T Create<T>(params object[] args) where T : ApiController
+		{
+			return (T)Create(typeof(T), args);
+		}
+
+		public static ApiController Create(Type type, params object[] args)
 		{
 			var config = new HttpConfiguration();
 			config.MapHttpAttributeRoutes();
@@ -16,7 +21,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			request.SetConfiguration(config);
 			request.ShouldIncludeErrorDetail();
 
-			T controller = (T)Activator.CreateInstance(typeof(T), args);
+			ApiController controller = (ApiController)Activator.CreateInstance(type, args);
 			controller.Request = request;
 			controller.RequestContext.IncludeErrorDetail = true;
 			return controller;

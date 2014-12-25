@@ -1,25 +1,29 @@
+using System;
 using System.Web.Http;
 using System.Web.Http.Results;
 
 using FluentAssertions;
 
 using OrangeJuice.Server.Api.Controllers;
+using OrangeJuice.Server.Controllers;
 using OrangeJuice.Server.Data.Models;
 
-using Xunit;
+using Xunit.Extensions;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
 	public class VersionControllerTest
 	{
 		#region Test methods
-		[Fact]
-		public void GetVersion_Should_Return_ApiVersion()
+		[Theory]
+		[InlineData(typeof(VersionController))]
+		[InlineData(typeof(FSharp.Controllers.VersionController))]
+		public void GetVersion_Should_Return_ApiVersion(Type type)
 		{
 			// Arrange
 			ApiVersion expected = new ApiVersion();
 
-			VersionController controller = CreateController(expected);
+			IVersionController controller = CreateController(type, expected);
 
 			// Act
 			IHttpActionResult result = controller.GetVersion();
@@ -31,9 +35,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static VersionController CreateController(ApiVersion apiVersion)
+		private static IVersionController CreateController(Type type, ApiVersion apiVersion)
 		{
-			return ControllerFactory<VersionController>.Create(apiVersion);
+			return (IVersionController)ControllerFactory.Create(type, apiVersion);
 		}
 		#endregion
 	}

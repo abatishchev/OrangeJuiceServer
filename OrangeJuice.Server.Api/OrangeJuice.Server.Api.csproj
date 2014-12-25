@@ -224,6 +224,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OrangeJuice.Server.Api.FSharp\OrangeJuice.Server.Api.FSharp.fsproj">
+      <Project>{4621dc1e-ede0-4619-9a77-f9982f116a97}</Project>
+      <Name>OrangeJuice.Server.Api.FSharp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Contracts\OrangeJuice.Server.Contracts.csproj">
       <Project>{ec948993-1645-4749-b2e5-1d3732b0a2c3}</Project>
       <Name>OrangeJuice.Server.Contracts</Name>

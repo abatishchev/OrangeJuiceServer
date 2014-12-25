@@ -292,7 +292,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#region Helper methods
 		private static RatingController CreateController(IRatingRepository ratingRepository = null)
 		{
-			return ControllerFactory<RatingController>.Create(
+			return ControllerFactory.Create<RatingController>(
 				ratingRepository ?? new Mock<IRatingRepository>().Object,
 				CreateUrlProvider());
 		}

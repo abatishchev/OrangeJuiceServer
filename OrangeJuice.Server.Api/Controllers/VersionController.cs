@@ -1,10 +1,11 @@
 ﻿using System.Web.Http;
 
+using OrangeJuice.Server.Controllers;
 using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Api.Controllers
 {
-	public sealed class VersionController : ApiController
+	public sealed class VersionController : ApiController, IVersionController
 	{
 		private readonly ApiVersion _apiVersion;
 

@@ -84,6 +84,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
+    <Reference Include="xunit.extensions, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\xunit.extensions.1.9.2\lib\net20\xunit.extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -105,6 +109,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OrangeJuice.Server.Api.FSharp\OrangeJuice.Server.Api.FSharp.fsproj">
+      <Project>{4621dc1e-ede0-4619-9a77-f9982f116a97}</Project>
+      <Name>OrangeJuice.Server.Api.FSharp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Api\OrangeJuice.Server.Api.csproj">
       <Project>{caa123b5-a379-493e-a964-8286c3c90ec7}</Project>
       <Name>OrangeJuice.Server.Api</Name>
