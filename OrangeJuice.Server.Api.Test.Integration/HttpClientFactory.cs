@@ -7,7 +7,6 @@ using System.Web.Http.Dispatcher;
 
 using Factory;
 
-using OrangeJuice.Server.Api.Infrastucture;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data.Models;
 
@@ -34,7 +33,7 @@ namespace OrangeJuice.Server.Api.Test.Integration
 
 		private static Container CreateiContainer()
 		{
-			GlobalConfiguration.Configuration.Services.Replace(typeof(IAssembliesResolver), new AssembliesResolver(AppDomain.CurrentDomain.GetAssemblies()));
+			//GlobalConfiguration.Configuration.Services.Replace(typeof(IAssembliesResolver), new DefaultAssembliesResolver());
 			return ContainerConfig.CreateWebApiContainer();
 		}
 

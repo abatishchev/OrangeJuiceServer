@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 
-using OrangeJuice.Server.Api.Models;
+using OrangeJuice.Server.Controllers;
+using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Api.Controllers
@@ -22,8 +23,7 @@ namespace OrangeJuice.Server.Api.Controllers
 		#endregion
 
 		#region HTTP methods
-		[Route("api/product/id", Name = "GetProductId")]
-		//[Route("api/product/id/{productId}", Name = "GetProductIdRpc")]
+		[Route("api/product/id")]
 		public async Task<IHttpActionResult> GetProductId([FromUri]ProductSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)
@@ -36,8 +36,7 @@ namespace OrangeJuice.Server.Api.Controllers
 			return Ok(descriptor);
 		}
 
-		[Route("api/product/barcode", Name = "GetProductBarcode")]
-		//[Route("api/product/barcode/{barcodeType}/{barcode}", Name = "GetProductBarcodeRpc")]
+		[Route("api/product/barcode")]
 		public async Task<IHttpActionResult> GetProductBarcode([FromUri]BarcodeSearchCriteria searchCriteria)
 		{
 			if (searchCriteria == null)

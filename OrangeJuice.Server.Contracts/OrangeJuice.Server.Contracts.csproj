@@ -76,6 +76,8 @@
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IConnectionStringProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
+    <Compile Include="Controllers\ControllerExtensions.cs" />
+    <Compile Include="Controllers\IProductController.cs" />
     <Compile Include="Controllers\IVersionController.cs" />
     <Compile Include="Data\IProductRepository.cs" />
     <Compile Include="Data\IRatingRepository.cs" />

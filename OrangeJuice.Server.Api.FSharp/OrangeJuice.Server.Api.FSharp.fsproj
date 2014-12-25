@@ -48,6 +48,9 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\ProductController.fs" />
     <Compile Include="Controllers\VersionControllers.fs" />
   </ItemGroup>
   <ItemGroup>

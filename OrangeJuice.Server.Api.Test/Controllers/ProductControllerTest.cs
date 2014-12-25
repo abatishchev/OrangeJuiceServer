@@ -8,23 +8,25 @@ using FluentAssertions;
 using Moq;
 
 using OrangeJuice.Server.Api.Controllers;
-using OrangeJuice.Server.Api.Models;
-using OrangeJuice.Server.Data;
+using OrangeJuice.Server.Controllers;
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
 
-using Xunit;
+using Xunit.Extensions;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {
 	public class ProductControllerTest
 	{
 		#region GetProductId
-		[Fact]
-		public void GetProducId_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public void GetProducId_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null(Type type)
 		{
 			// Arrange
-			ProductController controller = CreateController();
+			IProductController controller = CreateController(type);
 
 			// Act
 			Func<Task> task = () => controller.GetProductId(null);
@@ -33,14 +35,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 
-		[Fact]
-		public async Task GetProducId_Should_Return_Status_Ok()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public async Task GetProducId_Should_Return_Status_Ok(Type type)
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(new ProductDescriptor());
 
-			ProductController controller = CreateController(serviceMock.Object);
+			IProductController controller = CreateController(type, serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
@@ -49,8 +54,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor>>();
 		}
 
-		[Fact]
-		public async Task GetProducId_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public async Task GetProducId_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search(Type type)
 		{
 			// Arrange
 			Guid productId = Guid.NewGuid();
@@ -58,7 +66,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Get(productId)).ReturnsAsync(new ProductDescriptor());
 
-			ProductController controller = CreateController(serviceMock.Object);
+			IProductController controller = CreateController(type, serviceMock.Object);
 
 			// Act
 			await controller.GetProductId(new ProductSearchCriteria { ProductId = productId });
@@ -67,8 +75,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			serviceMock.Verify(r => r.Get(productId), Times.Once);
 		}
 
-		[Fact]
-		public async Task GetProducId_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public async Task GetProducId_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search(Type type)
 		{
 			// Arrange
 			ProductDescriptor expected = new ProductDescriptor();
@@ -76,7 +87,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(expected);
 
-			ProductController controller = CreateController(serviceMock.Object);
+			IProductController controller = CreateController(type, serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
@@ -86,14 +97,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			actual.Should().Be(expected);
 		}
 
-		[Fact]
-		public async Task GetProducId_Should_Return_Status_NoContent_When_ProductManager_Search_Returns_Null()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public async Task GetProducId_Should_Return_Status_NoContent_When_ProductManager_Search_Returns_Null(Type type)
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
 
-			ProductController controller = CreateController(serviceMock.Object);
+			IProductController controller = CreateController(type, serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
@@ -105,11 +119,14 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region GetProductBarcode
-		[Fact]
-		public void GetProducBarcode_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public void GetProducBarcode_Should_Should_Throw_Exception_When_SearchCriteria_Is_Null(Type type)
 		{
 			// Arrange
-			ProductController controller = CreateController();
+			IProductController controller = CreateController(type);
 
 			// Act
 			Func<Task> task = () => controller.GetProductBarcode(null);
@@ -118,14 +135,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			task.ShouldThrow<ArgumentNullException>();
 		}
 
-		[Fact]
-		public async Task GetProductBarcode_Should_Return_Status_Ok()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public async Task GetProductBarcode_Should_Return_Status_Ok(Type type)
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(new ProductDescriptor[0]);
 
-			ProductController controller = CreateController(serviceMock.Object);
+			IProductController controller = CreateController(type, serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
@@ -134,8 +154,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor[]>>();
 		}
 
-		[Fact]
-		public async Task GetProductBarcode_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public async Task GetProductBarcode_Should_Pass_Barcode_BarcodeType_To_ProductManager_Search(Type type)
 		{
 			// Arrange
 			const string barcode = "barcode";
@@ -144,7 +167,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor[0]);
 
-			ProductController controller = CreateController(serviceMock.Object);
+			IProductController controller = CreateController(type, serviceMock.Object);
 
 			// Act
 			await controller.GetProductBarcode(new BarcodeSearchCriteria { Barcode = barcode, BarcodeType = barcodeType });
@@ -153,8 +176,11 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			serviceMock.VerifyAll();
 		}
 
-		[Fact]
-		public async Task GetProductBarcode_Should_Return_ProductDescriptors_Returned_By_ProductManager_Search()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public async Task GetProductBarcode_Should_Return_ProductDescriptors_Returned_By_ProductManager_Search(Type type)
 		{
 			// Arrange
 			var expected = new[] { new ProductDescriptor(), new ProductDescriptor() };
@@ -162,7 +188,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
 
-			ProductController controller = CreateController(serviceMock.Object);
+			IProductController controller = CreateController(type, serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
@@ -172,14 +198,17 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			actual.Should().BeEquivalentTo(expected);
 		}
 
-		[Fact]
-		public async Task GetProductBarcode_Should_Return_Status_NoContent_When_ProductManager_Search_Returns_Null()
+		[Theory]
+		[InlineData(typeof(ProductController))]
+		[InlineData(typeof(FSharp.Controllers.ProductController))]
+
+		public async Task GetProductBarcode_Should_Return_Status_NoContent_When_ProductManager_Search_Returns_Null(Type type)
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(null);
 
-			ProductController controller = CreateController(serviceMock.Object);
+			IProductController controller = CreateController(type, serviceMock.Object);
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
@@ -191,9 +220,9 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		#endregion
 
 		#region Helper methods
-		private static ProductController CreateController(IProductService service = null)
+		private static IProductController CreateController(Type type, IProductService service = null)
 		{
-			return ControllerFactory.Create<ProductController>(service ?? new Mock<IProductService>().Object);
+			return (IProductController)ControllerFactory.Create(type, service ?? new Mock<IProductService>().Object);
 		}
 		#endregion
 	}

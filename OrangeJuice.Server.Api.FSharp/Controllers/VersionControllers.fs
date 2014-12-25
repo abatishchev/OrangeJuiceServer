@@ -8,7 +8,8 @@ open OrangeJuice.Server.Data.Models
 type VersionController(apiVersion : ApiVersion) =
     inherit ApiController()
     interface IVersionController with
-        member this.GetVersion() = this.GetVersion();
+        member this.GetVersion() =
+            this.GetVersion();
 
     [<Route("api/version")>]
     member this.GetVersion() : IHttpActionResult  =
