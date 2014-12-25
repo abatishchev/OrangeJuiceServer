@@ -1,5 +1,6 @@
 ﻿namespace OrangeJuice.Server.Api.FSharp.Controllers
 
+open System
 open System.Threading.Tasks
 open System.Web.Http
 
@@ -22,6 +23,8 @@ type ProductController(productService : IProductService) =
 
     [<Route("api/product/id")>]
     member this.GetProductId([<FromUri>] searchCriteria : ProductSearchCriteria) : Task<IHttpActionResult> =
+        if (searchCriteria = null) then raise <| new ArgumentNullException()
+
         let task = async {
             let! descriptor = productService.Get(searchCriteria.ProductId) |> Async.AwaitTask
             return
@@ -33,6 +36,8 @@ type ProductController(productService : IProductService) =
 
     [<Route("api/product/barcode")>]
     member this.GetProductBarcode([<FromUri>] searchCriteria : BarcodeSearchCriteria) : Task<IHttpActionResult>  =
+        if (searchCriteria = null) then raise <| new ArgumentNullException()
+
         let task = async {
             let! descriptor = productService.Search(searchCriteria.Barcode, searchCriteria.BarcodeType) |> Async.AwaitTask
             return
