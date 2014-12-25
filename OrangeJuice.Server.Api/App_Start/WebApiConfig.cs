@@ -61,6 +61,7 @@ namespace OrangeJuice.Server.Api
 		private static void ConfigureServices(ServicesContainer services, Container container)
 		{
 			container.ReplaceService<IAssembliesResolver>(services);
+			container.ReplaceService<IHttpControllerTypeResolver>(services);
 
 			container.ReplaceService<ModelValidatorProvider>(services);
 
@@ -70,11 +71,11 @@ namespace OrangeJuice.Server.Api
 		private static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
 		{
 			formatters.Remove(formatters.XmlFormatter);
-			formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
 			var settings = formatters.JsonFormatter.SerializerSettings;
-			settings.Formatting = Formatting.Indented;
 			settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+			settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+			settings.Formatting = Formatting.Indented;
 			settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 		}
 	}
