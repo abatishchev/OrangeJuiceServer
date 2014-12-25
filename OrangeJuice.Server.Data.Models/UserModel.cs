@@ -1,6 +1,6 @@
 using FluentValidation.Attributes;
 
-namespace OrangeJuice.Server.Api.Models
+namespace OrangeJuice.Server.Data.Models
 {
 	[Validator(typeof(Validation.UserModelValidator))]
 	public class UserModel

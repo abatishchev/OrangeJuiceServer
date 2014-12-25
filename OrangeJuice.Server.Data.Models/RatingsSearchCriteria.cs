@@ -2,7 +2,7 @@
 
 using FluentValidation.Attributes;
 
-namespace OrangeJuice.Server.Api.Models
+namespace OrangeJuice.Server.Data.Models
 {
 	[Validator(typeof(Validation.RatingsSearchCriteriaValidator))]
 	public class RatingsSearchCriteria

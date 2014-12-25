@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 
-using OrangeJuice.Server.Api.Models;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Web;

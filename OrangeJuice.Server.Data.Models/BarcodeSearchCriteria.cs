@@ -1,8 +1,6 @@
 ﻿using FluentValidation.Attributes;
 
-using OrangeJuice.Server.Data.Models;
-
-namespace OrangeJuice.Server.Api.Models
+namespace OrangeJuice.Server.Data.Models
 {
 	[Validator(typeof(Validation.BarcodeSearchCriteriaValidator))]
 	public class BarcodeSearchCriteria

@@ -29,6 +29,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -38,14 +41,31 @@
     </Compile>
     <Compile Include="ApiVersion.cs" />
     <Compile Include="AuthToken.cs" />
+    <Compile Include="BarcodeSearchCriteria.cs" />
     <Compile Include="BarcodeType.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductDescriptor.cs" />
     <Compile Include="ProductDescriptorSearchCriteria.cs" />
+    <Compile Include="ProductSearchCriteria.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rating.cs" />
+    <Compile Include="RatingModel.cs" />
+    <Compile Include="RatingSearchCriteria.cs" />
+    <Compile Include="RatingsSearchCriteria.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserModel.cs" />
+    <Compile Include="UserSearchCriteria.cs" />
+    <Compile Include="Validation\BarcodeSearchCriteriaValidator.cs" />
+    <Compile Include="Validation\ProductSearchCriteriaValidator.cs" />
+    <Compile Include="Validation\RatingModelValidator.cs" />
+    <Compile Include="Validation\RatingSearchCriteriaValidator.cs" />
+    <Compile Include="Validation\RatingsSearchCriteriaValidator.cs" />
+    <Compile Include="Validation\UserModelValidator.cs" />
+    <Compile Include="Validation\UserSearchCriteriaValidator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
