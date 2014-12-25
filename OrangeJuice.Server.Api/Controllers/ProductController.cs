@@ -9,7 +9,7 @@ using OrangeJuice.Server.Services;
 namespace OrangeJuice.Server.Api.Controllers
 {
 	[Authorize]
-	public sealed class ProductController : ApiController
+	public sealed class ProductController : ApiController, IProductController
 	{
 		#region Fields
 		private readonly IProductService _productService;
