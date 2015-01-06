@@ -2,8 +2,6 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Dispatcher;
 
 using Factory;
 
@@ -22,7 +20,7 @@ namespace OrangeJuice.Server.Api.Test.Integration
 
 		public static HttpClient Create()
 		{
-			var client = new HttpClient { BaseAddress = GetUrl() };
+			var client = new HttpClient { BaseAddress = GetUrl(), Timeout = TimeSpan.FromSeconds(1) };
 
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			client.DefaultRequestHeaders.TryAddWithoutValidation("AppVer", AppVersion.Version0.ToString());
@@ -33,7 +31,6 @@ namespace OrangeJuice.Server.Api.Test.Integration
 
 		private static Container CreateiContainer()
 		{
-			//GlobalConfiguration.Configuration.Services.Replace(typeof(IAssembliesResolver), new DefaultAssembliesResolver());
 			return ContainerConfig.CreateWebApiContainer();
 		}
 
