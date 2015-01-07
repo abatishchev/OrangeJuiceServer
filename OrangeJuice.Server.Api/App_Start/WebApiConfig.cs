@@ -62,6 +62,7 @@ namespace OrangeJuice.Server.Api
 		{
 			container.ReplaceService<IAssembliesResolver>(services);
 			container.ReplaceService<IHttpControllerTypeResolver>(services);
+			//container.ReplaceService<IHttpControllerSelector>(services);
 
 			container.ReplaceService<ModelValidatorProvider>(services);
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reactive.Concurrency;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -40,9 +39,6 @@ using AzureOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AzureOptions
 using ConfigurationConnectionStringProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationConnectionStringProvider;
 using ConfigurationEnvironmentProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationEnvironmentProvider;
 using WebConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.WebConfigurationProvider;
-
-using ProductController = OrangeJuice.Server.Api.FSharp.Controllers.ProductController;
-using VersionController = OrangeJuice.Server.Api.FSharp.Controllers.VersionController;
 
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
 using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProductDescriptorConverter;
@@ -133,8 +129,13 @@ namespace OrangeJuice.Server.Api
 			container.RegisterAll<DelegatingHandler>(typeof(AppVersionHandler));
 
 			// Services
-			container.Register<IAssembliesResolver>(() => new AssembliesResolver(typeof(VersionController).Assembly), Lifestyle.Singleton);
+			container.Register<IAssembliesResolver>(() =>
+				new AssembliesResolver(
+					typeof(Controllers.VersionController).Assembly,
+					typeof(FSharp.Controllers.VersionController).Assembly),
+				Lifestyle.Singleton);
 			container.Register<IHttpControllerTypeResolver>(() => new DefaultHttpControllerTypeResolver(), Lifestyle.Singleton);
+			//container.Register<IHttpControllerSelector>(() => new DefaultHttpControllerSelector(GlobalConfiguration.Configuration), Lifestyle.Singleton);
 
 			container.Register<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>();
 
@@ -143,7 +144,9 @@ namespace OrangeJuice.Server.Api
 
 			// Controllers
 			if (registerControllers)
+			{
 				container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+			}
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
 			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage));
@@ -258,9 +261,7 @@ namespace OrangeJuice.Server.Api
 		public static void ReplaceService<T>(this Container container, ServicesContainer services)
 			where T : class
 		{
-			T service = container.GetInstance<T>();
-			if (service != null)
-				services.Replace(typeof(T), service);
+			services.Replace(typeof(T), container.GetInstance<T>());
 		}
 	}
 }
