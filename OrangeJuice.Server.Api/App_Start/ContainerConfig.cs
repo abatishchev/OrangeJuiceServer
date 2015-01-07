@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -131,11 +130,11 @@ namespace OrangeJuice.Server.Api
 			// Services
 			container.Register<IAssembliesResolver>(() =>
 				new AssembliesResolver(
-					typeof(Controllers.VersionController).Assembly,
-					typeof(FSharp.Controllers.VersionController).Assembly),
+					typeof(FSharp.Controllers.VersionController).Assembly,
+					typeof(Controllers.VersionController).Assembly),
 				Lifestyle.Singleton);
 			container.Register<IHttpControllerTypeResolver>(() => new DefaultHttpControllerTypeResolver(), Lifestyle.Singleton);
-			//container.Register<IHttpControllerSelector>(() => new DefaultHttpControllerSelector(GlobalConfiguration.Configuration), Lifestyle.Singleton);
+			container.Register<IHttpControllerSelector>(() => new HttpControllerSelector(GlobalConfiguration.Configuration), Lifestyle.Singleton);
 
 			container.Register<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>();
 
