@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Api.Test.Integration
 
 		public static HttpClient Create()
 		{
-			var client = new HttpClient { BaseAddress = GetUrl(), Timeout = TimeSpan.FromSeconds(1) };
+			var client = new HttpClient { BaseAddress = GetUrl() };
 
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			client.DefaultRequestHeaders.TryAddWithoutValidation("AppVer", AppVersion.Version0.ToString());
