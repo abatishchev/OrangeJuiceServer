@@ -11,6 +11,14 @@ open OrangeJuice.Server.Data.Models
 open OrangeJuice.Server.Services
 
 type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider : IAzureProductProvider, productRepository : IProductRepository) =
+    let save = fun (descriptors : ProductDescriptor[], barcode : string, barcodeType : BarcodeType) -> async {
+        for d in descriptors do
+            let! productId = productRepository.Save(barcode, barcodeType, d.SourceProductId) |> Async.AwaitTask
+            d.ProductId <- productId
+            azureProvider.Save(d) |> Async.AwaitIAsyncResult |> Async.Ignore |> ignore
+        return descriptors
+    }
+
     interface IProductService with
         member this.Get(productId : Guid) : Task<ProductDescriptor> =
             azureProvider.Get(productId)
@@ -21,22 +29,11 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
     member this.Search(barcode : string, barcodeType : BarcodeType) = async {
         let! products = productRepository.Search(barcode, barcodeType) |> Async.AwaitTask
         match products |> List.ofSeq with
-            // if empty
             | [] -> let! descriptors = awsProvider.Search(barcode, barcodeType) |> Async.AwaitTask
                     match descriptors |> List.ofSeq with
-                        // if empty
                         | [] -> return null
-                        // if not empty
-                        | _ -> let save = fun () -> async {
-                                   for d in descriptors do
-                                       let! productId = productRepository.Save(barcode, barcodeType, d.SourceProductId) |> Async.AwaitTask
-                                       d.ProductId <- productId
-                                       azureProvider.Save(d) |> Async.AwaitIAsyncResult |> Async.Ignore |> ignore
-                                   return descriptors
-                               }
-                               let! t = save() |> Async.StartAsTask |> Async.AwaitTask
+                        | _ -> let! t = save(descriptors, barcode, barcodeType) |> Async.StartAsTask |> Async.AwaitTask
                                return t
-            // if not empty
             | _ -> let seq = Seq.map (fun (p : Product) -> azureProvider.Get(p.ProductId)) products
                    let! t = Task.WhenAll(seq) |> Async.AwaitTask
                    return t
