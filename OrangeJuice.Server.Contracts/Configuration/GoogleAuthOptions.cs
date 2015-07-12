@@ -12,5 +12,7 @@
 
 		/// <remarks>Email</remarks>>
 		public string Issuer { get; set; }
+
+		public string CertificateThumbprint { get; set; }
 	}
 }

@@ -16,8 +16,9 @@
 				Audience = _configurationProvider.GetValue("google:Audience"),
 				CertificateKey = _configurationProvider.GetValue("google:CertificateKey"),
 				CertificateSecret = _configurationProvider.GetValue("google:CertificateSecret"),
+				CertificateThumbprint = _configurationProvider.GetValue("google:CertificateThumbprint"),
 				ClientId = _configurationProvider.GetValue("google:ClientId"),
-				Issuer = _configurationProvider.GetValue("google:Issuer")
+				Issuer = _configurationProvider.GetValue("google:Issuer"),
 			};
 		}
 	}

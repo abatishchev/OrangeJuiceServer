@@ -9,5 +9,6 @@ type GoogleAuthOptionsFactory(configurationProvider : IConfigurationProvider) =
                 Audience = configurationProvider.GetValue("google:Audience"),
                 CertificateKey = configurationProvider.GetValue("google:CertificateKey"),
                 CertificateSecret = configurationProvider.GetValue("google:CertificateSecret"),
+                CertificateThumbprint = configurationProvider.GetValue("google:CertificateThumbprint"),
                 ClientId = configurationProvider.GetValue("google:ClientId"),
                 Issuer = configurationProvider.GetValue("google:Issuer"))
