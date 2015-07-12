@@ -117,7 +117,6 @@ namespace OrangeJuice.Server.Api
 
 			#region Web API
 			// Filters
-			container.RegisterWebApiFilterProvider(GlobalConfiguration.Configuration);
 			container.RegisterAll<IFilter>(typeof(WebApiContrib.Filters.ValidationAttribute));
 
 			// Handlers
@@ -125,7 +124,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<ITraceRequestRepository, EntityTraceRequestRepository>();
 
-			container.RegisterAll<DelegatingHandler>(typeof(AppVersionHandler));
+			container.RegisterAll<DelegatingHandler>(typeof(DelegatingHandlerProxy<AppVersionHandler>));
 
 			// Services
 			container.Register<IAssembliesResolver>(() =>
