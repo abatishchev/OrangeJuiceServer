@@ -7,7 +7,7 @@ using Moq;
 
 using OrangeJuice.Server.Web;
 
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Web
 {

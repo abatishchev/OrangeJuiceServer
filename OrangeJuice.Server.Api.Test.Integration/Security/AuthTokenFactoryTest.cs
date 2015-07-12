@@ -8,14 +8,14 @@ using FluentAssertions;
 using OrangeJuice.Server.Data.Models;
 
 using SimpleInjector;
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Security
 {
 	public class AuthTokenFactoryTest
 	{
 		[Theory]
-		[PropertyData("GetTypes")]
+		[MemberData("GetTypes")]
 		public async Task Create_Should_Return_AuthToken_Having_All_Properties(Type googleAuthTokenFactoryType, Type authTokenFactoryType)
 		{
 			// Arrange

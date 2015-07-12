@@ -8,7 +8,7 @@ using Moq;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Services;
 
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Services
 {

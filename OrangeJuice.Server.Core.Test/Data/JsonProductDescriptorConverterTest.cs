@@ -5,7 +5,7 @@ using FluentAssertions;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
 
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Data
 {

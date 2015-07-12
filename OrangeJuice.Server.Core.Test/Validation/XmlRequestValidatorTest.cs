@@ -5,7 +5,7 @@ using FluentAssertions;
 
 using OrangeJuice.Server.Validation;
 
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Validation
 {

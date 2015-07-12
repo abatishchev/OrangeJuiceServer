@@ -8,7 +8,7 @@ using OrangeJuice.Server.Services;
 
 using SimpleInjector;
 
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
 {

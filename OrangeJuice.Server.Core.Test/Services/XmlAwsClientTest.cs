@@ -12,7 +12,7 @@ using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Services
 {

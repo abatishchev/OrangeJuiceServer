@@ -8,7 +8,7 @@ using OrangeJuice.Server.Api.Controllers;
 using OrangeJuice.Server.Controllers;
 using OrangeJuice.Server.Data.Models;
 
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Controllers
 {

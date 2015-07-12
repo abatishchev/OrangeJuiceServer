@@ -6,7 +6,7 @@ using Moq;
 
 using OrangeJuice.Server.Web;
 
-using Xunit.Extensions;
+using Xunit;
 
 using IStringDictionary = System.Collections.Generic.IDictionary<string, string>;
 using StringDictionary = System.Collections.Generic.Dictionary<string, string>;

@@ -5,7 +5,7 @@ using FluentAssertions;
 
 using OrangeJuice.Server.Configuration;
 
-using Xunit.Extensions;
+using Xunit;
 
 namespace OrangeJuice.Server.Test.Configuration
 {

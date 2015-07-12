@@ -4,7 +4,7 @@
 	{
 		public string GetValue(string key)
 		{
-			return Microsoft.WindowsAzure.CloudConfigurationManager.GetSetting(key);
+			return Microsoft.Azure.CloudConfigurationManager.GetSetting(key);
 		}
 	}
 }
