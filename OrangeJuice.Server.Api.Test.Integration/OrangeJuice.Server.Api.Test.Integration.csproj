@@ -15,7 +15,7 @@
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <ReferencePath>$(ProgramFiles)\Common Files\Mcrosoft Shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <SccProjectName>SAK</SccProjectName>
@@ -134,9 +134,7 @@
     <Compile Include="Services\AzureClientIntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +163,7 @@
       <Name>OrangeJuice.Server.Data.Test</Name>
     </ProjectReference>
     <ProjectReference Include="..\OrangeJuice.Server.Data\OrangeJuice.Server.Data.csproj">
-      <Project>{209ccef8-9d7a-4ab4-b7e5-9f5c8efe603a}</Project>
+      <Project>{209CCEF8-9D7A-4AB4-B7E5-9F5C8EFE603A}</Project>
       <Name>OrangeJuice.Server.Data</Name>
     </ProjectReference>
   </ItemGroup>
