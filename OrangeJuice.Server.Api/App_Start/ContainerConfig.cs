@@ -1,7 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Reactive.Concurrency;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -110,6 +109,7 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Security
+			container.RegisterFactory<X509Certificate2, Security.X509Certificate2Factory>();
 			container.Register<IFactory<string>, JwtFactory>();
 			container.RegisterFactory<Task<AuthToken>, string, GoogleAuthTokenFactory>();
 			container.RegisterFactory<Task<AuthToken>, AuthToken, AuthTokenFactory>();

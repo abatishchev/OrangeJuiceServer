@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
+using Factory;
+
 using Microsoft.Owin.Security.DataHandler.Encoder;
 
 using Newtonsoft.Json;
@@ -12,15 +14,17 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Security
 {
-	public sealed class JwtFactory : Factory.IFactory<string>
+	public sealed class JwtFactory : IFactory<string>
 	{
 		private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
 		private readonly GoogleAuthOptions _authOptions;
+		private readonly IFactory<X509Certificate2> _certFactory;
 
-		public JwtFactory(GoogleAuthOptions authOptions)
+		public JwtFactory(GoogleAuthOptions authOptions, IFactory<X509Certificate2> certFactory)
 		{
 			_authOptions = authOptions;
+			_certFactory = certFactory;
 		}
 
 		public string Create()
@@ -61,7 +65,7 @@ namespace OrangeJuice.Server.Security
 
 		private byte[] Sign(byte[] bytes)
 		{
-			var certificate = new X509Certificate2(Convert.FromBase64String(_authOptions.CertificateKey), _authOptions.CertificateSecret);
+			var certificate = _certFactory.Create();
 			var rsa = (RSACryptoServiceProvider)certificate.PrivateKey;
 			var cspParam = new CspParameters
 			{

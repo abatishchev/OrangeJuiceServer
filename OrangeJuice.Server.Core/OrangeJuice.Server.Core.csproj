@@ -117,6 +117,7 @@
     <Compile Include="Data\Configuration\AzureDbConfiguration.cs" />
     <Compile Include="Data\JsonProductDescriptorConverter.cs" />
     <Compile Include="Data\XmlProductDescriptorFactory.cs" />
+    <Compile Include="Security\X509Certificate2Factory.cs" />
     <Compile Include="Validation\EmptyValidator.cs" />
     <Compile Include="GenericPipeline.cs" />
     <Compile Include="ObjectPipeline.cs" />
