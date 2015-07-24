@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("Orange Juice")]
-[assembly: AssemblyCopyright("Copyright © Orange Juice 2013-2014")]
+[assembly: AssemblyCopyright("Copyright © Orange Juice 2013-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
