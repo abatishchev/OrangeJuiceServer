@@ -195,7 +195,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IUrlBuilder, AwsUrlBuilder>();
 
-			container.Register<IScheduler>(() => Scheduler.Default, Lifestyle.Singleton);
+			container.RegisterSingle<IScheduler>(Scheduler.Default);
 
 			container.Register<IRequestScheduler, IntervalRequestScheduler>();
 
