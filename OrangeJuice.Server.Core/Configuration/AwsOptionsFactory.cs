@@ -4,18 +4,21 @@ namespace OrangeJuice.Server.Configuration
 {
 	public class AwsOptionsFactory : Factory.IFactory<AwsOptions>
 	{
-		private const string AwsAccess = "AKIAICFWNOWCE42LO7BQ";
-		private const string AwsAssociate = "orang04-20";
-		private const string AwsSecret = "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";
+		private readonly IConfigurationProvider _configurationProvider;
+
+		public AwsOptionsFactory(IConfigurationProvider configurationProvider)
+		{
+			_configurationProvider = configurationProvider;
+		}
 
 		public AwsOptions Create()
 		{
 			return new AwsOptions
 			{
-				AccessKey = AwsAccess,
-				AssociateTag = AwsAssociate,
-				SecretKey = AwsSecret,
-				RequestLimit = TimeSpan.FromMilliseconds(1000)
+				AccessKey = _configurationProvider.GetValue("aws:AccessKey"),
+				AssociateTag = _configurationProvider.GetValue("aws:AssociateTag"),
+				SecretKey = _configurationProvider.GetValue("aws:SecretKey"),
+				RequestLimit = TimeSpan.Parse(_configurationProvider.GetValue("aws:RequestLimit"))
 			};
 		}
 	}

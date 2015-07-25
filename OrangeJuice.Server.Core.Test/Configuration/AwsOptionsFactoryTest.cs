@@ -2,7 +2,7 @@
 
 using Factory;
 using FluentAssertions;
-
+using Moq;
 using OrangeJuice.Server.Configuration;
 
 using Xunit;
@@ -35,8 +35,26 @@ namespace OrangeJuice.Server.Test.Configuration
 		#region Helpers methods
 		private static IFactory<AwsOptions> CreateFactory(Type type)
 		{
-			return (IFactory<AwsOptions>)Activator.CreateInstance(type);
+			var providerMock = CreateConfigurationProvider();
+			return (IFactory<AwsOptions>)Activator.CreateInstance(type, providerMock.Object);
 		}
+
+		private static Mock<IConfigurationProvider> CreateConfigurationProvider()
+		{
+			var providerMock = new Mock<IConfigurationProvider>();
+			providerMock.Setup(p => p.GetValue(It.IsAny<string>())).Returns<string>(key =>
+			{
+				switch (key)
+				{
+					case "aws:RequestLimit":
+						return TimeSpan.FromSeconds(1).ToString();
+					default:
+						return key;
+				}
+			});
+			return providerMock;
+		}
+
 		#endregion
 	}
 }
