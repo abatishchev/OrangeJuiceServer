@@ -1,5 +1,6 @@
 using System.Net.Http;
 using System.Reactive.Concurrency;
+using System.Runtime.Caching;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -34,6 +35,7 @@ using SimpleInjector.Extensions;
 using AuthOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AuthOptionsFactory;
 using AwsOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AwsOptionsFactory;
 using AzureOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AzureOptionsFactory;
+using CachingConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.CachingConfigurationProvider;
 using ConfigurationConnectionStringProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationConnectionStringProvider;
 using ConfigurationEnvironmentProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationEnvironmentProvider;
 using WebConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.WebConfigurationProvider;
@@ -78,6 +80,8 @@ namespace OrangeJuice.Server.Api
 			Container container = new Container();
 
 			container.Register<IConfigurationProvider, WebConfigurationProvider>();
+			container.RegisterSingle(MemoryCache.Default);
+			container.RegisterSingleDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>();
 
 			container.Verify();
