@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IAwsProductProvider members
-		public async Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
+		public Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
 		{
 			var searchCriteria = new ProductDescriptorSearchCriteria
 			{
@@ -29,7 +29,7 @@ namespace OrangeJuice.Server.Services
 				ItemId = barcode
 			};
 
-			return await _client.GetItems(searchCriteria);
+			return _client.GetItems(searchCriteria);
 		}
 		#endregion
 	}

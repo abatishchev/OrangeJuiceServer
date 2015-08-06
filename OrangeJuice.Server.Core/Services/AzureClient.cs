@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Services
 
 		#region IAzureClient members
 
-		public async Task<string> GetBlobFromContainer(string containerName, string fileName)
+		public Task<string> GetBlobFromContainer(string containerName, string fileName)
 		{
 			ICloudBlob blob = GetBlockReference(containerName, fileName);
 
@@ -35,7 +35,7 @@ namespace OrangeJuice.Server.Services
 			if (!exists)
 				return null;
 
-			return await _blobClient.Read(blob);
+			return _blobClient.Read(blob);
 		}
 
 		public async Task PutBlobToContainer(string containerName, string fileName, string content)
