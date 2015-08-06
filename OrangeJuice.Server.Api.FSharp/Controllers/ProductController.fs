@@ -40,8 +40,7 @@ type ProductController(productService : IProductService) =
 
         let task = async {
             let! descriptor = productService.Search(searchCriteria.Barcode, searchCriteria.BarcodeType) |> Async.AwaitTask
-            return
-                match descriptor with
+            return match descriptor with
                 | null -> this.NoContent()
                 | _ -> this.Ok(descriptor) :> IHttpActionResult
         }

@@ -81,7 +81,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 		[Theory]
 		[InlineData(typeof(AzureClient))]
 		[InlineData(typeof(FSharp.Services.AzureClient))]
-		public void GetBlobUrl_Should_Return_BlobUrl_When_Blob_Exists(Type type)
+		public async Task GetBlobUrl_Should_Return_BlobUrl_When_Blob_Exists(Type type)
 		{
 			// Arrange
 			Container container = ContainerConfig.CreateWebApiContainer();
@@ -92,7 +92,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
 			// Act
-			Uri url = client.GetBlobUrl(containerName, "32456dc4-0473-4d5b-891f-b96efaf26ed2");
+			Uri url = await client.GetBlobUrl(containerName, "32456dc4-0473-4d5b-891f-b96efaf26ed2");
 
 			// Assert
 			url.Should().NotBeNull();

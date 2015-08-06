@@ -27,56 +27,56 @@ namespace OrangeJuice.Server.Services
 
 		#region IAzureClient members
 
-		public Task<string> GetBlobFromContainer(string containerName, string fileName)
+		public async Task<string> GetBlobFromContainer(string containerName, string fileName)
 		{
-			ICloudBlob blob = GetBlockReference(containerName, fileName);
+			ICloudBlob blob = await GetBlockReference(containerName, fileName);
 
-			bool exists = blob.Exists();
+			bool exists = await blob.ExistsAsync();
 			if (!exists)
 				return null;
 
-			return _blobClient.Read(blob);
+			return await _blobClient.Read(blob);
 		}
 
 		public async Task PutBlobToContainer(string containerName, string fileName, string content)
 		{
-			ICloudBlob blob = GetBlockReference(containerName, fileName);
+			ICloudBlob blob = await GetBlockReference(containerName, fileName);
 			blob.Properties.CacheControl = CreateCacheControl(Year);
 			await _blobClient.Write(blob, content);
 		}
 
-		public Uri GetBlobUrl(string containerName, string fileName)
+		public async Task<Uri> GetBlobUrl(string containerName, string fileName)
 		{
-			ICloudBlob blob = GetBlobReference(containerName, fileName);
+			ICloudBlob blob = await GetBlobReference(containerName, fileName);
 			return blob.Uri;
 		}
 		#endregion
 
 		#region Methods
 		// TODO: refactor out?
-		private CloudBlobContainer GetContainer(string containerName)
+		private async Task<CloudBlobContainer> GetContainer(string containerName)
 		{
 			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_azureOptions.ConnectionString);
 			CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 
 			CloudBlobContainer container = blobClient.GetContainerReference(containerName);
-			bool exists = container.Exists();
+			bool exists = await container.ExistsAsync();
 			if (!exists)
 				throw new InvalidOperationException(String.Format("Container {0} doesn't exist", containerName));
 
 			return container;
 		}
 
-		private ICloudBlob GetBlobReference(string containerName, string blobName)
+		private async Task<ICloudBlob> GetBlobReference(string containerName, string blobName)
 		{
-			CloudBlobContainer container = GetContainer(containerName);
+			CloudBlobContainer container = await GetContainer(containerName);
 			string fileName = CreateFileName(blobName);
 			return container.GetBlobReferenceFromServer(fileName);
 		}
 
-		private CloudBlockBlob GetBlockReference(string containerName, string blobName)
+		private async Task<CloudBlockBlob> GetBlockReference(string containerName, string blobName)
 		{
-			CloudBlobContainer container = GetContainer(containerName);
+			CloudBlobContainer container = await GetContainer(containerName);
 			string fileName = CreateFileName(blobName);
 			return container.GetBlockBlobReference(fileName);
 		}

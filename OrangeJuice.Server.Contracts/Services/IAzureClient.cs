@@ -9,6 +9,6 @@ namespace OrangeJuice.Server.Services
 
 		Task PutBlobToContainer(string containerName, string fileName, string content);
 
-		Uri GetBlobUrl(string containerName, string fileName);
+		Task<Uri> GetBlobUrl(string containerName, string fileName);
 	}
 }

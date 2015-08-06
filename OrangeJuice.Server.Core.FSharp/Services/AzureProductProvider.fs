@@ -23,5 +23,5 @@ type AzureProductProvider(azureOptions : AzureOptions, client : IAzureClient, co
             let content = converter.ConvertBack(descriptor)
             client.PutBlobToContainer(azureOptions.ProductsContainer, descriptor.ProductId.ToString(), content)
         
-        member this.GetUrl(productId : Guid) : Uri =
+        member this.GetUrl(productId : Guid) : Task<Uri> =
             client.GetBlobUrl(azureOptions.ProductsContainer, productId.ToString())

@@ -16,31 +16,36 @@ type AzureClient(azureOptions : AzureOptions, blobClient : IBlobClient) =
         
     static let CreateFileName = fun (blobName : string) -> sprintf "%s.json" blobName
 
-    let GetContainer = fun (containerName : string) ->
+    let GetContainer = fun (containerName : string) -> async {
         let storageAccount = CloudStorageAccount.Parse(azureOptions.ConnectionString)
         let blobClient = storageAccount.CreateCloudBlobClient()
 
         let container = blobClient.GetContainerReference(containerName)
-        match container.Exists() with
+        let! exists = container.ExistsAsync() |> Async.AwaitTask
+        return match exists with
             | true -> container
             | false -> raise <| new InvalidOperationException(sprintf "Container %s doesn't exist" containerName)
+    }
 
-    let GetBlobReference = fun (containerName : string, blobName : string) ->
-        let container = GetContainer(containerName)
+    let GetBlobReference = fun (containerName : string, blobName : string) -> async {
+        let! container = GetContainer(containerName)
         let fileName = CreateFileName(blobName)
-        container.GetBlobReferenceFromServer(fileName)
+        return container.GetBlobReferenceFromServer(fileName)
+    }
         
-    let GetBlockReference = fun (containerName : string, blobName : string) ->
-        let container = GetContainer(containerName)
-        let fileName = CreateFileName(blobName)
-        container.GetBlockBlobReference(fileName)
+    let GetBlockReference = fun (containerName : string, blobName : string) -> async {
+        let! container = GetContainer(containerName)
+        let fileName = CreateFileName(blobName) 
+        return container.GetBlockBlobReference(fileName)
+    }
     
     interface IAzureClient with
         member this.GetBlobFromContainer(containerName : string, fileName : string) : Task<string> =
             let task = async {
-                let blob = GetBlockReference(containerName, fileName)
+                let! blob = GetBlockReference(containerName, fileName)
+                let! exists = blob.ExistsAsync() |> Async.AwaitTask
                 let! content =
-                    match blob.Exists() with
+                    match exists with
                         | true -> blobClient.Read(blob) |> Async.AwaitTask
                         | false -> Task.FromResult(null) |> Async.AwaitTask
                 return content
@@ -48,12 +53,17 @@ type AzureClient(azureOptions : AzureOptions, blobClient : IBlobClient) =
             task |> Async.StartAsTask
 
         member this.PutBlobToContainer(containerName : string, fileName : string, content : string) : Task =
-            let blob = GetBlockReference(containerName, fileName)
-            blob.Properties.CacheControl <- CreateCacheControl(Year)
+            let task = async {
+                let! blob = GetBlockReference(containerName, fileName)
+                blob.Properties.CacheControl <- CreateCacheControl(Year)
             
-            blobClient.Write(blob, content)
+                return blobClient.Write(blob, content)
+            }
+            (task |> Async.StartAsTask) :> Task
 
-        member this.GetBlobUrl(containerName : string, fileName : string) : Uri =
-            let blob = GetBlobReference(containerName, fileName)
-            blob.Uri
-
+        member this.GetBlobUrl(containerName : string, fileName : string) : Task<Uri> =
+            let task = async {
+                let! blob = GetBlobReference(containerName, fileName)
+                return blob.Uri
+            }
+            task |> Async.StartAsTask
