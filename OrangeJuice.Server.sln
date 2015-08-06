@@ -1,7 +1,6 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{297041D9-4186-49F5-BB79-37653390A91F}"
 EndProject
@@ -12,13 +11,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1CBFC1FA-2DAA-4690-8C34-4574B0A02D6D}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		NuGet.config = NuGet.config
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{20AB717C-5AA2-4AA7-BD55-EB852CC53536}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".octopack", ".octopack", "{CA662440-C556-4132-AAF9-12E45D6B77DD}"
