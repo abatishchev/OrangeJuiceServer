@@ -7,7 +7,6 @@ namespace OrangeJuice.Server.Data
 {
 	public sealed class JsonProductDescriptorConverter : IConverter<string, ProductDescriptor>
 	{
-		#region IConverter members
 		public ProductDescriptor Convert(string value)
 		{
 			return JObject.Parse(value)
@@ -19,6 +18,5 @@ namespace OrangeJuice.Server.Data
 			return JObject.FromObject(value)
 						  .ToString(Formatting.Indented);
 		}
-		#endregion
 	}
 }

@@ -3,12 +3,14 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 
+using Factory;
+
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Security
 {
-	public sealed class AuthTokenFactory : Factory.IFactory<Task<AuthToken>, AuthToken>
+	public sealed class AuthTokenFactory : IFactory<Task<AuthToken>, AuthToken>
 	{
 		private readonly AuthOptions _authOptions;
 
