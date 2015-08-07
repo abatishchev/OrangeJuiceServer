@@ -65,6 +65,7 @@
     <Compile Include="Security\GoogleAuthTokenFactory.fs" />
     <Compile Include="Services\AwsAlgorithmFactory.fs" />
     <Compile Include="Services\AwsArgumentBuilder.fs" />
+    <Compile Include="Services\AwsProductProvider.fs" />
     <Compile Include="Services\AzureClient.fs" />
     <Compile Include="Services\AzureProductProvider.fs" />
     <Compile Include="Services\CachingCloudProductService.fs" />

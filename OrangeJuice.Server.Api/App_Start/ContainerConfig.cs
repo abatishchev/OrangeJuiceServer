@@ -50,6 +50,7 @@ using GoogleAuthTokenFactory = OrangeJuice.Server.Security.GoogleAuthTokenFactor
 
 using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFactory;
 using AwsArgumentBuilder = OrangeJuice.Server.FSharp.Services.AwsArgumentBuilder;
+using AwsProductProvider = OrangeJuice.Server.FSharp.Services.AwsProductProvider;
 using AzureClient = OrangeJuice.Server.FSharp.Services.AzureClient;
 using AzureProductProvider = OrangeJuice.Server.FSharp.Services.AzureProductProvider;
 using CachingCloudProductService = OrangeJuice.Server.FSharp.Services.CachingCloudProductService;
