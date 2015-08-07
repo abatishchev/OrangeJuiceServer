@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+
 using Factory;
 using FluentAssertions;
 
@@ -17,12 +18,13 @@ namespace OrangeJuice.Server.Test.Data
 		[Theory]
 		[InlineData(typeof(XmlProductDescriptorFactory))]
 		[InlineData(typeof(FSharp.Data.XmlProductDescriptorFactory))]
-		public void Create_Should_Return_ProductDescriptor_Having_SourceProductId(Type type)
+		public void Create_Should_Return_ProductDescriptor_Having_BaseAttributes(Type type)
 		{
 			// Arrange
 			const string asin = "asin";
+			Uri detailPageUrl = new Uri("http://www.amazon.com/name/dp/asin");
 
-			XElement element = CreateElement(asin);
+			XElement element = CreateElement(asin, detailPageUrl: detailPageUrl);
 
 			var factory = CreateFactory(type);
 
@@ -31,6 +33,7 @@ namespace OrangeJuice.Server.Test.Data
 
 			// Assert
 			descriptor.SourceProductId.Should().Be(asin);
+			descriptor.DetailPageUrl.Should().Be(detailPageUrl);
 		}
 
 		[Theory]
@@ -104,22 +107,27 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		private static XElement CreateElement(string asin = "",
+											  string title = "", string brand = "", Uri detailPageUrl = null,
 											  string smallImageUrl = "", string mediumImageUrl = "", string largeImageUrl = "",
-											  string title = "", string brand = "",
+
 											  float lowestNewPrice = 0)
 		{
 			XNamespace ns = "http://webservices.amazon.com/AWSECommerceService/latest";
 			return new XElement(ns + "Item",
 				new XElement(ns + "ASIN", asin),
+				new XElement(ns + "DetailPageURL", detailPageUrl ?? new Uri(ns.ToString())),
+
 				new XElement(ns + "SmallImage",
 					new XElement(ns + "URL", smallImageUrl)),
 				new XElement(ns + "MediumImage",
 					new XElement(ns + "URL", mediumImageUrl)),
 				new XElement(ns + "LargeImage",
 					new XElement(ns + "URL", largeImageUrl)),
+
 				new XElement(ns + "ItemAttributes",
 					new XElement(ns + "Title", title),
 					new XElement(ns + "Brand", brand)),
+
 				new XElement(ns + "OfferSummary",
 					new XElement(ns + "LowestNewPrice",
 						new XElement(ns + "Amount", lowestNewPrice))));

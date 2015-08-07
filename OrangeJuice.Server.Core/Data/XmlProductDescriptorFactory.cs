@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -17,6 +18,7 @@ namespace OrangeJuice.Server.Data
 			return new ProductDescriptor
 			{
 				SourceProductId = (string)element.XPathSelectElement("x:ASIN", nm),
+				DetailPageUrl = new Uri((string)element.XPathSelectElement("x:DetailPageURL", nm)),
 
 				Title = (string)element.XPathSelectElement("x:ItemAttributes/x:Title", nm),
 				Brand = (string)element.XPathSelectElement("x:ItemAttributes/x:Brand", nm),

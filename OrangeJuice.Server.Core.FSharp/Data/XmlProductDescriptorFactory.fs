@@ -1,5 +1,6 @@
 ﻿namespace OrangeJuice.Server.FSharp.Data
 
+open System
 open System.Xml
 open System.Xml.Linq
 open System.Xml.XPath
@@ -33,7 +34,8 @@ type XmlProductDescriptorFactory() =
 
         new ProductDescriptor(
             SourceProductId = (element.XPathSelectElement("x:ASIN", nm) |> toString),
-            
+            DetailPageUrl = Uri(element.XPathSelectElement("x:DetailPageURL", nm) |> toString),
+
             Title = (element.XPathSelectElement("x:ItemAttributes/x:Title", nm) |> toString),
             Brand = (element.XPathSelectElement("x:ItemAttributes/x:Brand", nm) |> toString),
             

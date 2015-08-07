@@ -19,5 +19,7 @@ namespace OrangeJuice.Server.Data.Models
 		public string LargeImageUrl { get; set; }
 
 		public float LowestNewPrice { get; set; }
+
+		public Uri DetailPageUrl { get; set; }
 	}
 }
