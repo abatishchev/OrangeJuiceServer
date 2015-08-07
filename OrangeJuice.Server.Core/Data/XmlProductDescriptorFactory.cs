@@ -23,7 +23,9 @@ namespace OrangeJuice.Server.Data
 
 				SmallImageUrl = (string)element.XPathSelectElement("x:SmallImage/x:URL", nm),
 				MediumImageUrl = (string)element.XPathSelectElement("x:MediumImage/x:URL", nm),
-				LargeImageUrl = (string)element.XPathSelectElement("x:LargeImage/x:URL", nm)
+				LargeImageUrl = (string)element.XPathSelectElement("x:LargeImage/x:URL", nm),
+
+				LowestNewPrice = (float)element.XPathSelectElement("x:OfferSummary/x:LowestNewPrice/x:Amount", nm)
 			};
 		}
 		#endregion

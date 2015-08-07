@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
-
+using Factory;
 using FluentAssertions;
 
 using OrangeJuice.Server.Data;
@@ -13,25 +13,30 @@ namespace OrangeJuice.Server.Test.Data
 	public class XmlProductDescriptorFactoryTest
 	{
 		#region Test methods
-		[Fact]
-		public void Create_Should_Return_ProductDescriptor_Having_SourceProductId()
+
+		[Theory]
+		[InlineData(typeof(XmlProductDescriptorFactory))]
+		[InlineData(typeof(FSharp.Data.XmlProductDescriptorFactory))]
+		public void Create_Should_Return_ProductDescriptor_Having_SourceProductId(Type type)
 		{
 			// Arrange
-			const string id = "id";
+			const string asin = "asin";
 
-			XElement element = CreateElement(id);
+			XElement element = CreateElement(asin);
 
-			var factory = new XmlProductDescriptorFactory();
+			var factory = CreateFactory(type);
 
 			// Act
 			ProductDescriptor descriptor = factory.Create(element);
 
 			// Assert
-			descriptor.SourceProductId.Should().Be(id);
+			descriptor.SourceProductId.Should().Be(asin);
 		}
 
-		[Fact]
-		public void Create_Should_Return_ProductDescriptor_Having_Attributes()
+		[Theory]
+		[InlineData(typeof(XmlProductDescriptorFactory))]
+		[InlineData(typeof(FSharp.Data.XmlProductDescriptorFactory))]
+		public void Create_Should_Return_ProductDescriptor_Having_Attributes(Type type)
 		{
 			// Arrange
 			const string title = "title";
@@ -39,7 +44,7 @@ namespace OrangeJuice.Server.Test.Data
 
 			XElement element = CreateElement(title: title, brand: brand);
 
-			var factory = new XmlProductDescriptorFactory();
+			var factory = CreateFactory(type);
 
 			// Act
 			ProductDescriptor descriptor = factory.Create(element);
@@ -49,8 +54,10 @@ namespace OrangeJuice.Server.Test.Data
 			descriptor.Brand.Should().Be(brand);
 		}
 
-		[Fact]
-		public void Create_Should_Return_ProductDescriptor_Having_Images()
+		[Theory]
+		[InlineData(typeof(XmlProductDescriptorFactory))]
+		[InlineData(typeof(FSharp.Data.XmlProductDescriptorFactory))]
+		public void Create_Should_Return_ProductDescriptor_Having_Images(Type type)
 		{
 			// Arrange
 			const string smallImageUrl = "smallImageUrl";
@@ -59,7 +66,7 @@ namespace OrangeJuice.Server.Test.Data
 
 			XElement element = CreateElement(smallImageUrl: smallImageUrl, mediumImageUrl: mediumImageUrl, largeImageUrl: largeImageUrl);
 
-			var factory = new XmlProductDescriptorFactory();
+			var factory = CreateFactory(type);
 
 			// Act
 			ProductDescriptor descriptor = factory.Create(element);
@@ -69,32 +76,55 @@ namespace OrangeJuice.Server.Test.Data
 			descriptor.MediumImageUrl.Should().Be(mediumImageUrl);
 			descriptor.LargeImageUrl.Should().Be(largeImageUrl);
 		}
+
+		[Theory]
+		[InlineData(typeof(XmlProductDescriptorFactory))]
+		[InlineData(typeof(FSharp.Data.XmlProductDescriptorFactory))]
+		public void Create_Should_Return_ProductDescriptor_Having_LowestNewPrice(Type type)
+		{
+			// Arrange
+			const float lowestNewPrice = 2.5f;
+
+			XElement element = CreateElement(lowestNewPrice: lowestNewPrice);
+
+			var factory = CreateFactory(type);
+
+			// Act
+			ProductDescriptor descriptor = factory.Create(element);
+
+			// Assert
+			descriptor.LowestNewPrice.Should().Be(lowestNewPrice);
+		}
 		#endregion
 
 		#region Helper methods
-		private static XElement CreateElement(string id = "", string smallImageUrl = "", string mediumImageUrl = "", string largeImageUrl = "", string title = "", string brand = "")
+		private static IFactory<ProductDescriptor, XElement> CreateFactory(Type type)
 		{
-			return XElement.Parse(String.Format(
-@"<Item xmlns=""http://webservices.amazon.com/AWSECommerceService/latest"">
-	<ASIN>{0}</ASIN>
-	<SmallImage>
-		<URL>{1}</URL>
-	</SmallImage>
-	<MediumImage>
-		<URL>{2}</URL>
-	</MediumImage>
-	<LargeImage>
-		<URL>{3}</URL>
-	</LargeImage>
-	<ItemAttributes>
-		<Title>{4}</Title>
-		<Brand>{5}</Brand>
-	</ItemAttributes>
-</Item>",
-		id,
-		smallImageUrl, mediumImageUrl, largeImageUrl,
-		title, brand));
+			return (IFactory<ProductDescriptor, XElement>)Activator.CreateInstance(type);
 		}
+
+		private static XElement CreateElement(string asin = "",
+											  string smallImageUrl = "", string mediumImageUrl = "", string largeImageUrl = "",
+											  string title = "", string brand = "",
+											  float lowestNewPrice = 0)
+		{
+			XNamespace ns = "http://webservices.amazon.com/AWSECommerceService/latest";
+			return new XElement(ns + "Item",
+				new XElement(ns + "ASIN", asin),
+				new XElement(ns + "SmallImage",
+					new XElement(ns + "URL", smallImageUrl)),
+				new XElement(ns + "MediumImage",
+					new XElement(ns + "URL", mediumImageUrl)),
+				new XElement(ns + "LargeImage",
+					new XElement(ns + "URL", largeImageUrl)),
+				new XElement(ns + "ItemAttributes",
+					new XElement(ns + "Title", title),
+					new XElement(ns + "Brand", brand)),
+				new XElement(ns + "OfferSummary",
+					new XElement(ns + "LowestNewPrice",
+						new XElement(ns + "Amount", lowestNewPrice))));
+		}
+
 		#endregion
 	}
 }
