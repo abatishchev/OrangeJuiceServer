@@ -33,9 +33,9 @@ namespace OrangeJuice.Server.Services
 			var args = _argumentBuilder.BuildArgs(searchCriteria);
 			string query = _queryBuilder.BuildQuery(args);
 			string signature = _querySigner.CreateSignature(RequestHost, RequestPath, query);
-			string signedUqery = _queryBuilder.SignQuery(query, signature);
+			string signedQuery = _queryBuilder.SignQuery(query, signature);
 
-			return new UriBuilder(Uri.UriSchemeHttp, RequestHost, 80, RequestPath, '?' + signedUqery).Uri;
+			return new UriBuilder(Uri.UriSchemeHttp, RequestHost, 80, RequestPath, '?' + signedQuery).Uri;
 		}
 		#endregion
 	}

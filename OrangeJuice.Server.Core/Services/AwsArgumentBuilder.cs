@@ -30,7 +30,7 @@ namespace OrangeJuice.Server.Services
 			string timestamp = _dateTimeProvider.Format(now);
 
 			// Ordering parameters in naturual byte order as required by AWS
-			return new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+			return new SortedDictionary<string, string>(StringComparer.Ordinal)
 			{
 				{ "Operation", searchCriteria.Operation },
 				{ "SearchIndex", searchCriteria.SearchIndex },
