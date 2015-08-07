@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+using Factory;
 
 using OrangeJuice.Server.Data.Models;
 
@@ -6,21 +10,18 @@ namespace OrangeJuice.Server.Services
 {
 	public sealed class AwsProductProvider : IAwsProductProvider
 	{
-		#region Fields
 		private readonly IAwsClient _client;
-		#endregion
+		private readonly IFactory<ProductDescriptor, XElement> _factory;
 
-		#region Ctor
-		public AwsProductProvider(IAwsClient client)
+		public AwsProductProvider(IAwsClient client, IFactory<ProductDescriptor, XElement> factory)
 		{
 			_client = client;
+			_factory = factory;
 		}
-		#endregion
 
-		#region IAwsProductProvider members
-		public Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
+		public async Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
 		{
-			var searchCriteria = new ProductDescriptorSearchCriteria
+			var searchCriteria = new AwsProductSearchCriteria
 			{
 				Operation = "ItemLookup",
 				SearchIndex = "Grocery",
@@ -29,8 +30,8 @@ namespace OrangeJuice.Server.Services
 				ItemId = barcode
 			};
 
-			return _client.GetItems(searchCriteria);
+			var items = await _client.GetItems(searchCriteria);
+			return items.Select(_factory.Create).ToArray();
 		}
-		#endregion
 	}
 }

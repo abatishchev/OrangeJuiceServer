@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-
+using System.Xml.Linq;
+using Factory;
 using Moq;
 
 using OrangeJuice.Server.Data.Models;
@@ -20,14 +21,14 @@ namespace OrangeJuice.Server.Test.Services
 			const string barcode = "barcode";
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
-			Func<ProductDescriptorSearchCriteria, bool> verify = c =>
+			Func<AwsProductSearchCriteria, bool> verify = c =>
 				c.Operation == "ItemLookup" &&
 				c.SearchIndex == "Grocery" &&
 				c.ResponseGroups.SequenceEqual(new[] { "Images", "ItemAttributes" }) &&
 				c.IdType == barcodeType.ToString() &&
 				c.ItemId == barcode;
 			var clientMock = new Mock<IAwsClient>();
-			clientMock.Setup(b => b.GetItems(It.Is<ProductDescriptorSearchCriteria>(p => verify(p)))).ReturnsAsync(new[] { new ProductDescriptor() });
+			clientMock.Setup(b => b.GetItems(It.Is<AwsProductSearchCriteria>(p => verify(p)))).ReturnsAsync(new[] { new XElement("Item") });
 
 			IAwsProductProvider provider = CreateProvider(clientMock.Object);
 
@@ -40,9 +41,18 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IAwsProductProvider CreateProvider(IAwsClient client = null)
+		private static IAwsProductProvider CreateProvider(IAwsClient client = null, IFactory<ProductDescriptor, XElement> factory = null)
 		{
-			return new AwsProductProvider(client ?? Mock.Of<IAwsClient>());
+			return new AwsProductProvider(
+				client ?? Mock.Of<IAwsClient>(),
+				factory ?? CreateFactory());
+		}
+
+		private static IFactory<ProductDescriptor, XElement> CreateFactory(ProductDescriptor descriptor = null)
+		{
+			var factoryMock = new Mock<IFactory<ProductDescriptor, XElement>>();
+			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(descriptor ?? new ProductDescriptor());
+			return factoryMock.Object;
 		}
 		#endregion
 	}

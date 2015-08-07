@@ -20,7 +20,7 @@ namespace OrangeJuice.Server.Test.Services
 		public void BuildUrl_Should_Pass_SearchCriteria_To_ArgumentBuilder()
 		{
 			// Arrange
-			ProductDescriptorSearchCriteria searchCriteria = new ProductDescriptorSearchCriteria();
+			var searchCriteria = new AwsProductSearchCriteria();
 
 			var argumentBuilderMock = new Mock<IArgumentBuilder>();
 			argumentBuilderMock.Setup(b => b.BuildArgs(searchCriteria)).Returns(new Dictionary<string, string>());
@@ -44,7 +44,7 @@ namespace OrangeJuice.Server.Test.Services
 			IUrlBuilder urlBuilder = CreateUrlBuilder(querySigner: querySigner);
 
 			// Act
-			Uri url = urlBuilder.BuildUrl(new ProductDescriptorSearchCriteria());
+			Uri url = urlBuilder.BuildUrl(new AwsProductSearchCriteria());
 
 			// Assert
 			url.Query.Should().EndWith(String.Format("Signature={0}", signature));

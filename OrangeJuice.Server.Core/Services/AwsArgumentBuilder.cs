@@ -24,7 +24,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IArgumentBuilder members
-		public IDictionary<string, string> BuildArgs(ProductDescriptorSearchCriteria searchCriteria)
+		public IDictionary<string, string> BuildArgs(AwsProductSearchCriteria searchCriteria)
 		{
 			DateTime now = _dateTimeProvider.GetNow();
 			string timestamp = _dateTimeProvider.Format(now);

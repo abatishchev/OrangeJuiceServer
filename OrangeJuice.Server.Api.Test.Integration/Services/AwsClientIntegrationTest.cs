@@ -22,7 +22,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			// Arrange
 			Container container = ContainerConfig.CreateWebApiContainer();
 			IAwsClient client = (IAwsClient)container.GetInstance(type);
-			var searchCriteria = new ProductDescriptorSearchCriteria
+			var searchCriteria = new AwsProductSearchCriteria
 			{
 				Operation = "ItemLookup",
 				ResponseGroups = new[] { "Small" },

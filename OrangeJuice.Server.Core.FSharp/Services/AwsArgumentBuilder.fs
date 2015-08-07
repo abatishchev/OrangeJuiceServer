@@ -11,7 +11,7 @@ open OrangeJuice.Server.Services
 
 type AwsArgumentBuilder(awsOptions : AwsOptions, dateTimeProvider : IDateTimeProvider) =
     interface IArgumentBuilder with
-        member this.BuildArgs(searchCriteria : ProductDescriptorSearchCriteria) : IDictionary<string, string> =
+        member this.BuildArgs(searchCriteria : AwsProductSearchCriteria) : IDictionary<string, string> =
             let now = dateTimeProvider.GetNow()
             let timestamp = dateTimeProvider.Format(now)
             let group =

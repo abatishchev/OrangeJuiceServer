@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-
-using Factory;
 
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Web;
@@ -15,22 +13,19 @@ namespace OrangeJuice.Server.Services
 		private readonly IUrlBuilder _urlBuilder;
 		private readonly IHttpClient _httpClient;
 		private readonly IItemSelector _itemSelector;
-		private readonly IFactory<ProductDescriptor, XElement> _factory;
 
-		public XmlAwsClient(IUrlBuilder urlBuilder, IHttpClient httpClient, IItemSelector itemSelector, IFactory<ProductDescriptor, XElement> factory)
+		public XmlAwsClient(IUrlBuilder urlBuilder, IHttpClient httpClient, IItemSelector itemSelector)
 		{
 			_urlBuilder = urlBuilder;
 			_httpClient = httpClient;
 			_itemSelector = itemSelector;
-			_factory = factory;
 		}
 
-		public async Task<ProductDescriptor[]> GetItems(ProductDescriptorSearchCriteria searchCriteria)
+		public async Task<IEnumerable<XElement>> GetItems(AwsProductSearchCriteria searchCriteria)
 		{
 			Uri url = _urlBuilder.BuildUrl(searchCriteria);
 			string response = await _httpClient.GetStringAsync(url);
-			var items = _itemSelector.SelectItems(response);
-			return items.Select(_factory.Create).ToArray();
+			return _itemSelector.SelectItems(response);
 		}
 	}
 }

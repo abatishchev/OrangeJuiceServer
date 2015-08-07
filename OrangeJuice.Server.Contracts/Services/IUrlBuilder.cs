@@ -6,6 +6,6 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IUrlBuilder
 	{
-		Uri BuildUrl(ProductDescriptorSearchCriteria searchCriteria);
+		Uri BuildUrl(AwsProductSearchCriteria searchCriteria);
 	}
 }

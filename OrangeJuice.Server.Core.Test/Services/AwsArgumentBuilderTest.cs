@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Test.Services
 			var argumentBuilder = CreateArgumentBuilder(type, new AwsOptions { AccessKey = accessKey, AssociateTag = associateTag }, dateTimeProvider.Object);
 
 			// Act
-			var args = argumentBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
+			var args = argumentBuilder.BuildArgs(new AwsProductSearchCriteria());
 
 			// Assert
 			args.Should().Contain("AWSAccessKeyId", accessKey)
@@ -52,7 +52,7 @@ namespace OrangeJuice.Server.Test.Services
 			var queryBuilder = CreateArgumentBuilder(type, dateTimeProvider: dateTimeProviderMock.Object);
 
 			// Act
-			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
+			queryBuilder.BuildArgs(new AwsProductSearchCriteria());
 
 			// Assert
 			dateTimeProviderMock.VerifyAll();
@@ -69,7 +69,7 @@ namespace OrangeJuice.Server.Test.Services
 			var queryBuilder = CreateArgumentBuilder(type, dateTimeProvider: dateTimeProviderMock.Object);
 
 			// Act
-			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
+			queryBuilder.BuildArgs(new AwsProductSearchCriteria());
 
 			// Assert
 			dateTimeProviderMock.VerifyAll();
@@ -87,7 +87,7 @@ namespace OrangeJuice.Server.Test.Services
 			var queryBuilder = CreateArgumentBuilder(type, dateTimeProvider: dateTimeProviderMock.Object);
 
 			// Act
-			queryBuilder.BuildArgs(new ProductDescriptorSearchCriteria());
+			queryBuilder.BuildArgs(new AwsProductSearchCriteria());
 
 			// Assert
 			dateTimeProviderMock.VerifyAll();

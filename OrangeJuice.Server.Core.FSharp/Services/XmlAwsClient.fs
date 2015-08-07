@@ -1,5 +1,6 @@
 ﻿namespace OrangeJuice.Server.FSharp.Services
 
+open System.Collections.Generic
 open System.Threading.Tasks
 open System.Xml.Linq
 
@@ -9,15 +10,14 @@ open OrangeJuice.Server.Data.Models
 open OrangeJuice.Server.Services
 open OrangeJuice.Server.Web
 
-type XmlAwsClient(urlBuilder : IUrlBuilder, httpClient : IHttpClient, itemSelector : IItemSelector, factory : IFactory<ProductDescriptor, XElement>) =
+type XmlAwsClient(urlBuilder : IUrlBuilder, httpClient : IHttpClient, itemSelector : IItemSelector) =
     interface IAwsClient with
-        member this.GetItems(searchCriteria : ProductDescriptorSearchCriteria) : Task<ProductDescriptor[]> =
+        member this.GetItems(searchCriteria : AwsProductSearchCriteria) : Task<IEnumerable<XElement>> =
             this.GetItems(searchCriteria) |> Async.StartAsTask
 
-    member this.GetItems(searchCriteria : ProductDescriptorSearchCriteria) = async {
+    member this.GetItems(searchCriteria : AwsProductSearchCriteria) = async {
         let url = urlBuilder.BuildUrl(searchCriteria)
         let! response = httpClient.GetStringAsync(url) |> Async.AwaitTask
         let items = itemSelector.SelectItems(response)
-        let seq = Seq.map factory.Create items
-        return seq |> Array.ofSeq
+        return items
     }

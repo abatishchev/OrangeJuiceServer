@@ -6,6 +6,6 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IArgumentBuilder
 	{
-		IDictionary<string, string> BuildArgs(ProductDescriptorSearchCriteria searchCriteria);
+		IDictionary<string, string> BuildArgs(AwsProductSearchCriteria searchCriteria);
 	}
 }

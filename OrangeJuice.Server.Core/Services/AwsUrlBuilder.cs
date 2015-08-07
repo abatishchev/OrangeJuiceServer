@@ -28,7 +28,7 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IUrlBuilder members
-		public Uri BuildUrl(ProductDescriptorSearchCriteria searchCriteria)
+		public Uri BuildUrl(AwsProductSearchCriteria searchCriteria)
 		{
 			var args = _argumentBuilder.BuildArgs(searchCriteria);
 			string query = _queryBuilder.BuildQuery(args);
