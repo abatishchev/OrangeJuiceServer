@@ -20,6 +20,8 @@ namespace OrangeJuice.Server.Data.Models
 
 		public float LowestNewPrice { get; set; }
 
-		public Uri DetailPageUrl { get; set; }
+		public Uri DetailsPageUrl { get; set; }
+
+		public Uri CustomerReviewsUrl { get; set; }
 	}
 }

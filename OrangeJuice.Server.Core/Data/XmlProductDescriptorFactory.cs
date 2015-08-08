@@ -18,7 +18,7 @@ namespace OrangeJuice.Server.Data
 			return new ProductDescriptor
 			{
 				SourceProductId = (string)element.XPathSelectElement("x:ASIN", nm),
-				DetailPageUrl = new Uri((string)element.XPathSelectElement("x:DetailPageURL", nm)),
+				DetailsPageUrl = new Uri((string)element.XPathSelectElement("x:DetailPageURL", nm)),
 
 				Title = (string)element.XPathSelectElement("x:ItemAttributes/x:Title", nm),
 				Brand = (string)element.XPathSelectElement("x:ItemAttributes/x:Brand", nm),
@@ -27,8 +27,10 @@ namespace OrangeJuice.Server.Data
 				MediumImageUrl = (string)element.XPathSelectElement("x:MediumImage/x:URL", nm),
 				LargeImageUrl = (string)element.XPathSelectElement("x:LargeImage/x:URL", nm),
 
-				LowestNewPrice = (float)element.XPathSelectElement("x:OfferSummary/x:LowestNewPrice/x:Amount", nm)
-			};
+				LowestNewPrice = (float)element.XPathSelectElement("x:OfferSummary/x:LowestNewPrice/x:Amount", nm),
+
+				CustomerReviewsUrl = new Uri((string)element.XPathSelectElement("x:ItemLinks/x:ItemLink[x:Description/. = 'All Customer Reviews']/x:URL", nm))
+            };
 		}
 		#endregion
 	}

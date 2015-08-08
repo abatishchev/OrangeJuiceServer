@@ -22,9 +22,9 @@ namespace OrangeJuice.Server.Test.Data
 		{
 			// Arrange
 			const string asin = "asin";
-			Uri detailPageUrl = new Uri("http://www.amazon.com/name/dp/asin");
+			Uri detailsPageUrl = new Uri("http://www.amazon.com/name/dp/asin");
 
-			XElement element = CreateElement(asin, detailPageUrl: detailPageUrl);
+			XElement element = CreateElement(asin, detailsPageUrl: detailsPageUrl);
 
 			var factory = CreateFactory(type);
 
@@ -33,7 +33,7 @@ namespace OrangeJuice.Server.Test.Data
 
 			// Assert
 			descriptor.SourceProductId.Should().Be(asin);
-			descriptor.DetailPageUrl.Should().Be(detailPageUrl);
+			descriptor.DetailsPageUrl.Should().Be(detailsPageUrl);
 		}
 
 		[Theory]
@@ -98,6 +98,25 @@ namespace OrangeJuice.Server.Test.Data
 			// Assert
 			descriptor.LowestNewPrice.Should().Be(lowestNewPrice);
 		}
+
+		[Theory]
+		[InlineData(typeof(XmlProductDescriptorFactory))]
+		[InlineData(typeof(FSharp.Data.XmlProductDescriptorFactory))]
+		public void Create_Should_Return_ProductDescriptor_Having_ItemLinks(Type type)
+		{
+			// Arrange
+			Uri customerReviewsUrl = new Uri("http://www.amazon.com/name/dp/asin");
+
+			XElement element = CreateElement(customerReviewsUrl: customerReviewsUrl);
+
+			var factory = CreateFactory(type);
+
+			// Act
+			ProductDescriptor descriptor = factory.Create(element);
+
+			// Assert
+			descriptor.CustomerReviewsUrl.Should().Be(customerReviewsUrl);
+		}
 		#endregion
 
 		#region Helper methods
@@ -107,15 +126,15 @@ namespace OrangeJuice.Server.Test.Data
 		}
 
 		private static XElement CreateElement(string asin = "",
-											  string title = "", string brand = "", Uri detailPageUrl = null,
+											  string title = "", string brand = "", Uri detailsPageUrl = null,
 											  string smallImageUrl = "", string mediumImageUrl = "", string largeImageUrl = "",
-
-											  float lowestNewPrice = 0)
+											  float lowestNewPrice = 0,
+											  Uri customerReviewsUrl = null)
 		{
 			XNamespace ns = "http://webservices.amazon.com/AWSECommerceService/latest";
 			return new XElement(ns + "Item",
 				new XElement(ns + "ASIN", asin),
-				new XElement(ns + "DetailPageURL", detailPageUrl ?? new Uri(ns.ToString())),
+				new XElement(ns + "DetailPageURL", detailsPageUrl ?? new Uri(ns.ToString())),
 
 				new XElement(ns + "SmallImage",
 					new XElement(ns + "URL", smallImageUrl)),
@@ -130,7 +149,12 @@ namespace OrangeJuice.Server.Test.Data
 
 				new XElement(ns + "OfferSummary",
 					new XElement(ns + "LowestNewPrice",
-						new XElement(ns + "Amount", lowestNewPrice))));
+						new XElement(ns + "Amount", lowestNewPrice))),
+
+				new XElement(ns + "ItemLinks",
+					new XElement(ns + "ItemLink",
+						new XElement(ns + "Description", "All Customer Reviews"),
+						new XElement(ns + "URL", customerReviewsUrl ?? new Uri(ns.ToString())))));
 		}
 
 		#endregion
