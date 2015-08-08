@@ -1,22 +1,18 @@
 ﻿using System;
+using System.Linq;
 
 namespace OrangeJuice.Server
 {
-	public class PipelineFilter<TParam, TResult> : IPipelineFilter<TParam, TResult>
+	public class PipelineFilter<T> : IPipelineFilter<T>
 	{
-		private readonly Func<TParam, TResult> _func;
+		private readonly Func<T, T> _func;
 
-		public PipelineFilter(Func<TParam, TResult> func)
+		public PipelineFilter(Func<T, T> func)
 		{
 			_func = func;
 		}
 
-		object IPipelineFilter.Execute(object param)
-		{
-			return Execute((TParam)param);
-		}
-
-		public TResult Execute(TParam param)
+		public T Execute(T param)
 		{
 			return _func(param);
 		}
@@ -24,9 +20,9 @@ namespace OrangeJuice.Server
 
 	public static class PipelineFilter
 	{
-		public static PipelineFilter<TParam, TResult> Create<TParam, TResult>(Func<TParam, TResult> func)
+		public static PipelineFilter<T> Create<T>(Func<T, T> func)
 		{
-			return new PipelineFilter<TParam, TResult>(func);
+			return new PipelineFilter<T>(func);
 		}
 	}
 }

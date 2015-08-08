@@ -42,7 +42,7 @@ using WebConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.WebConf
 
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
 using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProductDescriptorConverter;
-using XmlProductDescriptorFactory = OrangeJuice.Server.FSharp.Data.XmlProductDescriptorFactory;
+using XmlProductDescriptorFactory = OrangeJuice.Server.Data.XmlProductDescriptorFactory;
 
 using AuthTokenFactory = OrangeJuice.Server.FSharp.Security.AuthTokenFactory;
 using JwtFactory = OrangeJuice.Server.Security.JwtFactory;
@@ -210,7 +210,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IItemSelector, XmlItemSelector>();
 
-			container.RegisterFactory<ProductDescriptor, XElement, XmlProductDescriptorFactory>();
+			container.RegisterFactory<ProductDescriptor, XElement, AwsProductSearchCriteria, XmlProductDescriptorFactory>();
 
 			container.Register<IAwsClient, XmlAwsClient>();
 
@@ -249,10 +249,16 @@ namespace OrangeJuice.Server.Api
 			container.Register(() => container.GetInstance<TFactory>().Create());
 		}
 
-		public static void RegisterFactory<T, TArg, TFactory>(this Container container)
-		   where TFactory : class, IFactory<T, TArg>
+		public static void RegisterFactory<T, U, TFactory>(this Container container)
+		   where TFactory : class, IFactory<T, U>
 		{
-			container.Register<IFactory<T, TArg>, TFactory>(Lifestyle.Singleton);
+			container.Register<IFactory<T, U>, TFactory>(Lifestyle.Singleton);
+		}
+
+		public static void RegisterFactory<T, U1, U2, TFactory>(this Container container)
+		   where TFactory : class, IFactory<T, U1, U2>
+		{
+			container.Register<IFactory<T, U1, U2>, TFactory>(Lifestyle.Singleton);
 		}
 
 		public static void AddService<T>(this Container container, ServicesContainer services)

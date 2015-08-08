@@ -41,17 +41,17 @@ namespace OrangeJuice.Server.Test.Services
 		#endregion
 
 		#region Helper methods
-		private static IAwsProductProvider CreateProvider(IAwsClient client = null, IFactory<ProductDescriptor, XElement> factory = null)
+		private static IAwsProductProvider CreateProvider(IAwsClient client = null, IFactory<ProductDescriptor, XElement, AwsProductSearchCriteria> factory = null)
 		{
 			return new AwsProductProvider(
 				client ?? Mock.Of<IAwsClient>(),
 				factory ?? CreateFactory());
 		}
 
-		private static IFactory<ProductDescriptor, XElement> CreateFactory(ProductDescriptor descriptor = null)
+		private static IFactory<ProductDescriptor, XElement, AwsProductSearchCriteria> CreateFactory(ProductDescriptor descriptor = null)
 		{
-			var factoryMock = new Mock<IFactory<ProductDescriptor, XElement>>();
-			factoryMock.Setup(f => f.Create(It.IsAny<XElement>())).Returns(descriptor ?? new ProductDescriptor());
+			var factoryMock = new Mock<IFactory<ProductDescriptor, XElement, AwsProductSearchCriteria>>();
+			factoryMock.Setup(f => f.Create(It.IsAny<XElement>(), It.IsAny<AwsProductSearchCriteria>())).Returns(descriptor ?? new ProductDescriptor());
 			return factoryMock.Object;
 		}
 		#endregion

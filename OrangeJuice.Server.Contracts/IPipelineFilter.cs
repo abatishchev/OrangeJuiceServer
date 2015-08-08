@@ -2,11 +2,20 @@
 {
 	public interface IPipelineFilter
 	{
-		object Execute(object param);
 	}
 
-	public interface IPipelineFilter<in TParam, out TResult> : IPipelineFilter
+	public interface IPipelineFilter<T> : IPipelineFilter
 	{
-		TResult Execute(TParam param);
+		T Execute(T param);
+	}
+
+	public interface IPipelineFilter<T, in U1> : IPipelineFilter
+	{
+		T Execute(T param, U1 param1);
+	}
+
+	public interface IPipelineFilter<T, in U1, in U2> : IPipelineFilter
+	{
+		T Execute(T param, U1 param1, U2 param2);
 	}
 }

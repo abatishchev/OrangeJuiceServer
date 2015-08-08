@@ -11,9 +11,9 @@ namespace OrangeJuice.Server.Services
 	public sealed class AwsProductProvider : IAwsProductProvider
 	{
 		private readonly IAwsClient _client;
-		private readonly IFactory<ProductDescriptor, XElement> _factory;
+		private readonly IFactory<ProductDescriptor, XElement, AwsProductSearchCriteria> _factory;
 
-		public AwsProductProvider(IAwsClient client, IFactory<ProductDescriptor, XElement> factory)
+		public AwsProductProvider(IAwsClient client, IFactory<ProductDescriptor, XElement, AwsProductSearchCriteria> factory)
 		{
 			_client = client;
 			_factory = factory;
@@ -31,7 +31,7 @@ namespace OrangeJuice.Server.Services
 			};
 
 			var items = await _client.GetItems(searchCriteria);
-			return items.Select(_factory.Create).ToArray();
+			return items.Select(i => _factory.Create(i, searchCriteria)).ToArray();
 		}
 	}
 }

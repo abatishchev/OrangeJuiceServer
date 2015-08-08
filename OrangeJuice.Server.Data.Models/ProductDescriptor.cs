@@ -8,6 +8,8 @@ namespace OrangeJuice.Server.Data.Models
 
 		public string SourceProductId { get; set; }
 
+		public string ProductGroup { get; set; }
+
 		public string Title { get; set; }
 
 		public string Brand { get; set; }
@@ -18,7 +20,7 @@ namespace OrangeJuice.Server.Data.Models
 
 		public string LargeImageUrl { get; set; }
 
-		public float LowestNewPrice { get; set; }
+		public float? LowestNewPrice { get; set; }
 
 		public Uri DetailsPageUrl { get; set; }
 

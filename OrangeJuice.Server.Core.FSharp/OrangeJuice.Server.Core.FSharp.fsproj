@@ -60,7 +60,6 @@
     <Compile Include="Data\ApiVersionFactory.fs" />
     <Compile Include="Data\AzureDbConfiguration.fs" />
     <Compile Include="Data\JsonProductDescriptorConverter.fs" />
-    <Compile Include="Data\XmlProductDescriptorFactory.fs" />
     <Compile Include="Security\AuthTokenFactory.fs" />
     <Compile Include="Security\GoogleAuthTokenFactory.fs" />
     <Compile Include="Services\AwsAlgorithmFactory.fs" />

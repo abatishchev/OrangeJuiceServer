@@ -134,12 +134,16 @@
     <Compile Include="Configuration\WebConfigurationProvider.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />
     <Compile Include="Data\Configuration\AzureDbConfiguration.cs" />
+    <Compile Include="Data\ResponseGroup\DefaultPipelineFilter.cs" />
+    <Compile Include="Data\ResponseGroup\ImagesProductPipelineFilter.cs" />
+    <Compile Include="Data\ResponseGroup\ItemAttributesPipelineFilter.cs" />
     <Compile Include="Data\JsonProductDescriptorConverter.cs" />
+    <Compile Include="Data\ResponseGroupProductDescriptorPipeline.cs" />
+    <Compile Include="Data\ResponseGroup\OfferSummaryPipelineFilter.cs" />
     <Compile Include="Data\XmlProductDescriptorFactory.cs" />
     <Compile Include="Security\X509Certificate2Factory.cs" />
     <Compile Include="Validation\EmptyValidator.cs" />
     <Compile Include="GenericPipeline.cs" />
-    <Compile Include="ObjectPipeline.cs" />
     <Compile Include="PipelineFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionAssemblyProvider.cs" />

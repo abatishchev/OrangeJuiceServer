@@ -25,7 +25,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			var searchCriteria = new AwsProductSearchCriteria
 			{
 				Operation = "ItemLookup",
-				ResponseGroups = new[] { "Small" },
+				ResponseGroups = new[] { "" },
 				SearchIndex = "Grocery",
 				ItemId = "0747599330971",
 				IdType = "EAN"
