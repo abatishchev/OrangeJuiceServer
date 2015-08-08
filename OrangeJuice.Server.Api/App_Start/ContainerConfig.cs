@@ -210,6 +210,8 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IItemSelector, XmlItemSelector>();
 
+			container.Register<IPipeline<ProductDescriptor, XElement, AwsProductSearchCriteria>, ResponseGroupProductDescriptorPipeline>();
+
 			container.RegisterFactory<ProductDescriptor, XElement, AwsProductSearchCriteria, XmlProductDescriptorFactory>();
 
 			container.Register<IAwsClient, XmlAwsClient>();
