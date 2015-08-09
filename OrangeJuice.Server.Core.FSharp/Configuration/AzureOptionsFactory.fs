@@ -2,12 +2,9 @@
 
 open OrangeJuice.Server.Configuration
 
-type AzureOptionsFactory(configurationProvider : IConfigurationProvider) =
+type AzureOptionsFactory(configurationProvider : IConfigurationProvider) = 
     interface Factory.IFactory<AzureOptions> with
-        member this.Create() : AzureOptions =
-            this.Create()
-
-    member this.Create() =
-        new AzureOptions(
-            ConnectionString = configurationProvider.GetValue("blob:ConnectionString"),
-            ProductsContainer = configurationProvider.GetValue("blob:Products"))
+        member this.Create() : AzureOptions = 
+            new AzureOptions(ConnectionString = configurationProvider.GetValue("azure:ConnectionString"), 
+                             ProductsContainer = configurationProvider.GetValue("azure:Products"), 
+                             AwsOptionsContainer = configurationProvider.GetValue("azure:AwsOptions"))

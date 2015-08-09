@@ -13,8 +13,9 @@
 		{
 			return new AzureOptions
 			{
-				ConnectionString = _configurationProvider.GetValue("blob:ConnectionString"),
-				ProductsContainer = _configurationProvider.GetValue("blob:Products"),
+				ConnectionString = _configurationProvider.GetValue("azure:ConnectionString"),
+				ProductsContainer = _configurationProvider.GetValue("azure:Products"),
+				AwsOptionsContainer = _configurationProvider.GetValue("azure:AwsOptions"),
 			};
 		}
 	}

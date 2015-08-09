@@ -16,63 +16,28 @@ namespace OrangeJuice.Server.Test.Configuration
 		[Theory]
 		[InlineData(typeof(AzureOptionsFactory))]
 		[InlineData(typeof(FSharp.Configuration.AzureOptionsFactory))]
-		public void Create_Should_Return_AzureOptions_Having_BlobConnectionString_Returnd_By_ConfigurationProvider_Get(Type type)
+		public void Create_Should_Return_AzureOptions_Having_Properties_Returnd_By_ConfigurationProvider_Get(Type type)
 		{
 			// Arrange
-			const string expected = "connectionString";
+			const string connectionString = "connectionString";
+			const string productsContainer = "products";
+			const string awsOptionsContainer = "awsOptions";
 
 			var providerMock = new Mock<IConfigurationProvider>();
-			providerMock.Setup(p => p.GetValue("blob:ConnectionString")).Returns(expected);
+			providerMock.Setup(p => p.GetValue("azure:ConnectionString")).Returns(connectionString);
+			providerMock.Setup(p => p.GetValue("azure:Products")).Returns(productsContainer);
+			providerMock.Setup(p => p.GetValue("azure:AwsOptions")).Returns(awsOptionsContainer);
 
 			var factory = CreateFactory(type, providerMock.Object);
 
 			// Act
-			string actual = factory.Create().ConnectionString;
+			var actual = factory.Create();
 
 			// Assert
 			providerMock.VerifyAll();
-			actual.Should().Be(expected);
-		}
-
-		[Theory]
-		[InlineData(typeof(AzureOptionsFactory))]
-		[InlineData(typeof(FSharp.Configuration.AzureOptionsFactory))]
-		public void Create_Should_Return_AzureOptions_Having_ProductContainerName_Returnd_By_ConfigurationProvider_Get(Type type)
-		{
-			// Arrange
-			const string expected = "products";
-
-			var providerMock = new Mock<IConfigurationProvider>();
-			providerMock.Setup(p => p.GetValue("blob:Products")).Returns(expected);
-
-			var factory = CreateFactory(type, providerMock.Object);
-
-			// Act
-			string actual = factory.Create().ProductsContainer;
-
-			// Assert
-			providerMock.VerifyAll();
-			actual.Should().Be(expected);
-		}
-
-		[Theory]
-		[InlineData(typeof(AzureOptionsFactory))]
-		[InlineData(typeof(FSharp.Configuration.AzureOptionsFactory))]
-		public void Create_Should_Return_AzureOptions_Having_All_Properties(Type type)
-		{
-			// Arrange
-			var providerMock = new Mock<IConfigurationProvider>();
-			providerMock.Setup(p => p.GetValue(It.IsAny<string>())).Returns<string>(s => s);
-
-			var factory = CreateFactory(type, providerMock.Object);
-
-			// Act
-			AzureOptions options = factory.Create();
-
-			// Assert
-			options.Should().NotBeNull();
-			options.ConnectionString.Should().NotBeNullOrEmpty();
-			options.ProductsContainer.Should().NotBeNullOrEmpty();
+			actual.ConnectionString.Should().Be(connectionString);
+			actual.ProductsContainer.Should().Be(productsContainer);
+			actual.AwsOptionsContainer.Should().Be(awsOptionsContainer);
 		}
 		#endregion
 

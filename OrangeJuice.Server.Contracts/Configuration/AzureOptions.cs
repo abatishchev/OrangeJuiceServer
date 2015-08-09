@@ -5,5 +5,7 @@ namespace OrangeJuice.Server.Configuration
 		public string ConnectionString { get; set; }
 
 		public string ProductsContainer { get; set; }
+
+		public string AwsOptionsContainer { get; set; }
 	}
 }
