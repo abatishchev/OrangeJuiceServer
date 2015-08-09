@@ -3,46 +3,19 @@ namespace OrangeJuice.Server.FSharp.Services
 open System
 open System.Threading.Tasks
 
-open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Blob
 
-open OrangeJuice.Server.Configuration
 open OrangeJuice.Server.Services
 
-type AzureClient(azureOptions : AzureOptions, blobClient : IBlobClient) =
+type AzureClient(blobClient : IBlobClient, containerClient : IAzureContainerClient) =
     static let Year = TimeSpan.FromDays(365.0)
 
     static let CreateCacheControl = fun (timeSpan : TimeSpan) -> sprintf "public, max-age=%f" timeSpan.TotalMilliseconds
         
-    static let CreateFileName = fun (blobName : string) -> sprintf "%s.json" blobName
-
-    let GetContainer = fun (containerName : string) -> async {
-        let storageAccount = CloudStorageAccount.Parse(azureOptions.ConnectionString)
-        let blobClient = storageAccount.CreateCloudBlobClient()
-
-        let container = blobClient.GetContainerReference(containerName)
-        let! exists = container.ExistsAsync() |> Async.AwaitTask
-        return match exists with
-            | true -> container
-            | false -> raise <| new InvalidOperationException(sprintf "Container %s doesn't exist" containerName)
-    }
-
-    let GetBlobReference = fun (containerName : string, blobName : string) -> async {
-        let! container = GetContainer(containerName)
-        let fileName = CreateFileName(blobName)
-        return container.GetBlobReferenceFromServer(fileName)
-    }
-        
-    let GetBlockReference = fun (containerName : string, blobName : string) -> async {
-        let! container = GetContainer(containerName)
-        let fileName = CreateFileName(blobName) 
-        return container.GetBlockBlobReference(fileName)
-    }
-    
     interface IAzureClient with
         member this.GetBlobFromContainer(containerName : string, fileName : string) : Task<string> =
             let task = async {
-                let! blob = GetBlockReference(containerName, fileName)
+                let! blob = containerClient.GetBlockReference(containerName, fileName) |> Async.AwaitTask
                 let! exists = blob.ExistsAsync() |> Async.AwaitTask
                 let! content =
                     match exists with
@@ -50,11 +23,21 @@ type AzureClient(azureOptions : AzureOptions, blobClient : IBlobClient) =
                         | false -> Task.FromResult(null) |> Async.AwaitTask
                 return content
             }
+            task |> Async.StartAsTask 
+
+        member this.GetBlobsFromContainer(containerName : string) : Task<string[]> =
+            let task = async {
+                let! container = containerClient.GetContainer(containerName) |> Async.AwaitTask
+                return! container.ListBlobs()
+                        |> Seq.cast<CloudBlockBlob>
+                        |> Seq.map (fun b -> b.DownloadTextAsync() |> Async.AwaitTask)
+                        |> Async.Parallel
+            }   
             task |> Async.StartAsTask
 
         member this.PutBlobToContainer(containerName : string, fileName : string, content : string) : Task =
             let task = async {
-                let! blob = GetBlockReference(containerName, fileName)
+                let! blob = containerClient.GetBlockReference(containerName, fileName) |> Async.AwaitTask
                 blob.Properties.CacheControl <- CreateCacheControl(Year)
             
                 return blobClient.Write(blob, content)
@@ -63,7 +46,7 @@ type AzureClient(azureOptions : AzureOptions, blobClient : IBlobClient) =
 
         member this.GetBlobUrl(containerName : string, fileName : string) : Task<Uri> =
             let task = async {
-                let! blob = GetBlobReference(containerName, fileName)
+                let! blob = containerClient.GetBlobReference(containerName, fileName) |> Async.AwaitTask
                 return blob.Uri
             }
             task |> Async.StartAsTask

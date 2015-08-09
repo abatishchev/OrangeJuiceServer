@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-
-using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Services
 {
@@ -34,7 +31,7 @@ namespace OrangeJuice.Server.Services
 			return await _blobClient.Read(blob);
 		}
 
-		public async Task<IEnumerable<string>> GetBlobsFromContainer(string containerName)
+		public async Task<string[]> GetBlobsFromContainer(string containerName)
 		{
 			var container = await _containerClient.GetContainer(containerName);
 			var tasks = container.ListBlobs()

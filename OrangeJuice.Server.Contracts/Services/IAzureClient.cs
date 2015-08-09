@@ -8,7 +8,7 @@ namespace OrangeJuice.Server.Services
 	{
 		Task<string> GetBlobFromContainer(string containerName, string fileName);
 
-		Task<IEnumerable<string>> GetBlobsFromContainer(string containerName);
+		Task<string[]> GetBlobsFromContainer(string containerName);
 
 		Task PutBlobToContainer(string containerName, string fileName, string content);
 
