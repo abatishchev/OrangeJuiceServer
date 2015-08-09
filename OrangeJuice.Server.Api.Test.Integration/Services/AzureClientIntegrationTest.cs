@@ -25,7 +25,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
-			string containerName = configurationProvider.GetValue("blob:Products");
+			string containerName = configurationProvider.GetValue("azure:Products");
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
@@ -45,7 +45,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
-			string containerName = configurationProvider.GetValue("blob:Products");
+			string containerName = configurationProvider.GetValue("azure:Products");
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
@@ -65,7 +65,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
-			string containerName = configurationProvider.GetValue("blob:Products");
+			string containerName = configurationProvider.GetValue("azure:Products");
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
@@ -87,7 +87,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
-			string containerName = configurationProvider.GetValue("blob:Products");
+			string containerName = configurationProvider.GetValue("azure:Products");
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 

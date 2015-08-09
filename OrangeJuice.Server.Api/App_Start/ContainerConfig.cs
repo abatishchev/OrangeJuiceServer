@@ -33,7 +33,6 @@ using SimpleInjector;
 using SimpleInjector.Extensions;
 
 using AuthOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AuthOptionsFactory;
-using AwsOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AwsOptionsFactory;
 using AzureOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AzureOptionsFactory;
 using CachingConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.CachingConfigurationProvider;
 using ConfigurationConnectionStringProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationConnectionStringProvider;
@@ -173,6 +172,8 @@ namespace OrangeJuice.Server.Api
 			#region ProductController
 			#region Azure
 			container.Register<IBlobClient, AzureBlobClient>();
+
+			container.Register<IAzureContainerClient, AzureContainerClient>();
 
 			container.Register<IAzureClient, AzureClient>();
 
