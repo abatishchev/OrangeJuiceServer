@@ -9,5 +9,17 @@ namespace OrangeJuice.Server
 		{
 			return sequence.Except(new[] { item });
 		}
+
+		public static IEnumerable<T> AsInfinite<T>(this IEnumerable<T> sequence)
+		{
+			var arr = sequence.ToArray();
+			while (true)
+			{
+				foreach (var item in arr)
+				{
+					yield return item;
+				}
+			}
+		}
 	}
 }
