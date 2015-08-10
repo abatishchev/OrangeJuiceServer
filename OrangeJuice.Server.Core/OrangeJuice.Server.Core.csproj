@@ -122,11 +122,14 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Cache\MemoryCacheClient.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationProvider.cs" />
     <Compile Include="Configuration\AuthOptionsFactory.cs" />
     <Compile Include="Configuration\AwsOptionsFactory.cs" />
+    <Compile Include="Configuration\AzureAwsOptionsProvider.cs" />
     <Compile Include="Configuration\AzureConfigurationProvider.cs" />
     <Compile Include="Configuration\AzureOptionsFactory.cs" />
+    <Compile Include="Configuration\CachingAwsOptionsProvider.cs" />
     <Compile Include="Configuration\CachingConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationConnectionStringProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
@@ -190,5 +193,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

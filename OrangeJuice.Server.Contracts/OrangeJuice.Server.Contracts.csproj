@@ -73,6 +73,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
@@ -89,6 +90,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppVersion.cs" />
+    <Compile Include="Cache\ICacheClient.cs" />
     <Compile Include="Configuration\AuthOptions.cs" />
     <Compile Include="Configuration\AwsOptions.cs" />
     <Compile Include="Configuration\AzureOptions.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IConnectionStringProvider.cs" />
     <Compile Include="Configuration\IEnvironmentProvider.cs" />
+    <Compile Include="Configuration\IOptionsProvider.cs" />
     <Compile Include="Controllers\ControllerExtensions.cs" />
     <Compile Include="Controllers\IProductController.cs" />
     <Compile Include="Controllers\IVersionController.cs" />

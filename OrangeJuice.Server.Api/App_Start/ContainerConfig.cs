@@ -24,6 +24,7 @@ using FluentValidation.WebApi;
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Api.Infrastucture;
+using OrangeJuice.Server.Cache;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
@@ -82,8 +83,9 @@ namespace OrangeJuice.Server.Api
 			Container container = new Container();
 
 			container.Register<IConfigurationProvider, WebConfigurationProvider>();
-			container.RegisterSingle(MemoryCache.Default);
-			container.RegisterSingleDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
+			container.RegisterSingle<ObjectCache>(MemoryCache.Default);
+			container.Register<ICacheClient, MemoryCacheClient>();
+			container.RegisterDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>();
 
 			container.Verify();
@@ -94,6 +96,8 @@ namespace OrangeJuice.Server.Api
 		{
 			#region Providers
 			container.Register<IConfigurationProvider, WebConfigurationProvider>();
+			container.RegisterSingle<ObjectCache>(MemoryCache.Default);
+			container.RegisterDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
 
 			container.Register<IEnvironmentProvider, ConfigurationEnvironmentProvider>();
 
@@ -109,7 +113,10 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>();
 
-			container.RegisterFactory<AwsOptions, AwsOptionsFactory>();
+			container.Register<ICacheClient, MemoryCacheClient>();
+			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
+			container.RegisterDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(CachingAwsOptionsProvider));
+			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>();
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>();
 			#endregion
@@ -153,7 +160,7 @@ namespace OrangeJuice.Server.Api
 			}
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
-			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage));
+			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage), Lifestyle.Singleton);
 			container.RegisterSingle<IUrlProvider, DrumUrlProvider>();
 			#endregion
 
@@ -167,11 +174,6 @@ namespace OrangeJuice.Server.Api
 			container.Register<ModelValidatorProvider, FluentValidationModelValidatorProvider>();
 			#endregion
 
-			#region VersionController
-			container.RegisterFactory<ApiVersion, ApiVersionFactory>();
-			#endregion
-
-			#region ProductController
 			#region Azure
 			container.Register<IBlobClient, AzureBlobClient>();
 
@@ -222,6 +224,11 @@ namespace OrangeJuice.Server.Api
 			container.Register<IAwsProductProvider, AwsProductProvider>();
 			#endregion
 
+			#region VersionController
+			container.RegisterFactory<ApiVersion, ApiVersionFactory>();
+			#endregion
+
+			#region ProductController
 			container.Register<IProductRepository, EntityProductRepository>();
 
 			container.Register<IProductService, CachingCloudProductService>();
