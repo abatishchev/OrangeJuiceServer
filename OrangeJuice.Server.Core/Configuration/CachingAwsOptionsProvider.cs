@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using OrangeJuice.Server.Cache;
 
@@ -16,7 +15,7 @@ namespace OrangeJuice.Server.Configuration
 			_cacheClient = cacheClient;
 		}
 
-		public Task<IEnumerable<AwsOptions>> GetOptions()
+		public Task<AwsOptions[]> GetOptions()
 		{
 			return _cacheClient.AddOrGetExisting(AwsOptions.CacheKey, () => _optionsProvider.GetOptions());
 		}

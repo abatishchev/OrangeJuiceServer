@@ -47,15 +47,22 @@ namespace OrangeJuice.Server.Services
 		#region Methods
 		private async Task<ProductDescriptor[]> Save(ProductDescriptor[] descriptors, string barcode, BarcodeType barcodeType)
 		{
-			foreach (ProductDescriptor d in descriptors)
-			{
-				Guid productId = await _productRepository.Save(barcode, barcodeType, d.SourceProductId);
+			var tasks = descriptors.Select(async d => await Save(d, barcode, barcodeType));
+			await Task.WhenAll(tasks);
 
-				d.ProductId = productId;
+			//foreach (ProductDescriptor d in descriptors)
+			//{
+			//	await Save(d, barcode, barcodeType);
+			//}
 
-				await _azureProvider.Save(d);
-			}
 			return descriptors;
+		}
+
+		private async Task Save(ProductDescriptor d, string barcode, BarcodeType barcodeType)
+		{
+			Guid productId = await _productRepository.Save(barcode, barcodeType, d.SourceProductId);
+			d.ProductId = productId;
+			await _azureProvider.Save(d);
 		}
 		#endregion
 	}

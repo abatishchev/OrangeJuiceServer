@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -21,11 +21,11 @@ namespace OrangeJuice.Server.Services
 			_itemSelector = itemSelector;
 		}
 
-		public async Task<IEnumerable<XElement>> GetItems(AwsProductSearchCriteria searchCriteria)
+		public async Task<XElement[]> GetItems(AwsProductSearchCriteria searchCriteria)
 		{
 			Uri url = _urlBuilder.BuildUrl(searchCriteria);
 			string response = await _httpClient.GetStringAsync(url);
-			return _itemSelector.SelectItems(response);
+			return _itemSelector.SelectItems(response).ToArray();
 		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 using OrangeJuice.Server.Services;
@@ -19,10 +18,10 @@ namespace OrangeJuice.Server.Configuration
 			_converter = converter;
 		}
 
-		public async Task<IEnumerable<AwsOptions>> GetOptions()
+		public async Task<AwsOptions[]> GetOptions()
 		{
 			var content = await _azureClient.GetBlobsFromContainer(_azureOptions.AwsOptionsContainer);
-			return content.Select(_converter.Convert);
+			return content.Select(_converter.Convert).ToArray();
 		}
 	}
 }
