@@ -47,14 +47,18 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <Compile Include="Cache\MemoryCacheClient.fs" />
     <Compile Include="Configuration\AppSettingsConfigurationProvider.fs" />
     <Compile Include="Configuration\AuthOptionsFactory.fs" />
     <Compile Include="Configuration\AwsOptionsFactory.fs" />
+    <Compile Include="Configuration\AzureAwsOptionsProvider.fs" />
     <Compile Include="Configuration\AzureConfigurationProvider.fs" />
     <Compile Include="Configuration\AzureOptionsFactory.fs" />
+    <Compile Include="Configuration\CachingAwsOptionsProvider.fs" />
     <Compile Include="Configuration\CachingConfigurationProvider.fs" />
     <Compile Include="Configuration\ConfigurationConnectionStringProvider.fs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.fs" />
+    <Compile Include="Configuration\JsonAwsOptionsConverter.fs" />
     <Compile Include="Configuration\GoogleAuthOptionsFactory.fs" />
     <Compile Include="Configuration\WebConfigurationProvider.fs" />
     <Compile Include="Data\ApiVersionFactory.fs" />

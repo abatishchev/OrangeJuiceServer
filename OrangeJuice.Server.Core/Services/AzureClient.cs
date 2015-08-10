@@ -49,8 +49,9 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<Uri> GetBlobUrl(string containerName, string fileName)
 		{
-			ICloudBlob blob = await _containerClient.GetBlobReference(containerName, fileName);
-			return blob.Uri;
+			CloudBlob blob = await _containerClient.GetBlobReference(containerName, fileName);
+			bool exists = await blob.ExistsAsync();
+			return exists ? blob.Uri : null;
 		}
 
 		private static string CreateCacheControl(TimeSpan timeSpan)

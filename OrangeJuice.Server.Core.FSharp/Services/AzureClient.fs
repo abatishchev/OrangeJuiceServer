@@ -17,11 +17,10 @@ type AzureClient(blobClient : IBlobClient, containerClient : IAzureContainerClie
             let task = async {
                 let! blob = containerClient.GetBlockReference(containerName, fileName) |> Async.AwaitTask
                 let! exists = blob.ExistsAsync() |> Async.AwaitTask
-                let! content =
+                return!
                     match exists with
                         | true -> blobClient.Read(blob) |> Async.AwaitTask
                         | false -> Task.FromResult(null) |> Async.AwaitTask
-                return content
             }
             task |> Async.StartAsTask 
 
@@ -47,6 +46,10 @@ type AzureClient(blobClient : IBlobClient, containerClient : IAzureContainerClie
         member this.GetBlobUrl(containerName : string, fileName : string) : Task<Uri> =
             let task = async {
                 let! blob = containerClient.GetBlobReference(containerName, fileName) |> Async.AwaitTask
-                return blob.Uri
+                let! exists = blob.ExistsAsync() |> Async.AwaitTask
+                return
+                    match exists with
+                        | true -> blob.Uri
+                        | false -> null
             }
             task |> Async.StartAsTask

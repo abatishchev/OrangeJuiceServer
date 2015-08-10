@@ -35,10 +35,15 @@ using OrangeJuice.Server.Web;
 using SimpleInjector;
 using SimpleInjector.Extensions;
 
+using MemoryCacheClient = OrangeJuice.Server.FSharp.Cache.MemoryCacheClient;
+
 using AuthOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AuthOptionsFactory;
 using AzureOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AzureOptionsFactory;
+using AzureAwsOptionsProvider = OrangeJuice.Server.FSharp.Configuration.AzureAwsOptionsProvider;
+using CachingAwsOptionsProvider = OrangeJuice.Server.FSharp.Configuration.CachingAwsOptionsProvider;
 using CachingConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.CachingConfigurationProvider;
 using ConfigurationConnectionStringProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationConnectionStringProvider;
+using JsonAwsOptionsConverter = OrangeJuice.Server.FSharp.Configuration.JsonAwsOptionsConverter;
 using ConfigurationEnvironmentProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationEnvironmentProvider;
 using WebConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.WebConfigurationProvider;
 
@@ -114,9 +119,10 @@ namespace OrangeJuice.Server.Api
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>();
 
 			container.Register<ICacheClient, MemoryCacheClient>();
+			container.Register<IConverter<string, AwsOptions>, JsonAwsOptionsConverter>();
 			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
 			container.RegisterDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(CachingAwsOptionsProvider));
-			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>();
+			container.RegisterFactory<AwsOptions, AwsOptionsFactory>();
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>();
 			#endregion

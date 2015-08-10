@@ -6,7 +6,7 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IAzureContainerClient
 	{
-		Task<ICloudBlob> GetBlobReference(string containerName, string blobName);
+		Task<CloudBlob> GetBlobReference(string containerName, string blobName);
 
 		Task<CloudBlockBlob> GetBlockReference(string containerName, string blobName);
 

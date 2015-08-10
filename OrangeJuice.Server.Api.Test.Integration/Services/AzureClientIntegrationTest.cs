@@ -25,7 +25,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
-			string containerName = configurationProvider.GetValue("azure:Products");
+			string containerName = configurationProvider.GetValue("azure:container:Products");
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
@@ -39,13 +39,13 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 		[Theory]
 		[InlineData(typeof(AzureClient))]
 		[InlineData(typeof(FSharp.Services.AzureClient))]
-		public async Task GetBlobFromContainer_Should_Retur_Null_When_Blob_Does_Not_Exist(Type type)
+		public async Task GetBlobFromContainer_Should_Return_Null_When_Blob_Does_Not_Exist(Type type)
 		{
 			// Arrange
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
-			string containerName = configurationProvider.GetValue("azure:Products");
+			string containerName = configurationProvider.GetValue("azure:container:Products");
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
@@ -65,7 +65,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
-			string containerName = configurationProvider.GetValue("azure:Products");
+			string containerName = configurationProvider.GetValue("azure:container:Products");
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
@@ -87,7 +87,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			Container container = ContainerConfig.CreateWebApiContainer();
 
 			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
-			string containerName = configurationProvider.GetValue("azure:Products");
+			string containerName = configurationProvider.GetValue("azure:container:Products");
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
@@ -96,6 +96,26 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 
 			// Assert
 			url.Should().NotBeNull();
+		}
+
+		[Theory]
+		[InlineData(typeof(AzureClient))]
+		[InlineData(typeof(FSharp.Services.AzureClient))]
+		public async Task GetBlobUrl_Should_Return_Null_When_Blob_Does_Not_Exist(Type type)
+		{
+			// Arrange
+			Container container = ContainerConfig.CreateWebApiContainer();
+
+			IConfigurationProvider configurationProvider = container.GetInstance<IConfigurationProvider>();
+			string containerName = configurationProvider.GetValue("azure:container:Products");
+
+			IAzureClient client = (IAzureClient)container.GetInstance(type);
+
+			// Act
+			Uri url = await client.GetBlobUrl(containerName, Guid.NewGuid().ToString());
+
+			// Assert
+			url.Should().BeNull();
 		}
 	}
 }

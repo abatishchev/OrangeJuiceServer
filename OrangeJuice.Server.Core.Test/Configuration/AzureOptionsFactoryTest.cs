@@ -24,9 +24,9 @@ namespace OrangeJuice.Server.Test.Configuration
 			const string awsOptionsContainer = "awsOptions";
 
 			var providerMock = new Mock<IConfigurationProvider>();
-			providerMock.Setup(p => p.GetValue("azure:ConnectionString")).Returns(connectionString);
-			providerMock.Setup(p => p.GetValue("azure:Products")).Returns(productsContainer);
-			providerMock.Setup(p => p.GetValue("azure:AwsOptions")).Returns(awsOptionsContainer);
+			providerMock.Setup(p => p.GetValue("azure:Blob")).Returns(connectionString);
+			providerMock.Setup(p => p.GetValue("azure:container:Products")).Returns(productsContainer);
+			providerMock.Setup(p => p.GetValue("azure:container:AwsOptions")).Returns(awsOptionsContainer);
 
 			var factory = CreateFactory(type, providerMock.Object);
 

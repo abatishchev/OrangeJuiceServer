@@ -30,11 +30,11 @@ namespace OrangeJuice.Server.Services
 			return container;
 		}
 
-		public async Task<ICloudBlob> GetBlobReference(string containerName, string blobName)
+		public async Task<CloudBlob> GetBlobReference(string containerName, string blobName)
 		{
 			CloudBlobContainer container = await GetContainer(containerName);
 			string fileName = CreateFileName(blobName);
-			return container.GetBlobReferenceFromServer(fileName);
+			return container.GetBlobReference(fileName);
 		}
 
 		public async Task<CloudBlockBlob> GetBlockReference(string containerName, string blobName)
@@ -46,8 +46,9 @@ namespace OrangeJuice.Server.Services
 
 		public async Task<Uri> GetBlobUrl(string containerName, string fileName)
 		{
-			ICloudBlob blob = await GetBlobReference(containerName, fileName);
-			return blob.Uri;
+			CloudBlob blob = await GetBlobReference(containerName, fileName);
+			bool exists = await blob.ExistsAsync();
+			return exists ? blob.Uri : null;
 		}
 
 		private static string CreateFileName(string blobName)

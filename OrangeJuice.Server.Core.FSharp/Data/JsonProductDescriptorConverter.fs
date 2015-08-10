@@ -10,5 +10,6 @@ type JsonProductDescriptorConverter() =
     interface IConverter<string, ProductDescriptor> with
         member this.Convert(value : string) : ProductDescriptor =
             JObject.Parse(value).ToObject<ProductDescriptor>()
+
         member this.ConvertBack(value : ProductDescriptor) : string =
-            JObject.FromObject(value).ToString(Formatting.Indented)
+            JObject.FromObject(value).ToString(Formatting.None)

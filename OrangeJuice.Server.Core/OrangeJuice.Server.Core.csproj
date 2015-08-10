@@ -134,6 +134,7 @@
     <Compile Include="Configuration\ConfigurationConnectionStringProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
     <Compile Include="Configuration\GoogleAuthOptionsFactory.cs" />
+    <Compile Include="Configuration\JsonAwsOptionsConverter.cs" />
     <Compile Include="Configuration\RoundrobinAwsOptionsFactory.cs" />
     <Compile Include="Configuration\WebConfigurationProvider.cs" />
     <Compile Include="Data\ApiVersionFactory.cs" />

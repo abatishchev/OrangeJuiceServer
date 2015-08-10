@@ -16,7 +16,7 @@ namespace OrangeJuice.Server.Data
 		public string ConvertBack(ProductDescriptor value)
 		{
 			return JObject.FromObject(value)
-						  .ToString(Formatting.Indented);
+						  .ToString(Formatting.None);
 		}
 	}
 }

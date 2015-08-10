@@ -35,7 +35,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Security
 			authToken.Should().NotBeNull();
 			authToken.AccessToken.Should().NotBeNullOrEmpty();
 			authToken.IdToken.Should().NotBeNullOrEmpty();
-			authToken.TokenType.Should().NotBeNullOrEmpty();
+			authToken.TokenType.Should().Be("bearer");
 		}
 
 		public static IEnumerable<object[]> GetTypes
