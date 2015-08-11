@@ -49,12 +49,6 @@ namespace OrangeJuice.Server.Services
 		{
 			var tasks = descriptors.Select(async d => await Save(d, barcode, barcodeType));
 			await Task.WhenAll(tasks);
-
-			//foreach (ProductDescriptor d in descriptors)
-			//{
-			//	await Save(d, barcode, barcodeType);
-			//}
-
 			return descriptors;
 		}
 

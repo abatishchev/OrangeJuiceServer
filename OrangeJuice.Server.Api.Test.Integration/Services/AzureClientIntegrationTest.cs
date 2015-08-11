@@ -30,7 +30,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
 			// Act
-			string content = await client.GetBlobFromContainer(containerName, "32456dc4-0473-4d5b-891f-b96efaf26ed2");
+			string content = await client.GetBlobFromContainer(containerName, "35f48641-9acc-43e8-9bb0-97ed3c6dec7a");
 
 			// Assert
 			content.Should().NotBeNullOrEmpty();
@@ -92,7 +92,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
 			// Act
-			Uri url = await client.GetBlobUrl(containerName, "32456dc4-0473-4d5b-891f-b96efaf26ed2");
+			Uri url = await client.GetBlobUrl(containerName, "35f48641-9acc-43e8-9bb0-97ed3c6dec7a");
 
 			// Assert
 			url.Should().NotBeNull();

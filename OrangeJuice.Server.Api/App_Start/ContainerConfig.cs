@@ -28,6 +28,7 @@ using OrangeJuice.Server.Cache;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
+using OrangeJuice.Server.Filters;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
 using OrangeJuice.Server.Web;
@@ -50,6 +51,8 @@ using WebConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.WebConf
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
 using JsonProductDescriptorConverter = OrangeJuice.Server.FSharp.Data.JsonProductDescriptorConverter;
 using XmlProductDescriptorFactory = OrangeJuice.Server.Data.XmlProductDescriptorFactory;
+
+using PrimaryVariantlItemFilter = OrangeJuice.Server.FSharp.Services.PrimaryVariantlItemFilter;
 
 using AuthTokenFactory = OrangeJuice.Server.FSharp.Security.AuthTokenFactory;
 using JwtFactory = OrangeJuice.Server.Security.JwtFactory;
@@ -154,7 +157,7 @@ namespace OrangeJuice.Server.Api
 			container.Register<IHttpControllerTypeResolver>(() => new DefaultHttpControllerTypeResolver(), Lifestyle.Singleton);
 			container.Register<IHttpControllerSelector>(() => new HttpControllerSelector(GlobalConfiguration.Configuration), Lifestyle.Singleton);
 
-			container.Register<IExceptionLogger, Elmah.Contrib.WebApi.ElmahExceptionLogger>();
+			container.Register<IExceptionLogger, ElmahAggregateExceptionLogger>();
 
 			ServiceCenter.Current = c => container;
 			container.Register<ErrorLog>(() => new SqlErrorLog(container.GetInstance<IConnectionStringProvider>().GetDefaultConnectionString()));
@@ -224,6 +227,8 @@ namespace OrangeJuice.Server.Api
 			container.Register<IPipeline<ProductDescriptor, XElement, AwsProductSearchCriteria>, ResponseGroupProductDescriptorPipeline>();
 
 			container.RegisterFactory<ProductDescriptor, XElement, AwsProductSearchCriteria, XmlProductDescriptorFactory>();
+
+			container.Register<IFilter<XElement>, PrimaryVariantlItemFilter>();
 
 			container.Register<IAwsClient, XmlAwsClient>();
 

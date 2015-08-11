@@ -165,6 +165,7 @@
     <Compile Include="Services\AzureProductProvider.cs" />
     <Compile Include="Services\CachingCloudProductService.cs" />
     <Compile Include="Services\PassThruCloudProductService.cs" />
+    <Compile Include="Services\PrimaryVariantlItemFilter.cs" />
     <Compile Include="Services\XmlAwsClient.cs" />
     <Compile Include="Services\XmlItemSelector.cs" />
     <Compile Include="Threading\IntervalRequestScheduler.cs" />
