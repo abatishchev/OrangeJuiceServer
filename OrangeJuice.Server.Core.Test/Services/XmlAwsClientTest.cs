@@ -9,6 +9,7 @@ using FluentAssertions;
 using Moq;
 
 using OrangeJuice.Server.Data.Models;
+using OrangeJuice.Server.Filters;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Web;
 
@@ -44,7 +45,7 @@ namespace OrangeJuice.Server.Test.Services
 		[Theory]
 		[InlineData(typeof(XmlAwsClient))]
 		[InlineData(typeof(FSharp.Services.XmlAwsClient))]
-		public async Task GetItems_Should_Pass_Stream_Returned_By_HttpClient_To_ItemSelector_SelectItems(Type type)
+		public async Task GetItems_Should_Pass_String_Returned_By_HttpClient_To_ItemSelector_SelectItems(Type type)
 		{
 			// Arrange
 			const string xml = "";
@@ -67,13 +68,16 @@ namespace OrangeJuice.Server.Test.Services
 		[Theory]
 		[InlineData(typeof(XmlAwsClient))]
 		[InlineData(typeof(FSharp.Services.XmlAwsClient))]
-		public async Task GetItems_Should_Return_XElement_Returned_By_ItemSelector_SelectItems(Type type)
+		public async Task GetItems_Should_Return_XElement_Returned_By_ItemSelector_SelectItems_And_Filtered_By_ItemsFilter_Filter(Type type)
 		{
 			// Arrange
-			var expected = new[] { new XElement("Item") };
+			var expected = new[] { new XElement("ItemA"), new XElement("ItemB"), new XElement("ItemC") };
 
 			var selectorMock = new Mock<IItemSelector>();
 			selectorMock.Setup(s => s.SelectItems(It.IsAny<string>())).Returns(expected);
+
+			var filterMock = new Mock<IFilter<XElement>>();
+			filterMock.Setup(s => s.Filter(It.IsAny<XElement>())).Returns<XElement>(e => e.Name == "ItemA");
 
 			IAwsClient client = CreateClient(type, itemSelector: selectorMock.Object);
 
@@ -91,12 +95,17 @@ namespace OrangeJuice.Server.Test.Services
 			return new Uri("http://example.com");
 		}
 
-		private static IAwsClient CreateClient(Type type, IUrlBuilder urlBuilder = null, IHttpClient httpClient = null, IItemSelector itemSelector = null)
+		private static IAwsClient CreateClient(Type type,
+											   IUrlBuilder urlBuilder = null,
+											   IHttpClient httpClient = null,
+											   IItemSelector itemSelector = null,
+											   IFilter<XElement> itemFilter = null)
 		{
 			return (IAwsClient)Activator.CreateInstance(type,
 				urlBuilder ?? CreateUrlBuilder(),
 				httpClient ?? CreateHttpClient(),
-				itemSelector ?? CreateItemSelector());
+				itemSelector ?? CreateItemSelector(),
+				itemFilter ?? CreateFilter());
 		}
 
 		private static IUrlBuilder CreateUrlBuilder(Uri url = null)
@@ -118,6 +127,13 @@ namespace OrangeJuice.Server.Test.Services
 			var selectorMock = new Mock<IItemSelector>();
 			selectorMock.Setup(s => s.SelectItems(It.IsAny<string>())).Returns(elements ?? new[] { new XElement("Item") });
 			return selectorMock.Object;
+		}
+
+		private static IFilter<XElement> CreateFilter(bool value = true)
+		{
+			var filterMock = new Mock<IFilter<XElement>>();
+			filterMock.Setup(s => s.Filter(It.IsAny<XElement>())).Returns(value);
+			return filterMock.Object;
 		}
 		#endregion
 	}
