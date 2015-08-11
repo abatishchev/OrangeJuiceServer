@@ -11,17 +11,16 @@ open OrangeJuice.Server.Services
 type AwsProductProvider(client : IAwsClient, factory : IFactory<ProductDescriptor, XElement, AwsProductSearchCriteria>) =
     interface IAwsProductProvider with
         member this.Search(barcode : string, barcodeType : BarcodeType) : Task<ProductDescriptor[]> =
-            this.Search(barcode, barcodeType) |> Async.StartAsTask
+            let task = async {
+                let searchCriteria = new AwsProductSearchCriteria(
+                    Operation = "ItemLookup",
+                    SearchIndex = "Grocery",
+                    ResponseGroups = [| "Images"; "ItemAttributes" |],
+                    IdType = barcodeType.ToString(),
+                    ItemId = barcode)
 
-    member this.Search(barcode : string, barcodeType : BarcodeType) = async {
-        let searchCriteria = new AwsProductSearchCriteria(
-            Operation = "ItemLookup",
-            SearchIndex = "Grocery",
-            ResponseGroups = [| "Images"; "ItemAttributes" |],
-            IdType = barcodeType.ToString(),
-            ItemId = barcode)
-
-        let! items = client.GetItems(searchCriteria) |> Async.AwaitTask
-        let seq = Seq.map (fun item -> factory.Create(item, searchCriteria)) items
-        return seq |> Array.ofSeq
-    }
+                let! items = client.GetItems(searchCriteria) |> Async.AwaitTask
+                let seq = Seq.map (fun item -> factory.Create(item, searchCriteria)) items
+                return seq |> Array.ofSeq
+            }
+            task |> Async.StartAsTask

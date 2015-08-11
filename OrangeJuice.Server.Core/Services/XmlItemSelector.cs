@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -15,7 +16,7 @@ namespace OrangeJuice.Server.Services
 			_itemValidator = itemValidator;
 		}
 
-		public IEnumerable<XElement> SelectItems(string xml)
+		public XElement[] SelectItems(string xml)
 		{
 			XDocument doc = XDocument.Parse(xml);
 			XNamespace ns = doc.Root.Name.Namespace;
@@ -24,7 +25,7 @@ namespace OrangeJuice.Server.Services
 			if (!_itemValidator.IsValid(items))
 				throw new ArgumentException(GetErrorMessage(doc, ns));
 
-			return items.Elements(ns + "Item");
+			return items.Elements(ns + "Item").ToArray();
 		}
 
 		private static string GetErrorMessage(XDocument doc, XNamespace ns)

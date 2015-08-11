@@ -42,7 +42,7 @@ namespace OrangeJuice.Server.Api.Test.Handlers
 		}
 
 		[Fact]
-		public void Create_Should_Return_HeaderAppKeyHandler_When_Environment_Is_Not_Local()
+		public void Create_Should_Return_AcceptHeaderValidator_When_Environment_Is_Not_Local()
 		{
 			foreach (string environment in GetAllEnvironments().Except(EnvironmentName.Local))
 			{

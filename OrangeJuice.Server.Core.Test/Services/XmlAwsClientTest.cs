@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -54,7 +51,7 @@ namespace OrangeJuice.Server.Test.Services
 			httpClientMock.Setup(c => c.GetStringAsync(It.IsAny<Uri>())).ReturnsAsync(xml);
 
 			var selectorMock = new Mock<IItemSelector>();
-			selectorMock.Setup(s => s.SelectItems(xml)).Returns(Enumerable.Empty<XElement>());
+			selectorMock.Setup(s => s.SelectItems(xml)).Returns(new XElement[0]);
 
 			IAwsClient client = CreateClient(type, httpClient: httpClientMock.Object, itemSelector: selectorMock.Object);
 
@@ -68,24 +65,47 @@ namespace OrangeJuice.Server.Test.Services
 		[Theory]
 		[InlineData(typeof(XmlAwsClient))]
 		[InlineData(typeof(FSharp.Services.XmlAwsClient))]
-		public async Task GetItems_Should_Return_XElement_Returned_By_ItemSelector_SelectItems_And_Filtered_By_ItemsFilter_Filter(Type type)
+		public async Task GetItems_Should_Return_XElement_Returned_By_ItemSelector_SelectItems_And_Filtered_By_ItemsFilter_Filter_When_Result_Contains_More_Than_One_Element(Type type)
 		{
 			// Arrange
-			var expected = new[] { new XElement("ItemA"), new XElement("ItemB"), new XElement("ItemC") };
+			var expected = new XElement("ItemA");
 
 			var selectorMock = new Mock<IItemSelector>();
-			selectorMock.Setup(s => s.SelectItems(It.IsAny<string>())).Returns(expected);
+			selectorMock.Setup(s => s.SelectItems(It.IsAny<string>())).Returns(new[] { expected, new XElement("ItemB"), new XElement("ItemC") });
 
 			var filterMock = new Mock<IFilter<XElement>>();
-			filterMock.Setup(s => s.Filter(It.IsAny<XElement>())).Returns<XElement>(e => e.Name == "ItemA");
+			filterMock.Setup(s => s.Filter(It.IsAny<XElement>())).Returns<XElement>(e => e == expected);
 
-			IAwsClient client = CreateClient(type, itemSelector: selectorMock.Object);
+			var client = CreateClient(type, itemSelector: selectorMock.Object, itemFilter: filterMock.Object);
 
 			// Act
 			var actual = await client.GetItems(new AwsProductSearchCriteria());
 
 			// Assert
-			actual.Should().BeEquivalentTo((IEnumerable)expected);
+			actual.Should().ContainSingle();
+		}
+
+		[Theory]
+		[InlineData(typeof(XmlAwsClient))]
+		[InlineData(typeof(FSharp.Services.XmlAwsClient))]
+		public async Task GetItems_Should_Return_XElement_Returned_By_ItemSelector_SelectItems_When_Result_Contains_One_Element(Type type)
+		{
+			// Arrange
+			var expected = new XElement("Item");
+
+			var selectorMock = new Mock<IItemSelector>();
+			selectorMock.Setup(s => s.SelectItems(It.IsAny<string>())).Returns(new[] { expected });
+
+			var filterMock = new Mock<IFilter<XElement>>();
+
+			var client = CreateClient(type, itemSelector: selectorMock.Object, itemFilter: filterMock.Object);
+
+			// Act
+			var actual = await client.GetItems(new AwsProductSearchCriteria());
+
+			// Assert
+			filterMock.Verify(f => f.Filter(It.IsAny<XElement>()), Times.Never);
+			actual.Should().ContainSingle();
 		}
 		#endregion
 
@@ -122,7 +142,7 @@ namespace OrangeJuice.Server.Test.Services
 			return httpClientMock.Object;
 		}
 
-		private static IItemSelector CreateItemSelector(IEnumerable<XElement> elements = null)
+		private static IItemSelector CreateItemSelector(XElement[] elements = null)
 		{
 			var selectorMock = new Mock<IItemSelector>();
 			selectorMock.Setup(s => s.SelectItems(It.IsAny<string>())).Returns(elements ?? new[] { new XElement("Item") });

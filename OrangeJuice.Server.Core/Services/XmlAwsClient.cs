@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Filters;
 using OrangeJuice.Server.Web;
@@ -27,9 +28,10 @@ namespace OrangeJuice.Server.Services
 		{
 			Uri url = _urlBuilder.BuildUrl(searchCriteria);
 			string response = await _httpClient.GetStringAsync(url);
-			return _itemSelector.SelectItems(response)
-								.Where(_itemFilter.Filter)
-								.ToArray();
+			var items = _itemSelector.SelectItems(response);
+			if (items.Length > 1)
+				items = items.Where(_itemFilter.Filter).ToArray();
+			return items;
 		}
 	}
 }

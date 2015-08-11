@@ -14,8 +14,9 @@ type XmlAwsClient(urlBuilder : IUrlBuilder, httpClient : IHttpClient, itemSelect
             let task = async {
                 let url = urlBuilder.BuildUrl(searchCriteria)
                 let! response = httpClient.GetStringAsync(url) |> Async.AwaitTask
-                return itemSelector.SelectItems(response)
-                       |> Seq.where itemFilter.Filter
-                       |> Array.ofSeq
+                let items = itemSelector.SelectItems(response)
+                return if items.Length > 1
+                    then items |> Array.filter itemFilter.Filter
+                    else items
             }
             task |> Async.StartAsTask

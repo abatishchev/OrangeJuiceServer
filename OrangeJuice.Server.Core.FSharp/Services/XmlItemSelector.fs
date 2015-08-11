@@ -11,12 +11,12 @@ open OrangeJuice.Server.Services
 
 type XmlItemSelector(itemValidator : IValidator<XElement>) =
     interface IItemSelector with
-        member this.SelectItems(xml : string) : IEnumerable<XElement> =
+        member this.SelectItems(xml : string) : XElement[] =
             let doc = XDocument.Parse(xml)
             let ns = doc.Root.Name.Namespace
 
             let items = doc.Root.Element(ns + "Items")
-            if itemValidator.IsValid(items) then items.Elements(ns + "Item")
+            if itemValidator.IsValid(items) then items.Elements(ns + "Item") |> Array.ofSeq
             else raise <| new ArgumentException(XmlItemSelector.GetErrorMessage(doc, ns))
 
     static member GetErrorMessage(doc : XDocument, ns : XNamespace ) : string =
