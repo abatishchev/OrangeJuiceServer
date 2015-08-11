@@ -187,6 +187,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="App_Start\ElmahAggregateExceptionLogger.cs" />
     <Compile Include="Infrastucture\AssembliesResolver.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\OwinConfig.cs" />
