@@ -22,13 +22,13 @@ using FluentValidation.Attributes;
 using FluentValidation.WebApi;
 
 using OrangeJuice.Server.Api.Handlers;
-using OrangeJuice.Server.Api.Handlers.Validation;
 using OrangeJuice.Server.Api.Infrastucture;
 using OrangeJuice.Server.Cache;
 using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Filters;
+using OrangeJuice.Server.Security;
 using OrangeJuice.Server.Services;
 using OrangeJuice.Server.Threading;
 using OrangeJuice.Server.Web;
@@ -131,8 +131,8 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Security
-			container.RegisterFactory<X509Certificate2, Security.X509Certificate2Factory>();
-			container.Register<IFactory<string>, JwtFactory>();
+			container.RegisterFactory<X509Certificate2, X509Certificate2Factory>();
+			container.Register<IFactory<Jwt>, JwtFactory>();
 			container.RegisterFactory<Task<AuthToken>, string, GoogleAuthTokenFactory>();
 			container.RegisterFactory<Task<AuthToken>, AuthToken, AuthTokenFactory>();
 			#endregion
@@ -142,7 +142,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterAll<IFilter>(typeof(WebApiContrib.Filters.ValidationAttribute));
 
 			// Handlers
-			container.RegisterFactory<IValidator<HttpRequestMessage>, AppVersionValidatorFactory>();
+			container.RegisterFactory<IValidator<HttpRequestMessage>, AcceptHeaderValidatorFactory>(Lifestyle.Singleton);
 
 			container.Register<ITraceRequestRepository, EntityTraceRequestRepository>();
 

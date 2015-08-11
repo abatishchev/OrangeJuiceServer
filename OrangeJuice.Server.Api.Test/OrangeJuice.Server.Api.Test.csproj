@@ -107,8 +107,8 @@
     <Compile Include="Controllers\ProductControllerTest.cs" />
     <Compile Include="Controllers\RatingControllerTest.cs" />
     <Compile Include="Controllers\UserControllerTest.cs" />
-    <Compile Include="Handlers\Validation\AppVersion\HeaderAppVersionValidatorTest.cs" />
-    <Compile Include="Handlers\Validation\AppVersion\AppVersionValidatorFactoryTest.cs" />
+    <Compile Include="Handlers\AcceptHeaderValidatorTest.cs" />
+    <Compile Include="Handlers\AppVersionValidatorFactoryTest.cs" />
     <Compile Include="Handlers\AppVersionHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -146,6 +146,7 @@
       <Name>OrangeJuice.Server.Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

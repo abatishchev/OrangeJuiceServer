@@ -14,7 +14,7 @@ using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Security
 {
-	public sealed class JwtFactory : IFactory<string>
+	public sealed class JwtFactory : IFactory<Jwt>
 	{
 		private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
@@ -27,7 +27,7 @@ namespace OrangeJuice.Server.Security
 			_certFactory = certFactory;
 		}
 
-		public string Create()
+		public Jwt Create()
 		{
 			var header = new { typ = "JWT", alg = "RS256" };
 			var headerEncoded = Encode(header);
@@ -46,7 +46,10 @@ namespace OrangeJuice.Server.Security
 			var signature = CreateSignature(headerEncoded, claimsetEncoded);
 			var signatureEncoded = TextEncodings.Base64Url.Encode(signature);
 
-			return String.Join(".", headerEncoded, claimsetEncoded, signatureEncoded);
+			return new Jwt
+			{
+				Value = String.Join(".", headerEncoded, claimsetEncoded, signatureEncoded)
+			};
 		}
 
 		private static string Encode(object value)

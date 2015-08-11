@@ -1,7 +1,6 @@
 ﻿namespace OrangeJuice.Server.FSharp.Security
 
 open System
-open System.Collections.Generic
 open System.Net.Http
 open System.Net.Http.Formatting
 open System.Threading.Tasks
@@ -9,14 +8,15 @@ open System.Threading.Tasks
 open Factory
 
 open OrangeJuice.Server.Data.Models
+open OrangeJuice.Server.Security
 
-type GoogleAuthTokenFactory(jwtFactory : IFactory<string>) =
+type GoogleAuthTokenFactory(jwtFactory : IFactory<Jwt>) =
     interface IFactory<Task<AuthToken>, string> with
         member this.Create(authorizationToken : string) : Task<AuthToken> =
             let task = async {
                 let jwt = jwtFactory.Create()
 
-                let dic = dict [ ("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer"); ("assertion", jwt) ]
+                let dic = dict [ ("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer"); ("assertion", jwt.Value) ]
 
                 let content = new FormUrlEncodedContent(dic)
 
