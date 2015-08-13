@@ -13,11 +13,14 @@ namespace OrangeJuice.Server
 		public static IEnumerable<T> AsInfinite<T>(this IEnumerable<T> sequence)
 		{
 			var arr = sequence.ToArray();
-			while (true)
+			if (arr.Any())
 			{
-				foreach (var item in arr)
+				while (true)
 				{
-					yield return item;
+					foreach (var item in arr)
+					{
+						yield return item;
+					}
 				}
 			}
 		}

@@ -19,7 +19,7 @@ type AwsArgumentBuilder(awsOptions : AwsOptions, dateTimeProvider : IDateTimePro
                     then searchCriteria.ResponseGroups :> IEnumerable<string>
                     else Enumerable.Empty<string>()
             [
-                ("Operation", searchCriteria.Operation); 
+                ("Operation", searchCriteria.Operation);
                 ("SearchIndex", searchCriteria.SearchIndex);
                 ("ResponseGroup", String.Join(",", group));
                 ("IdType", searchCriteria.IdType);

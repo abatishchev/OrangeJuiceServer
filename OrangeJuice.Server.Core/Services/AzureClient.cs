@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Table;
+using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Services
 {
@@ -11,10 +13,10 @@ namespace OrangeJuice.Server.Services
 	{
 		private static readonly TimeSpan Year = TimeSpan.FromDays(365);
 
-		private readonly IBlobClient _blobClient;
 		private readonly IAzureContainerClient _containerClient;
+		private readonly IBlobClient _blobClient;
 
-		public AzureClient(IBlobClient blobClient, IAzureContainerClient containerClient)
+		public AzureClient(IAzureContainerClient containerClient, IBlobClient blobClient)
 		{
 			_blobClient = blobClient;
 			_containerClient = containerClient;
@@ -52,6 +54,28 @@ namespace OrangeJuice.Server.Services
 			CloudBlob blob = await _containerClient.GetBlobReference(containerName, fileName);
 			bool exists = await blob.ExistsAsync();
 			return exists ? blob.Uri : null;
+		}
+
+		public async Task<T[]> GetEntitiesFromTable<T>(string tableName)
+			where T : ITableEntity, new()
+		{
+			var table = await _containerClient.GetTableReference(tableName);
+			var query = new TableQuery<T>();
+			return table.ExecuteQuery(query).ToArray();
+		}
+
+		public async Task<IList<TableResult>> PutEntitiesToTable<T>(string tableName, IEnumerable<T> entities)
+			where T : ITableEntity
+		{
+			var table = await _containerClient.GetTableReference(tableName);
+
+			var batch = new TableBatchOperation();
+			foreach (var e in entities)
+			{
+				batch.Insert(e);
+			}
+
+			return await table.ExecuteBatchAsync(batch);
 		}
 
 		private static string CreateCacheControl(TimeSpan timeSpan)

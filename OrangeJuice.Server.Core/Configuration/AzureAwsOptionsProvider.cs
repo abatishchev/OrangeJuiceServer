@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.WindowsAzure.Storage.Table;
+
 using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Configuration
@@ -9,9 +11,9 @@ namespace OrangeJuice.Server.Configuration
 	{
 		private readonly AzureOptions _azureOptions;
 		private readonly IAzureClient _azureClient;
-		private readonly IConverter<string, AwsOptions> _converter;
+		private readonly IConverter<DynamicTableEntity, AwsOptions> _converter;
 
-		public AzureAwsOptionsProvider(AzureOptions azureOptions, IAzureClient azureClient, IConverter<string, AwsOptions> converter)
+		public AzureAwsOptionsProvider(AzureOptions azureOptions, IAzureClient azureClient, IConverter<DynamicTableEntity, AwsOptions> converter)
 		{
 			_azureOptions = azureOptions;
 			_azureClient = azureClient;
@@ -20,7 +22,7 @@ namespace OrangeJuice.Server.Configuration
 
 		public async Task<AwsOptions[]> GetOptions()
 		{
-			var content = await _azureClient.GetBlobsFromContainer(_azureOptions.AwsOptionsContainer);
+			var content = await _azureClient.GetEntitiesFromTable<DynamicTableEntity>(_azureOptions.AwsOptionsTable);
 			return content.Select(_converter.Convert).ToArray();
 		}
 	}

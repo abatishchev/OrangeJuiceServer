@@ -15,7 +15,7 @@ type XmlRequestValidator() =
                 let nm = new XmlNamespaceManager(new NameTable())
                 nm.AddNamespace("x", item.Name.Namespace.ToString()) |> ignore
 
-                let toBool e = 
+                let toBool e =
                     let o = if e <> null
                                 then Some(XElement.op_Explicit e : bool)
                                 else None

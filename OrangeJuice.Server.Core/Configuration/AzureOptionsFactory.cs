@@ -15,7 +15,7 @@
 			{
 				ConnectionString = _configurationProvider.GetValue("azure:Blob"),
 				ProductsContainer = _configurationProvider.GetValue("azure:container:Products"),
-				AwsOptionsContainer = _configurationProvider.GetValue("azure:container:AwsOptions"),
+				AwsOptionsTable = _configurationProvider.GetValue("azure:table:AwsOptions"),
 			};
 		}
 	}

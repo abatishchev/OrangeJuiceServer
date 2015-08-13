@@ -13,7 +13,7 @@ type X509Certificate2Factory(authOptions : GoogleAuthOptions, environmentProvide
             match environmentProvider.GetCurrentEnvironment() with
             | EnvironmentName.Production -> X509Certificate2Factory.Create(authOptions.CertificateThumbprint)
             | _ -> X509Certificate2Factory.Create(authOptions.CertificateKey, authOptions.CertificateSecret)
-        
+
     static member Create(key : string, secret : string) : X509Certificate2 =
         new X509Certificate2(Convert.FromBase64String(key), secret)
 

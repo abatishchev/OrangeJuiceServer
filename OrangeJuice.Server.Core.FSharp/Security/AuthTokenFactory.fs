@@ -14,13 +14,13 @@ open OrangeJuice.Server.Data.Models
 type AuthTokenRequest = {
     [<field: DataMember(Name="client_id")>]
     client_id : string
-    
+
     [<field: DataMember(Name="access_token")>]
     access_token : string
-    
+
     [<field: DataMember(Name="connection")>]
     connection : string
-    
+
     [<field: DataMember(Name="scope")>]
     scope : string
 }
@@ -47,7 +47,7 @@ type AuthTokenFactory(authOptions : AuthOptions) =
 
                 let! response = httpClient.PostAsync("oauth/access_token", request, new JsonMediaTypeFormatter()) |> Async.AwaitTask
                 response.EnsureSuccessStatusCode() |> ignore
-                
+
                 let formatter = new JsonMediaTypeFormatter()
                 formatter.SerializerSettings.ContractResolver <- new UnderscoreMappingResolver()
 

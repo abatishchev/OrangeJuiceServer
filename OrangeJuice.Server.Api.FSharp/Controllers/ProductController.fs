@@ -18,7 +18,7 @@ type ProductController(productService : IProductService) =
         member this.GetProductBarcode(searchCriteria : BarcodeSearchCriteria) =
             this.GetProductBarcode(searchCriteria)
 
-    member this.Ok<'T>(args : 'T) =  
+    member this.Ok<'T>(args : 'T) =
         base.Ok(args)
 
     [<Route("api/product/id")>]

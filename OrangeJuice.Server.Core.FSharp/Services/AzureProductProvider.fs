@@ -13,7 +13,7 @@ type AzureProductProvider(azureOptions : AzureOptions, client : IAzureClient, co
         member this.Get(productId : Guid) : Task<ProductDescriptor> =
             let task = async {
                 let! content = client.GetBlobFromContainer(azureOptions.ProductsContainer, productId.ToString()) |> Async.AwaitTask
-                return if content <> null 
+                return if content <> null
                     then converter.Convert(content)
                     else null
             }
@@ -22,6 +22,6 @@ type AzureProductProvider(azureOptions : AzureOptions, client : IAzureClient, co
         member this.Save(descriptor : ProductDescriptor) : Task =
             let content = converter.ConvertBack(descriptor)
             client.PutBlobToContainer(azureOptions.ProductsContainer, descriptor.ProductId.ToString(), content)
-        
+
         member this.GetUrl(productId : Guid) : Task<Uri> =
             client.GetBlobUrl(azureOptions.ProductsContainer, productId.ToString())

@@ -22,7 +22,7 @@ type CachingCloudProductService(awsProvider : IAwsProductProvider, azureProvider
     interface IProductService with
         member this.Get(productId : Guid) : Task<ProductDescriptor> =
             azureProvider.Get(productId)
-        
+
         member this.Search(barcode : string, barcodeType : BarcodeType) : Task<ProductDescriptor[]> =
             let task = async {
                 let! products = productRepository.Search(barcode, barcodeType) |> Async.AwaitTask

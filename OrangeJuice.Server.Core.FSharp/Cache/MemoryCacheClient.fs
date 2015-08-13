@@ -9,7 +9,7 @@ type MemoryCacheClient(cache : ObjectCache) =
     interface ICacheClient with
         member this.AddOrGetExisting<'T>(key : string, valueFactory : Func<'T>) : 'T =
            (this :> ICacheClient).AddOrGetExisting(key, valueFactory, fun () -> new CacheItemPolicy())
-        
+
         member this.AddOrGetExisting<'T>(key : string, valueFactory : Func<'T>, policyFactory : Func<CacheItemPolicy>) : 'T =
             let newValue = new Lazy<'T>(valueFactory)
             let policy = policyFactory.Invoke()

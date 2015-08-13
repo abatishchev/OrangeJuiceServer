@@ -1,20 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OrangeJuice.Server.Configuration
 {
 	public class RoundrobinAwsOptionsFactory : Factory.IFactory<AwsOptions>
 	{
-		private readonly IEnumerator<AwsOptions> _e;
+		private readonly Lazy<IEnumerator<AwsOptions>> _e;
 
-		public RoundrobinAwsOptionsFactory(IEnumerable<AwsOptions> options)
+		public RoundrobinAwsOptionsFactory(IOptionsProvider<AwsOptions> optionsProvider)
 		{
-			_e = options.AsInfinite().GetEnumerator();
+			_e = new Lazy<IEnumerator<AwsOptions>>(() => GetEnumerator(optionsProvider));
+		}
+
+		private static IEnumerator<AwsOptions> GetEnumerator(IOptionsProvider<AwsOptions> optionsProvider)
+		{
+			var options = Task.Run(async () => await optionsProvider.GetOptions()).Result;
+			return options.AsInfinite().GetEnumerator();
 		}
 
 		public AwsOptions Create()
 		{
-			_e.MoveNext();
-			return _e.Current;
+			var e = _e.Value;
+			e.MoveNext();
+			return e.Current;
 		}
 	}
 }

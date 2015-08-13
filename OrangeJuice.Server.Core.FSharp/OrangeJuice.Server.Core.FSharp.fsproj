@@ -59,6 +59,7 @@
     <Compile Include="Configuration\ConfigurationConnectionStringProvider.fs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.fs" />
     <Compile Include="Configuration\JsonAwsOptionsConverter.fs" />
+    <Compile Include="Configuration\DynamicAwsOptionsConverter.fs" />
     <Compile Include="Configuration\GoogleAuthOptionsFactory.fs" />
     <Compile Include="Configuration\WebConfigurationProvider.fs" />
     <Compile Include="Data\ApiVersionFactory.fs" />

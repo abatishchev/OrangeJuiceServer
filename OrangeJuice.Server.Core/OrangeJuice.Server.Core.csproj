@@ -133,6 +133,7 @@
     <Compile Include="Configuration\CachingConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationConnectionStringProvider.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProvider.cs" />
+    <Compile Include="Configuration\DynamicAwsOptionsConverter.cs" />
     <Compile Include="Configuration\GoogleAuthOptionsFactory.cs" />
     <Compile Include="Configuration\JsonAwsOptionsConverter.cs" />
     <Compile Include="Configuration\RoundrobinAwsOptionsFactory.cs" />

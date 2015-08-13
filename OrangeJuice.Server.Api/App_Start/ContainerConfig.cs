@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Runtime.Caching;
@@ -22,6 +21,8 @@ using FluentValidation;
 using FluentValidation.Attributes;
 using FluentValidation.WebApi;
 
+using Microsoft.WindowsAzure.Storage.Table;
+
 using OrangeJuice.Server.Api.Handlers;
 using OrangeJuice.Server.Api.Infrastucture;
 using OrangeJuice.Server.Cache;
@@ -41,12 +42,12 @@ using MemoryCacheClient = OrangeJuice.Server.FSharp.Cache.MemoryCacheClient;
 
 using AuthOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AuthOptionsFactory;
 using AzureOptionsFactory = OrangeJuice.Server.FSharp.Configuration.AzureOptionsFactory;
-using AzureAwsOptionsProvider = OrangeJuice.Server.FSharp.Configuration.AzureAwsOptionsProvider;
+using AzureAwsOptionsProvider = OrangeJuice.Server.Configuration.AzureAwsOptionsProvider;
 using CachingAwsOptionsProvider = OrangeJuice.Server.FSharp.Configuration.CachingAwsOptionsProvider;
 using CachingConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.CachingConfigurationProvider;
 using ConfigurationConnectionStringProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationConnectionStringProvider;
-using JsonAwsOptionsConverter = OrangeJuice.Server.FSharp.Configuration.JsonAwsOptionsConverter;
 using ConfigurationEnvironmentProvider = OrangeJuice.Server.FSharp.Configuration.ConfigurationEnvironmentProvider;
+using DynamicAwsOptionsConverter = OrangeJuice.Server.FSharp.Configuration.DynamicAwsOptionsConverter;
 using WebConfigurationProvider = OrangeJuice.Server.FSharp.Configuration.WebConfigurationProvider;
 
 using ApiVersionFactory = OrangeJuice.Server.FSharp.Data.ApiVersionFactory;
@@ -123,10 +124,9 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>();
 
-			container.Register<IConverter<string, AwsOptions>, JsonAwsOptionsConverter>();
+			container.Register<IConverter<DynamicTableEntity, AwsOptions>, DynamicAwsOptionsConverter>();
 			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
 			container.RegisterDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(CachingAwsOptionsProvider));
-			container.Register<IEnumerable<AwsOptions>>(() => Task.Run(async () => await container.GetInstance<IOptionsProvider<AwsOptions>>().GetOptions()).Result);
 			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>(Lifestyle.Singleton);
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>();

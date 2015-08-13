@@ -20,9 +20,8 @@ type GoogleAuthTokenFactory(jwtFactory : IFactory<Jwt>) =
 
                 let content = new FormUrlEncodedContent(dic)
 
-                let httpClient = new HttpClient (
-                    BaseAddress = new Uri("https://accounts.google.com"))
-                
+                let httpClient = new HttpClient(BaseAddress = new Uri("https://accounts.google.com"))
+
                 let! response = httpClient.PostAsync("/o/oauth2/token", content) |> Async.AwaitTask
                 response.EnsureSuccessStatusCode() |> ignore
 
