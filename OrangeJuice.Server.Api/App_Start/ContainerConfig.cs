@@ -126,7 +126,8 @@ namespace OrangeJuice.Server.Api
 			container.Register<IConverter<string, AwsOptions>, JsonAwsOptionsConverter>();
 			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
 			container.RegisterDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(CachingAwsOptionsProvider));
-			container.RegisterFactory<AwsOptions, AwsOptionsFactory>();
+			container.Register<IEnumerable<AwsOptions>>(() => Task.Run(async () => await container.GetInstance<IOptionsProvider<AwsOptions>>().GetOptions()).Result);
+			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>(Lifestyle.Singleton);
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>();
 			#endregion
