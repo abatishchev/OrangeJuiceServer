@@ -67,6 +67,7 @@
     <Compile Include="Filters\PrimaryVariantlItemFilter.fs" />
     <Compile Include="Security\AuthTokenFactory.fs" />
     <Compile Include="Security\GoogleAuthTokenFactory.fs" />
+    <Compile Include="Security\X509Certificate2Factory.fs" />
     <Compile Include="Services\AwsAlgorithmFactory.fs" />
     <Compile Include="Services\AwsArgumentBuilder.fs" />
     <Compile Include="Services\AwsProductProvider.fs" />

@@ -58,6 +58,7 @@ using PrimaryVariantlItemFilter = OrangeJuice.Server.FSharp.Services.PrimaryVari
 using AuthTokenFactory = OrangeJuice.Server.FSharp.Security.AuthTokenFactory;
 using JwtFactory = OrangeJuice.Server.Security.JwtFactory;
 using GoogleAuthTokenFactory = OrangeJuice.Server.Security.GoogleAuthTokenFactory;
+using X509Certificate2Factory = OrangeJuice.Server.FSharp.Security.X509Certificate2Factory;
 
 using AwsAlgorithmFactory = OrangeJuice.Server.FSharp.Services.AwsAlgorithmFactory;
 using AwsArgumentBuilder = OrangeJuice.Server.FSharp.Services.AwsArgumentBuilder;
