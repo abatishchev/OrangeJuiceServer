@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Runtime.Caching;
@@ -90,30 +91,30 @@ namespace OrangeJuice.Server.Api
 		{
 			Container container = new Container();
 
-			container.Register<IConfigurationProvider, WebConfigurationProvider>();
+			container.RegisterSingle<IConfigurationProvider, WebConfigurationProvider>();
 			container.RegisterSingle<ObjectCache>(MemoryCache.Default);
-			container.Register<ICacheClient, MemoryCacheClient>();
-			container.RegisterDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
+			container.RegisterSingle<ICacheClient, MemoryCacheClient>();
+			container.RegisterSingleDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>();
 
-			container.Verify();
 			return container;
 		}
 
 		private static void RegisterTypes(Container container, bool registerControllers)
 		{
 			#region Providers
-			container.Register<IConfigurationProvider, WebConfigurationProvider>();
+			container.RegisterSingle<IConfigurationProvider, WebConfigurationProvider>();
 			container.RegisterSingle<ObjectCache>(MemoryCache.Default);
-			container.RegisterDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
+			container.RegisterSingle<ICacheClient, MemoryCacheClient>();
+			container.RegisterSingleDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
 
-			container.Register<IEnvironmentProvider, ConfigurationEnvironmentProvider>();
+			container.RegisterSingle<IEnvironmentProvider, ConfigurationEnvironmentProvider>();
 
-			container.Register<IConnectionStringProvider, ConfigurationConnectionStringProvider>();
+			container.RegisterSingle<IConnectionStringProvider, ConfigurationConnectionStringProvider>();
 
-			container.Register<IDateTimeProvider, UtcDateTimeProvider>();
+			container.RegisterSingle<IDateTimeProvider, UtcDateTimeProvider>();
 
-			container.Register<IAssemblyProvider, ReflectionAssemblyProvider>();
+			container.RegisterSingle<IAssemblyProvider, ReflectionAssemblyProvider>();
 			#endregion
 
 			#region Configuration
@@ -121,7 +122,6 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>();
 
-			container.Register<ICacheClient, MemoryCacheClient>();
 			container.Register<IConverter<string, AwsOptions>, JsonAwsOptionsConverter>();
 			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
 			container.RegisterDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(CachingAwsOptionsProvider));
@@ -132,7 +132,7 @@ namespace OrangeJuice.Server.Api
 
 			#region Security
 			container.RegisterFactory<X509Certificate2, X509Certificate2Factory>();
-			container.Register<IFactory<Jwt>, JwtFactory>();
+			container.RegisterFactory<Jwt, JwtFactory>();
 			container.RegisterFactory<Task<AuthToken>, string, GoogleAuthTokenFactory>();
 			container.RegisterFactory<Task<AuthToken>, AuthToken, AuthTokenFactory>();
 			#endregion

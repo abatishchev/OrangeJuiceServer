@@ -27,7 +27,6 @@ namespace OrangeJuice.Server.Api
 			//config.MapHttpAttributeRoutes();
 			var uriMaker = config.MapHttpAttributeRoutesAndUseUriMaker();
 			ContainerConfig.RegisterUriMaker(container, uriMaker);
-			container.Verify();
 
 			config.UseWebConfigCustomErrors();
 

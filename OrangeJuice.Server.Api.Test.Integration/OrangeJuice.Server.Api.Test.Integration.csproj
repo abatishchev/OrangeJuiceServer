@@ -132,6 +132,7 @@
     <Compile Include="Services\AwsClientIntegrationTest.cs" />
     <Compile Include="Services\AwsProductProviderIntegrationTest.cs" />
     <Compile Include="Services\AzureClientIntegrationTest.cs" />
+    <Compile Include="ContainerConfigTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
