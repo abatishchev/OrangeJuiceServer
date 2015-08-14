@@ -140,6 +140,7 @@
     <Compile Include="Configuration\AzureOptionsFactoryTest.cs" />
     <Compile Include="Configuration\ConfigurationEnvironmentProviderTest.cs" />
     <Compile Include="Configuration\ConfigurationConnectionStringProviderTest.cs" />
+    <Compile Include="Configuration\DynamicAwsOptionsConverterTest.cs" />
     <Compile Include="Data\ApiVersionFactoryTest.cs" />
     <Compile Include="Data\JsonProductDescriptorConverterTest.cs" />
     <Compile Include="Data\ResponseGroup\DefaultPipelineFilterTest.cs" />
