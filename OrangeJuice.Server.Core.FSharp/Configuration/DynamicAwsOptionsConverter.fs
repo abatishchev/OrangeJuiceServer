@@ -10,7 +10,7 @@ open OrangeJuice.Server.Configuration
 
 type DynamicAwsOptionsConverter() =
     [<Literal>] 
-    let TimeSpanFormat = @"hh\:mm\:ss.fff"
+    let TimeSpanFormat = @"hh\:mm\:ss\.fff"
 
     interface IConverter<DynamicTableEntity, AwsOptions> with
         member this.Convert(value : DynamicTableEntity) : AwsOptions =

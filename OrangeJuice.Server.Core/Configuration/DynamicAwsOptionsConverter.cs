@@ -8,7 +8,7 @@ namespace OrangeJuice.Server.Configuration
 {
 	public sealed class DynamicAwsOptionsConverter : IConverter<DynamicTableEntity, AwsOptions>
 	{
-		private const string TimeSpanFormat = @"hh\:mm\:ss.fff";
+		private const string TimeSpanFormat = @"hh\:mm\:ss\.fff";
 
 		public AwsOptions Convert(DynamicTableEntity value)
 		{

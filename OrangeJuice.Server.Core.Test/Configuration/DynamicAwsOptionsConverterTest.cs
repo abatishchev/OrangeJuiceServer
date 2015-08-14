@@ -19,7 +19,7 @@ namespace OrangeJuice.Server.Test.Configuration
 				AssociateTag = "associateTag",
 				AccessKey = "accessKey",
 				SecretKey = "secretKey",
-				RequestLimit = TimeSpan.MinValue
+				RequestLimit = TimeSpan.FromMilliseconds(500)
 			};
 
 			var converter = CreateConverter(type);
