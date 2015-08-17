@@ -67,9 +67,6 @@ namespace OrangeJuice.Server.Api
 			Container container = new Container();
 
 			container.RegisterSingle<IConfigurationProvider, WebConfigurationProvider>();
-			container.RegisterSingle<ObjectCache>(MemoryCache.Default);
-			container.RegisterSingle<ICacheClient, MemoryCacheClient>();
-			container.RegisterSingleDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>(Lifestyle.Singleton);
 
 			return container;
@@ -79,9 +76,6 @@ namespace OrangeJuice.Server.Api
 		{
 			#region Providers
 			container.RegisterSingle<IConfigurationProvider, WebConfigurationProvider>();
-			container.RegisterSingle<ObjectCache>(MemoryCache.Default);
-			container.RegisterSingle<ICacheClient, MemoryCacheClient>();
-			container.RegisterSingleDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
 
 			container.RegisterSingle<IEnvironmentProvider, ConfigurationEnvironmentProvider>();
 
@@ -98,8 +92,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(Lifestyle.Singleton);
 
 			container.Register<IConverter<DynamicTableEntity, AwsOptions>, DynamicAwsOptionsConverter>();
-			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
-			container.RegisterDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(CachingOptionsProvider<AwsOptions>));
+			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>(Lifestyle.Singleton);
 			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>(Lifestyle.Singleton);
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>(Lifestyle.Singleton);
