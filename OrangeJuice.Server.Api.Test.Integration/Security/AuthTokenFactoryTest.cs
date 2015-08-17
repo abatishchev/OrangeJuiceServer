@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Ab.Factory;
+
 using FluentAssertions;
+
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Security;
 using SimpleInjector;
+
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Security
@@ -23,7 +27,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Security
 			var googleTokenFactory = (IFactory<Task<AuthToken>, string>)container.GetInstance(googleAuthTokenFactoryType);
 			var bearerTokenFactory = (IFactory<Task<AuthToken>, AuthToken>)container.GetInstance(authTokenFactoryType);
 
-			var jwt = jwtFactory.Create();
+			Jwt jwt = jwtFactory.Create();
 			AuthToken authorizationToken = await googleTokenFactory.Create(jwt.Value);
 
 			// Act

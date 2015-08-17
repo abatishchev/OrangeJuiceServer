@@ -110,7 +110,7 @@ namespace OrangeJuice.Server.Api
 			container.RegisterSingle<ObjectCache>(MemoryCache.Default);
 			container.RegisterSingle<ICacheClient, MemoryCacheClient>();
 			container.RegisterSingleDecorator(typeof(IConfigurationProvider), typeof(CachingConfigurationProvider));
-			container.RegisterFactory<AuthOptions, AuthOptionsFactory>();
+			container.RegisterFactory<AuthOptions, AuthOptionsFactory>(Lifestyle.Singleton);
 
 			return container;
 		}
@@ -133,16 +133,16 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Configuration
-			container.RegisterFactory<AuthOptions, AuthOptionsFactory>();
+			container.RegisterFactory<AuthOptions, AuthOptionsFactory>(Lifestyle.Singleton);
 
-			container.RegisterFactory<AzureOptions, AzureOptionsFactory>();
+			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(Lifestyle.Singleton);
 
 			container.Register<IConverter<DynamicTableEntity, AwsOptions>, DynamicAwsOptionsConverter>();
 			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
 			container.RegisterDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(CachingOptionsProvider<AwsOptions>));
 			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>(Lifestyle.Singleton);
 
-			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>();
+			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>(Lifestyle.Singleton);
 			#endregion
 
 			#region Security
