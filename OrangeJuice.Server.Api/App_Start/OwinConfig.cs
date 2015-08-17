@@ -1,13 +1,12 @@
 ﻿using System.Web.Http;
 
+using Ab.Configuration;
+
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 
-using OrangeJuice.Server.Configuration;
-
 using Owin;
-
 using SimpleInjector;
 
 namespace OrangeJuice.Server.Api

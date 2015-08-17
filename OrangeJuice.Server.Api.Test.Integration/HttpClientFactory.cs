@@ -3,11 +3,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-using Factory;
+using Ab.Configuration;
+using Ab.Factory;
 
-using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Security;
+
 using SimpleInjector;
 
 namespace OrangeJuice.Server.Api.Test.Integration

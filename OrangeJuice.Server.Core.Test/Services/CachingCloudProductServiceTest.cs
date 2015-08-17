@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Ab.Amazon.Data;
+
 using FluentAssertions;
 using Moq;
 
@@ -17,7 +19,7 @@ namespace OrangeJuice.Server.Test.Services
 		#region Search
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Pass_Barcode_BarcodeType_To_ProductRepository_Search(Type type)
 		{
 			// Arrange
@@ -38,7 +40,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Pass_ProductId_Of_Product_Returned_By_ProductRepository_Search_To_AzureProductProvider_Get(Type type)
 		{
 			// Arrange
@@ -59,7 +61,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Not_Empty_Sequence(Type type)
 		{
 			// Arrange
@@ -83,7 +85,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Not_Call_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Not_Empty_Sequence(Type type)
 		{
 			// Arrange
@@ -103,7 +105,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Not_Call_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
@@ -123,7 +125,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Pass_Barcode_BarcodeType_To_AwsProductProvider_Search_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
@@ -146,7 +148,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Return_Null_When_ProductRepository_Returns_Empty_Sequence_And_AwsProvider_Search_Returns_Empty_Sequence(Type type)
 		{
 			var repositoryMock = new Mock<IProductRepository>();
@@ -166,7 +168,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Pass_Barcode_BarcodeType_SourceProductId_To_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
@@ -191,7 +193,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Pass_ProductDescriptor_Returned_By_AwsProductProvider_Search_To_AzureProductProvider_Save_When_ProductRepository_Search_ReturnsEmpty_Sequence(Type type)
 		{
 			// Arrange
@@ -221,7 +223,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Pass_Product_To_AzureProductProvider_Save_Having_ProductId_Returned_By_ProductRepository_Save_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
@@ -248,7 +250,7 @@ namespace OrangeJuice.Server.Test.Services
 
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Search_Should_Return_ProductDescriptors_Returned_By_AzureProductProvider_Get_When_ProductRepository_Search_Returns_Empty_Sequence(Type type)
 		{
 			// Arrange
@@ -272,7 +274,7 @@ namespace OrangeJuice.Server.Test.Services
 		#region Get
 		[Theory]
 		[InlineData(typeof(CachingCloudProductService))]
-		[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
+		//[InlineData(typeof(FSharp.Services.CachingCloudProductService))]
 		public async Task Get_Should_Return_ProductDescriptor_Returned_By_AzureProductProvider_Get(Type type)
 		{
 			// Arrange

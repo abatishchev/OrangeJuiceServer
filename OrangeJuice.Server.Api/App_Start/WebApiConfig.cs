@@ -8,6 +8,8 @@ using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Validation;
 
+using Ab.WebApi.SimpleInjector;
+
 using Drum;
 
 using Newtonsoft.Json;

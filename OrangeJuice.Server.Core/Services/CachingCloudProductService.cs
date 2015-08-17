@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using Ab.Amazon.Data;
+
 using OrangeJuice.Server.Data;
 using OrangeJuice.Server.Data.Models;
 

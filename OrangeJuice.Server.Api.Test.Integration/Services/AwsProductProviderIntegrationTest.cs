@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
+using Ab.Amazon.Data;
+
 using FluentAssertions;
 
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Services;
 
 using SimpleInjector;
-
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services

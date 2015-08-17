@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 
+using Ab.Amazon.Data;
+
 using FluentAssertions;
 using Moq;
 

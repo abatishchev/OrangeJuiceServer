@@ -4,13 +4,12 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-using Factory;
+using Ab.Configuration;
+using Ab.Factory;
 
 using Microsoft.Owin.Security.DataHandler.Encoder;
 
 using Newtonsoft.Json;
-
-using OrangeJuice.Server.Configuration;
 
 namespace OrangeJuice.Server.Security
 {

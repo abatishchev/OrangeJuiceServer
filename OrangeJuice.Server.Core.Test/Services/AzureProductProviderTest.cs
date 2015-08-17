@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Ab;
+using Ab.Amazon.Data;
+using Ab.Azure;
+using Ab.Azure.Configuration;
+
 using FluentAssertions;
-using OrangeJuice.Server.Data.Models;
 using Xunit;
 
 using Moq;
 
-using OrangeJuice.Server.Configuration;
 using OrangeJuice.Server.Services;
 
 namespace OrangeJuice.Server.Test.Services

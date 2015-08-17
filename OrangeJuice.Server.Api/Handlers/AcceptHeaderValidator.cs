@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-using OrangeJuice.Server.Validation;
+using Ab.Validation;
 
 namespace OrangeJuice.Server.Api.Handlers
 {

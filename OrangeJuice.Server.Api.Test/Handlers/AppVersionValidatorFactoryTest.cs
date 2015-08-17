@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+
+using Ab;
+using Ab.Configuration;
+using Ab.Validation;
+
 using FluentAssertions;
 using Moq;
+
 using OrangeJuice.Server.Api.Handlers;
-using OrangeJuice.Server.Configuration;
-using OrangeJuice.Server.Validation;
+
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Handlers

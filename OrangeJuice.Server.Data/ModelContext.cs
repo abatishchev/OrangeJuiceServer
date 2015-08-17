@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 
-using OrangeJuice.Server.Configuration;
+using Ab.Configuration;
+
 using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Data

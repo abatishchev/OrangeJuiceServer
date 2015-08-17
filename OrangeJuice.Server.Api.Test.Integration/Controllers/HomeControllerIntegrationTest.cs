@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-
 using FluentAssertions;
-
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers

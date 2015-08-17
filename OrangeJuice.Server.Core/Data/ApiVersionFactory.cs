@@ -1,11 +1,14 @@
 ﻿using System.Reflection;
 
-using OrangeJuice.Server.Configuration;
+using Ab.Configuration;
+using Ab.Factory;
+using Ab.Reflection;
+
 using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Data
 {
-	public sealed class ApiVersionFactory : Factory.IFactory<ApiVersion>
+	public sealed class ApiVersionFactory : IFactory<ApiVersion>
 	{
 		#region Fields
 		private readonly IAssemblyProvider _assemblyProvider;
@@ -37,7 +40,7 @@ namespace OrangeJuice.Server.Data
 			return _assemblyProvider.GetExecutingAssembly()
 									.GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
 		}
-		
+
 		private string GetEnvironment()
 		{
 			return _environmentProvider.GetCurrentEnvironment();

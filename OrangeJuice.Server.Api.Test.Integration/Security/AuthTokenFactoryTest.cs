@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using Factory;
+using Ab.Factory;
 using FluentAssertions;
-
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Security;
-
 using SimpleInjector;
 using Xunit;
 
@@ -43,8 +40,8 @@ namespace OrangeJuice.Server.Api.Test.Integration.Security
 		{
 			get
 			{
-				yield return new[] { typeof(Server.Security.GoogleAuthTokenFactory), typeof(Server.Security.AuthTokenFactory) };
-				yield return new[] { typeof(Server.FSharp.Security.GoogleAuthTokenFactory), typeof(Server.FSharp.Security.AuthTokenFactory) };
+				yield return new[] { typeof(GoogleAuthTokenFactory), typeof(AuthTokenFactory) };
+				//yield return new[] { typeof(FSharp.Security.GoogleAuthTokenFactory), typeof(FSharp.Security.AuthTokenFactory) };
 			}
 		}
 	}

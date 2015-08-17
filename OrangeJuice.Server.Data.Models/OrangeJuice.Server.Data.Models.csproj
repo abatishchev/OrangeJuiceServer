@@ -45,8 +45,6 @@
     <Compile Include="BarcodeSearchCriteria.cs" />
     <Compile Include="BarcodeType.cs" />
     <Compile Include="Product.cs" />
-    <Compile Include="ProductDescriptor.cs" />
-    <Compile Include="AwsProductSearchCriteria.cs" />
     <Compile Include="ProductSearchCriteria.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rating.cs" />

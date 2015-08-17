@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using OrangeJuice.Server.Data.Models;
+using Ab.Amazon.Data;
 
 namespace OrangeJuice.Server.Services
 {

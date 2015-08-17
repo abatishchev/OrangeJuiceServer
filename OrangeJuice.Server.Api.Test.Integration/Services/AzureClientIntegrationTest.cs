@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Ab.Amazon.Data;
+using Ab.Azure;
+using Ab.Configuration;
+
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
-
-using OrangeJuice.Server.Configuration;
-using OrangeJuice.Server.Data.Models;
-using OrangeJuice.Server.Services;
-
 using SimpleInjector;
-
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
@@ -18,7 +16,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 	{
 		[Theory]
 		[InlineData(typeof(AzureClient))]
-		[InlineData(typeof(FSharp.Services.AzureClient))]
+		//[InlineData(typeof(FSharp.Services.AzureClient))]
 		public async Task GetBlobFromContainer_Should_Return_Blob_When_Blob_Exists(Type type)
 		{
 			// Arrange
@@ -38,7 +36,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 
 		[Theory]
 		[InlineData(typeof(AzureClient))]
-		[InlineData(typeof(FSharp.Services.AzureClient))]
+		//[InlineData(typeof(FSharp.Services.AzureClient))]
 		public async Task GetBlobFromContainer_Should_Return_Null_When_Blob_Does_Not_Exist(Type type)
 		{
 			// Arrange
@@ -58,7 +56,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 
 		[Theory]
 		[InlineData(typeof(AzureClient))]
-		[InlineData(typeof(FSharp.Services.AzureClient))]
+		//[InlineData(typeof(FSharp.Services.AzureClient))]
 		public void PutBlobToContainer_Should_Not_Throw_Exception_When_Saves_Content_To_Blob(Type type)
 		{
 			// Arrange
@@ -80,7 +78,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 
 		[Theory]
 		[InlineData(typeof(AzureClient))]
-		[InlineData(typeof(FSharp.Services.AzureClient))]
+		//[InlineData(typeof(FSharp.Services.AzureClient))]
 		public async Task GetBlobUrl_Should_Return_BlobUrl_When_Blob_Exists(Type type)
 		{
 			// Arrange
@@ -100,7 +98,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 
 		[Theory]
 		[InlineData(typeof(AzureClient))]
-		[InlineData(typeof(FSharp.Services.AzureClient))]
+		//[InlineData(typeof(FSharp.Services.AzureClient))]
 		public async Task GetBlobUrl_Should_Return_Null_When_Blob_Does_Not_Exist(Type type)
 		{
 			// Arrange

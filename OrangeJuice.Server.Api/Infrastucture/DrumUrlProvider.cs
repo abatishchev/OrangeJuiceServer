@@ -2,12 +2,14 @@
 using System.Linq.Expressions;
 using System.Net.Http;
 
+using Ab.Factory;
+using Ab.Web;
+
 using Drum;
-using Factory;
 
 namespace OrangeJuice.Server.Api.Infrastucture
 {
-	public sealed class DrumUrlProvider : Web.IUrlProvider
+	public sealed class DrumUrlProvider : IUrlProvider
 	{
 		private readonly UriMakerContext _context;
 		private readonly IFactory<HttpRequestMessage> _requestMessageFactory;

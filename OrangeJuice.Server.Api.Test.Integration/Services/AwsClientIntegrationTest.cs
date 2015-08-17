@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Ab.Amazon;
+
 using FluentAssertions;
-
-using OrangeJuice.Server.Data.Models;
-using OrangeJuice.Server.Services;
-
 using SimpleInjector;
-
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Services
@@ -16,7 +13,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 	{
 		[Theory]
 		[InlineData(typeof(XmlAwsClient))]
-		[InlineData(typeof(FSharp.Services.XmlAwsClient))]
+		//[InlineData(typeof(FSharp.Services.XmlAwsClient))]
 		public async Task GetItems_Should_Return_Sequnce_Of_ProductDescriptor(Type type)
 		{
 			// Arrange

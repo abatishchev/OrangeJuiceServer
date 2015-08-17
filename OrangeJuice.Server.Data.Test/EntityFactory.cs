@@ -1,6 +1,5 @@
 ﻿using System.Linq;
-
-using OrangeJuice.Server.Configuration;
+using Ab.Configuration;
 
 namespace OrangeJuice.Server.Data.Test
 {

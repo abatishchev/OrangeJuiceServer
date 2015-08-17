@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using Factory;
+
+using Ab.Amazon;
+using Ab.Amazon.Data;
+using Ab.Factory;
+
 using Moq;
 
 using OrangeJuice.Server.Data.Models;

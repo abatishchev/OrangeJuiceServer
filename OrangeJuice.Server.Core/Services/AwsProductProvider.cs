@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using Factory;
+using Ab.Amazon;
+using Ab.Amazon.Data;
+using Ab.Factory;
 
 using OrangeJuice.Server.Data.Models;
 

@@ -36,6 +36,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ab.Amazon, Version=0.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ab.Amazon.0.1.3\lib\net45\Ab.Amazon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
       <Private>True</Private>
@@ -90,16 +94,6 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppVersion.cs" />
-    <Compile Include="Cache\ICacheClient.cs" />
-    <Compile Include="Configuration\AuthOptions.cs" />
-    <Compile Include="Configuration\AwsOptions.cs" />
-    <Compile Include="Configuration\AzureOptions.cs" />
-    <Compile Include="Configuration\EnvironmentName.cs" />
-    <Compile Include="Configuration\GoogleAuthOptions.cs" />
-    <Compile Include="Configuration\IConfigurationProvider.cs" />
-    <Compile Include="Configuration\IConnectionStringProvider.cs" />
-    <Compile Include="Configuration\IEnvironmentProvider.cs" />
-    <Compile Include="Configuration\IOptionsProvider.cs" />
     <Compile Include="Controllers\ControllerExtensions.cs" />
     <Compile Include="Controllers\IProductController.cs" />
     <Compile Include="Controllers\IVersionController.cs" />
@@ -107,33 +101,11 @@
     <Compile Include="Data\IRatingRepository.cs" />
     <Compile Include="Data\ITraceRequestRepository.cs" />
     <Compile Include="Data\IUserRepository.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="Filters\IFilter.cs" />
-    <Compile Include="IAssemblyProvider.cs" />
-    <Compile Include="IConverter.cs" />
-    <Compile Include="IDateTimeProvider.cs" />
-    <Compile Include="IPipelineFilter.cs" />
-    <Compile Include="IPipeline.cs" />
-    <Compile Include="IValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Jwt.cs" />
-    <Compile Include="Services\IArgumentBuilder.cs" />
-    <Compile Include="Services\IAwsClient.cs" />
-    <Compile Include="Services\IAzureContainerClient.cs" />
     <Compile Include="Services\IAzureProductProvider.cs" />
-    <Compile Include="Services\IAzureClient.cs" />
-    <Compile Include="Services\IBlobClient.cs" />
-    <Compile Include="Services\IBlobNameResolver.cs" />
-    <Compile Include="Services\IItemSelector.cs" />
     <Compile Include="Services\IAwsProductProvider.cs" />
     <Compile Include="Services\IProductService.cs" />
-    <Compile Include="Services\IQuerySigner.cs" />
-    <Compile Include="Services\IUrlBuilder.cs" />
-    <Compile Include="Threading\IRequestScheduler.cs" />
-    <Compile Include="Web\IHttpClient.cs" />
-    <Compile Include="Web\IQueryBuilder.cs" />
-    <Compile Include="Web\IUrlEncoder.cs" />
-    <Compile Include="Web\IUrlProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
