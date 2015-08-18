@@ -2,9 +2,12 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+
 using FluentAssertions;
+
 using OrangeJuice.Server.Data.Models;
 using OrangeJuice.Server.Data.Test;
+
 using Xunit;
 
 namespace OrangeJuice.Server.Api.Test.Integration.Controllers
