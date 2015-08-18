@@ -58,7 +58,7 @@ namespace OrangeJuice.Server.Api
 		public static Container CreateWebApiContainer()
 		{
 			Container container = new Container();
-			//container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
+			container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
 
 			RegisterTypes(container);
 
@@ -68,7 +68,7 @@ namespace OrangeJuice.Server.Api
 		public static Container CreateOwinContainer()
 		{
 			Container container = new Container();
-			//container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
+			container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
 
 			container.RegisterSingleton<IConfigurationProvider, WebConfigurationProvider>();
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>(Lifestyle.Singleton);
