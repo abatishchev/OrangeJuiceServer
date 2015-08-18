@@ -1,5 +1,6 @@
 using System.Net.Http;
 using System.Reactive.Concurrency;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -30,6 +31,7 @@ using Ab.SimpleInjector;
 using Ab.Threading;
 using Ab.Validation;
 using Ab.Web;
+using Ab.WebApi.SimpleInjector;
 
 using Drum;
 using Elmah;
