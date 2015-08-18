@@ -94,7 +94,8 @@ namespace OrangeJuice.Server.Api
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(Lifestyle.Singleton);
 
 			container.Register<IConverter<DynamicTableEntity, AwsOptions>, DynamicAwsOptionsConverter>();
-			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>(Lifestyle.Singleton);
+			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
+			container.RegisterSingleDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(OptionsProviderAdapter<AwsOptions>));
 			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>(Lifestyle.Singleton);
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>(Lifestyle.Singleton);
