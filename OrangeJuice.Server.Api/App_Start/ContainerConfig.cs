@@ -49,7 +49,7 @@ using OrangeJuice.Server.Security;
 using OrangeJuice.Server.Services;
 
 using SimpleInjector;
-using SimpleInjector.Extensions;
+using SimpleInjector.Integration.WebApi;
 
 namespace OrangeJuice.Server.Api
 {
@@ -58,6 +58,7 @@ namespace OrangeJuice.Server.Api
 		public static Container CreateWebApiContainer()
 		{
 			Container container = new Container();
+			//container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
 
 			RegisterTypes(container);
 
@@ -67,8 +68,9 @@ namespace OrangeJuice.Server.Api
 		public static Container CreateOwinContainer()
 		{
 			Container container = new Container();
+			//container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
 
-			container.RegisterSingle<IConfigurationProvider, WebConfigurationProvider>();
+			container.RegisterSingleton<IConfigurationProvider, WebConfigurationProvider>();
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>(Lifestyle.Singleton);
 
 			return container;
@@ -77,15 +79,15 @@ namespace OrangeJuice.Server.Api
 		private static void RegisterTypes(Container container)
 		{
 			#region Providers
-			container.RegisterSingle<IConfigurationProvider, WebConfigurationProvider>();
+			container.RegisterSingleton<IConfigurationProvider, WebConfigurationProvider>();
 
-			container.RegisterSingle<IEnvironmentProvider, ConfigurationEnvironmentProvider>();
+			container.RegisterSingleton<IEnvironmentProvider, ConfigurationEnvironmentProvider>();
 
-			container.RegisterSingle<IConnectionStringProvider, ConfigurationConnectionStringProvider>();
+			container.RegisterSingleton<IConnectionStringProvider, ConfigurationConnectionStringProvider>();
 
-			container.RegisterSingle<IDateTimeProvider, UtcDateTimeProvider>();
+			container.RegisterSingleton<IDateTimeProvider, UtcDateTimeProvider>();
 
-			container.RegisterSingle<IAssemblyProvider, ReflectionAssemblyProvider>();
+			container.RegisterSingleton<IAssemblyProvider, ReflectionAssemblyProvider>();
 			#endregion
 
 			#region Configuration
@@ -95,7 +97,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IConverter<DynamicTableEntity, AwsOptions>, DynamicAwsOptionsConverter>();
 			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
-			container.RegisterSingleDecorator(typeof(IOptionsProvider<AwsOptions>), typeof(OptionsProviderAdapter<AwsOptions>));
+			container.RegisterDecorator<IOptionsProvider<AwsOptions>, OptionsProviderAdapter<AwsOptions>>(Lifestyle.Singleton);
 			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>(Lifestyle.Singleton);
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>(Lifestyle.Singleton);
@@ -110,14 +112,14 @@ namespace OrangeJuice.Server.Api
 
 			#region Web API
 			// Filters
-			container.RegisterAll<IFilter>(typeof(WebApiContrib.Filters.ValidationAttribute));
+			container.RegisterCollection<IFilter>(new[] { typeof(WebApiContrib.Filters.ValidationAttribute) });
 
 			// Handlers
 			container.RegisterFactory<IValidator<HttpRequestMessage>, AcceptHeaderValidatorFactory>(Lifestyle.Singleton);
 
 			//container.Register<ITraceRequestRepository, EntityTraceRequestRepository>();
 
-			container.RegisterAll<DelegatingHandler>(typeof(DelegatingHandlerProxy<AppVersionHandler>));
+			container.RegisterCollection<DelegatingHandler>(new[] { typeof(DelegatingHandlerProxy<AppVersionHandler>) });
 
 			// Services
 			container.Register<IAssembliesResolver>(() =>
@@ -134,11 +136,11 @@ namespace OrangeJuice.Server.Api
 			container.Register<ErrorLog>(() => new SqlErrorLog(container.GetInstance<IConnectionStringProvider>().GetDefaultConnectionString()));
 
 			// Controllers
-			container.RegisterWebApiControllers(GlobalConfiguration.Configuration, new[] { Assembly.GetExecutingAssembly() });
+			container.RegisterWebApiControllers(GlobalConfiguration.Configuration, Assembly.GetExecutingAssembly());
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
 			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage), Lifestyle.Singleton);
-			container.RegisterSingle<IUrlProvider, DrumUrlProvider>();
+			container.RegisterSingleton<IUrlProvider, DrumUrlProvider>();
 			#endregion
 
 			#region Data
@@ -179,15 +181,13 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IUrlBuilder, AwsUrlBuilder>();
 
-			container.RegisterSingle<IScheduler>(Scheduler.Default);
+			container.RegisterSingleton<IScheduler>(Scheduler.Default);
 
 			container.Register<IRequestScheduler, IntervalRequestScheduler>();
 
 			container.Register<HttpClient>(() => HttpClientFactory.Create());
-
-			container.Register(typeof(IHttpClient), typeof(HttpClientAdapter));
-
-			container.RegisterDecorator(typeof(IHttpClient), typeof(ThrottlingHttpClient));
+			container.Register<IHttpClient, HttpClientAdapter>();
+			container.RegisterDecorator<IHttpClient, ThrottlingHttpClient>();
 
 			container.Register<IValidator<XElement>, XmlRequestValidator>();
 
@@ -225,7 +225,7 @@ namespace OrangeJuice.Server.Api
 
 		public static void RegisterUriMaker(Container container, UriMakerContext uriMakerContext)
 		{
-			container.RegisterSingle(uriMakerContext);
+			container.RegisterSingleton(uriMakerContext);
 		}
 	}
 }
