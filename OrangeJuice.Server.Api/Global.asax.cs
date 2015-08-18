@@ -11,7 +11,7 @@ namespace OrangeJuice.Server.Api
 	{
 		protected void Application_Start()
 		{
-			var container = ContainerConfig.CreateWebApiContainer(registerControllers: true);
+			var container = ContainerConfig.CreateWebApiContainer();
 
 			GlobalConfiguration.Configure(c => WebApiConfig.Configure(c, container));
 		}

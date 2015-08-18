@@ -55,11 +55,11 @@ namespace OrangeJuice.Server.Api
 {
 	internal static class ContainerConfig
 	{
-		public static Container CreateWebApiContainer(bool registerControllers = false)
+		public static Container CreateWebApiContainer()
 		{
 			Container container = new Container();
 
-			RegisterTypes(container, registerControllers);
+			RegisterTypes(container);
 
 			return container;
 		}
@@ -74,7 +74,7 @@ namespace OrangeJuice.Server.Api
 			return container;
 		}
 
-		private static void RegisterTypes(Container container, bool registerControllers)
+		private static void RegisterTypes(Container container)
 		{
 			#region Providers
 			container.RegisterSingle<IConfigurationProvider, WebConfigurationProvider>();
@@ -133,10 +133,7 @@ namespace OrangeJuice.Server.Api
 			container.Register<ErrorLog>(() => new SqlErrorLog(container.GetInstance<IConnectionStringProvider>().GetDefaultConnectionString()));
 
 			// Controllers
-			if (registerControllers)
-			{
-				container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
-			}
+			container.RegisterWebApiControllers(GlobalConfiguration.Configuration, new[] { Assembly.GetExecutingAssembly() });
 
 			container.EnableHttpRequestMessageTracking(GlobalConfiguration.Configuration);
 			container.Register<IFactory<HttpRequestMessage>>(() => new DelegateFactory<HttpRequestMessage>(container.GetCurrentHttpRequestMessage), Lifestyle.Singleton);
