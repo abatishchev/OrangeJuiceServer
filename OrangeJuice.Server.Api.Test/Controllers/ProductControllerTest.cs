@@ -3,8 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
-
 using Ab.Amazon.Data;
+using AwsProduct = Ab.Amazon.Data.Product;
 
 using FluentAssertions;
 using Moq;
@@ -45,7 +45,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
-			serviceMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(new ProductDescriptor());
+			serviceMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(new AwsProduct());
 
 			IProductController controller = CreateController(type, serviceMock.Object);
 
@@ -53,7 +53,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor>>();
+			result.Should().BeOfType<OkNegotiatedContentResult<AwsProduct>>();
 		}
 
 		[Theory]
@@ -66,7 +66,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			Guid productId = Guid.NewGuid();
 
 			var serviceMock = new Mock<IProductService>();
-			serviceMock.Setup(r => r.Get(productId)).ReturnsAsync(new ProductDescriptor());
+			serviceMock.Setup(r => r.Get(productId)).ReturnsAsync(new AwsProduct());
 
 			IProductController controller = CreateController(type, serviceMock.Object);
 
@@ -81,10 +81,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		[InlineData(typeof(ProductController))]
 		[InlineData(typeof(FSharp.Controllers.ProductController))]
 
-		public async Task GetProducId_Should_Return_ProductDescriptor_Returned_By_ProductManager_Search(Type type)
+		public async Task GetProducId_Should_Return_AwsProduct_Returned_By_ProductManager_Search(Type type)
 		{
 			// Arrange
-			ProductDescriptor expected = new ProductDescriptor();
+			AwsProduct expected = new AwsProduct();
 
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Get(It.IsAny<Guid>())).ReturnsAsync(expected);
@@ -93,7 +93,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.GetProductId(new ProductSearchCriteria());
-			ProductDescriptor actual = ((OkNegotiatedContentResult<ProductDescriptor>)result).Content;
+			AwsProduct actual = ((OkNegotiatedContentResult<AwsProduct>)result).Content;
 
 			// Assert
 			actual.Should().Be(expected);
@@ -145,7 +145,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		{
 			// Arrange
 			var serviceMock = new Mock<IProductService>();
-			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(new ProductDescriptor[0]);
+			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(new AwsProduct[0]);
 
 			IProductController controller = CreateController(type, serviceMock.Object);
 
@@ -153,7 +153,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
 
 			// Assert
-			result.Should().BeOfType<OkNegotiatedContentResult<ProductDescriptor[]>>();
+			result.Should().BeOfType<OkNegotiatedContentResult<AwsProduct[]>>();
 		}
 
 		[Theory]
@@ -167,7 +167,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 			const BarcodeType barcodeType = BarcodeType.EAN;
 
 			var serviceMock = new Mock<IProductService>();
-			serviceMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(new ProductDescriptor[0]);
+			serviceMock.Setup(r => r.Search(barcode, barcodeType)).ReturnsAsync(new AwsProduct[0]);
 
 			IProductController controller = CreateController(type, serviceMock.Object);
 
@@ -182,10 +182,10 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 		[InlineData(typeof(ProductController))]
 		[InlineData(typeof(FSharp.Controllers.ProductController))]
 
-		public async Task GetProductBarcode_Should_Return_ProductDescriptors_Returned_By_ProductManager_Search(Type type)
+		public async Task GetProductBarcode_Should_Return_AwsProducts_Returned_By_ProductManager_Search(Type type)
 		{
 			// Arrange
-			var expected = new[] { new ProductDescriptor(), new ProductDescriptor() };
+			var expected = new[] { new AwsProduct(), new AwsProduct() };
 
 			var serviceMock = new Mock<IProductService>();
 			serviceMock.Setup(r => r.Search(It.IsAny<string>(), It.IsAny<BarcodeType>())).ReturnsAsync(expected);
@@ -194,7 +194,7 @@ namespace OrangeJuice.Server.Api.Test.Controllers
 
 			// Act
 			IHttpActionResult result = await controller.GetProductBarcode(new BarcodeSearchCriteria());
-			var actual = ((OkNegotiatedContentResult<ProductDescriptor[]>)result).Content;
+			var actual = ((OkNegotiatedContentResult<AwsProduct[]>)result).Content;
 
 			// Assert
 			actual.Should().BeEquivalentTo(expected);

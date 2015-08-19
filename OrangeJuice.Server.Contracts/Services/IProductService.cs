@@ -3,14 +3,12 @@ using System.Threading.Tasks;
 
 using Ab.Amazon.Data;
 
-using OrangeJuice.Server.Data.Models;
-
 namespace OrangeJuice.Server.Services
 {
 	public interface IProductService
 	{
-		Task<ProductDescriptor> Get(Guid productId);
+		Task<Product> Get(Guid productId);
 
-		Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType);
+		Task<Product[]> Search(string barcode, BarcodeType barcodeType);
 	}
 }

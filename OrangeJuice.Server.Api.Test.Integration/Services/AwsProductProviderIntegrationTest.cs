@@ -1,12 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
+using Ab.Amazon;
 using Ab.Amazon.Data;
 
 using FluentAssertions;
-
-using OrangeJuice.Server.Data.Models;
-using OrangeJuice.Server.Services;
 
 using SimpleInjector;
 using Xunit;
@@ -16,14 +14,14 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 	public class AwsProductProviderIntegrationTest
 	{
 		[Fact]
-		public async Task Search_Should_Return_ProductDescriptor()
+		public async Task Search_Should_Return_AwsProduct()
 		{
 			// Arrange
 			Container container = ContainerConfig.CreateWebApiContainer();
 			IAwsProductProvider provider = container.GetInstance<IAwsProductProvider>();
 
 			// Act
-			ProductDescriptor descriptor = (await provider.Search("0747599330971", BarcodeType.EAN)).FirstOrDefault(p => p.SourceProductId == "B00HSQEETM");
+			Product descriptor = (await provider.Search("0747599330971", BarcodeType.EAN)).FirstOrDefault(p => p.SourceProductId == "B00HSQEETM");
 
 			// Assert
 			descriptor.Should().NotBeNull();

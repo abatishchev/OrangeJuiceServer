@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using Ab.Amazon;
 using Ab.Amazon.Data;
+using AwsProduct = Ab.Amazon.Data.Product;
 
 using OrangeJuice.Server.Data;
-using OrangeJuice.Server.Data.Models;
+using Product = OrangeJuice.Server.Data.Models.Product;
 
 namespace OrangeJuice.Server.Services
 {
@@ -27,38 +29,38 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IProductService members
-		public Task<ProductDescriptor> Get(Guid productId)
+		public Task<AwsProduct> Get(Guid productId)
 		{
 			return _azureProvider.Get(productId);
 		}
 
-		public async Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
+		public async Task<AwsProduct[]> Search(string barcode, BarcodeType barcodeType)
 		{
 			Product[] products = await _productRepository.Search(barcode, barcodeType);
 			if (products.Any())
 				return await Task.WhenAll(products.Select(p => _azureProvider.Get(p.ProductId)));
 
-			ProductDescriptor[] descriptors = await _awsProvider.Search(barcode, barcodeType);
-			if (!descriptors.Any())
+			AwsProduct[] awsProduts = await _awsProvider.Search(barcode, barcodeType);
+			if (!awsProduts.Any())
 				return null;
-			return await Save(descriptors, barcode, barcodeType);
+			return await Save(awsProduts, barcode, barcodeType);
 		}
 
 		#endregion
 
 		#region Methods
-		private async Task<ProductDescriptor[]> Save(ProductDescriptor[] descriptors, string barcode, BarcodeType barcodeType)
+		private async Task<AwsProduct[]> Save(AwsProduct[] products, string barcode, BarcodeType barcodeType)
 		{
-			var tasks = descriptors.Select(async d => await Save(d, barcode, barcodeType));
+			var tasks = products.Select(async d => await Save(d, barcode, barcodeType));
 			await Task.WhenAll(tasks);
-			return descriptors;
+			return products;
 		}
 
-		private async Task Save(ProductDescriptor d, string barcode, BarcodeType barcodeType)
+		private async Task Save(AwsProduct product, string barcode, BarcodeType barcodeType)
 		{
-			Guid productId = await _productRepository.Save(barcode, barcodeType, d.SourceProductId);
-			d.ProductId = productId;
-			await _azureProvider.Save(d);
+			Guid productId = await _productRepository.Save(barcode, barcodeType, product.SourceProductId);
+			product.ProductId = productId;
+			await _azureProvider.Save(product);
 		}
 		#endregion
 	}

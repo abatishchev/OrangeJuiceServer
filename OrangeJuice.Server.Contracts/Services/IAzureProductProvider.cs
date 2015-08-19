@@ -7,9 +7,9 @@ namespace OrangeJuice.Server.Services
 {
 	public interface IAzureProductProvider
 	{
-		Task<ProductDescriptor> Get(Guid productId);
+		Task<Product> Get(Guid productId);
 
-		Task Save(ProductDescriptor descriptor);
+		Task Save(Product product);
 
 		Task<Uri> GetUrl(Guid productId);
 	}

@@ -14,7 +14,7 @@ namespace OrangeJuice.Server.Data.Models
 
 		public string Barcode { get; set; }
 
-		public BarcodeType BarcodeType { get; set; }
+		public Ab.Amazon.Data.BarcodeType BarcodeType { get; set; }
 
 		public string SourceProductId { get; set; }
 

@@ -46,8 +46,8 @@ namespace OrangeJuice.Server.Test.Services
 
 			IAzureClient client = CreateClient(content);
 
-			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
-			converterMock.Setup(c => c.ConvertBack(It.IsAny<ProductDescriptor>())).Returns(content);
+			var converterMock = new Mock<IConverter<string, Product>>();
+			converterMock.Setup(c => c.ConvertBack(It.IsAny<Product>())).Returns(content);
 
 			IAzureProductProvider provider = CreateProvider(azureOptions, client, converterMock.Object);
 
@@ -59,21 +59,21 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[Fact]
-		public async Task Get_Should_Return_ProductDescriptor_Returned_By_Converter()
+		public async Task Get_Should_Return_Product_Returned_By_Converter()
 		{
 			// Arrange
 			const string content = "content";
-			ProductDescriptor expected = new ProductDescriptor();
+			Product expected = new Product();
 
 			IAzureClient client = CreateClient(content);
 
-			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
+			var converterMock = new Mock<IConverter<string, Product>>();
 			converterMock.Setup(c => c.Convert(content)).Returns(expected);
 
 			IAzureProductProvider provider = CreateProvider(client, converterMock.Object);
 
 			// Act
-			ProductDescriptor actual = await provider.Get(Guid.NewGuid());
+			Product actual = await provider.Get(Guid.NewGuid());
 
 			// Arrange
 			actual.Should().Be(expected);
@@ -89,7 +89,7 @@ namespace OrangeJuice.Server.Test.Services
 			IAzureProductProvider provider = CreateProvider(clientMock.Object);
 
 			// Act
-			ProductDescriptor actual = await provider.Get(Guid.NewGuid());
+			Product actual = await provider.Get(Guid.NewGuid());
 
 			// Arrange
 			actual.Should().BeNull();
@@ -98,10 +98,10 @@ namespace OrangeJuice.Server.Test.Services
 
 		#region Save
 		[Fact]
-		public async Task Save_Should_Pass_ProductDescriptor_To_Converter_ConvertBack()
+		public async Task Save_Should_Pass_Product_To_Converter_ConvertBack()
 		{
 			// Arrange
-			ProductDescriptor descriptor = new ProductDescriptor();
+			Product descriptor = new Product();
 
 			var converter = CreateConverter();
 
@@ -118,12 +118,12 @@ namespace OrangeJuice.Server.Test.Services
 		public async Task Set_Should_Pass_Content_Returned_By_Converter_ConvertBack_To_AzureClient_PutBlobToContainer()
 		{
 			// Arrange
-			ProductDescriptor descriptor = new ProductDescriptor();
+			Product descriptor = new Product();
 			const string content = "content";
 
 			IAzureClient client = CreateClient(content);
 
-			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
+			var converterMock = new Mock<IConverter<string, Product>>();
 			converterMock.Setup(c => c.ConvertBack(descriptor)).Returns(content);
 
 			IAzureProductProvider provider = CreateProvider(client, converterMock.Object);
@@ -136,14 +136,14 @@ namespace OrangeJuice.Server.Test.Services
 		}
 
 		[Fact]
-		public async Task Set_Should_Pass_AzureOptions_ProductContainer_ProductId_And_ProductDescriptor_ProductId_To_AzureClient_PutBlobToContainer()
+		public async Task Set_Should_Pass_AzureOptions_ProductContainer_ProductId_And_Product_ProductId_To_AzureClient_PutBlobToContainer()
 		{
 			// Arrange
 			const string containerName = "containerName";
 			AzureOptions azureOptions = new AzureOptions { ProductsContainer = containerName };
 
 			Guid productId = Guid.NewGuid();
-			ProductDescriptor descriptor = new ProductDescriptor { ProductId = productId };
+			Product descriptor = new Product { ProductId = productId };
 
 			IAzureClient client = CreateClient(containerName, productId.ToString());
 
@@ -159,12 +159,12 @@ namespace OrangeJuice.Server.Test.Services
 
 		#region Helper methods
 
-		private static IAzureProductProvider CreateProvider(IAzureClient client, IConverter<string, ProductDescriptor> converter = null)
+		private static IAzureProductProvider CreateProvider(IAzureClient client, IConverter<string, Product> converter = null)
 		{
 			return CreateProvider(new AzureOptions(), client, converter);
 		}
 
-		private static IAzureProductProvider CreateProvider(AzureOptions azureOptions = null, IAzureClient client = null, IConverter<string, ProductDescriptor> converter = null)
+		private static IAzureProductProvider CreateProvider(AzureOptions azureOptions = null, IAzureClient client = null, IConverter<string, Product> converter = null)
 		{
 			return new AzureProductProvider(
 				azureOptions ?? new AzureOptions(),
@@ -188,11 +188,11 @@ namespace OrangeJuice.Server.Test.Services
 			return clientMock.Object;
 		}
 
-		private static IConverter<string, ProductDescriptor> CreateConverter()
+		private static IConverter<string, Product> CreateConverter()
 		{
-			var converterMock = new Mock<IConverter<string, ProductDescriptor>>();
-			converterMock.Setup(c => c.Convert(It.IsAny<string>())).Returns(new ProductDescriptor());
-			converterMock.Setup(c => c.ConvertBack(It.IsAny<ProductDescriptor>())).Returns("content");
+			var converterMock = new Mock<IConverter<string, Product>>();
+			converterMock.Setup(c => c.Convert(It.IsAny<string>())).Returns(new Product());
+			converterMock.Setup(c => c.ConvertBack(It.IsAny<Product>())).Returns("content");
 			return converterMock.Object;
 		}
 		#endregion

@@ -67,7 +67,7 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 
 			IAzureClient client = (IAzureClient)container.GetInstance(type);
 
-			string content = JObject.FromObject(new ProductDescriptor()).ToString();
+			string content = JObject.FromObject(new Product()).ToString();
 
 			// Act
 			Func<Task> func = () => client.PutBlobToContainer(containerName, Guid.NewGuid().ToString(), content);

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Ab.Amazon;
 using Ab.Amazon.Data;
-
-using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Services
 {
@@ -25,12 +24,12 @@ namespace OrangeJuice.Server.Services
 		#endregion
 
 		#region IProductService members
-		public Task<ProductDescriptor> Get(Guid productId)
+		public Task<Product> Get(Guid productId)
 		{
 			return _azureProvider.Get(productId);
 		}
 
-		public Task<ProductDescriptor[]> Search(string barcode, BarcodeType barcodeType)
+		public Task<Product[]> Search(string barcode, BarcodeType barcodeType)
 		{
 			return _awsProvider.Search(barcode, barcodeType);
 		}

@@ -3,6 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 
+using BarcodeType = Ab.Amazon.Data.BarcodeType;
+
 using FluentAssertions;
 
 using OrangeJuice.Server.Data.Models;

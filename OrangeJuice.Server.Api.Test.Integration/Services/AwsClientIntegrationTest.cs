@@ -14,12 +14,12 @@ namespace OrangeJuice.Server.Api.Test.Integration.Services
 		[Theory]
 		[InlineData(typeof(XmlAwsClient))]
 		//[InlineData(typeof(FSharp.Services.XmlAwsClient))]
-		public async Task GetItems_Should_Return_Sequnce_Of_ProductDescriptor(Type type)
+		public async Task GetItems_Should_Return_Sequnce_Of_AwsProduct(Type type)
 		{
 			// Arrange
 			Container container = ContainerConfig.CreateWebApiContainer();
 			IAwsClient client = (IAwsClient)container.GetInstance(type);
-			var searchCriteria = new AwsProductSearchCriteria
+			var searchCriteria = new ProductSearchCriteria
 			{
 				Operation = "ItemLookup",
 				ResponseGroups = new[] { "" },

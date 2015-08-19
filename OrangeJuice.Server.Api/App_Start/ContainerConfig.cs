@@ -15,6 +15,8 @@ using Ab.Amazon;
 using Ab.Amazon.Configuration;
 using Ab.Amazon.Cryptography;
 using Ab.Amazon.Data;
+using AwsProduct = Ab.Amazon.Data.Product;
+using ProductSearchCriteria = Ab.Amazon.ProductSearchCriteria;
 using Ab.Amazon.Filtering;
 using Ab.Amazon.Pipeline;
 using Ab.Amazon.Validation;
@@ -116,19 +118,18 @@ namespace OrangeJuice.Server.Api
 
 			// Handlers
 			container.RegisterFactory<IValidator<HttpRequestMessage>, AcceptHeaderValidatorFactory>(Lifestyle.Singleton);
+			container.RegisterCollection<DelegatingHandler>(new[] { typeof(DelegatingHandlerProxy<AppVersionHandler>) });
 
 			//container.Register<ITraceRequestRepository, EntityTraceRequestRepository>();
 
-			container.RegisterCollection<DelegatingHandler>(new[] { typeof(DelegatingHandlerProxy<AppVersionHandler>) });
-
 			// Services
-			container.Register<IAssembliesResolver>(() =>
-				new AssembliesResolver(
-					typeof(FSharp.Controllers.VersionController).Assembly,
-					typeof(Controllers.VersionController).Assembly),
-				Lifestyle.Singleton);
-			container.Register<IHttpControllerTypeResolver>(() => new DefaultHttpControllerTypeResolver(), Lifestyle.Singleton);
-			container.Register<IHttpControllerSelector>(() => new HttpControllerSelector(GlobalConfiguration.Configuration), Lifestyle.Singleton);
+			//container.Register<IAssembliesResolver>(() =>
+			//	new AssembliesResolver(
+			//		typeof(FSharp.Controllers.VersionController).Assembly,
+			//		typeof(Controllers.VersionController).Assembly),
+			//	Lifestyle.Singleton);
+			//container.Register<IHttpControllerTypeResolver>(() => new DefaultHttpControllerTypeResolver(), Lifestyle.Singleton);
+			//container.Register<IHttpControllerSelector>(() => new HttpControllerSelector(GlobalConfiguration.Configuration), Lifestyle.Singleton);
 
 			container.Register<IExceptionLogger, ElmahAggregateExceptionLogger>();
 
@@ -161,7 +162,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IAzureClient, AzureClient>();
 
-			container.Register<IConverter<string, ProductDescriptor>, JsonProductDescriptorConverter>();
+			container.Register<IConverter<string, AwsProduct>, JsonProductConverter>();
 
 			container.Register<IAzureProductProvider, AzureProductProvider>();
 			#endregion
@@ -193,9 +194,9 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IItemSelector, XmlItemSelector>();
 
-			container.Register<IPipeline<ProductDescriptor, XElement, AwsProductSearchCriteria>, ResponseGroupProductDescriptorPipeline>();
+			container.Register<IPipeline<AwsProduct, XElement, ProductSearchCriteria>, ResponseGroupProductPipeline>();
 
-			container.RegisterFactory<ProductDescriptor, XElement, AwsProductSearchCriteria, XmlProductDescriptorFactory>();
+			container.RegisterFactory<AwsProduct, XElement, ProductSearchCriteria, XmlProductFactory>();
 
 			container.Register<IFilter<XElement>, PrimaryVariantlItemFilter>();
 

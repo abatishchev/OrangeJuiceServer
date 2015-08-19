@@ -1,4 +1,5 @@
-﻿using FluentValidation.Attributes;
+﻿using Ab.Amazon.Data;
+using FluentValidation.Attributes;
 
 namespace OrangeJuice.Server.Data.Models
 {

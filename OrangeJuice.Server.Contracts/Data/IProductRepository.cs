@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using BarcodeType = Ab.Amazon.Data.BarcodeType;
+
 using OrangeJuice.Server.Data.Models;
 
 namespace OrangeJuice.Server.Data
