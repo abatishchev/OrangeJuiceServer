@@ -123,13 +123,13 @@ namespace OrangeJuice.Server.Api
 			//container.Register<ITraceRequestRepository, EntityTraceRequestRepository>();
 
 			// Services
-			//container.Register<IAssembliesResolver>(() =>
-			//	new AssembliesResolver(
-			//		typeof(FSharp.Controllers.VersionController).Assembly,
-			//		typeof(Controllers.VersionController).Assembly),
-			//	Lifestyle.Singleton);
-			//container.Register<IHttpControllerTypeResolver>(() => new DefaultHttpControllerTypeResolver(), Lifestyle.Singleton);
-			//container.Register<IHttpControllerSelector>(() => new HttpControllerSelector(GlobalConfiguration.Configuration), Lifestyle.Singleton);
+            container.Register<IAssembliesResolver>(() =>
+				new Ab.WebApi.AssembliesResolver(
+					//typeof(FSharp.Controllers.VersionController).Assembly,
+					typeof(Controllers.VersionController).Assembly),
+				Lifestyle.Singleton);
+			container.Register<IHttpControllerTypeResolver>(() => new DefaultHttpControllerTypeResolver(), Lifestyle.Singleton);
+			container.Register<IHttpControllerSelector>(() => new Ab.WebApi.HttpControllerSelector(GlobalConfiguration.Configuration), Lifestyle.Singleton);
 
 			container.Register<IExceptionLogger, ElmahAggregateExceptionLogger>();
 
