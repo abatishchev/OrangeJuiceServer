@@ -33,8 +33,8 @@
       <HintPath>..\packages\Ab.0.1.6\lib\net45\Ab.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ab.Amazon, Version=0.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ab.Amazon.0.1.4\lib\net45\Ab.Amazon.dll</HintPath>
+    <Reference Include="Ab.Amazon">
+      <HintPath>..\packages\Ab.Amazon.0.1.7\lib\net45\Ab.Amazon.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">

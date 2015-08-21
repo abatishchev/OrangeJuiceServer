@@ -16,7 +16,6 @@ using Ab.Amazon.Configuration;
 using Ab.Amazon.Cryptography;
 using Ab.Amazon.Data;
 using AwsProduct = Ab.Amazon.Data.Product;
-using ProductSearchCriteria = Ab.Amazon.ProductSearchCriteria;
 using Ab.Amazon.Filtering;
 using Ab.Amazon.Pipeline;
 using Ab.Amazon.Validation;
@@ -158,6 +157,8 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<ITableClient, AzureTableClient>();
 
+			container.Register<IQueueClient, AzureQueueClient>();
+
 			container.Register<IAzureContainerClient, AzureContainerClient>();
 
 			container.Register<IAzureClient, AzureClient>();
@@ -194,9 +195,9 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IItemSelector, XmlItemSelector>();
 
-			container.Register<IPipeline<AwsProduct, XElement, ProductSearchCriteria>, ResponseGroupProductPipeline>();
+			container.Register<IPipeline<AwsProduct, XElement, SearchCriteria>, ResponseGroupProductPipeline>();
 
-			container.RegisterFactory<AwsProduct, XElement, ProductSearchCriteria, XmlProductFactory>();
+			container.RegisterFactory<AwsProduct, XElement, SearchCriteria, XmlProductFactory>();
 
 			container.Register<IFilter<XElement>, PrimaryVariantlItemFilter>();
 
