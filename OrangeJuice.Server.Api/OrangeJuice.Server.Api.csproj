@@ -231,8 +231,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="App_Packages\TaskHelpers.Sources.0.1\TaskHelpers.cs" />
-    <Compile Include="App_Packages\TaskHelpers.Sources.0.1\TaskHelpersExtensions.cs" />
     <Compile Include="App_Start\ElmahAggregateExceptionLogger.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\OwinConfig.cs" />
