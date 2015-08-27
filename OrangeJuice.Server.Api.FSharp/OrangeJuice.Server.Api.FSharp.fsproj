@@ -48,11 +48,11 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Reference Include="Ab">
-      <HintPath>..\packages\Ab.0.1.6\lib\net45\Ab.dll</HintPath>
+      <HintPath>..\packages\Ab.0.1.9\lib\net45\Ab.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ab.Amazon">
-      <HintPath>..\packages\Ab.Amazon.0.1.7\lib\net45\Ab.Amazon.dll</HintPath>
+      <HintPath>..\packages\Ab.Amazon.0.1.9\lib\net45\Ab.Amazon.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

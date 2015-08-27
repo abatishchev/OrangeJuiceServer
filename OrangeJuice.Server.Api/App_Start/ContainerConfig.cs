@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Reflection;
@@ -41,7 +42,7 @@ using Elmah;
 
 using FluentValidation.Attributes;
 using FluentValidation.WebApi;
-
+using Microsoft.Azure.Documents.Client;
 using Microsoft.WindowsAzure.Storage.Table;
 
 using OrangeJuice.Server.Api.Handlers;
@@ -52,7 +53,6 @@ using OrangeJuice.Server.Security;
 using OrangeJuice.Server.Services;
 
 using SimpleInjector;
-using SimpleInjector.Extensions;
 using SimpleInjector.Integration.WebApi;
 
 namespace OrangeJuice.Server.Api
@@ -108,7 +108,7 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IConverter<DynamicTableEntity, AwsOptions>, DynamicAwsOptionsConverter>();
 			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
-			container.RegisterDecorator<IOptionsProvider<AwsOptions>, OptionsProviderAdapter<AwsOptions>>(Lifestyle.Singleton);
+			container.RegisterDecorator<IOptionsProvider<AwsOptions>, LazyOptionsProviderAdapter<AwsOptions>>(Lifestyle.Singleton);
 			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>(Lifestyle.Singleton);
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>(Lifestyle.Singleton);
@@ -168,6 +168,12 @@ namespace OrangeJuice.Server.Api
 			container.Register<IBlobClient, AzureBlobClient>();
 			container.Register<ITableClient, AzureTableClient>();
 			container.Register<IQueueClient, AzureQueueClient>();
+
+			container.Register<IStringBuilder<string>, DatabaseLinkBuilder>(Lifestyle.Singleton);
+			container.Register<IStringBuilder<string, string>, CollectionLinkBuilder>(Lifestyle.Singleton);
+			container.RegisterFactory<DocumentDbOptions, DocumentDbOptionsFactory>(Lifestyle.Singleton);
+			container.Register<IPartitionResolver, CategoryPartitionResolver>();
+			container.Register<IDocumentDbClient, DocumentDbClient>();
 
 			container.Register<IAzureClient, AzureClient>();
 

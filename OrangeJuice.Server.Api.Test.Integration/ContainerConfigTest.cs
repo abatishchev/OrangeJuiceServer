@@ -1,7 +1,4 @@
-﻿using System;
-using System.Web.Http;
-
-using FluentAssertions;
+﻿using System.Web.Http;
 using SimpleInjector;
 using Xunit;
 
@@ -17,10 +14,8 @@ namespace OrangeJuice.Server.Api.Test.Integration
 			WebApiConfig.Configure(new HttpConfiguration(), container);
 
 			// Act
-			Action action = () => container.Verify(VerificationOption.VerifyOnly);
-
 			// Asssert
-			action.ShouldNotThrow();
+			container.Verify(VerificationOption.VerifyOnly);
 		}
 
 		[Fact]
@@ -30,10 +25,8 @@ namespace OrangeJuice.Server.Api.Test.Integration
 			var container = ContainerConfig.CreateOwinContainer();
 
 			// Act
-			Action action = () => container.Verify(VerificationOption.VerifyOnly);
-
 			// Asssert
-			action.ShouldNotThrow();
+			container.Verify();
 		}
 	}
 }
