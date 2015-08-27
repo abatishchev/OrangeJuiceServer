@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Reflection;
+using System.Runtime.Caching;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -22,6 +23,7 @@ using Ab.Amazon.Validation;
 using Ab.Amazon.Web;
 using Ab.Azure;
 using Ab.Azure.Configuration;
+using Ab.Cache;
 using Ab.Configuration;
 using Ab.Factory;
 using Ab.Filtering;
@@ -50,6 +52,7 @@ using OrangeJuice.Server.Security;
 using OrangeJuice.Server.Services;
 
 using SimpleInjector;
+using SimpleInjector.Extensions;
 using SimpleInjector.Integration.WebApi;
 
 namespace OrangeJuice.Server.Api
@@ -72,6 +75,10 @@ namespace OrangeJuice.Server.Api
 			container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
 
 			container.RegisterSingleton<IConfigurationProvider, WebConfigurationProvider>();
+			container.RegisterSingleton<ObjectCache>(MemoryCache.Default);
+			container.RegisterSingleton<ICacheClient, MemoryCacheClient>();
+			container.RegisterDecorator<IConfigurationProvider, CachingConfigurationProvider>(Lifestyle.Singleton);
+
 			container.RegisterFactory<AuthOptions, AuthOptionsFactory>(Lifestyle.Singleton);
 
 			return container;
@@ -81,6 +88,9 @@ namespace OrangeJuice.Server.Api
 		{
 			#region Providers
 			container.RegisterSingleton<IConfigurationProvider, WebConfigurationProvider>();
+			container.RegisterSingleton<ObjectCache>(MemoryCache.Default);
+			container.RegisterSingleton<ICacheClient, MemoryCacheClient>();
+			container.RegisterDecorator<IConfigurationProvider, CachingConfigurationProvider>(Lifestyle.Singleton);
 
 			container.RegisterSingleton<IEnvironmentProvider, ConfigurationEnvironmentProvider>();
 
@@ -122,7 +132,7 @@ namespace OrangeJuice.Server.Api
 			//container.Register<ITraceRequestRepository, EntityTraceRequestRepository>();
 
 			// Services
-            container.Register<IAssembliesResolver>(() =>
+			container.Register<IAssembliesResolver>(() =>
 				new Ab.WebApi.AssembliesResolver(
 					//typeof(FSharp.Controllers.VersionController).Assembly,
 					typeof(Controllers.VersionController).Assembly),
@@ -153,18 +163,15 @@ namespace OrangeJuice.Server.Api
 			#endregion
 
 			#region Azure
-			container.Register<IBlobClient, AzureBlobClient>();
-
-			container.Register<ITableClient, AzureTableClient>();
-
-			container.Register<IQueueClient, AzureQueueClient>();
-
 			container.Register<IAzureContainerClient, AzureContainerClient>();
+
+			container.Register<IBlobClient, AzureBlobClient>();
+			container.Register<ITableClient, AzureTableClient>();
+			container.Register<IQueueClient, AzureQueueClient>();
 
 			container.Register<IAzureClient, AzureClient>();
 
 			container.Register<IConverter<string, AwsProduct>, JsonProductConverter>();
-
 			container.Register<IAzureProductProvider, AzureProductProvider>();
 			#endregion
 
