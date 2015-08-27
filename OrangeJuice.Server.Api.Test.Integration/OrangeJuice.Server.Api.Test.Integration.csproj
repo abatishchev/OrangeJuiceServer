@@ -175,9 +175,6 @@
     <Compile Include="HttpClientFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AuthTokenFactoryTest.cs" />
-    <Compile Include="Services\AwsClientIntegrationTest.cs" />
-    <Compile Include="Services\AwsProductProviderIntegrationTest.cs" />
-    <Compile Include="Services\AzureClientIntegrationTest.cs" />
     <Compile Include="ContainerConfigTest.cs" />
   </ItemGroup>
   <ItemGroup>
