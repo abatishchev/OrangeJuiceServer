@@ -29,12 +29,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ab, Version=0.1.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ab.0.1.9\lib\net45\Ab.dll</HintPath>
+    <Reference Include="Ab, Version=0.1.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ab.0.1.10\lib\net45\Ab.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ab.Amazon">
-      <HintPath>..\packages\Ab.Amazon.0.1.9\lib\net45\Ab.Amazon.dll</HintPath>
+    <Reference Include="Ab.Amazon, Version=0.1.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ab.Amazon.0.1.11\lib\net45\Ab.Amazon.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentValidation, Version=5.6.2.0, Culture=neutral, processorArchitecture=MSIL">

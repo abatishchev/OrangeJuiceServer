@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Reflection;
@@ -106,9 +106,9 @@ namespace OrangeJuice.Server.Api
 
 			container.RegisterFactory<AzureOptions, AzureOptionsFactory>(Lifestyle.Singleton);
 
-			container.Register<IConverter<DynamicTableEntity, AwsOptions>, DynamicAwsOptionsConverter>();
-			container.Register<IOptionsProvider<AwsOptions>, AzureAwsOptionsProvider>();
-			container.RegisterDecorator<IOptionsProvider<AwsOptions>, LazyOptionsProviderAdapter<AwsOptions>>(Lifestyle.Singleton);
+			container.Register<IConverter<DynamicTableEntity, AwsOptions>, DynamicAwsOptionsConverter>(Lifestyle.Singleton);
+			container.Register<IOptionsProvider<AwsOptions[]>, AzureAwsOptionsProvider>(Lifestyle.Singleton);
+			container.RegisterDecorator<IOptionsProvider<AwsOptions[]>, LazyOptionsProviderAdapter<AwsOptions[]>>(Lifestyle.Singleton);
 			container.RegisterFactory<AwsOptions, RoundrobinAwsOptionsFactory>(Lifestyle.Singleton);
 
 			container.RegisterFactory<GoogleAuthOptions, GoogleAuthOptionsFactory>(Lifestyle.Singleton);
@@ -171,8 +171,9 @@ namespace OrangeJuice.Server.Api
 
 			container.Register<IStringBuilder<string>, DatabaseLinkBuilder>(Lifestyle.Singleton);
 			container.Register<IStringBuilder<string, string>, CollectionLinkBuilder>(Lifestyle.Singleton);
+
 			container.RegisterFactory<DocumentDbOptions, DocumentDbOptionsFactory>(Lifestyle.Singleton);
-			container.Register<IPartitionResolver, CategoryPartitionResolver>();
+			container.Register<IPartitionResolverProvider>(() => new PartitionResolverProviderAdapter(new Dictionary<string, IPartitionResolver>()));
 			container.Register<IDocumentDbClient, DocumentDbClient>();
 
 			container.Register<IAzureClient, AzureClient>();
